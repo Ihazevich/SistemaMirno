@@ -1,4 +1,7 @@
-﻿using SistemaMirno.UI.Data;
+﻿using Autofac;
+using Autofac.Core;
+using SistemaMirno.UI.Data;
+using SistemaMirno.UI.Startup;
 using SistemaMirno.UI.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -17,7 +20,10 @@ namespace SistemaMirno.UI
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var mainWindow = new MainWindow(new MainViewModel(new AreaDataService()));
+            var bootstrapper = new Bootstrapper();
+            var container = bootstrapper.Bootstrap();
+
+            var mainWindow = container.Resolve<MainWindow>();
             mainWindow.Show();
         }
     }
