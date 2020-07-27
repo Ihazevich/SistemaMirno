@@ -1,0 +1,30 @@
+﻿<mah:MetroWindow x:Class="SistemaMirno.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SistemaMirno.UI"
+        mc:Ignorable="d"
+        Title="Sistema Mirno" 
+        Height="450" 
+        Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ListView ItemsSource="{Binding ProductionAreas}"
+                  SelectedItem="{Binding SelectedProductionArea,Mode=TwoWay}"
+                  DisplayMemberPath="Name"/>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Content="{Binding SelectedProductionArea.Name}" Style="{StaticResource MahApps.Styles.Label}"/>
+        </Grid>
+    </Grid>
+</mah:MetroWindow>
