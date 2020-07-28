@@ -9,7 +9,10 @@ namespace SistemaMirno.UI.ViewModel
     public class MainViewModel : ViewModelBase
     {
         public IProductionAreasViewModel ProductionAreasViewModel { get; }
+
         public IWorkUnitViewModel WorkUnitViewModel { get; }
+
+        public IViewModelBase SelectedViewModel { get; }
 
         public MainViewModel(IProductionAreasViewModel productionAreasViewModel,
             IWorkUnitViewModel workUnitViewModel)

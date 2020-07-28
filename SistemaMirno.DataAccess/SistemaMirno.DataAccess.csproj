@@ -68,6 +68,10 @@
     <Compile Include="Migrations\202007272330478_InitialDB.designer.cs">
       <DependentUpon>202007272330478_InitialDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007281741479_Laptop.cs" />
+    <Compile Include="Migrations\202007281741479_Laptop.designer.cs">
+      <DependentUpon>202007281741479_Laptop.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,6 +89,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202007272330478_InitialDB.resx">
       <DependentUpon>202007272330478_InitialDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007281741479_Laptop.resx">
+      <DependentUpon>202007281741479_Laptop.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

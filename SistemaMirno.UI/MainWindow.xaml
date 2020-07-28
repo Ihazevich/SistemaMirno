@@ -11,12 +11,19 @@
         Height="450" 
         Width="800"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
+            <MenuItem Header="Datos">
+                <MenuItem Header="Materiales" />
+                <MenuItem Header="Colores"/>
+                <MenuItem Header="Productos"/>
+                <MenuItem Header="Areas de Produccion"/>
+                <MenuItem Header="Responsables"/>
+                <MenuItem Header="Supervisores"/>
+            </MenuItem>
+        </Menu>        
         <view:ProductionAreasView DataContext="{Binding ProductionAreasViewModel}"/>
-        <view:WorkUnitView Grid.Column="1" DataContext="{Binding WorkUnitViewModel}"/>        
-    </Grid>
+        <view:WorkUnitView DataContext="{Binding WorkUnitViewModel}"/>
+    </DockPanel>
+    
 </mah:MetroWindow>

@@ -21,12 +21,9 @@ namespace SistemaMirno.Model
         public int ColorId { get; set; }
 
         [Required]
-        public int ProductionAreaId { get; set; }
+        public int WorkOrderId { get; set; }
 
         [Required]
-        public int ResponsibleId { get; set; }
-        
-        [Required]
-        public int SupervisorId { get; set; }
+        public int ProductionAreaId { get; set; }
     }
 }

@@ -12,6 +12,10 @@ namespace SistemaMirno.Model
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(20)]
+        public string Code { get; set; }
+
+        [Required]
         [MaxLength(100)]
         public string Name { get; set; }
 
@@ -23,5 +27,8 @@ namespace SistemaMirno.Model
 
         [Required]
         public int WholesalePrice { get; set; }
+
+        [Required]
+        public int ProductionPrice { get; set; }
     }
 }
