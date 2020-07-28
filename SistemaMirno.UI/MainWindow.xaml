@@ -5,6 +5,7 @@
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SistemaMirno.UI"
+        xmlns:view="clr-namespace:SistemaMirno.UI.View"
         mc:Ignorable="d"
         Title="Sistema Mirno" 
         Height="450" 
@@ -15,16 +16,7 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListView ItemsSource="{Binding ProductionAreas}"
-                  SelectedItem="{Binding SelectedProductionArea,Mode=TwoWay}"
-                  DisplayMemberPath="Name"/>
-
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Label Content="{Binding SelectedProductionArea.Name}" Style="{StaticResource MahApps.Styles.Label}"/>
-        </Grid>
+        <view:ProductionAreasView DataContext="{Binding ProductionAreasViewModel}"/>
+        <view:WorkUnitView Grid.Column="1" DataContext="{Binding WorkUnitViewModel}"/>        
     </Grid>
 </mah:MetroWindow>

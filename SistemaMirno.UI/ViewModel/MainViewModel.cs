@@ -1,38 +1,26 @@
 ﻿using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : ViewModelBase
     {
-        private IDataService _areaDataService;
-        private ProductionArea _selectedProductionArea;
+        public IProductionAreasViewModel ProductionAreasViewModel { get; }
+        public IWorkUnitViewModel WorkUnitViewModel { get; }
 
-        public ObservableCollection<ProductionArea> ProductionAreas { get; set; }
-        public ProductionArea SelectedProductionArea
+        public MainViewModel(IProductionAreasViewModel productionAreasViewModel,
+            IWorkUnitViewModel workUnitViewModel)
         {
-            get { return _selectedProductionArea; }
-            set
-            {
-                _selectedProductionArea = value;
-                OnPropertyChanged();
-            }
+            ProductionAreasViewModel = productionAreasViewModel;
+            WorkUnitViewModel = workUnitViewModel;
         }
 
-        public MainViewModel(IDataService areaDataService)
+        public async Task LoadAsync()
         {
-            ProductionAreas = new ObservableCollection<ProductionArea>();
-            _areaDataService = areaDataService;
-        }
-
-        public void Load()
-        {
-            var areas = _areaDataService.GetAll();
-            foreach (var area in areas)
-            {
-                ProductionAreas.Add(area as ProductionArea);
-            }
+            await ProductionAreasViewModel.LoadAsync();
         }
         
     }

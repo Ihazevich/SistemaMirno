@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public class ProductionArea : BaseModel
+    public class Responsible
     {
         public int Id { get; set; }
+        
+        [Required]
+        [MaxLength(30)]
+        public string FirstName { get; set; }
 
         [Required]
-        [MaxLength(20)]
-        public string Name { get; set; }
+        [MaxLength(30)]
+        public string LastName { get; set; }
     }
 }

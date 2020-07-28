@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public class ProductionArea : BaseModel
+    public class ProductCategory
     {
         public int Id { get; set; }
 
