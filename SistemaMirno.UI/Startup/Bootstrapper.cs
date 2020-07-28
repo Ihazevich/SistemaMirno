@@ -18,11 +18,13 @@ namespace SistemaMirno.UI.Startup
 
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();
+            builder.RegisterType<MaterialViewModel>().As<IMaterialViewModel>().SingleInstance();
             builder.RegisterType<ProductionAreasViewModel>().As<IProductionAreasViewModel>();
             builder.RegisterType<WorkUnitViewModel>().As<IWorkUnitViewModel>();
 
             builder.RegisterType<AreaDataService>().As<IAreaDataService>();
             builder.RegisterType<WorkUnitDataService>().As<IWorkUnitDataService>();
+            builder.RegisterType<MaterialDataService>().As<IMaterialDataService>();
 
             return builder.Build();
         }

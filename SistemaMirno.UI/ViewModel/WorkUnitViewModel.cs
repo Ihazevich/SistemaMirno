@@ -42,7 +42,6 @@ namespace SistemaMirno.UI.ViewModel
 
         private async void OnProductionAreaSelected(int productionAreaId)
         {
-            Console.WriteLine("Selected area {0}", productionAreaId);
             await LoadAsync(productionAreaId);
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(this);
@@ -52,9 +51,7 @@ namespace SistemaMirno.UI.ViewModel
         {
             WorkUnits.Clear();
             AreaName = await _workUnitDataService.GetProductionAreaName(productionAreaId);
-            Console.WriteLine(AreaName);
-            var workUnits = new ObservableCollection<WorkUnit>(await _workUnitDataService.GetWorkUnitsByAreaIdAsync(productionAreaId));
-            Console.WriteLine(WorkUnits.Count);
+            var workUnits = await _workUnitDataService.GetWorkUnitsByAreaIdAsync(productionAreaId);
             foreach(var workUnit in workUnits)
             {
                 WorkUnits.Add(workUnit);

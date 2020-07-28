@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D9283CB3-583A-4EDF-A9AD-A71F08E6D1AB}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>SistemaMirno.UI</RootNamespace>
     <AssemblyName>SistemaMirno.UI</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -109,18 +109,26 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\AreaDataService.cs" />
+    <Compile Include="Data\IMaterialDataService.cs" />
     <Compile Include="Data\IWorkUnitDataService.cs" />
+    <Compile Include="Data\MaterialDataService.cs" />
     <Compile Include="Data\WorkUnitDataService.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
+    <Compile Include="Event\ShowMaterialsEvent.cs" />
     <Compile Include="Event\ShowProductionAreaWorkUnitsEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
+    <Compile Include="ViewModel\IMaterialViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
+    <Compile Include="ViewModel\MaterialViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\IProductionAreasViewModel.cs" />
     <Compile Include="ViewModel\IWorkUnitViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ProductionAreasViewModel.cs" />
     <Compile Include="ViewModel\WorkUnitViewModel.cs" />
+    <Compile Include="View\MaterialView.xaml.cs">
+      <DependentUpon>MaterialView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ProductionAreasView.xaml.cs">
       <DependentUpon>ProductionAreasView.xaml</DependentUpon>
     </Compile>
@@ -140,6 +148,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\MaterialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ProductionAreasView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

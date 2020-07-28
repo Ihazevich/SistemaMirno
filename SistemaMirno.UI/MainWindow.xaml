@@ -14,7 +14,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
             <MenuItem Header="Datos">
-                <MenuItem Header="Materiales" />
+                <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="Material"/>
                 <MenuItem Header="Colores"/>
                 <MenuItem Header="Productos"/>
                 <MenuItem Header="Areas de Produccion"/>
