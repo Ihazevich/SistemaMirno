@@ -111,6 +111,7 @@
     <Compile Include="Data\AreaDataService.cs" />
     <Compile Include="Data\IWorkUnitDataService.cs" />
     <Compile Include="Data\WorkUnitDataService.cs" />
+    <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ShowProductionAreaWorkUnitsEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />

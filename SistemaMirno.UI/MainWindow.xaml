@@ -21,9 +21,9 @@
                 <MenuItem Header="Responsables"/>
                 <MenuItem Header="Supervisores"/>
             </MenuItem>
-        </Menu>        
+        </Menu>
         <view:ProductionAreasView DataContext="{Binding ProductionAreasViewModel}"/>
-        <view:WorkUnitView DataContext="{Binding WorkUnitViewModel}"/>
+        <ContentPresenter Content="{Binding SelectedViewModel}"/>
     </DockPanel>
     
 </mah:MetroWindow>

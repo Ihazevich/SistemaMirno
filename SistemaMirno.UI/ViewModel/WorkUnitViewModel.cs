@@ -44,6 +44,8 @@ namespace SistemaMirno.UI.ViewModel
         {
             Console.WriteLine("Selected area {0}", productionAreaId);
             await LoadAsync(productionAreaId);
+            _eventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(this);
         }
 
         public async Task LoadAsync(int productionAreaId)
