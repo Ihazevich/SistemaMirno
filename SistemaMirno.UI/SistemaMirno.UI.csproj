@@ -134,12 +134,14 @@
     <Compile Include="ViewModel\ColorViewModel.cs" />
     <Compile Include="ViewModel\IColorViewModel.cs" />
     <Compile Include="ViewModel\IMaterialViewModel.cs" />
+    <Compile Include="ViewModel\IProductionAreaViewModel.cs" />
     <Compile Include="ViewModel\IProductViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\MaterialViewModel.cs" />
+    <Compile Include="ViewModel\ProductionAreaViewModel.cs" />
     <Compile Include="ViewModel\ProductViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="ViewModel\IProductionAreasViewModel.cs" />
+    <Compile Include="ViewModel\IProductionAreasNavigationViewModel.cs" />
     <Compile Include="ViewModel\IWorkUnitViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ProductionAreasNavigationViewModel.cs" />
@@ -150,8 +152,11 @@
     <Compile Include="View\MaterialView.xaml.cs">
       <DependentUpon>MaterialView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProductionAreasView.xaml.cs">
-      <DependentUpon>ProductionAreasView.xaml</DependentUpon>
+    <Compile Include="View\ProductionAreasNavigationView.xaml.cs">
+      <DependentUpon>ProductionAreasNavigationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProductionAreaView.xaml.cs">
+      <DependentUpon>ProductionAreaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProductView.xaml.cs">
       <DependentUpon>ProductView.xaml</DependentUpon>
@@ -186,7 +191,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProductionAreasView.xaml">
+    <Page Include="View\ProductionAreasNavigationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ProductionAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

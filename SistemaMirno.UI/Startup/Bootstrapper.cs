@@ -19,11 +19,11 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<MaterialViewModel>().As<IMaterialViewModel>().SingleInstance();
-            builder.RegisterType<ProductionAreasNavigationViewModel>().As<IProductionAreasViewModel>().SingleInstance();
+            builder.RegisterType<ProductionAreasNavigationViewModel>().As<IProductionAreasNavigationViewModel>().SingleInstance();
             builder.RegisterType<WorkUnitViewModel>().As<IWorkUnitViewModel>().SingleInstance();
             builder.RegisterType<ColorViewModel>().As<IColorViewModel>().SingleInstance();
             builder.RegisterType<ProductViewModel>().As<IProductViewModel>().SingleInstance();
-
+            builder.RegisterType<ProductionAreaViewModel>().As<IProductionAreaViewModel>().SingleInstance();
 
 
             builder.RegisterType<ProductionAreaDataService>().As<IProductionAreaDataService>();

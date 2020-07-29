@@ -22,7 +22,7 @@
                 <MenuItem Header="Supervisores" Command="{Binding ChangeViewCommand}" CommandParameter="Supervisors"/>
             </MenuItem>
         </Menu>
-        <view:ProductionAreasView DockPanel.Dock="Left" DataContext="{Binding ProductionAreasViewModel}"/>
+        <view:ProductionAreasNavigationView DockPanel.Dock="Left" DataContext="{Binding ProductionAreasNavigationViewModel}"/>
         <ContentPresenter DockPanel.Dock="Right" Content="{Binding SelectedViewModel}"/>
     </DockPanel>
     

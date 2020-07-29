@@ -16,12 +16,12 @@ namespace SistemaMirno.UI.ViewModel
         private IViewModelBase _selectedViewModel;
         private IEventAggregator _eventAggregator;
 
-        public IProductionAreasViewModel ProductionAreasViewModel { get; }
-
+        public IProductionAreasNavigationViewModel ProductionAreasNavigationViewModel { get; }
         public IWorkUnitViewModel WorkUnitViewModel { get; }
         public IMaterialViewModel MaterialViewModel { get; }
         public IColorViewModel ColorViewModel { get; }
         public IProductViewModel ProductViewModel { get; }
+        public IProductionAreaViewModel ProductionAreaViewModel { get; }
 
         public IViewModelBase SelectedViewModel
         {
@@ -35,15 +35,17 @@ namespace SistemaMirno.UI.ViewModel
 
         public ICommand ChangeViewCommand { get; set; }
 
-        public MainViewModel(IProductionAreasViewModel productionAreasViewModel, IMaterialViewModel materialViewModel,
+        public MainViewModel(IProductionAreasNavigationViewModel productionAreasViewModel, IMaterialViewModel materialViewModel,
             IColorViewModel colorViewModel, IWorkUnitViewModel workUnitViewModel, IProductViewModel productViewModel,
+            IProductionAreaViewModel productionAreaViewModel,
             IEventAggregator eventAggregator)
         {
-            ProductionAreasViewModel = productionAreasViewModel;
+            ProductionAreasNavigationViewModel = productionAreasViewModel;
             WorkUnitViewModel = workUnitViewModel;
             MaterialViewModel = materialViewModel;
             ColorViewModel = colorViewModel;
             ProductViewModel = productViewModel;
+            ProductionAreaViewModel = productionAreaViewModel;
 
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ChangeViewEvent>()
@@ -105,7 +107,7 @@ namespace SistemaMirno.UI.ViewModel
 
         public async Task LoadAsync()
         {
-            await ProductionAreasViewModel.LoadAsync();
+            await ProductionAreasNavigationViewModel.LoadAsync();
         }
 
         private void OnViewChanged(IViewModelBase viewModel)

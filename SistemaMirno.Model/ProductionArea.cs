@@ -14,5 +14,8 @@ namespace SistemaMirno.Model
         [Required]
         [MaxLength(20)]
         public string Name { get; set; }
+
+        [Required]
+        public int Order { get; set; }
     }
 }

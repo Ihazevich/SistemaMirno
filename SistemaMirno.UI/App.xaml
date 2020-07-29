@@ -19,6 +19,9 @@
             <DataTemplate DataType="{x:Type viewmodel:ProductViewModel}">
                 <view:ProductView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:ProductionAreaViewModel}">
+                <view:ProductionAreaView/>
+            </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />

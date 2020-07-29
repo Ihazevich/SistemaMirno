@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel
 {
-    public class ProductionAreasNavigationViewModel : ViewModelBase, IProductionAreasViewModel
+    public class ProductionAreasNavigationViewModel : ViewModelBase, IProductionAreasNavigationViewModel
     {
         private IProductionAreaDataService _areaDataService;
         private IEventAggregator _eventAggregator;

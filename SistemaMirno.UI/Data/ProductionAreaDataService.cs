@@ -23,5 +23,15 @@ namespace SistemaMirno.UI.Data
                 return await ctx.ProductionAreas.AsNoTracking().ToListAsync();
             }
         }
+
+        public async Task SaveAsync(ProductionArea area)
+        {
+            using (var ctx = _contextCreator())
+            {
+                ctx.ProductionAreas.Attach(area);
+                ctx.Entry(area).State = EntityState.Modified;
+                await ctx.SaveChangesAsync();
+            }
+        }
     }
 }

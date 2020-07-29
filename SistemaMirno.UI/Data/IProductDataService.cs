@@ -7,5 +7,6 @@ namespace SistemaMirno.UI.Data
     public interface IProductDataService
     {
         Task<List<Product>> GetAllAsync();
+        Task SaveAsync(Product product);
     }
 }

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace SistemaMirno.UI.View
 {
     /// <summary>
-    /// Interaction logic for ProductionAreasView.xaml
+    /// Interaction logic for ProductionAreaView.xaml
     /// </summary>
-    public partial class ProductionAreasView : UserControl
+    public partial class ProductionAreaView : UserControl
     {
-        public ProductionAreasView()
+        public ProductionAreaView()
         {
             InitializeComponent();
         }

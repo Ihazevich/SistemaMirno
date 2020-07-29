@@ -25,5 +25,15 @@ namespace SistemaMirno.UI.Data
                 return await ctx.Products.AsNoTracking().ToListAsync();
             }
         }
+
+        public async Task SaveAsync(Product product)
+        {
+            using (var ctx = _contextCreator())
+            {
+                ctx.Products.Attach(product);
+                ctx.Entry(product).State = EntityState.Modified;
+                await ctx.SaveChangesAsync();
+            }
+        }
     }
 }

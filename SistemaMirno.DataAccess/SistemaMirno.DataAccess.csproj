@@ -72,6 +72,10 @@
     <Compile Include="Migrations\202007281741479_Laptop.designer.cs">
       <DependentUpon>202007281741479_Laptop.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007291201131_AddedAreaOrder.cs" />
+    <Compile Include="Migrations\202007291201131_AddedAreaOrder.designer.cs">
+      <DependentUpon>202007291201131_AddedAreaOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007281741479_Laptop.resx">
       <DependentUpon>202007281741479_Laptop.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007291201131_AddedAreaOrder.resx">
+      <DependentUpon>202007291201131_AddedAreaOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
