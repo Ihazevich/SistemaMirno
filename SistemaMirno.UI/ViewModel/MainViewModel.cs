@@ -1,42 +1,26 @@
-﻿using Prism.Commands;
-using Prism.Events;
-using SistemaMirno.Model;
-using SistemaMirno.UI.Data;
-using SistemaMirno.UI.Event;
-using System;
-using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Prism.Commands;
+using Prism.Events;
+using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.ViewModel
 {
+    /// <summary>
+    /// Class representing the main view model.
+    /// </summary>
     public class MainViewModel : ViewModelBase
     {
         private IViewModelBase _selectedViewModel;
         private IEventAggregator _eventAggregator;
+        private string _windowTitle = $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
-        public IProductionAreasNavigationViewModel ProductionAreasNavigationViewModel { get; }
-        public IWorkUnitViewModel WorkUnitViewModel { get; }
-        public IMaterialViewModel MaterialViewModel { get; }
-        public IColorViewModel ColorViewModel { get; }
-        public IProductViewModel ProductViewModel { get; }
-        public IProductionAreaViewModel ProductionAreaViewModel { get; }
-
-        public IViewModelBase SelectedViewModel
-        {
-            get { return _selectedViewModel; }
-            set
-            {
-                _selectedViewModel = value;
-                OnPropertyChanged();
-            } 
-        }
-
-        public ICommand ChangeViewCommand { get; set; }
-
-        public MainViewModel(IProductionAreasNavigationViewModel productionAreasViewModel, IMaterialViewModel materialViewModel,
-            IColorViewModel colorViewModel, IWorkUnitViewModel workUnitViewModel, IProductViewModel productViewModel,
+        public MainViewModel(
+            IProductionAreasNavigationViewModel productionAreasViewModel,
+            IMaterialViewModel materialViewModel,
+            IColorViewModel colorViewModel,
+            IWorkUnitViewModel workUnitViewModel,
+            IProductViewModel productViewModel,
             IProductionAreaViewModel productionAreaViewModel,
             IEventAggregator eventAggregator)
         {
@@ -53,6 +37,40 @@ namespace SistemaMirno.UI.ViewModel
 
             ChangeViewCommand = new DelegateCommand<string>(ChangeViewExecute, ChangeViewCanExecute);
         }
+
+        /// <summary>
+        /// Gets or sets the main window title.
+        /// </summary>
+        public string WindowTitle
+        {
+            get
+            {
+                return _windowTitle;
+            }
+
+            set
+            {
+                _windowTitle = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IProductionAreasNavigationViewModel ProductionAreasNavigationViewModel { get; }
+        public IWorkUnitViewModel WorkUnitViewModel { get; }
+        public IMaterialViewModel MaterialViewModel { get; }
+        public IColorViewModel ColorViewModel { get; }
+        public IProductViewModel ProductViewModel { get; }
+        public IProductionAreaViewModel ProductionAreaViewModel { get; }
+        public IViewModelBase SelectedViewModel
+        {
+            get { return _selectedViewModel; }
+            set
+            {
+                _selectedViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+        public ICommand ChangeViewCommand { get; set; }
 
         private void ChangeViewExecute(string viewModel)
         {

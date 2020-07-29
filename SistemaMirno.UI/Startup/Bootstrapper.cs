@@ -2,6 +2,7 @@
 using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.UI.Data;
+using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.ViewModel;
 
 namespace SistemaMirno.UI.Startup
@@ -26,7 +27,7 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductionAreaViewModel>().As<IProductionAreaViewModel>().SingleInstance();
 
 
-            builder.RegisterType<ProductionAreaDataService>().As<IProductionAreaDataService>();
+            builder.RegisterType<ProductionAreaRepository>().As<IProductionAreaRepository>();
             builder.RegisterType<WorkUnitDataService>().As<IWorkUnitDataService>();
             builder.RegisterType<MaterialDataService>().As<IMaterialDataService>();
             builder.RegisterType<ColorDataService>().As<IColorDataService>();

@@ -23,6 +23,11 @@ namespace SistemaMirno.UI
     public partial class MainWindow : MetroWindow
     {
         private MainViewModel _viewModel;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
+        /// <param name="viewModel">A <see cref="MainViewModel"/> instance representing the main view model.</param>
         public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();

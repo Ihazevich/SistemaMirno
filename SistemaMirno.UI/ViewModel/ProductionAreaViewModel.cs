@@ -6,6 +6,7 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
+using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
 
@@ -16,19 +17,21 @@ namespace SistemaMirno.UI.ViewModel
     /// </summary>
     public class ProductionAreaViewModel : ViewModelBase, IProductionAreaViewModel
     {
-        private IProductionAreaDataService _productionAreaDataService;
+        private IProductionAreaRepository _productionAreaRepository;
         private IEventAggregator _eventAggregator;
         private ProductionAreaWrapper _selectedArea;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductionAreaViewModel"/> class.
         /// </summary>
-        /// <param name="productionAreaDataService">The Production Area data service.</param>
-        /// <param name="eventAggregator">The event aggregator.</param>
-        public ProductionAreaViewModel(IProductionAreaDataService productionAreaDataService, IEventAggregator eventAggregator)
+        /// <param name="productionAreaRepository">A <see cref="IProductionAreaRepository"/> instance representing the data repository.</param>
+        /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
+        public ProductionAreaViewModel(
+            IProductionAreaRepository productionAreaRepository,
+            IEventAggregator eventAggregator)
         {
             ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
-            _productionAreaDataService = productionAreaDataService;
+            _productionAreaRepository = productionAreaRepository;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ShowProductionAreaViewEvent>()
                 .Subscribe(ViewModelSelected);
@@ -75,7 +78,7 @@ namespace SistemaMirno.UI.ViewModel
         public async Task LoadAsync()
         {
             ProductionAreas.Clear();
-            var areas = await _productionAreaDataService.GetAllAsync();
+            var areas = await _productionAreaRepository.GetAllAsync();
             foreach (var area in areas)
             {
                 ProductionAreas.Add(new ProductionAreaWrapper(area));
@@ -92,7 +95,7 @@ namespace SistemaMirno.UI.ViewModel
         /// <inheritdoc/>
         protected override void OnSaveExecute()
         {
-            _productionAreaDataService.SaveAsync(SelectedArea.Model);
+            _productionAreaRepository.SaveAsync();
             _eventAggregator.GetEvent<ReloadViewEvent>()
                 .Publish("Navigation");
         }
