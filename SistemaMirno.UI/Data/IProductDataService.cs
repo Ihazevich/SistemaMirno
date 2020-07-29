@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.Data
 {
-    public interface IAreaDataService
+    public interface IProductDataService
     {
-        Task<List<ProductionArea>> GetAllAsync();
+        Task<List<Product>> GetAllAsync();
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.Event
 {
-    public class ShowMaterialsEvent : PubSubEvent
+    public class ShowProductionAreaViewEvent : PubSubEvent
     {
     }
 }

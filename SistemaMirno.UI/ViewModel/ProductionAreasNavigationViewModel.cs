@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel
 {
-    public class ProductionAreasViewModel : ViewModelBase, IProductionAreasViewModel
+    public class ProductionAreasNavigationViewModel : ViewModelBase, IProductionAreasViewModel
     {
-        private IAreaDataService _areaDataService;
+        private IProductionAreaDataService _areaDataService;
         private IEventAggregator _eventAggregator;
 
         private ProductionArea _selectedProductionArea;
@@ -23,7 +23,7 @@ namespace SistemaMirno.UI.ViewModel
                 OnPropertyChanged();
                 if (_selectedProductionArea != null)
                 {
-                    _eventAggregator.GetEvent<ShowProductionAreaWorkUnitsEvent>()
+                    _eventAggregator.GetEvent<ShowWorkUnitsViewEvent>()
                         .Publish(_selectedProductionArea.Id);
                 }
             }
@@ -31,7 +31,7 @@ namespace SistemaMirno.UI.ViewModel
         public ObservableCollection<ProductionArea> ProductionAreas { get; }
 
 
-        public ProductionAreasViewModel(IAreaDataService areaDataService,
+        public ProductionAreasNavigationViewModel(IProductionAreaDataService areaDataService,
             IEventAggregator eventAggregator)
         {
             _areaDataService = areaDataService;

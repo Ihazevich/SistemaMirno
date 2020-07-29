@@ -20,6 +20,8 @@ namespace SistemaMirno.UI.ViewModel
 
         public IWorkUnitViewModel WorkUnitViewModel { get; }
         public IMaterialViewModel MaterialViewModel { get; }
+        public IColorViewModel ColorViewModel { get; }
+        public IProductViewModel ProductViewModel { get; }
 
         public IViewModelBase SelectedViewModel
         {
@@ -34,11 +36,15 @@ namespace SistemaMirno.UI.ViewModel
         public ICommand ChangeViewCommand { get; set; }
 
         public MainViewModel(IProductionAreasViewModel productionAreasViewModel, IMaterialViewModel materialViewModel,
-            IWorkUnitViewModel workUnitViewModel, IEventAggregator eventAggregator)
+            IColorViewModel colorViewModel, IWorkUnitViewModel workUnitViewModel, IProductViewModel productViewModel,
+            IEventAggregator eventAggregator)
         {
             ProductionAreasViewModel = productionAreasViewModel;
             WorkUnitViewModel = workUnitViewModel;
             MaterialViewModel = materialViewModel;
+            ColorViewModel = colorViewModel;
+            ProductViewModel = productViewModel;
+
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(OnViewChanged);
@@ -48,11 +54,30 @@ namespace SistemaMirno.UI.ViewModel
 
         private void ChangeViewExecute(string viewModel)
         {
-            Console.Write("Command raised, parameter={0}", viewModel);
             switch(viewModel)
             {
-                case "Material":
-                    _eventAggregator.GetEvent<ShowMaterialsEvent>().
+                case "Materials":
+                    _eventAggregator.GetEvent<ShowMaterialViewEvent>().
+                        Publish();                    
+                    break;
+                case "Colors":
+                    _eventAggregator.GetEvent<ShowColorViewEvent>().
+                        Publish();
+                    break;
+                case "Products":
+                    _eventAggregator.GetEvent<ShowProductViewEvent>().
+                        Publish();
+                    break;
+                case "ProductionAreas":
+                    _eventAggregator.GetEvent<ShowProductionAreaViewEvent>().
+                        Publish();
+                    break;
+                case "Responsibles":
+                    _eventAggregator.GetEvent<ShowResponsibleView>().
+                        Publish();
+                    break;
+                case "Supervisors":
+                    _eventAggregator.GetEvent<ShowSupervisorView>().
                         Publish();
                     break;
                 default:

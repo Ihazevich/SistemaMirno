@@ -11,25 +11,24 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel
 {
-    public class MaterialViewModel : ViewModelBase, IMaterialViewModel
+    public class ProductViewModel : ViewModelBase, IProductViewModel
     {
-        private IMaterialDataService _materialDataService;
+        private IProductDataService _productDataService;
         private IEventAggregator _eventAggregator;
 
-        public ObservableCollection<Material> Materials { get; set; }
+        public ObservableCollection<Product> Products { get; set; }
 
-        public MaterialViewModel(IMaterialDataService materialDataService, IEventAggregator eventAggregator)
+        public ProductViewModel(IProductDataService productDataService, IEventAggregator eventAggregator)
         {
-            Materials = new ObservableCollection<Material>();
-            _materialDataService = materialDataService;
+            Products = new ObservableCollection<Product>();
+            _productDataService = productDataService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowMaterialViewEvent>()
+            _eventAggregator.GetEvent<ShowProductViewEvent>()
                 .Subscribe(ViewModelSelected);
         }
 
         public async void ViewModelSelected()
         {
-            Console.WriteLine("Material View selected");
             await LoadAsync();
             _eventAggregator.GetEvent<ChangeViewEvent>().
                 Publish(this);
@@ -37,11 +36,11 @@ namespace SistemaMirno.UI.ViewModel
 
         public async Task LoadAsync()
         {
-            Materials.Clear();
-            var materials = await _materialDataService.GetAllAsync();
-            foreach (var material in materials)
+            Products.Clear();
+            var products = await _productDataService.GetAllAsync();
+            foreach (var product in products)
             {
-                Materials.Add(material);
+                Products.Add(product);
             }
         }
     }
