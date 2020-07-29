@@ -1,38 +1,58 @@
-﻿using Prism.Commands;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
+using Prism.Commands;
 
 namespace SistemaMirno.UI.ViewModel
 {
+    /// <summary>
+    /// Base view model class.
+    /// </summary>
     public class ViewModelBase : INotifyPropertyChanged, IViewModelBase
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand SaveCommand { get; set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ViewModelBase"/> class.
+        /// </summary>
         public ViewModelBase()
         {
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
         }
-        
+
+        /// <inheritdoc/>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Gets or sets the save command for the view model.
+        /// </summary>
+        public ICommand SaveCommand { get; set; }
+
+        /// <summary>
+        /// Invokes the PropertyChanged event.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that changed.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Sends the selected area to the data service for saving, and publishes the Reload View event to reload the navigation view.
+        /// </summary>
         protected virtual void OnSaveExecute()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Checks if the Save Command can be executed.
+        /// </summary>
+        /// <returns>True or false.</returns>
         protected virtual bool OnSaveCanExecute()
         {
             throw new NotImplementedException();
         }
+
     }
 }

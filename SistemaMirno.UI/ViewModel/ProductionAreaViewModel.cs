@@ -1,5 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
+using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
@@ -50,6 +53,8 @@ namespace SistemaMirno.UI.ViewModel
             {
                 _selectedArea = value;
                 OnPropertyChanged();
+                SelectedArea.PropertyChanged += SelectedArea_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -75,25 +80,30 @@ namespace SistemaMirno.UI.ViewModel
             {
                 ProductionAreas.Add(new ProductionAreaWrapper(area));
             }
+
         }
 
-        /// <summary>
-        /// Checks if the Save Command can be executed.
-        /// </summary>
-        /// <returns>True or false.</returns>
+        /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return true;
+            return SelectedArea != null && !SelectedArea.HasErrors;
         }
 
-        /// <summary>
-        /// Sends the selected area to the data service for saving, and publishes the Reload View event to reload the navigation view.
-        /// </summary>
+        /// <inheritdoc/>
         protected override void OnSaveExecute()
         {
             _productionAreaDataService.SaveAsync(SelectedArea.Model);
             _eventAggregator.GetEvent<ReloadViewEvent>()
                 .Publish("Navigation");
+        }
+
+        private void SelectedArea_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Console.WriteLine(e.PropertyName);
+            if (e.PropertyName == nameof(SelectedArea.HasErrors))
+            {
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            }
         }
     }
 }

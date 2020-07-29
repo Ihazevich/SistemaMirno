@@ -47,6 +47,7 @@ namespace SistemaMirno.UI.Wrapper
         protected virtual void OnErrorsChanged(string propertyName)
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+            OnPropertyChanged(nameof(HasErrors));
         }
 
         /// <summary>
