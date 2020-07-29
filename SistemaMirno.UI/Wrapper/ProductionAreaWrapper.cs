@@ -1,4 +1,5 @@
 ﻿using SistemaMirno.Model;
+using System;
 using System.Collections;
 
 namespace SistemaMirno.UI.Wrapper
@@ -41,6 +42,7 @@ namespace SistemaMirno.UI.Wrapper
             {
                 Model.Name = value;
                 OnPropertyChanged();
+                ValidateProperty(nameof(Name));
             }
         }
 
@@ -61,10 +63,19 @@ namespace SistemaMirno.UI.Wrapper
             }
         }
 
-        /// <inheritdoc/>
-        public override IEnumerable GetErrors(string propertyName)
+        private void ValidateProperty(string propertyName)
         {
-            return base.GetErrors(propertyName);
+            ClearErrors(propertyName);
+            switch (propertyName)
+            {
+                case nameof(Name):
+                    if (Name.Length < 4)
+                    {
+                        AddError(propertyName, "El nombre es muy corto.");
+                    }
+
+                    break;
+            }
         }
     }
 }
