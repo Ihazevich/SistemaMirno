@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.9.20211</AssemblyVersion>
+    <AssemblyVersion>0.1.10.20211</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -136,6 +136,8 @@
     <Compile Include="Event\ShowProductViewEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\ColorViewModel.cs" />
+    <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
+    <Compile Include="ViewModel\Detail\ProductionAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\IColorViewModel.cs" />
     <Compile Include="ViewModel\IMaterialViewModel.cs" />
     <Compile Include="ViewModel\IProductionAreaViewModel.cs" />
@@ -267,6 +269,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Lookups\" />
+    <Folder Include="ViewModel\General\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

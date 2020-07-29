@@ -17,16 +17,10 @@ namespace SistemaMirno.UI.ViewModel
         /// </summary>
         public ViewModelBase()
         {
-            SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
         }
 
         /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Gets or sets the save command for the view model.
-        /// </summary>
-        public ICommand SaveCommand { get; set; }
 
         /// <summary>
         /// Invokes the PropertyChanged event.
@@ -35,23 +29,6 @@ namespace SistemaMirno.UI.ViewModel
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        /// Sends the selected area to the data service for saving, and publishes the Reload View event to reload the navigation view.
-        /// </summary>
-        protected virtual void OnSaveExecute()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Checks if the Save Command can be executed.
-        /// </summary>
-        /// <returns>True or false.</returns>
-        protected virtual bool OnSaveCanExecute()
-        {
-            throw new NotImplementedException();
         }
 
     }

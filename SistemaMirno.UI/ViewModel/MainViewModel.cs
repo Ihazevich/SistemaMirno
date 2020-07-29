@@ -15,6 +15,16 @@ namespace SistemaMirno.UI.ViewModel
         private IEventAggregator _eventAggregator;
         private string _windowTitle = $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainViewModel"/> class.
+        /// </summary>
+        /// <param name="productionAreasViewModel">A <see cref="IProductionAreasNavigationViewModel"/> instance representing the area navigation view model.</param>
+        /// <param name="materialViewModel">A <see cref="IMaterialViewModel"/> instance representing the area navigation view model.</param>
+        /// <param name="colorViewModel">A <see cref="IColorViewModel"/> instance representing the area navigation view model.</param>
+        /// <param name="workUnitViewModel">A <see cref="IWorkUnitViewModel"/> instance representing the area navigation view model.</param>
+        /// <param name="productViewModel">A <see cref="IProductViewModel"/> instance representing the area navigation view model.</param>
+        /// <param name="productionAreaViewModel">A <see cref="IProductionAreaViewModel"/> instance representing the area navigation view model.</param>
+        /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the area navigation view model.</param>
         public MainViewModel(
             IProductionAreasNavigationViewModel productionAreasViewModel,
             IMaterialViewModel materialViewModel,
@@ -55,12 +65,39 @@ namespace SistemaMirno.UI.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets the area navigation view model.
+        /// </summary>
         public IProductionAreasNavigationViewModel ProductionAreasNavigationViewModel { get; }
+
+        /// <summary>
+        /// Gets the work unit view model.
+        /// </summary>
         public IWorkUnitViewModel WorkUnitViewModel { get; }
+
+        /// <summary>
+        /// Gets the material view model.
+        /// </summary>
         public IMaterialViewModel MaterialViewModel { get; }
+
+        /// <summary>
+        /// Gets the color view model.
+        /// </summary>
         public IColorViewModel ColorViewModel { get; }
+
+        /// <summary>
+        /// Gets the product view model.
+        /// </summary>
         public IProductViewModel ProductViewModel { get; }
+
+        /// <summary>
+        /// Gets the production area view model.
+        /// </summary>
         public IProductionAreaViewModel ProductionAreaViewModel { get; }
+
+        /// <summary>
+        /// Gets or sets the currently selected view model.
+        /// </summary>
         public IViewModelBase SelectedViewModel
         {
             get { return _selectedViewModel; }
@@ -70,7 +107,16 @@ namespace SistemaMirno.UI.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        /// <summary>
+        /// Gets or sets the change view command.
+        /// </summary>
         public ICommand ChangeViewCommand { get; set; }
+
+        public async Task LoadAsync()
+        {
+            await ProductionAreasNavigationViewModel.LoadAsync();
+        }
 
         private void ChangeViewExecute(string viewModel)
         {
@@ -123,15 +169,9 @@ namespace SistemaMirno.UI.ViewModel
             }
         }
 
-        public async Task LoadAsync()
-        {
-            await ProductionAreasNavigationViewModel.LoadAsync();
-        }
-
         private void OnViewChanged(IViewModelBase viewModel)
         {
             SelectedViewModel = viewModel;
         }
-        
     }
 }

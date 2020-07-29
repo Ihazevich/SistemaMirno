@@ -45,7 +45,7 @@ namespace SistemaMirno.UI.Wrapper
         /// <param name="value">The value.</param>
         /// <param name="propertyName">The property name.</param>
         protected virtual void SetValue<TValue>(
-            TValue value, 
+            TValue value,
             [CallerMemberName] string propertyName = null)
         {
             typeof(T).GetProperty(propertyName).SetValue(Model, value);
