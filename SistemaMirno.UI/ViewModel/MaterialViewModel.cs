@@ -29,7 +29,6 @@ namespace SistemaMirno.UI.ViewModel
 
         public async void ViewModelSelected()
         {
-            Console.WriteLine("Material View selected");
             await LoadAsync();
             _eventAggregator.GetEvent<ChangeViewEvent>().
                 Publish(this);

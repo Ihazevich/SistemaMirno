@@ -37,6 +37,8 @@ namespace SistemaMirno.UI.ViewModel
             _areaDataService = areaDataService;
             ProductionAreas = new ObservableCollection<ProductionArea>();
             _eventAggregator = eventAggregator;
+            _eventAggregator.GetEvent<ReloadViewEvent>()
+                .Subscribe(Reload);
         }
 
         public async Task LoadAsync()
@@ -46,6 +48,14 @@ namespace SistemaMirno.UI.ViewModel
             foreach (var area in productionAreas)
             {
                 ProductionAreas.Add(area);
+            }
+        }
+
+        private async void Reload(string viewModel)
+        {
+            if(viewModel == "Navigation")
+            {
+                await LoadAsync();
             }
         }
     }

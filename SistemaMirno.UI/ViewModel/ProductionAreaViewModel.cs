@@ -61,6 +61,8 @@ namespace SistemaMirno.UI.ViewModel
         protected override void OnSaveExecute()
         {
             _productionAreaDataService.SaveAsync(SelectedArea);
+            _eventAggregator.GetEvent<ReloadViewEvent>()
+                .Publish("Navigation");
         }
     }
 }

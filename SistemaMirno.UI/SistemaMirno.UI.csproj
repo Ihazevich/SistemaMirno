@@ -122,6 +122,7 @@
     <Compile Include="Data\SupervisorDataService.cs" />
     <Compile Include="Data\WorkUnitDataService.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
+    <Compile Include="Event\ReloadViewEvent.cs" />
     <Compile Include="Event\ShowColorViewEvent.cs" />
     <Compile Include="Event\ShowMaterialViewEvent.cs" />
     <Compile Include="Event\ShowProductCategoryView.cs" />

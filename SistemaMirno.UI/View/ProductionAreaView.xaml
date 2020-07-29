@@ -37,10 +37,10 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="Codigo"/>
-            <TextBox Grid.Row="1" Text="{Binding SelectedProduct.Name}"/>
-            <Label Grid.Row="2" Content="Nombre"/>
-            <TextBox Grid.Row="3" Text="{Binding SelectedProduct.Order}"/>
+            <Label Grid.Row="0" Content="Nombre"/>
+            <TextBox Grid.Row="1" Text="{Binding SelectedArea.Name}"/>
+            <Label Grid.Row="2" Content="Orden"/>
+            <TextBox Grid.Row="3" Text="{Binding SelectedArea.Order}"/>
             <StackPanel Grid.Row="4" Orientation="Horizontal">
                 <Button Content="Guardar" Width="125" Margin="10" Command="{Binding SaveCommand}"/>
             </StackPanel>
