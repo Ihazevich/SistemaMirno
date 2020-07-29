@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Runtime.CompilerServices;
 
 namespace SistemaMirno.UI.Wrapper
@@ -48,7 +50,7 @@ namespace SistemaMirno.UI.Wrapper
         {
             typeof(T).GetProperty(propertyName).SetValue(Model, value);
             OnPropertyChanged(propertyName);
-            ValidatePropertyInternal(propertyName);
+            ValidatePropertyInternal(propertyName, value);
         }
 
         /// <summary>
@@ -61,10 +63,31 @@ namespace SistemaMirno.UI.Wrapper
             return null;
         }
 
-        private void ValidatePropertyInternal(string propertyName)
+        private void ValidatePropertyInternal(string propertyName, object currentValue)
         {
             ClearErrors(propertyName);
 
+            // First validate data annotations
+            ValidateDataAnnotations(propertyName, currentValue);
+
+            // Secondly, validate custom errors
+            ValidateCustomError(propertyName);
+        }
+
+        private void ValidateDataAnnotations(string propertyName, object currentValue)
+        {
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(Model) { MemberName = propertyName };
+            Validator.TryValidateProperty(currentValue, context, results);
+
+            foreach (var result in results)
+            {
+                AddError(propertyName, result.ErrorMessage);
+            }
+        }
+
+        private void ValidateCustomError(string propertyName)
+        {
             var errors = ValidateProperty(propertyName);
 
             if (errors != null)
@@ -75,6 +98,5 @@ namespace SistemaMirno.UI.Wrapper
                 }
             }
         }
-
     }
 }

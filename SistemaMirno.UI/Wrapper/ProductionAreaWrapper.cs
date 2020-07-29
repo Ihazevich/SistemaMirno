@@ -3,8 +3,15 @@ using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
+    /// <summary>
+    /// Wrapper class for the Production Area model.
+    /// </summary>
     public class ProductionAreaWrapper : ModelWrapper<ProductionArea>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductionAreaWrapper"/> class.
+        /// </summary>
+        /// <param name="model">Instance of <see cref="ProductionArea"> to use as model.</param>
         public ProductionAreaWrapper(ProductionArea model)
             : base(model)
         {
