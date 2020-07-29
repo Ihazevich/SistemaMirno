@@ -26,5 +26,12 @@ namespace SistemaMirno.UI
             var mainWindow = container.Resolve<MainWindow>();
             mainWindow.Show();
         }
+
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("Ocurrio un error inesperado. Por favor informe al administrador de sistema." + Environment.NewLine +
+                e.Exception.Message, "Error inesperado");
+            e.Handled = true;
+        }
     }
 }

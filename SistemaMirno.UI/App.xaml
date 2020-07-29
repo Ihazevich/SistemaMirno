@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:SistemaMirno.UI"
              xmlns:view="clr-namespace:SistemaMirno.UI.View"
              xmlns:viewmodel="clr-namespace:SistemaMirno.UI.ViewModel"
-             Startup="Application_Startup">
+             Startup="Application_Startup"
+             DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
         <ResourceDictionary>
             <DataTemplate DataType="{x:Type viewmodel:WorkUnitViewModel}">
