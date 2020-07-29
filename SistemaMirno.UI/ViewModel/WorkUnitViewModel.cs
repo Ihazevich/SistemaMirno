@@ -1,22 +1,31 @@
-﻿using Prism.Events;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Event;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel
 {
+    /// <summary>
+    /// View model for Work Units.
+    /// </summary>
     public class WorkUnitViewModel : ViewModelBase, IWorkUnitViewModel
     {
         private IWorkUnitDataService _workUnitDataService;
         private IEventAggregator _eventAggregator;
-        
         private string _areaName;
 
+        /// <summary>
+        /// Gets or sets the production area name for the view.
+        /// </summary>
         public string AreaName
         {
-            get { return _areaName; }
+            get
+            {
+                return _areaName;
+            }
+
             set
             {
                 _areaName = value;
@@ -48,7 +57,8 @@ namespace SistemaMirno.UI.ViewModel
             WorkUnits.Clear();
             AreaName = await _workUnitDataService.GetProductionAreaName(productionAreaId);
             var workUnits = await _workUnitDataService.GetWorkUnitsByAreaIdAsync(productionAreaId);
-            foreach(var workUnit in workUnits)
+
+            foreach (var workUnit in workUnits)
             {
                 WorkUnits.Add(workUnit);
             }

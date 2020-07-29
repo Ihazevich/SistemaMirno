@@ -54,7 +54,7 @@ namespace SistemaMirno.UI.Wrapper
         /// </summary>
         /// <param name="propertyName">The property name.</param>
         /// <param name="error">The error description.</param>
-        protected virtual void AddError(string propertyName, string error)
+        protected void AddError(string propertyName, string error)
         {
             if (!_errorsByPropertyName.ContainsKey(propertyName))
             {
@@ -72,7 +72,7 @@ namespace SistemaMirno.UI.Wrapper
         /// Deletes all errors of the error dictionary from a given property.
         /// </summary>
         /// <param name="propertyName">The property name.</param>
-        protected virtual void ClearErrors(string propertyName)
+        protected void ClearErrors(string propertyName)
         {
             if (_errorsByPropertyName.ContainsKey(propertyName))
             {
