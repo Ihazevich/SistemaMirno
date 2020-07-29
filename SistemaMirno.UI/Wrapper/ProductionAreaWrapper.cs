@@ -1,4 +1,5 @@
 ﻿using SistemaMirno.Model;
+using System.Collections;
 
 namespace SistemaMirno.UI.Wrapper
 {
@@ -60,5 +61,10 @@ namespace SistemaMirno.UI.Wrapper
             }
         }
 
+        /// <inheritdoc/>
+        public override IEnumerable GetErrors(string propertyName)
+        {
+            return base.GetErrors(propertyName);
+        }
     }
 }
