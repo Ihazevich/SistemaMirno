@@ -17,6 +17,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private IProductionAreaRepository _productionAreaRepository;
         private IEventAggregator _eventAggregator;
         private ProductionAreaWrapper _productionArea;
+        private bool _hasChanges;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductionAreaDetailViewModel"/> class.
@@ -45,6 +46,27 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _productionArea = value;
                 OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the database context has changes.
+        /// </summary>
+        public bool HasChanges
+        {
+            get
+            {
+                return _hasChanges;
+            }
+
+            set
+            {
+                if (_hasChanges != value)
+                {
+                    _hasChanges = value;
+                    OnPropertyChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
             }
         }
 

@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.37.20212</AssemblyVersion>
+    <AssemblyVersion>0.1.47.20212</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -175,6 +175,8 @@
     <Compile Include="View\ResponsibleView.xaml.cs">
       <DependentUpon>ResponsibleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Services\IMessageDialogService.cs" />
+    <Compile Include="View\Services\MessageDialogService.cs" />
     <Compile Include="View\SupervisorView.xaml.cs">
       <DependentUpon>SupervisorView.xaml</DependentUpon>
     </Compile>

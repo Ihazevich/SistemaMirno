@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.General;
 
 namespace SistemaMirno.UI.ViewModel.Main
@@ -14,6 +15,7 @@ namespace SistemaMirno.UI.ViewModel.Main
     {
         private IViewModelBase _selectedViewModel;
         private IEventAggregator _eventAggregator;
+        private IMessageDialogService _messageDialogService;
         private string _windowTitle = $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
         /// <summary>
@@ -33,8 +35,12 @@ namespace SistemaMirno.UI.ViewModel.Main
             IWorkUnitViewModel workUnitViewModel,
             IProductViewModel productViewModel,
             IProductionAreaViewModel productionAreaViewModel,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IMessageDialogService messageDialogService)
         {
+            _eventAggregator = eventAggregator;
+            _messageDialogService = messageDialogService;
+
             ProductionAreasNavigationViewModel = productionAreasViewModel;
             WorkUnitViewModel = workUnitViewModel;
             MaterialViewModel = materialViewModel;
@@ -42,7 +48,6 @@ namespace SistemaMirno.UI.ViewModel.Main
             ProductViewModel = productViewModel;
             ProductionAreaViewModel = productionAreaViewModel;
 
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(OnViewChanged);
 

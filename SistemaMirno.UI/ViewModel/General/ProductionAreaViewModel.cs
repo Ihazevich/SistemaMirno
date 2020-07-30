@@ -2,12 +2,14 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.Main;
 using SistemaMirno.UI.Wrapper;
@@ -20,6 +22,7 @@ namespace SistemaMirno.UI.ViewModel.General
     public class ProductionAreaViewModel : ViewModelBase, IProductionAreaViewModel
     {
         private IProductionAreaRepository _productionAreaRepository;
+        private IMessageDialogService _messageDialogService;
         private IEventAggregator _eventAggregator;
         private ProductionAreaWrapper _selectedArea;
         private IProductionAreaDetailViewModel _productionAreaDetailViewModel;
@@ -33,10 +36,12 @@ namespace SistemaMirno.UI.ViewModel.General
         public ProductionAreaViewModel(
             Func<IProductionAreaDetailViewModel> productionAreaDetailViewModelCreator,
             IProductionAreaRepository productionAreaRepository,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IMessageDialogService messageDialogService)
         {
             _productionAreaDetailViewModelCreator = productionAreaDetailViewModelCreator;
             _productionAreaRepository = productionAreaRepository;
+            _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ShowProductionAreaViewEvent>()
                 .Subscribe(ViewModelSelected);
@@ -82,12 +87,9 @@ namespace SistemaMirno.UI.ViewModel.General
 
             set
             {
-                _selectedArea = value;
                 OnPropertyChanged();
-                if (_selectedArea != null)
-                {
-                    UpdateDetailViewModel(_selectedArea.Id);
-                }
+                _selectedArea = value;
+                UpdateDetailViewModel(_selectedArea.Id);
             }
         }
 
@@ -117,6 +119,17 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private async void UpdateDetailViewModel(int id)
         {
+            if (ProductionAreaDetailViewModel != null && ProductionAreaDetailViewModel.HasChanges)
+            {
+                var result = _messageDialogService.ShowOkCancelDialog(
+                    "Ha realizado cambios, si selecciona otro item estos cambios seran perdidos. ¿Esta seguro?",
+                    "Pregunta");
+                if (result == MessageDialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
             ProductionAreaDetailViewModel = _productionAreaDetailViewModelCreator();
             await ProductionAreaDetailViewModel.LoadAsync(id);
         }

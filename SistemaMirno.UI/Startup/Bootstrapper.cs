@@ -4,6 +4,7 @@ using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.General;
@@ -23,6 +24,9 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<MirnoDbContext>().AsSelf();
 
             builder.RegisterType<MainWindow>().AsSelf();
+
+            builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
+
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<MaterialViewModel>().As<IMaterialViewModel>().SingleInstance();
             builder.RegisterType<ProductionAreasNavigationViewModel>().As<IProductionAreasNavigationViewModel>().SingleInstance();

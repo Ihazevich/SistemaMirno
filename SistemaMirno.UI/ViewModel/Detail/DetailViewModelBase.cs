@@ -13,8 +13,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
     /// <typeparam name="T">The type of data model the view model will use.</typeparam>
     public class DetailViewModelBase : INotifyPropertyChanged, IDetailViewModelBase
     {
-        private bool _hasChanges;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailViewModelBase"/> class.
         /// </summary>
@@ -31,27 +29,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// Gets or sets the save command for the view model.
         /// </summary>
         public ICommand SaveCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the database context has changes.
-        /// </summary>
-        public bool HasChanges
-        {
-            get
-            {
-                return _hasChanges;
-            }
-
-            set
-            {
-                if (_hasChanges != value)
-                {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-            }
-        }
 
         /// <summary>
         /// Invokes the PropertyChanged event.

@@ -10,5 +10,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <param name="productionAreaId">An <see cref="int"/> value representing the id.</param>
         /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
         Task LoadAsync(int productionAreaId);
+
+        bool HasChanges { get; }
     }
 }
