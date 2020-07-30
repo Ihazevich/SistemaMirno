@@ -52,5 +52,10 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             _context.ProductionAreas.Add(productionArea);
         }
+
+        public void Remove(ProductionArea model)
+        {
+            _context.ProductionAreas.Remove(model);
+        }
     }
 }

@@ -35,5 +35,7 @@ namespace SistemaMirno.UI.Data.Repositories
         bool HasChanges();
 
         void Add(ProductionArea productionArea);
+
+        void Remove(ProductionArea model);
     }
 }

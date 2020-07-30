@@ -30,7 +30,11 @@
                  PreviewTextInput="TextboxNumberValidation"
                  Margin="5"/>
         <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <Button Content="Guardar cambios" Width="125" Margin="5" Command="{Binding SaveCommand}"/>
+            <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}"/>
+            <Button Content="Eliminar area" 
+                        Margin="10" 
+                        Background="Red"
+                        Command="{Binding DeleteCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

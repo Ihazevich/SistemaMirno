@@ -48,6 +48,8 @@ namespace SistemaMirno.UI.ViewModel.General
                 .Subscribe(ViewModelSelected);
             _eventAggregator.GetEvent<AfterProductionAreaSavedEvent>()
                 .Subscribe(AfterProductionAreaSaved);
+            _eventAggregator.GetEvent<AfterProductionAreaDeletedEvent>()
+                .Subscribe(AfterProductionAreaDeleted);
 
             ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
             CreateNewProductionAreaCommand = new DelegateCommand(OnCreateNewProductionAreaExecute);
@@ -89,7 +91,10 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 OnPropertyChanged();
                 _selectedArea = value;
-                UpdateDetailViewModel(_selectedArea.Id);
+                if(_selectedArea != null)
+                {
+                    UpdateDetailViewModel(_selectedArea.Id);
+                }
             }
         }
 
@@ -154,6 +159,16 @@ namespace SistemaMirno.UI.ViewModel.General
             else
             {
                 item.Name = args.ProductionArea.Name;
+            }
+        }
+
+        private void AfterProductionAreaDeleted(int productionAreaId)
+        {
+            var item = ProductionAreas.SingleOrDefault(p => p.Id == productionAreaId);
+
+            if (item != null)
+            {
+                ProductionAreas.Remove(item);
             }
         }
 

@@ -104,6 +104,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
             return ProductionArea != null && !ProductionArea.HasErrors && HasChanges;
         }
 
+        protected override async void OnDeleteExecute()
+        {
+            _productionAreaRepository.Remove(ProductionArea.Model);
+            await _productionAreaRepository.SaveAsync();
+            _eventAggregator.GetEvent<AfterProductionAreaDeletedEvent>()
+                .Publish(ProductionArea.Id);
+        }
 
         private void ProductionArea_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

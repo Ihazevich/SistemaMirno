@@ -20,6 +20,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public DetailViewModelBase()
         {
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
+            DeleteCommand = new DelegateCommand(OnDeleteExecute);
         }
 
         /// <inheritdoc/>
@@ -31,6 +32,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public ICommand SaveCommand { get; set; }
 
         /// <summary>
+        /// Gets or sets the save command for the view model.
+        /// </summary>
+        public ICommand DeleteCommand { get; set; }
+
+        /// <summary>
         /// Invokes the PropertyChanged event.
         /// </summary>
         /// <param name="propertyName">The name of the property that changed.</param>
@@ -40,7 +46,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         /// <summary>
-        /// Sends the selected area to the data service for saving, and publishes the Reload View event to reload the navigation view.
+        /// Executes the save command.
         /// </summary>
         protected virtual void OnSaveExecute()
         {
@@ -52,6 +58,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// </summary>
         /// <returns>True or false.</returns>
         protected virtual bool OnSaveCanExecute()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void OnDeleteExecute()
         {
             throw new NotImplementedException();
         }

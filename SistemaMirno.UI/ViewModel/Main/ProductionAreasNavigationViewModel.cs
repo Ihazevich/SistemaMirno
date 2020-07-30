@@ -33,6 +33,8 @@ namespace SistemaMirno.UI.ViewModel.Main
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterProductionAreaSavedEvent>()
                 .Subscribe(AfterProductionAreaSaved);
+            _eventAggregator.GetEvent<AfterProductionAreaDeletedEvent>()
+                .Subscribe(AfterProductionAreaDeleted);
         }
 
         /// <summary>
@@ -88,6 +90,16 @@ namespace SistemaMirno.UI.ViewModel.Main
             else
             {
                 item.Name = args.ProductionArea.Name;
+            }
+        }
+
+        private void AfterProductionAreaDeleted(int productionAreaId)
+        {
+            var item = ProductionAreas.SingleOrDefault(p => p.Id == productionAreaId);
+
+            if (item != null)
+            {
+                ProductionAreas.Remove(item);
             }
         }
     }
