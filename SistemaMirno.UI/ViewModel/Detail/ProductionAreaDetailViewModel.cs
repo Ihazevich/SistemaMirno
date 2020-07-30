@@ -51,8 +51,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         public async Task LoadAsync(int productionAreaId)
         {
-            ProductionArea = new ProductionAreaWrapper(await _productionAreaRepository.GetByIdAsync(productionAreaId));
-            ProductionArea.PropertyChanged += Model_PropertyChanged;
+            var productionArea = await _productionAreaRepository.GetByIdAsync(productionAreaId);
+
+            ProductionArea = new ProductionAreaWrapper(productionArea);
+            ProductionArea.PropertyChanged += ProductionArea_PropertyChanged;
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
@@ -60,6 +62,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override void OnSaveExecute()
         {
             _productionAreaRepository.SaveAsync();
+            HasChanges = _productionAreaRepository.HasChanges();
             _eventAggregator.GetEvent<ReloadViewEvent>()
                 .Publish("Navigation");
         }
@@ -67,13 +70,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return ProductionArea != null && !ProductionArea.HasErrors;
+            return ProductionArea != null && !ProductionArea.HasErrors && HasChanges;
         }
 
 
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void ProductionArea_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Console.WriteLine(e.PropertyName);
+            if (!HasChanges)
+            {
+                HasChanges = _productionAreaRepository.HasChanges();
+            }
+
             if (e.PropertyName == nameof(ProductionArea.HasErrors))
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();

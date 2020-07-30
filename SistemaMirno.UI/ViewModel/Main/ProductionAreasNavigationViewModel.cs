@@ -5,6 +5,7 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Main
 {
@@ -15,7 +16,7 @@ namespace SistemaMirno.UI.ViewModel.Main
     {
         private IProductionAreaRepository _productionAreaRepository;
         private IEventAggregator _eventAggregator;
-        private ProductionArea _selectedProductionArea;
+        private ProductionAreaWrapper _selectedProductionArea;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductionAreasNavigationViewModel"/> class.
@@ -27,7 +28,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             IEventAggregator eventAggregator)
         {
             _productionAreaRepository = productionAreaRepository;
-            ProductionAreas = new ObservableCollection<ProductionArea>();
+            ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ReloadViewEvent>()
                 .Subscribe(Reload);
@@ -36,7 +37,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets or sets the selected production area.
         /// </summary>
-        public ProductionArea SelectedProductionArea
+        public ProductionAreaWrapper SelectedProductionArea
         {
             get
             {
@@ -58,7 +59,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets the production areas stored in the view model.
         /// </summary>
-        public ObservableCollection<ProductionArea> ProductionAreas { get; }
+        public ObservableCollection<ProductionAreaWrapper> ProductionAreas { get; }
 
         /// <inheritdoc/>
         public async Task LoadAsync()
@@ -67,7 +68,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             ProductionAreas.Clear();
             foreach (var area in productionAreas)
             {
-                ProductionAreas.Add(area);
+                ProductionAreas.Add(new ProductionAreaWrapper(area));
             }
         }
 
