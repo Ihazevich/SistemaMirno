@@ -84,7 +84,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override void OnSaveExecute()
         {
             _productionAreaRepository.SaveAsync();
-            HasChanges = _productionAreaRepository.HasChanges();
+            //HasChanges = _productionAreaRepository.HasChanges();
+            HasChanges = false;
             _eventAggregator.GetEvent<AfterProductionAreaSavedEvent>()
                 .Publish(new AfterProductionAreaSavedEventArgs { ProductionArea = ProductionArea.Model });
         }

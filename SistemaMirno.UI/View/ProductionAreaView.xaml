@@ -17,17 +17,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Areas de Produccion" FontSize="30"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Height="Auto">
-            <Label Content="Buscar:" FontSize="20"/>
-            <TextBox Width="250"/>
+        <Separator Grid.Row="1" Grid.ColumnSpan="2"/>
+        <ListView Grid.Row="2" 
+                  ItemsSource="{Binding ProductionAreas}" 
+                  SelectedItem="{Binding SelectedArea, Mode=TwoWay}"
+                  Margin="20">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" FontSize="15"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical">
+            <Label Content="Detalles del area seleccionada" FontSize="20" Margin="5"/>
+            <Separator/>
+            <local:ProductionAreaDetailView DataContext="{Binding ProductionAreaDetailViewModel}" Margin="5"/>
         </StackPanel>
-        <DataGrid Grid.Row="2" ItemsSource="{Binding ProductionAreas, Mode=OneWay}" SelectedItem="{Binding SelectedArea, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="true">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nombre" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Posición" Binding="{Binding Order}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Label Grid.Row="1" Grid.Column="1" Content="Detalles" FontSize="20"/>
-        <local:ProductionAreaDetailView Grid.Column="1" Grid.Row="2" DataContext="{Binding ProductionAreaDetailViewModel}"/>
     </Grid>
 </UserControl>
