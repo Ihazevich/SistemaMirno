@@ -4,39 +4,30 @@ using SistemaMirno.Model;
 namespace SistemaMirno.UI.Wrapper
 {
     /// <summary>
-    /// A class representing the wrapper for the Production Area class.
+    /// A class representing the wrapper for the Material class.
     /// </summary>
-    public class ProductionAreaWrapper : ModelWrapper<ProductionArea>
+    public class MaterialWrapper : ModelWrapper<Material>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductionAreaWrapper"/> class.
+        /// Initializes a new instance of the <see cref="MaterialWrapper"/> class.
         /// </summary>
-        /// <param name="model">Instance of <see cref="ProductionArea"> to use as model.</param>
-        public ProductionAreaWrapper(ProductionArea model)
+        /// <param name="model">Instance of <see cref="Material"> to use as model.</param>
+        public MaterialWrapper(Material model)
             : base(model)
         {
         }
 
         /// <summary>
-        /// Gets the Production Area ID.
+        /// Gets the Material ID.
         /// </summary>
         public int Id { get { return GetValue<int>(); } }
 
         /// <summary>
-        /// Gets or sets the Production Area name.
+        /// Gets or sets the Material name.
         /// </summary>
         public string Name
         {
             get { return GetValue<string>(); }
-            set { SetValue(value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the Production Area order.
-        /// </summary>
-        public int Order
-        {
-            get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
