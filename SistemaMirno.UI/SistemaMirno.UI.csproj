@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.71.20212</AssemblyVersion>
+    <AssemblyVersion>0.1.78.20212</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -115,15 +115,17 @@
     <Compile Include="Data\Repositories\ProductionAreaRepository.cs" />
     <Compile Include="Data\ColorDataService.cs" />
     <Compile Include="Data\IColorDataService.cs" />
-    <Compile Include="Data\IMaterialDataService.cs" />
+    <Compile Include="Data\Repositories\IMaterialRepository.cs" />
     <Compile Include="Data\IProductDataService.cs" />
     <Compile Include="Data\IResponsibleDataService.cs" />
     <Compile Include="Data\IWorkUnitDataService.cs" />
-    <Compile Include="Data\MaterialDataService.cs" />
+    <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\ProductDataService.cs" />
     <Compile Include="Data\ResponsibleDataService.cs" />
     <Compile Include="Data\SupervisorDataService.cs" />
     <Compile Include="Data\WorkUnitDataService.cs" />
+    <Compile Include="Event\AfterMaterialDeletedEvent.cs" />
+    <Compile Include="Event\AfterMaterialSavedEvent.cs" />
     <Compile Include="Event\AfterProductionAreaDeletedEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ShowColorViewEvent.cs" />
@@ -139,14 +141,16 @@
     <Compile Include="ViewModel\ColorViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
+    <Compile Include="ViewModel\Detail\IMaterialDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductionAreaDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductionAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\IColorViewModel.cs" />
-    <Compile Include="ViewModel\IMaterialViewModel.cs" />
+    <Compile Include="ViewModel\General\IMaterialViewModel.cs" />
     <Compile Include="ViewModel\General\IProductionAreaViewModel.cs" />
     <Compile Include="ViewModel\IProductViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
-    <Compile Include="ViewModel\MaterialViewModel.cs" />
+    <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\ProductionAreaViewModel.cs" />
     <Compile Include="ViewModel\ProductViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
@@ -157,6 +161,9 @@
     <Compile Include="ViewModel\WorkUnitViewModel.cs" />
     <Compile Include="View\ColorView.xaml.cs">
       <DependentUpon>ColorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MaterialDetailView.xaml.cs">
+      <DependentUpon>MaterialDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MaterialView.xaml.cs">
       <DependentUpon>MaterialView.xaml</DependentUpon>
@@ -206,6 +213,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\ColorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MaterialDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

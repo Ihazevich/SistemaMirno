@@ -36,10 +36,11 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductionAreaViewModel>().As<IProductionAreaViewModel>().SingleInstance();
 
             builder.RegisterType<ProductionAreaDetailViewModel>().As<IProductionAreaDetailViewModel>();
+            builder.RegisterType<MaterialDetailViewModel>().As<IMaterialDetailViewModel>();
 
             builder.RegisterType<ProductionAreaRepository>().As<IProductionAreaRepository>();
             builder.RegisterType<WorkUnitDataService>().As<IWorkUnitDataService>();
-            builder.RegisterType<MaterialDataService>().As<IMaterialDataService>();
+            builder.RegisterType<MaterialRepository>().As<IMaterialRepository>();
             builder.RegisterType<ColorDataService>().As<IColorDataService>();
             builder.RegisterType<ProductDataService>().As<IProductDataService>();
             builder.RegisterType<ResponsibleDataService>().As<IResponsibleDataService>();

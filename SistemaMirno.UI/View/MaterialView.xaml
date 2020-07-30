@@ -9,10 +9,33 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Label Content="Materiales" FontSize="30"/>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Materials, Mode=TwoWay}" AutoGenerateColumns="True">
-        </DataGrid>
+        <Separator Grid.Row="1" Grid.ColumnSpan="2"/>
+        <ListView Grid.Row="2" 
+                  ItemsSource="{Binding Materials}" 
+                  SelectedItem="{Binding SelectedMaterial, Mode=TwoWay}"
+                  Margin="20">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" FontSize="15"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <StackPanel  Orientation="Horizontal">
+                <Button Content="Añadir nuevo material" 
+                        Width="180" Height="30" Margin="10" 
+                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
+                        Command="{Binding CreateNewMaterialCommand}"/>
+            </StackPanel>
+            <ContentControl Content="{Binding MaterialDetailViewModel}" Margin="5"/>
+        </StackPanel>
     </Grid>
 </UserControl>
