@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
@@ -11,31 +12,47 @@ namespace SistemaMirno.UI.ViewModel.Detail
     /// <summary>
     /// Class representing the detailed view model of a single Production Area.
     /// </summary>
-    public class ProductionAreaDetailViewModel : DetailViewModelBase<ProductionAreaWrapper>, IProductionAreaDetailViewModel
+    public class ProductionAreaDetailViewModel : DetailViewModelBase, IProductionAreaDetailViewModel
     {
         private IProductionAreaRepository _productionAreaRepository;
         private IEventAggregator _eventAggregator;
+        private ProductionAreaWrapper _productionArea;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductionAreaDetailViewModel"/> class.
         /// </summary>
-        /// <param name="model">A <see cref="ProductionAreaWrapper"/> instance to use as the data model.</param>
-        /// <param name="productionAreaRepository">A <see cref="IProductionAreaRepository"/> instance to use as the data repository.</param>
-        public ProductionAreaDetailViewModel(ProductionAreaWrapper model, IProductionAreaRepository productionAreaRepository, IEventAggregator eventAggregator)
-            : base(model)
+        /// <param name="productionAreaRepository">The data repository.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
+        public ProductionAreaDetailViewModel(
+            IProductionAreaRepository productionAreaRepository,
+            IEventAggregator eventAggregator)
         {
-            Model = model;
             _productionAreaRepository = productionAreaRepository;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<UpdateProductionAreaDetailView>()
-                .Subscribe(UpdateViewModel);
+        }
+
+        /// <summary>
+        /// Gets or sets the data model wrapper.
+        /// </summary>
+        public ProductionAreaWrapper ProductionArea
+        {
+            get
+            {
+                return _productionArea;
+            }
+
+            set
+            {
+                _productionArea = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <inheritdoc/>
         public async Task LoadAsync(int productionAreaId)
         {
-            Model = new ProductionAreaWrapper(await _productionAreaRepository.GetByIdAsync(productionAreaId));
-            Model.PropertyChanged += Model_PropertyChanged;
+            ProductionArea = new ProductionAreaWrapper(await _productionAreaRepository.GetByIdAsync(productionAreaId));
+            ProductionArea.PropertyChanged += Model_PropertyChanged;
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
@@ -50,18 +67,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return Model != null && !Model.HasErrors;
+            return ProductionArea != null && !ProductionArea.HasErrors;
         }
 
-        private async void UpdateViewModel(int id)
-        {
-            await LoadAsync(id);
-        }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Console.WriteLine(e.PropertyName);
-            if (e.PropertyName == nameof(Model.HasErrors))
+            if (e.PropertyName == nameof(ProductionArea.HasErrors))
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }

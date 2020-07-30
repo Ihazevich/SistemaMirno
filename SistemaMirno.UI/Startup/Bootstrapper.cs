@@ -31,7 +31,7 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductViewModel>().As<IProductViewModel>().SingleInstance();
             builder.RegisterType<ProductionAreaViewModel>().As<IProductionAreaViewModel>().SingleInstance();
 
-            builder.RegisterType<ProductionAreaDetailViewModel>().As<IProductionAreaDetailViewModel>().SingleInstance();
+            builder.RegisterType<ProductionAreaDetailViewModel>().As<IProductionAreaDetailViewModel>();
 
             builder.RegisterType<ProductionAreaRepository>().As<IProductionAreaRepository>();
             builder.RegisterType<WorkUnitDataService>().As<IWorkUnitDataService>();
@@ -40,10 +40,6 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductDataService>().As<IProductDataService>();
             builder.RegisterType<ResponsibleDataService>().As<IResponsibleDataService>();
             builder.RegisterType<SupervisorDataService>().As<ISupervisorDataService>();
-
-            builder.RegisterType<ProductionAreaWrapper>().AsSelf();
-
-            builder.RegisterType<ProductionArea>().AsSelf();
 
             return builder.Build();
         }

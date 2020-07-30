@@ -11,39 +11,19 @@ namespace SistemaMirno.UI.ViewModel.Detail
     /// A class representing the base detail view model.
     /// </summary>
     /// <typeparam name="T">The type of data model the view model will use.</typeparam>
-    public class DetailViewModelBase<T> : INotifyPropertyChanged, IDetailViewModelBase
+    public class DetailViewModelBase : INotifyPropertyChanged, IDetailViewModelBase
     {
-        private T _model;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DetailViewModelBase{T}"/> class.
+        /// Initializes a new instance of the <see cref="DetailViewModelBase"/> class.
         /// </summary>
         /// <param name="model">A model wrapper instance of type <see cref="T"/>.</param>
-        public DetailViewModelBase(T model)
+        public DetailViewModelBase()
         {
-            Model = model;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
         }
 
         /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Gets or sets the data model wrapper.
-        /// </summary>
-        public T Model
-        {
-            get
-            {
-                return _model;
-            }
-
-            set
-            {
-                _model = value;
-                OnPropertyChanged();
-            }
-        }
 
         /// <summary>
         /// Gets or sets the save command for the view model.
