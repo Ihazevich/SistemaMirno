@@ -27,5 +27,11 @@ namespace SistemaMirno.UI.Data.Repositories
         /// </summary>
         /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
         Task SaveAsync();
+
+        /// <summary>
+        /// Checks if the database context has any changes.
+        /// </summary>
+        /// <returns>True or false.</returns>
+        bool HasChanges();
     }
 }

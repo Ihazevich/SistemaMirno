@@ -40,5 +40,11 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        /// <inheritdoc/>
+        public bool HasChanges()
+        {
+            return _context.ChangeTracker.HasChanges();
+        }
     }
 }
