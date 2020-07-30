@@ -46,5 +46,11 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             return _context.ChangeTracker.HasChanges();
         }
+
+        /// <inheritdoc/>
+        public void Add(ProductionArea productionArea)
+        {
+            _context.ProductionAreas.Add(productionArea);
+        }
     }
 }

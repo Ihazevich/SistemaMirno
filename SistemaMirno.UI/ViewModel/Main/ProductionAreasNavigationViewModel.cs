@@ -79,8 +79,16 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
         private void AfterProductionAreaSaved(AfterProductionAreaSavedEventArgs args)
         {
-            var item = ProductionAreas.Single(p => p.Id == args.ProductionArea.Id);
-            item.Name = args.ProductionArea.Name;
+            var item = ProductionAreas.SingleOrDefault(p => p.Id == args.ProductionArea.Id);
+
+            if (item == null)
+            {
+                ProductionAreas.Add(new ProductionAreaWrapper(args.ProductionArea));
+            }
+            else
+            {
+                item.Name = args.ProductionArea.Name;
+            }
         }
     }
 }

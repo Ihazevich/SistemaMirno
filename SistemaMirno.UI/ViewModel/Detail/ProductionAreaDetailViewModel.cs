@@ -71,13 +71,21 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         /// <inheritdoc/>
-        public async Task LoadAsync(int productionAreaId)
+        public async Task LoadAsync(int? productionAreaId)
         {
-            var productionArea = await _productionAreaRepository.GetByIdAsync(productionAreaId);
+            var productionArea = productionAreaId.HasValue 
+                ? await _productionAreaRepository.GetByIdAsync(productionAreaId.Value)
+                : CreateNewProductionArea();
 
             ProductionArea = new ProductionAreaWrapper(productionArea);
             ProductionArea.PropertyChanged += ProductionArea_PropertyChanged;
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+            if (productionArea.Id == 0)
+            {
+                // This triggers the validation.
+                ProductionArea.Name = string.Empty;
+            }
         }
 
         /// <inheritdoc/>
@@ -109,6 +117,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
+        }
+
+        private ProductionArea CreateNewProductionArea()
+        {
+            var productionArea = new ProductionArea();
+            _productionAreaRepository.Add(productionArea);
+            return productionArea;
         }
 
     }

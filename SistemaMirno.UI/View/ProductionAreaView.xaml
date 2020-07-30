@@ -28,10 +28,23 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical">
-            <Label Content="Detalles del area seleccionada" FontSize="20" Margin="5"/>
-            <Separator/>
-            <local:ProductionAreaDetailView DataContext="{Binding ProductionAreaDetailViewModel}" Margin="5"/>
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <StackPanel  Orientation="Horizontal">
+                <Button Content="Añadir nueva area" 
+                        Width="180" Height="30" Margin="10" 
+                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
+                        Command="{Binding CreateNewProductionAreaCommand}"/>
+                <Button Content="Eliminar area seleccionada" 
+                        Width="180" Height="30" Margin="10" 
+                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" 
+                        Background="Red"
+                        Command="{Binding DeleteSelectedProductionArea}"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <Label Content="Detalles del area seleccionada" FontSize="20" Margin="5"/>
+                <Separator/>
+                <local:ProductionAreaDetailView DataContext="{Binding ProductionAreaDetailViewModel}" Margin="5"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
@@ -49,6 +50,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 .Subscribe(AfterProductionAreaSaved);
 
             ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
+            CreateNewProductionAreaCommand = new DelegateCommand(OnCreateNewProductionAreaExecute);
         }
 
         /// <summary>
@@ -68,12 +70,10 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-
         /// <summary>
         /// Gets or sets the collection of Production Areas.
         /// </summary>
         public ObservableCollection<ProductionAreaWrapper> ProductionAreas { get; set; }
-
 
         /// <summary>
         /// Gets or sets the selected Production Area.
@@ -92,6 +92,11 @@ namespace SistemaMirno.UI.ViewModel.General
                 UpdateDetailViewModel(_selectedArea.Id);
             }
         }
+
+        /// <summary>
+        /// Gets the CreateNewProductionArea.
+        /// </summary>
+        public ICommand CreateNewProductionAreaCommand { get; }
 
         /// <summary>
         /// Loads the view model and publishes the Change View event.
@@ -117,7 +122,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private async void UpdateDetailViewModel(int id)
+        private async void UpdateDetailViewModel(int? id)
         {
             if (ProductionAreaDetailViewModel != null && ProductionAreaDetailViewModel.HasChanges)
             {
@@ -140,8 +145,21 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
         private void AfterProductionAreaSaved(AfterProductionAreaSavedEventArgs args)
         {
-            var item = ProductionAreas.Single(p => p.Id == args.ProductionArea.Id);
-            item.Name = args.ProductionArea.Name;
+            var item = ProductionAreas.SingleOrDefault(p => p.Id == args.ProductionArea.Id);
+
+            if (item == null)
+            {
+                ProductionAreas.Add(new ProductionAreaWrapper(args.ProductionArea));
+            }
+            else
+            {
+                item.Name = args.ProductionArea.Name;
+            }
+        }
+
+        private void OnCreateNewProductionAreaExecute()
+        {
+            UpdateDetailViewModel(null);
         }
     }
 }
