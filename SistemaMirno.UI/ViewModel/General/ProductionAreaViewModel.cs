@@ -91,7 +91,7 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 OnPropertyChanged();
                 _selectedArea = value;
-                if(_selectedArea != null)
+                if (_selectedArea != null)
                 {
                     UpdateDetailViewModel(_selectedArea.Id);
                 }
@@ -155,6 +155,7 @@ namespace SistemaMirno.UI.ViewModel.General
             if (item == null)
             {
                 ProductionAreas.Add(new ProductionAreaWrapper(args.ProductionArea));
+                ProductionAreaDetailViewModel = null;
             }
             else
             {
@@ -170,6 +171,8 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 ProductionAreas.Remove(item);
             }
+
+            ProductionAreaDetailViewModel = null;
         }
 
         private void OnCreateNewProductionAreaExecute()

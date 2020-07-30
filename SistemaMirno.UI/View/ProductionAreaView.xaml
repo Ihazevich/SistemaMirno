@@ -13,7 +13,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Areas de Produccion" FontSize="30"/>
@@ -35,11 +35,7 @@
                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
                         Command="{Binding CreateNewProductionAreaCommand}"/>
             </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <Label Content="Detalles del area seleccionada" FontSize="20" Margin="5"/>
-                <Separator/>
-                <local:ProductionAreaDetailView DataContext="{Binding ProductionAreaDetailViewModel}" Margin="5"/>
-            </StackPanel>
+                <ContentControl Content="{Binding ProductionAreaDetailViewModel}" Margin="5"/>
         </StackPanel>
     </Grid>
 </UserControl>
