@@ -30,6 +30,12 @@ namespace SistemaMirno.UI.Data.Repositories
         }
 
         /// <inheritdoc/>
+        public async Task<ProductionArea> GetByIdAsync(int id)
+        {
+            return await _context.ProductionAreas.SingleAsync<ProductionArea>(p => p.Id == id);
+        }
+
+        /// <inheritdoc/>
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();

@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:SistemaMirno.UI"
              xmlns:view="clr-namespace:SistemaMirno.UI.View"
              xmlns:viewmodel="clr-namespace:SistemaMirno.UI.ViewModel"
+             xmlns:generalviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.General"
              Startup="Application_Startup"
              DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
@@ -27,7 +28,7 @@
             <DataTemplate DataType="{x:Type viewmodel:ProductViewModel}">
                 <view:ProductView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodel:ProductionAreaViewModel}">
+            <DataTemplate DataType="{x:Type generalviewmodel:ProductionAreaViewModel}">
                 <view:ProductionAreaView/>
             </DataTemplate>
             <ResourceDictionary.MergedDictionaries>

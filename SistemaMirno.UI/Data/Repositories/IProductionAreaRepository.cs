@@ -16,6 +16,13 @@ namespace SistemaMirno.UI.Data.Repositories
         Task<List<ProductionArea>> GetAllAsync();
 
         /// <summary>
+        /// Gets a Production Area that matches the provided id.
+        /// </summary>
+        /// <param name="id">A <see cref="int"/> value representing the id.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task<ProductionArea> GetByIdAsync(int id);
+
+        /// <summary>
         /// Saves all changes made to the database context.
         /// </summary>
         /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>

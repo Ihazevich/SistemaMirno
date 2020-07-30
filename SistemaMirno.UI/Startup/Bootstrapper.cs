@@ -1,9 +1,14 @@
 ﻿using Autofac;
 using Prism.Events;
 using SistemaMirno.DataAccess;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.ViewModel;
+using SistemaMirno.UI.ViewModel.Detail;
+using SistemaMirno.UI.ViewModel.General;
+using SistemaMirno.UI.ViewModel.Main;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.Startup
 {
@@ -26,6 +31,7 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductViewModel>().As<IProductViewModel>().SingleInstance();
             builder.RegisterType<ProductionAreaViewModel>().As<IProductionAreaViewModel>().SingleInstance();
 
+            builder.RegisterType<ProductionAreaDetailViewModel>().As<IProductionAreaDetailViewModel>().SingleInstance();
 
             builder.RegisterType<ProductionAreaRepository>().As<IProductionAreaRepository>();
             builder.RegisterType<WorkUnitDataService>().As<IWorkUnitDataService>();
@@ -34,6 +40,10 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductDataService>().As<IProductDataService>();
             builder.RegisterType<ResponsibleDataService>().As<IResponsibleDataService>();
             builder.RegisterType<SupervisorDataService>().As<ISupervisorDataService>();
+
+            builder.RegisterType<ProductionAreaWrapper>().AsSelf();
+
+            builder.RegisterType<ProductionArea>().AsSelf();
 
             return builder.Build();
         }

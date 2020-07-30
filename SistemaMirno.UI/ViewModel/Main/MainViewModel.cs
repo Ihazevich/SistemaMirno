@@ -3,8 +3,9 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.General;
 
-namespace SistemaMirno.UI.ViewModel
+namespace SistemaMirno.UI.ViewModel.Main
 {
     /// <summary>
     /// Class representing the main view model.

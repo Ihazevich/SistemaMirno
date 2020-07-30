@@ -41,16 +41,6 @@ namespace SistemaMirno.UI.ViewModel
                 .Subscribe(ViewModelSelected);
         }
 
-        protected override bool OnSaveCanExecute()
-        {
-            return true;
-        }
-
-        protected override void OnSaveExecute()
-        {
-            _productDataService.SaveAsync(SelectedProduct);
-        }
-
         public async void ViewModelSelected()
         {
             await LoadAsync();

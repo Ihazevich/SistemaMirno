@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SistemaMirno.UI.ViewModel
+namespace SistemaMirno.UI.ViewModel.General
 {
     public interface IProductionAreaViewModel
     {

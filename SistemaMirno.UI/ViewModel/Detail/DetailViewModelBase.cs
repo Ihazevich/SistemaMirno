@@ -1,23 +1,27 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Commands;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
     /// <summary>
-    /// Class representing the base of the detailed view model.
+    /// A class representing the base detail view model.
     /// </summary>
-    public class DetailViewModelBase<T> : INotifyPropertyChanged
+    /// <typeparam name="T">The type of data model the view model will use.</typeparam>
+    public class DetailViewModelBase<T> : INotifyPropertyChanged, IDetailViewModelBase
     {
+        private T _model;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailViewModelBase{T}"/> class.
         /// </summary>
-        /// <param name="wrapper">A wrapper instance of type <see cref="T"/>.</param>
-        public DetailViewModelBase(T wrapper)
+        /// <param name="model">A model wrapper instance of type <see cref="T"/>.</param>
+        public DetailViewModelBase(T model)
         {
-            Wrapper = wrapper;
+            Model = model;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
         }
 
@@ -27,12 +31,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <summary>
         /// Gets or sets the data model wrapper.
         /// </summary>
-        public T Wrapper
+        public T Model
         {
             get
-            { }
+            {
+                return _model;
+            }
+
             set
-            { }
+            {
+                _model = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>

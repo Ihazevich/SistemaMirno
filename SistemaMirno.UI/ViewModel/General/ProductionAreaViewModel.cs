@@ -8,9 +8,11 @@ using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail;
+using SistemaMirno.UI.ViewModel.Main;
 using SistemaMirno.UI.Wrapper;
 
-namespace SistemaMirno.UI.ViewModel
+namespace SistemaMirno.UI.ViewModel.General
 {
     /// <summary>
     /// View Model for Production Areas.
@@ -27,15 +29,22 @@ namespace SistemaMirno.UI.ViewModel
         /// <param name="productionAreaRepository">A <see cref="IProductionAreaRepository"/> instance representing the data repository.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
         public ProductionAreaViewModel(
+            IProductionAreaDetailViewModel productionAreaDetailViewModel,
             IProductionAreaRepository productionAreaRepository,
             IEventAggregator eventAggregator)
         {
             ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
+            ProductionAreaDetailViewModel = productionAreaDetailViewModel;
             _productionAreaRepository = productionAreaRepository;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ShowProductionAreaViewEvent>()
                 .Subscribe(ViewModelSelected);
         }
+
+        /// <summary>
+        /// Gets the Production Area detail view model.
+        /// </summary>
+        public IProductionAreaDetailViewModel ProductionAreaDetailViewModel { get; }
 
         /// <summary>
         /// Gets or sets the collection of Production Areas.
@@ -56,8 +65,8 @@ namespace SistemaMirno.UI.ViewModel
             {
                 _selectedArea = value;
                 OnPropertyChanged();
-                SelectedArea.PropertyChanged += SelectedArea_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                _eventAggregator.GetEvent<UpdateProductionAreaDetailView>()
+                    .Publish(_selectedArea.Id);
             }
         }
 
@@ -82,30 +91,6 @@ namespace SistemaMirno.UI.ViewModel
             foreach (var area in areas)
             {
                 ProductionAreas.Add(new ProductionAreaWrapper(area));
-            }
-
-        }
-
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return SelectedArea != null && !SelectedArea.HasErrors;
-        }
-
-        /// <inheritdoc/>
-        protected override void OnSaveExecute()
-        {
-            _productionAreaRepository.SaveAsync();
-            _eventAggregator.GetEvent<ReloadViewEvent>()
-                .Publish("Navigation");
-        }
-
-        private void SelectedArea_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            Console.WriteLine(e.PropertyName);
-            if (e.PropertyName == nameof(SelectedArea.HasErrors))
-            {
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
         }
     }

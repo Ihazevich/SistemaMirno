@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 
-namespace SistemaMirno.UI.ViewModel
+namespace SistemaMirno.UI.ViewModel.Main
 {
     /// <summary>
     /// Production areas navigation view model class.

@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.10.20211</AssemblyVersion>
+    <AssemblyVersion>0.1.23.20212</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -134,29 +134,35 @@
     <Compile Include="Event\ShowSupervisorView.cs" />
     <Compile Include="Event\ShowWorkUnitsViewEvent.cs" />
     <Compile Include="Event\ShowProductViewEvent.cs" />
+    <Compile Include="Event\UpdateProductionAreaDetailView.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\ColorViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
+    <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
+    <Compile Include="ViewModel\Detail\IProductionAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductionAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\IColorViewModel.cs" />
     <Compile Include="ViewModel\IMaterialViewModel.cs" />
-    <Compile Include="ViewModel\IProductionAreaViewModel.cs" />
+    <Compile Include="ViewModel\General\IProductionAreaViewModel.cs" />
     <Compile Include="ViewModel\IProductViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\MaterialViewModel.cs" />
-    <Compile Include="ViewModel\ProductionAreaViewModel.cs" />
+    <Compile Include="ViewModel\General\ProductionAreaViewModel.cs" />
     <Compile Include="ViewModel\ProductViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="ViewModel\IProductionAreasNavigationViewModel.cs" />
+    <Compile Include="ViewModel\Main\IProductionAreasNavigationViewModel.cs" />
     <Compile Include="ViewModel\IWorkUnitViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ProductionAreasNavigationViewModel.cs" />
+    <Compile Include="ViewModel\Main\MainViewModel.cs" />
+    <Compile Include="ViewModel\Main\ProductionAreasNavigationViewModel.cs" />
     <Compile Include="ViewModel\WorkUnitViewModel.cs" />
     <Compile Include="View\ColorView.xaml.cs">
       <DependentUpon>ColorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MaterialView.xaml.cs">
       <DependentUpon>MaterialView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProductionAreaDetailView.xaml.cs">
+      <DependentUpon>ProductionAreaDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProductionAreasNavigationView.xaml.cs">
       <DependentUpon>ProductionAreasNavigationView.xaml</DependentUpon>
@@ -197,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MaterialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ProductionAreaDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -269,7 +279,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Lookups\" />
-    <Folder Include="ViewModel\General\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
