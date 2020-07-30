@@ -40,14 +40,14 @@ namespace SistemaMirno.UI.ViewModel.General
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ShowProductionAreaViewEvent>()
                 .Subscribe(ViewModelSelected);
-            _eventAggregator.GetEvent<UpdateProductionAreaDetailView>()
-                .Subscribe(UpdateDetailViewModel);
+            _eventAggregator.GetEvent<AfterProductionAreaSavedEvent>()
+                .Subscribe(AfterProductionAreaSaved);
 
             ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
         }
 
         /// <summary>
-        /// Gets or sets the Production Area detail view model.
+        /// Gets the Production Area detail view model.
         /// </summary>
         public IProductionAreaDetailViewModel ProductionAreaDetailViewModel
         {
@@ -84,8 +84,10 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _selectedArea = value;
                 OnPropertyChanged();
-                _eventAggregator.GetEvent<UpdateProductionAreaDetailView>()
-                    .Publish(_selectedArea.Id);
+                if (_selectedArea != null)
+                {
+                    UpdateDetailViewModel(_selectedArea.Id);
+                }
             }
         }
 
@@ -117,6 +119,16 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             ProductionAreaDetailViewModel = _productionAreaDetailViewModelCreator();
             await ProductionAreaDetailViewModel.LoadAsync(id);
+        }
+
+        /// <summary>
+        /// Reloads the view model based on the parameter string.
+        /// </summary>
+        /// <param name="viewModel">Name of the view model to be reloaded.</param>
+        private void AfterProductionAreaSaved(AfterProductionAreaSavedEventArgs args)
+        {
+            var item = ProductionAreas.Single(p => p.Id == args.ProductionArea.Id);
+            item.Name = args.ProductionArea.Name;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Prism.Events;
 using SistemaMirno.Model;
@@ -30,8 +31,8 @@ namespace SistemaMirno.UI.ViewModel.Main
             _productionAreaRepository = productionAreaRepository;
             ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ReloadViewEvent>()
-                .Subscribe(Reload);
+            _eventAggregator.GetEvent<AfterProductionAreaSavedEvent>()
+                .Subscribe(AfterProductionAreaSaved);
         }
 
         /// <summary>
@@ -76,13 +77,10 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private async void Reload(string viewModel)
+        private void AfterProductionAreaSaved(AfterProductionAreaSavedEventArgs args)
         {
-            // TODO: Make this method generic
-            if (viewModel == "Navigation")
-            {
-                await LoadAsync();
-            }
+            var item = ProductionAreas.Single(p => p.Id == args.ProductionArea.Id);
+            item.Name = args.ProductionArea.Name;
         }
     }
 }

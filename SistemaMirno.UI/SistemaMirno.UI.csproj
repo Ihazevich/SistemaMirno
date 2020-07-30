@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.29.20212</AssemblyVersion>
+    <AssemblyVersion>0.1.37.20212</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -125,7 +125,6 @@
     <Compile Include="Data\SupervisorDataService.cs" />
     <Compile Include="Data\WorkUnitDataService.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
-    <Compile Include="Event\ReloadViewEvent.cs" />
     <Compile Include="Event\ShowColorViewEvent.cs" />
     <Compile Include="Event\ShowMaterialViewEvent.cs" />
     <Compile Include="Event\ShowProductCategoryView.cs" />
@@ -134,7 +133,7 @@
     <Compile Include="Event\ShowSupervisorView.cs" />
     <Compile Include="Event\ShowWorkUnitsViewEvent.cs" />
     <Compile Include="Event\ShowProductViewEvent.cs" />
-    <Compile Include="Event\UpdateProductionAreaDetailView.cs" />
+    <Compile Include="Event\AfterProductionAreaSavedEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\ColorViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />

@@ -63,8 +63,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _productionAreaRepository.SaveAsync();
             HasChanges = _productionAreaRepository.HasChanges();
-            _eventAggregator.GetEvent<ReloadViewEvent>()
-                .Publish("Navigation");
+            _eventAggregator.GetEvent<AfterProductionAreaSavedEvent>()
+                .Publish(new AfterProductionAreaSavedEventArgs { ProductionArea = ProductionArea.Model });
         }
 
         /// <inheritdoc/>
