@@ -6,29 +6,29 @@ using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
-    public class MaterialRepository : IMaterialRepository
+    public class ProductCategoryRepository : IProductCategoryRepository
     {
         private MirnoDbContext _context;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MaterialRepository"/> class.
+        /// Initializes a new instance of the <see cref="ProductCategoryRepository"/> class.
         /// </summary>
         /// <param name="context">A <see cref="MirnoDbContext"/> instance representing the database context.</param>
-        public MaterialRepository(MirnoDbContext context)
+        public ProductCategoryRepository(MirnoDbContext context)
         {
             _context = context;
         }
 
         /// <inheritdoc/>
-        public async Task<List<Material>> GetAllAsync()
+        public async Task<List<ProductCategory>> GetAllAsync()
         {
-            return await _context.Materials.ToListAsync();
+            return await _context.ProductCategories.ToListAsync();
         }
 
         /// <inheritdoc/>
-        public async Task<Material> GetByIdAsync(int id)
+        public async Task<ProductCategory> GetByIdAsync(int id)
         {
-            return await _context.Materials.SingleAsync<Material>(m => m.Id == id);
+            return await _context.ProductCategories.SingleAsync<ProductCategory>(c => c.Id == id);
         }
 
         /// <inheritdoc/>
@@ -44,14 +44,14 @@ namespace SistemaMirno.UI.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public void Add(Material model)
+        public void Add(ProductCategory model)
         {
-            _context.Materials.Add(model);
+            _context.ProductCategories.Add(model);
         }
 
-        public void Remove(Material model)
+        public void Remove(ProductCategory model)
         {
-            _context.Materials.Remove(model);
+            _context.ProductCategories.Remove(model);
         }
     }
 }

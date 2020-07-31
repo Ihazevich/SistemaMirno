@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.Event
 {
-    public class ShowProductCategoryView : PubSubEvent
+    public class AfterProductCategoryDeletedEvent : PubSubEvent<int>
     {
     }
 }

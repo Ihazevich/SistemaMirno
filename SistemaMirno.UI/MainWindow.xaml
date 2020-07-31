@@ -17,6 +17,7 @@
                 <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="Materials"/>
                 <MenuItem Header="Colores" Command="{Binding ChangeViewCommand}" CommandParameter="Colors"/>
                 <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="Products"/>
+                <MenuItem Header="Categorias de Producto" Command="{Binding ChangeViewCommand}" CommandParameter="ProductCategories"/>
                 <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionAreas"/>
                 <MenuItem Header="Responsables" Command="{Binding ChangeViewCommand}" CommandParameter="Responsibles"/>
                 <MenuItem Header="Supervisores" Command="{Binding ChangeViewCommand}" CommandParameter="Supervisors"/>

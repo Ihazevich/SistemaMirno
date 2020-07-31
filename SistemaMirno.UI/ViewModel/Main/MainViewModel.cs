@@ -32,6 +32,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             IProductionAreasNavigationViewModel productionAreasViewModel,
             IMaterialViewModel materialViewModel,
             IColorViewModel colorViewModel,
+            IProductCategoryViewModel productCategoryViewModel,
             IWorkUnitViewModel workUnitViewModel,
             IProductViewModel productViewModel,
             IProductionAreaViewModel productionAreaViewModel,
@@ -47,6 +48,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             ColorViewModel = colorViewModel;
             ProductViewModel = productViewModel;
             ProductionAreaViewModel = productionAreaViewModel;
+            ProductCategoryViewModel = productCategoryViewModel;
 
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(OnViewChanged);
@@ -102,11 +104,17 @@ namespace SistemaMirno.UI.ViewModel.Main
         public IProductionAreaViewModel ProductionAreaViewModel { get; }
 
         /// <summary>
+        /// Gets the product category area view model.
+        /// </summary>
+        public IProductCategoryViewModel ProductCategoryViewModel { get; }
+
+        /// <summary>
         /// Gets or sets the currently selected view model.
         /// </summary>
         public IViewModelBase SelectedViewModel
         {
-            get { return _selectedViewModel; }
+            get => _selectedViewModel;
+
             set
             {
                 _selectedViewModel = value;
@@ -130,7 +138,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             {
                 case "Materials":
                     _eventAggregator.GetEvent<ShowMaterialViewEvent>().
-                        Publish();                    
+                        Publish();
                     break;
                 case "Colors":
                     _eventAggregator.GetEvent<ShowColorViewEvent>().
@@ -138,6 +146,10 @@ namespace SistemaMirno.UI.ViewModel.Main
                     break;
                 case "Products":
                     _eventAggregator.GetEvent<ShowProductViewEvent>().
+                        Publish();
+                    break;
+                case "ProductCategories":
+                    _eventAggregator.GetEvent<ShowProductCategoryViewEvent>().
                         Publish();
                     break;
                 case "ProductionAreas":
@@ -157,19 +169,18 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
-        private bool ChangeViewCanExecute(string viewModel)
+        private bool ChangeViewCanExecute(string viewModel = null)
         {
             switch (viewModel)
             {
-                case "Material":
-                    if(nameof(SelectedViewModel).Equals(nameof(MaterialViewModel)))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
+                case "Colors":
+                    return !nameof(SelectedViewModel).Equals(nameof(ColorViewModel));
+                case "Materials":
+                    return !nameof(SelectedViewModel).Equals(nameof(MaterialViewModel));
+                case "ProductionAreas":
+                    return !nameof(SelectedViewModel).Equals(nameof(ProductionAreaViewModel));
+                case "ProductCategories":
+                    return !nameof(SelectedViewModel).Equals(nameof(ProductCategoryViewModel));
                 default:
                     return true;
             }
