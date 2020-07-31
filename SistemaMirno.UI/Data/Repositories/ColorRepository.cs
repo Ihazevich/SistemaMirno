@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using SistemaMirno.DataAccess;
@@ -6,29 +7,30 @@ using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
-    public class MaterialRepository : IMaterialRepository
+    public class ColorRepository : IColorRepository
     {
+
         private MirnoDbContext _context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialDataService"/> class.
         /// </summary>
         /// <param name="context">A <see cref="MirnoDbContext"/> instance representing the database context.</param>
-        public MaterialRepository(MirnoDbContext context)
+        public ColorRepository(MirnoDbContext context)
         {
             _context = context;
         }
 
         /// <inheritdoc/>
-        public async Task<List<Material>> GetAllAsync()
+        public async Task<List<Color>> GetAllAsync()
         {
-            return await _context.Materials.ToListAsync();
+            return await _context.Colors.ToListAsync();
         }
 
         /// <inheritdoc/>
-        public async Task<Material> GetByIdAsync(int id)
+        public async Task<Color> GetByIdAsync(int id)
         {
-            return await _context.Materials.SingleAsync<Material>(m => m.Id == id);
+            return await _context.Colors.SingleAsync<Color>(c => c.Id == id);
         }
 
         /// <inheritdoc/>
@@ -44,14 +46,14 @@ namespace SistemaMirno.UI.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public void Add(Material model)
+        public void Add(Color model)
         {
-            _context.Materials.Add(model);
+            _context.Colors.Add(model);
         }
 
-        public void Remove(Material model)
+        public void Remove(Color model)
         {
-            _context.Materials.Remove(model);
+            _context.Colors.Remove(model);
         }
     }
 }

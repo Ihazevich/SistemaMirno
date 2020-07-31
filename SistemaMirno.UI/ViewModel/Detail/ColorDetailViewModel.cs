@@ -1,48 +1,46 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
-using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public class MaterialDetailViewModel : DetailViewModelBase, IMaterialDetailViewModel
+    public class ColorDetailViewModel : DetailViewModelBase, IColorDetailViewModel
     {
-        private IMaterialRepository _materialRepository;
+        private IColorRepository _colorRepository;
         private IEventAggregator _eventAggregator;
-        private MaterialWrapper _material;
+        private ColorWrapper _color;
         private bool _hasChanges;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MaterialDetailViewModel"/> class.
+        /// Initializes a new instance of the <see cref="ColorDetailViewModel"/> class.
         /// </summary>
-        /// <param name="materialRepository">The data repository.</param>
+        /// <param name="colorRepository">The data repository.</param>
         /// <param name="eventAggregator">The event aggregator.</param>
-        public MaterialDetailViewModel(
-            IMaterialRepository materialRepository,
+        public ColorDetailViewModel(
+            IColorRepository colorRepository,
             IEventAggregator eventAggregator)
         {
-            _materialRepository = materialRepository;
+            _colorRepository = colorRepository;
             _eventAggregator = eventAggregator;
         }
 
         /// <summary>
         /// Gets or sets the data model wrapper.
         /// </summary>
-        public MaterialWrapper Material
+        public ColorWrapper Color
         {
             get
             {
-                return _material;
+                return _color;
             }
 
             set
             {
-                _material = value;
+                _color = value;
                 OnPropertyChanged();
             }
         }
@@ -69,66 +67,65 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         /// <inheritdoc/>
-        public async Task LoadAsync(int? materialId)
+        public async Task LoadAsync(int? colorId)
         {
-            var material = materialId.HasValue
-                ? await _materialRepository.GetByIdAsync(materialId.Value)
-                : CreateNewMaterial();
+            var color = colorId.HasValue
+                ? await _colorRepository.GetByIdAsync(colorId.Value)
+                : CreateNewColor();
 
-            Material = new MaterialWrapper(material);
-            Material.PropertyChanged += Material_PropertyChanged;
+            Color = new ColorWrapper(color);
+            Color.PropertyChanged += Color_PropertyChanged;
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
 
-            if (material.Id == 0)
+            if (color.Id == 0)
             {
                 // This triggers the validation.
-                Material.Name = string.Empty;
+                Color.Name = string.Empty;
             }
         }
 
         /// <inheritdoc/>
         protected override void OnSaveExecute()
         {
-            _materialRepository.SaveAsync();
+            _colorRepository.SaveAsync();
             //HasChanges = _productionAreaRepository.HasChanges();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterMaterialSavedEvent>()
-                .Publish(new AfterMaterialSavedEventArgs { Material = Material.Model });
+            _eventAggregator.GetEvent<AfterColorSavedEvent>()
+                .Publish(new AfterColorSavedEventArgs { Color = Color.Model });
         }
 
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return Material != null && !Material.HasErrors && HasChanges;
+            return Color != null && !Color.HasErrors && HasChanges;
         }
 
         protected override async void OnDeleteExecute()
         {
-            _materialRepository.Remove(Material.Model);
-            await _materialRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterMaterialDeletedEvent>()
-                .Publish(Material.Id);
+            _colorRepository.Remove(Color.Model);
+            await _colorRepository.SaveAsync();
+            _eventAggregator.GetEvent<AfterColorDeletedEvent>()
+                .Publish(Color.Id);
         }
 
-        private void Material_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Color_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Console.WriteLine(e.PropertyName);
             if (!HasChanges)
             {
-                HasChanges = _materialRepository.HasChanges();
+                HasChanges = _colorRepository.HasChanges();
             }
 
-            if (e.PropertyName == nameof(Material.HasErrors))
+            if (e.PropertyName == nameof(Color.HasErrors))
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
         }
 
-        private Material CreateNewMaterial()
+        private Color CreateNewColor()
         {
-            var material = new Material();
-            _materialRepository.Add(material);
-            return material;
+            var color = new Color();
+            _colorRepository.Add(color);
+            return color;
         }
     }
 }
