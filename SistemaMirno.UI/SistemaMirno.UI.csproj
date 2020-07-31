@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.98.20213</AssemblyVersion>
+    <AssemblyVersion>0.1.101.20213</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -118,11 +118,11 @@
     <Compile Include="Data\Repositories\ColorRepository.cs" />
     <Compile Include="Data\Repositories\IColorRepository.cs" />
     <Compile Include="Data\Repositories\IMaterialRepository.cs" />
-    <Compile Include="Data\IProductDataService.cs" />
+    <Compile Include="Data\Repositories\IProductRepository.cs" />
     <Compile Include="Data\IResponsibleDataService.cs" />
     <Compile Include="Data\IWorkUnitDataService.cs" />
     <Compile Include="Data\Repositories\MaterialRepository.cs" />
-    <Compile Include="Data\ProductDataService.cs" />
+    <Compile Include="Data\Repositories\ProductRepository.cs" />
     <Compile Include="Data\ResponsibleDataService.cs" />
     <Compile Include="Data\SupervisorDataService.cs" />
     <Compile Include="Data\WorkUnitDataService.cs" />
@@ -132,7 +132,9 @@
     <Compile Include="Event\AfterMaterialSavedEvent.cs" />
     <Compile Include="Event\AfterProductCategoryDeletedEvent.cs" />
     <Compile Include="Event\AfterProductCategorySavedEvent.cs" />
+    <Compile Include="Event\AfterProductDeletedEvent.cs" />
     <Compile Include="Event\AfterProductionAreaDeletedEvent.cs" />
+    <Compile Include="Event\AfterProductSavedEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ShowColorViewEvent.cs" />
     <Compile Include="Event\ShowMaterialViewEvent.cs" />
@@ -147,7 +149,9 @@
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
     <Compile Include="ViewModel\General\ColorViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
@@ -160,11 +164,11 @@
     <Compile Include="ViewModel\General\IProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IProductionAreaViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
-    <Compile Include="ViewModel\IProductViewModel.cs" />
+    <Compile Include="ViewModel\General\IProductViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\ProductionAreaViewModel.cs" />
-    <Compile Include="ViewModel\ProductViewModel.cs" />
+    <Compile Include="ViewModel\General\ProductViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\Main\IProductionAreasNavigationViewModel.cs" />
     <Compile Include="ViewModel\IWorkUnitViewModel.cs" />
@@ -188,6 +192,9 @@
     </Compile>
     <Compile Include="View\ProductCategoryView.xaml.cs">
       <DependentUpon>ProductCategoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProductDetailView.xaml.cs">
+      <DependentUpon>ProductDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProductionAreaDetailView.xaml.cs">
       <DependentUpon>ProductionAreaDetailView.xaml</DependentUpon>
@@ -254,6 +261,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProductCategoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ProductDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

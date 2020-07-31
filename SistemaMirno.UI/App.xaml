@@ -20,9 +20,6 @@
             <DataTemplate DataType="{x:Type viewmodel:WorkUnitViewModel}">
                 <view:WorkUnitView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodel:ProductViewModel}">
-                <view:ProductView/>
-            </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:ProductionAreaViewModel}">
                 <view:ProductionAreaView/>
             </DataTemplate>
@@ -46,6 +43,12 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:ProductCategoryDetailViewModel}">
                 <view:ProductCategoryDetailView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:ProductViewModel}">
+                <view:ProductView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type detailviewmodel:ProductDetailViewModel}">
+                <view:ProductDetailView/>
             </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->

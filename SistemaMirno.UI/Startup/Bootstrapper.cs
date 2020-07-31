@@ -34,20 +34,21 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<MaterialViewModel>().As<IMaterialViewModel>().SingleInstance();
             builder.RegisterType<ColorViewModel>().As<IColorViewModel>().SingleInstance();
             builder.RegisterType<ProductCategoryViewModel>().As<IProductCategoryViewModel>().SingleInstance();
-            builder.RegisterType<WorkUnitViewModel>().As<IWorkUnitViewModel>().SingleInstance();
             builder.RegisterType<ProductViewModel>().As<IProductViewModel>().SingleInstance();
+            builder.RegisterType<WorkUnitViewModel>().As<IWorkUnitViewModel>().SingleInstance();
 
             builder.RegisterType<ProductionAreaDetailViewModel>().As<IProductionAreaDetailViewModel>();
             builder.RegisterType<MaterialDetailViewModel>().As<IMaterialDetailViewModel>();
             builder.RegisterType<ColorDetailViewModel>().As<IColorDetailViewModel>();
             builder.RegisterType<ProductCategoryDetailViewModel>().As<IProductCategoryDetailViewModel>();
+            builder.RegisterType<ProductDetailViewModel>().As<IProductDetailViewModel>();
 
             builder.RegisterType<ProductionAreaRepository>().As<IProductionAreaRepository>();
             builder.RegisterType<MaterialRepository>().As<IMaterialRepository>();
             builder.RegisterType<ColorRepository>().As<IColorRepository>();
             builder.RegisterType<ProductCategoryRepository>().As<IProductCategoryRepository>();
             builder.RegisterType<WorkUnitDataService>().As<IWorkUnitDataService>();
-            builder.RegisterType<ProductDataService>().As<IProductDataService>();
+            builder.RegisterType<ProductRepository>().As<IProductRepository>();
             builder.RegisterType<ResponsibleDataService>().As<IResponsibleDataService>();
             builder.RegisterType<SupervisorDataService>().As<ISupervisorDataService>();
 
