@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
-using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
+using System;
+using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {

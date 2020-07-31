@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
+using System;
+using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
@@ -73,7 +73,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         public async Task LoadAsync(int? productionAreaId)
         {
-            var productionArea = productionAreaId.HasValue 
+            var productionArea = productionAreaId.HasValue
                 ? await _productionAreaRepository.GetByIdAsync(productionAreaId.Value)
                 : CreateNewProductionArea();
 
@@ -132,6 +132,5 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _productionAreaRepository.Add(productionArea);
             return productionArea;
         }
-
     }
 }

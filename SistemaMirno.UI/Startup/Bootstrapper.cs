@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Prism.Events;
 using SistemaMirno.DataAccess;
-using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.View.Services;
@@ -9,7 +8,6 @@ using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.ViewModel.Main;
-using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.Startup
 {

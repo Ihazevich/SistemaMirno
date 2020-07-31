@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using SistemaMirno.UI.ViewModel.Main;
+using System.Windows;
 
 namespace SistemaMirno.UI
 {
@@ -23,7 +23,7 @@ namespace SistemaMirno.UI
             Loaded += MainWindow_Loaded;
         }
 
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e) 
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await _viewModel.LoadAsync();
         }

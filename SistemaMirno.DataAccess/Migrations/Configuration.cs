@@ -1,10 +1,7 @@
 ﻿namespace SistemaMirno.DataAccess.Migrations
 {
     using SistemaMirno.Model;
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<SistemaMirno.DataAccess.MirnoDbContext>
     {
@@ -16,7 +13,7 @@
         protected override void Seed(SistemaMirno.DataAccess.MirnoDbContext context)
         {
             context.ProductionAreas.AddOrUpdate(
-                a=>a.Name,
+                a => a.Name,
                 new ProductionArea { Name = "Pedidos" },
                 new ProductionArea { Name = "Lamina" },
                 new ProductionArea { Name = "Terciados" },

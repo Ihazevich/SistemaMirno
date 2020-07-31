@@ -1,15 +1,13 @@
 ﻿using SistemaMirno.Model;
 using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace SistemaMirno.DataAccess
 {
     public class MirnoDbContext : DbContext
     {
-        public MirnoDbContext() : base("LaptopMirnoDb")
+        public MirnoDbContext() : base("DesktopMirnoDb")
         {
-
         }
 
         public DbSet<AreaConnection> AreaConnections { get; set; }

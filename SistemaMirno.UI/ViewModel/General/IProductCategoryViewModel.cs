@@ -1,8 +1,4 @@
-﻿using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.Wrapper;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.General
 {

@@ -1,9 +1,8 @@
-﻿using System;
+﻿using SistemaMirno.DataAccess;
+using SistemaMirno.Model;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
-using SistemaMirno.DataAccess;
-using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {

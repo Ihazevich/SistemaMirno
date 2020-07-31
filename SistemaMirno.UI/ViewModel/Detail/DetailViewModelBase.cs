@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Prism.Commands;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Prism.Commands;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {

@@ -13,42 +13,42 @@
             <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
                 <Style.Triggers>
                     <Trigger Property="Validation.HasError" Value="True">
-                        <Setter Property="Background" Value="Red"/>
+                        <Setter Property="Background" Value="Red" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
             <DataTemplate DataType="{x:Type viewmodel:WorkUnitViewModel}">
-                <view:WorkUnitView/>
+                <view:WorkUnitView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:ProductionAreaViewModel}">
-                <view:ProductionAreaView/>
+                <view:ProductionAreaView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:ProductionAreaDetailViewModel}">
-                <view:ProductionAreaDetailView/>
+                <view:ProductionAreaDetailView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:MaterialViewModel}">
-                <view:MaterialView/>
+                <view:MaterialView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:MaterialDetailViewModel}">
-                <view:MaterialDetailView/>
+                <view:MaterialDetailView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:ColorViewModel}">
-                <view:ColorView/>
+                <view:ColorView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:ColorDetailViewModel}">
-                <view:ColorDetailView/>
+                <view:ColorDetailView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:ProductCategoryViewModel}">
-                <view:ProductCategoryView/>
+                <view:ProductCategoryView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:ProductCategoryDetailViewModel}">
-                <view:ProductCategoryDetailView/>
+                <view:ProductCategoryDetailView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:ProductViewModel}">
-                <view:ProductView/>
+                <view:ProductView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:ProductDetailViewModel}">
-                <view:ProductDetailView/>
+                <view:ProductDetailView />
             </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->

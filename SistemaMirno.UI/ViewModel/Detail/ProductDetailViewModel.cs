@@ -1,17 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
+using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
+using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class ProductDetailViewModel : DetailViewModelBase, IProductDetailViewModel
     {
         private IProductRepository _productRepository;
+        private IProductCategoryRepository _productCategoryRepository;
         private IEventAggregator _eventAggregator;
         private ProductWrapper _product;
         private bool _hasChanges;
@@ -23,10 +26,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <param name="eventAggregator">The event aggregator.</param>
         public ProductDetailViewModel(
             IProductRepository productRepository,
+            IProductCategoryRepository productCategoryRepository,
             IEventAggregator eventAggregator)
         {
             _productRepository = productRepository;
+            _productCategoryRepository = productCategoryRepository;
             _eventAggregator = eventAggregator;
+
+            ProductCategories = new ObservableCollection<ProductCategoryWrapper>();
         }
 
         /// <summary>
@@ -45,6 +52,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<ProductCategoryWrapper> ProductCategories { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the database context has changes.
@@ -82,6 +91,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 // This triggers the validation.
                 Product.Name = string.Empty;
+            }
+
+            await LoadProductCategoriesAsync();
+        }
+
+        private async Task LoadProductCategoriesAsync()
+        {
+            var categories = await _productCategoryRepository.GetAllAsync();
+            ProductCategories.Clear();
+            foreach (var category in categories)
+            {
+                ProductCategories.Add(new ProductCategoryWrapper(category));
             }
         }
 

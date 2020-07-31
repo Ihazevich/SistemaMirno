@@ -1,8 +1,7 @@
 ﻿namespace SistemaMirno.DataAccess.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class AddedForeignKeys : DbMigration
     {
         public override void Up()
@@ -29,7 +28,7 @@
             AddForeignKey("dbo.WorkUnits", "ProductionAreaId", "dbo.ProductionAreas", "Id");
             AddForeignKey("dbo.WorkUnits", "WorkOrderId", "dbo.WorkOrders", "Id");
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.WorkUnits", "WorkOrderId", "dbo.WorkOrders");

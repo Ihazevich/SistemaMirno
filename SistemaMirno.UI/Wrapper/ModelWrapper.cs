@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Runtime.CompilerServices;
 
 namespace SistemaMirno.UI.Wrapper
@@ -33,7 +30,7 @@ namespace SistemaMirno.UI.Wrapper
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="propertyName">The property name.</param>
         /// <returns>The property value of type <typeparamref name="TValue"/>.</returns>
-        protected virtual TValue GetValue<TValue>([CallerMemberName]string propertyName = null)
+        protected virtual TValue GetValue<TValue>([CallerMemberName] string propertyName = null)
         {
             return (TValue)typeof(T).GetProperty(propertyName).GetValue(Model);
         }

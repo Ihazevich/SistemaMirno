@@ -1,14 +1,6 @@
 ﻿using Autofac;
-using Autofac.Core;
-using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Startup;
-using SistemaMirno.UI.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace SistemaMirno.UI

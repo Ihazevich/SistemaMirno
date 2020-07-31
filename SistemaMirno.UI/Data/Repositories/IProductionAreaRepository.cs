@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using SistemaMirno.Model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {

@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using Prism.Events;
+﻿using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Event;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel
 {

@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.General;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace SistemaMirno.UI.ViewModel.Main
 {
@@ -134,36 +134,43 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private void ChangeViewExecute(string viewModel)
         {
-            switch(viewModel)
+            switch (viewModel)
             {
                 case "Materials":
                     _eventAggregator.GetEvent<ShowMaterialViewEvent>().
                         Publish();
                     break;
+
                 case "Colors":
                     _eventAggregator.GetEvent<ShowColorViewEvent>().
                         Publish();
                     break;
+
                 case "Products":
                     _eventAggregator.GetEvent<ShowProductViewEvent>().
                         Publish();
                     break;
+
                 case "ProductCategories":
                     _eventAggregator.GetEvent<ShowProductCategoryViewEvent>().
                         Publish();
                     break;
+
                 case "ProductionAreas":
                     _eventAggregator.GetEvent<ShowProductionAreaViewEvent>().
                         Publish();
                     break;
+
                 case "Responsibles":
                     _eventAggregator.GetEvent<ShowResponsibleView>().
                         Publish();
                     break;
+
                 case "Supervisors":
                     _eventAggregator.GetEvent<ShowSupervisorView>().
                         Publish();
                     break;
+
                 default:
                     break;
             }
@@ -175,12 +182,16 @@ namespace SistemaMirno.UI.ViewModel.Main
             {
                 case "Colors":
                     return !nameof(SelectedViewModel).Equals(nameof(ColorViewModel));
+
                 case "Materials":
                     return !nameof(SelectedViewModel).Equals(nameof(MaterialViewModel));
+
                 case "ProductionAreas":
                     return !nameof(SelectedViewModel).Equals(nameof(ProductionAreaViewModel));
+
                 case "ProductCategories":
                     return !nameof(SelectedViewModel).Equals(nameof(ProductCategoryViewModel));
+
                 default:
                     return true;
             }

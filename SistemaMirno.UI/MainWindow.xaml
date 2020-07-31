@@ -7,24 +7,23 @@
         xmlns:local="clr-namespace:SistemaMirno.UI"
         xmlns:view="clr-namespace:SistemaMirno.UI.View"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" 
-        Height="450" 
+        Title="{Binding WindowTitle}"
+        Height="450"
         Width="800"
         WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
             <MenuItem Header="Datos">
-                <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="Materials"/>
-                <MenuItem Header="Colores" Command="{Binding ChangeViewCommand}" CommandParameter="Colors"/>
-                <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="Products"/>
-                <MenuItem Header="Categorias de Producto" Command="{Binding ChangeViewCommand}" CommandParameter="ProductCategories"/>
-                <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionAreas"/>
-                <MenuItem Header="Responsables" Command="{Binding ChangeViewCommand}" CommandParameter="Responsibles"/>
-                <MenuItem Header="Supervisores" Command="{Binding ChangeViewCommand}" CommandParameter="Supervisors"/>
+                <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="Materials" />
+                <MenuItem Header="Colores" Command="{Binding ChangeViewCommand}" CommandParameter="Colors" />
+                <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="Products" />
+                <MenuItem Header="Categorias de Producto" Command="{Binding ChangeViewCommand}" CommandParameter="ProductCategories" />
+                <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionAreas" />
+                <MenuItem Header="Responsables" Command="{Binding ChangeViewCommand}" CommandParameter="Responsibles" />
+                <MenuItem Header="Supervisores" Command="{Binding ChangeViewCommand}" CommandParameter="Supervisors" />
             </MenuItem>
         </Menu>
-        <view:ProductionAreasNavigationView DockPanel.Dock="Left" DataContext="{Binding ProductionAreasNavigationViewModel}"/>
-        <ContentPresenter DockPanel.Dock="Right" Content="{Binding SelectedViewModel}"/>
+        <view:ProductionAreasNavigationView DockPanel.Dock="Left" DataContext="{Binding ProductionAreasNavigationViewModel}" />
+        <ContentPresenter DockPanel.Dock="Right" Content="{Binding SelectedViewModel}" />
     </DockPanel>
-    
 </mah:MetroWindow>

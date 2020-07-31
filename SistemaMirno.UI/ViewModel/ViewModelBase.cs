@@ -1,9 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using Prism.Commands;
 
 namespace SistemaMirno.UI.ViewModel
 {
@@ -30,6 +26,5 @@ namespace SistemaMirno.UI.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }
