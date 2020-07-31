@@ -15,7 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>1.0.4.20213</AssemblyVersion>
+    <AssemblyVersion>1.0.6.20213</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -77,6 +77,10 @@
     <Compile Include="Migrations\202007291201131_AddedAreaOrder.designer.cs">
       <DependentUpon>202007291201131_AddedAreaOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007311420132_AddedForeignKeys.cs" />
+    <Compile Include="Migrations\202007311420132_AddedForeignKeys.designer.cs">
+      <DependentUpon>202007311420132_AddedForeignKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -100,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007291201131_AddedAreaOrder.resx">
       <DependentUpon>202007291201131_AddedAreaOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007311420132_AddedForeignKeys.resx">
+      <DependentUpon>202007311420132_AddedForeignKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

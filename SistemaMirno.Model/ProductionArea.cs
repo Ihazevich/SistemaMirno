@@ -18,5 +18,9 @@ namespace SistemaMirno.Model
 
         [Required]
         public int Order { get; set; }
+
+        public ICollection<Responsible> Responsibles { get; set; }
+        public ICollection<WorkUnit> WorkUnits { get; set; }
+        public ICollection<WorkOrder> WorkOrders { get; set; }
     }
 }

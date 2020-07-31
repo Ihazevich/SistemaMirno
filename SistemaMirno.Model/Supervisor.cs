@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMirno.Model
 {
@@ -13,5 +14,7 @@ namespace SistemaMirno.Model
         [Required]
         [MaxLength(30)]
         public string LastName { get; set; }
+
+        public ICollection<WorkOrder> WorkOrders { get; set; }
     }
 }

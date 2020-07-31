@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMirno.Model
 {
@@ -17,6 +18,8 @@ namespace SistemaMirno.Model
         [Required]
         public int ProductCategoryId { get; set; }
 
+        public ProductCategory ProductCategory { get; set; }
+
         [Required]
         public int Price { get; set; }
 
@@ -25,5 +28,7 @@ namespace SistemaMirno.Model
 
         [Required]
         public int ProductionPrice { get; set; }
+
+        public ICollection<WorkUnit> WorkUnits { get; set; }
     }
 }
