@@ -18,16 +18,16 @@
             CreateIndex("dbo.WorkOrders", "ProductionAreaId");
             CreateIndex("dbo.WorkOrders", "ResponsibleId");
             CreateIndex("dbo.WorkOrders", "SupervisorID");
-            AddForeignKey("dbo.WorkUnits", "ColorId", "dbo.Colors", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.WorkUnits", "MaterialId", "dbo.Materials", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.Products", "ProductCategoryId", "dbo.ProductCategories", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.WorkUnits", "ProductId", "dbo.Products", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.Responsibles", "ProductionAreaId", "dbo.ProductionAreas", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.WorkOrders", "ProductionAreaId", "dbo.ProductionAreas", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.WorkOrders", "ResponsibleId", "dbo.Responsibles", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.WorkOrders", "SupervisorID", "dbo.Supervisors", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.WorkUnits", "ProductionAreaId", "dbo.ProductionAreas", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.WorkUnits", "WorkOrderId", "dbo.WorkOrders", "Id", cascadeDelete: true);
+            AddForeignKey("dbo.WorkUnits", "ColorId", "dbo.Colors", "Id");
+            AddForeignKey("dbo.WorkUnits", "MaterialId", "dbo.Materials", "Id");
+            AddForeignKey("dbo.Products", "ProductCategoryId", "dbo.ProductCategories", "Id");
+            AddForeignKey("dbo.WorkUnits", "ProductId", "dbo.Products", "Id");
+            AddForeignKey("dbo.Responsibles", "ProductionAreaId", "dbo.ProductionAreas", "Id");
+            AddForeignKey("dbo.WorkOrders", "ProductionAreaId", "dbo.ProductionAreas", "Id");
+            AddForeignKey("dbo.WorkOrders", "ResponsibleId", "dbo.Responsibles", "Id");
+            AddForeignKey("dbo.WorkOrders", "SupervisorID", "dbo.Supervisors", "Id");
+            AddForeignKey("dbo.WorkUnits", "ProductionAreaId", "dbo.ProductionAreas", "Id");
+            AddForeignKey("dbo.WorkUnits", "WorkOrderId", "dbo.WorkOrders", "Id");
         }
         
         public override void Down()

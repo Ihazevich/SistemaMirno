@@ -1,5 +1,7 @@
 ﻿using SistemaMirno.Model;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Configuration;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace SistemaMirno.DataAccess
 {
@@ -24,6 +26,7 @@ namespace SistemaMirno.DataAccess
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
     }
 }
