@@ -42,7 +42,7 @@
                       ItemsSource="{Binding ProductCategories}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding Product.ProductCategoryId}"
+                      SelectedValue="{Binding Product.ProductCategoryId, Mode=TwoWay}"
                       Margin="5" />
             <Label Grid.Row="6" Content="Precio Minorista" />
             <TextBox Grid.Row="7"

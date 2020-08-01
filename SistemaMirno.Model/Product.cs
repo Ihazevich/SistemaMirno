@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMirno.Model
 {
     public class Product : BaseModel
     {
+        public Product()
+        {
+            WorkUnits = new Collection<WorkUnit>();
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -29,6 +35,6 @@ namespace SistemaMirno.Model
         [Required]
         public int ProductionPrice { get; set; }
 
-        public ICollection<WorkUnit> WorkUnits { get; set; }
+        public Collection<WorkUnit> WorkUnits { get; set; }
     }
 }

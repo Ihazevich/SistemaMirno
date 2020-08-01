@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SistemaMirno.Model
 {
     public class WorkOrder
     {
+        public WorkOrder()
+        {
+            WorkUnits = new Collection<WorkUnit>();
+        }
+
         public int Id { get; set; }
 
         public DateTime StartTime { get; set; }
@@ -21,5 +29,7 @@ namespace SistemaMirno.Model
         public int SupervisorID { get; set; }
 
         public Supervisor Supervisor { get; set; }
+
+        public Collection<WorkUnit> WorkUnits { get; set; }
     }
 }
