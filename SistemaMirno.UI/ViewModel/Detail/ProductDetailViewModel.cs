@@ -7,6 +7,7 @@ using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Detail
@@ -33,7 +34,36 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _productCategoryRepository = productCategoryRepository;
             _eventAggregator = eventAggregator;
 
+            _eventAggregator.GetEvent<AfterProductCategorySavedEvent>()
+                .Subscribe(AfterProductCategorySaved);
+            _eventAggregator.GetEvent<AfterProductCategoryDeletedEvent>()
+                .Subscribe(AfterProductCategoryDeleted);
+
             ProductCategories = new ObservableCollection<ProductCategoryWrapper>();
+        }
+
+        private void AfterProductCategoryDeleted(int productCategoryId)
+        {
+            var item = ProductCategories.SingleOrDefault(c => c.Id == productCategoryId);
+
+            if (item != null)
+            {
+                ProductCategories.Remove(item);
+            }
+        }
+
+        private void AfterProductCategorySaved(AfterProductCategorySavedEventArgs args)
+        {
+            var item = ProductCategories.SingleOrDefault(p => p.Id == args.ProductCategory.Id);
+
+            if (item == null)
+            {
+                ProductCategories.Add(new ProductCategoryWrapper(args.ProductCategory));
+            }
+            else
+            {
+                item.Name = args.ProductCategory.Name;
+            }
         }
 
         /// <summary>
