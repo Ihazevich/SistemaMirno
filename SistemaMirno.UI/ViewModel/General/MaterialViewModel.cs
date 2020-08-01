@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Events;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
@@ -39,9 +40,9 @@ namespace SistemaMirno.UI.ViewModel.General
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ShowMaterialViewEvent>()
                 .Subscribe(ViewModelSelected);
-            _eventAggregator.GetEvent<AfterMaterialSavedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Material>>()
                 .Subscribe(AfterMaterialSaved);
-            _eventAggregator.GetEvent<AfterMaterialDeletedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Material>>()
                 .Subscribe(AfterMaterialDeleted);
 
             Materials = new ObservableCollection<MaterialWrapper>();
@@ -141,24 +142,24 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterMaterialSaved(AfterMaterialSavedEventArgs args)
+        private void AfterMaterialSaved(AfterDataModelSavedEventArgs<Material> args)
         {
-            var item = Materials.SingleOrDefault(p => p.Id == args.Material.Id);
+            var item = Materials.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item == null)
             {
-                Materials.Add(new MaterialWrapper(args.Material));
+                Materials.Add(new MaterialWrapper(args.Model));
                 MaterialDetailViewModel = null;
             }
             else
             {
-                item.Name = args.Material.Name;
+                item.Name = args.Model.Name;
             }
         }
 
-        private void AfterMaterialDeleted(int materialId)
+        private void AfterMaterialDeleted(AfterDataModelDeletedEventArgs<Material> args)
         {
-            var item = Materials.SingleOrDefault(m => m.Id == materialId);
+            var item = Materials.SingleOrDefault(m => m.Id == args.Model.Id);
 
             if (item != null)
             {

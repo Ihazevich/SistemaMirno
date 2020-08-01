@@ -94,8 +94,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _productionAreaRepository.SaveAsync();
             //HasChanges = _productionAreaRepository.HasChanges();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterProductionAreaSavedEvent>()
-                .Publish(new AfterProductionAreaSavedEventArgs { ProductionArea = ProductionArea.Model });
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
+                .Publish(new AfterDataModelSavedEventArgs<WorkArea> { Model = ProductionArea.Model });
         }
 
         /// <inheritdoc/>
@@ -108,8 +108,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _productionAreaRepository.Remove(ProductionArea.Model);
             await _productionAreaRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterProductionAreaDeletedEvent>()
-                .Publish(ProductionArea.Id);
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
+                .Publish(new AfterDataModelDeletedEventArgs<WorkArea> { Model = ProductionArea.Model });
         }
 
         private void ProductionArea_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

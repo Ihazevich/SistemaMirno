@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Events;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
@@ -42,9 +43,9 @@ namespace SistemaMirno.UI.ViewModel.General
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ShowProductionAreaViewEvent>()
                 .Subscribe(ViewModelSelected);
-            _eventAggregator.GetEvent<AfterProductionAreaSavedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterProductionAreaSaved);
-            _eventAggregator.GetEvent<AfterProductionAreaDeletedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
                 .Subscribe(AfterProductionAreaDeleted);
 
             ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
@@ -144,24 +145,24 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterProductionAreaSaved(AfterProductionAreaSavedEventArgs args)
+        private void AfterProductionAreaSaved(AfterDataModelSavedEventArgs<WorkArea> args)
         {
-            var item = ProductionAreas.SingleOrDefault(p => p.Id == args.ProductionArea.Id);
+            var item = ProductionAreas.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item == null)
             {
-                ProductionAreas.Add(new ProductionAreaWrapper(args.ProductionArea));
+                ProductionAreas.Add(new ProductionAreaWrapper(args.Model));
                 ProductionAreaDetailViewModel = null;
             }
             else
             {
-                item.Name = args.ProductionArea.Name;
+                item.Name = args.Model.Name;
             }
         }
 
-        private void AfterProductionAreaDeleted(int productionAreaId)
+        private void AfterProductionAreaDeleted(AfterDataModelDeletedEventArgs<WorkArea> args)
         {
-            var item = ProductionAreas.SingleOrDefault(p => p.Id == productionAreaId);
+            var item = ProductionAreas.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item != null)
             {

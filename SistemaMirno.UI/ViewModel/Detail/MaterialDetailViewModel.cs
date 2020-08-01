@@ -91,8 +91,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _materialRepository.SaveAsync();
             //HasChanges = _productionAreaRepository.HasChanges();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterMaterialSavedEvent>()
-                .Publish(new AfterMaterialSavedEventArgs { Material = Material.Model });
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Material>>()
+                .Publish(new AfterDataModelSavedEventArgs<Material> { Model = Material.Model });
         }
 
         /// <inheritdoc/>
@@ -105,8 +105,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _materialRepository.Remove(Material.Model);
             await _materialRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterMaterialDeletedEvent>()
-                .Publish(Material.Id);
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Material>>()
+                .Publish(new AfterDataModelDeletedEventArgs<Material> { Model = Material.Model });
         }
 
         private void Material_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

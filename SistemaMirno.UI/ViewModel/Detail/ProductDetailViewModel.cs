@@ -34,17 +34,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _productCategoryRepository = productCategoryRepository;
             _eventAggregator = eventAggregator;
 
-            _eventAggregator.GetEvent<AfterProductCategorySavedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<ProductCategory>>()
                 .Subscribe(AfterProductCategorySaved);
-            _eventAggregator.GetEvent<AfterProductCategoryDeletedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<ProductCategory>>()
                 .Subscribe(AfterProductCategoryDeleted);
 
             ProductCategories = new ObservableCollection<ProductCategoryWrapper>();
         }
 
-        private void AfterProductCategoryDeleted(int productCategoryId)
+        private void AfterProductCategoryDeleted(AfterDataModelDeletedEventArgs<ProductCategory> args)
         {
-            var item = ProductCategories.SingleOrDefault(c => c.Id == productCategoryId);
+            var item = ProductCategories.SingleOrDefault(c => c.Id == args.Model.Id);
 
             if (item != null)
             {
@@ -52,17 +52,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private void AfterProductCategorySaved(AfterProductCategorySavedEventArgs args)
+        private void AfterProductCategorySaved(AfterDataModelSavedEventArgs<ProductCategory> args)
         {
-            var item = ProductCategories.SingleOrDefault(p => p.Id == args.ProductCategory.Id);
+            var item = ProductCategories.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item == null)
             {
-                ProductCategories.Add(new ProductCategoryWrapper(args.ProductCategory));
+                ProductCategories.Add(new ProductCategoryWrapper(args.Model));
             }
             else
             {
-                item.Name = args.ProductCategory.Name;
+                item.Name = args.Model.Name;
             }
         }
 
@@ -142,8 +142,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _productRepository.SaveAsync();
             //HasChanges = _productionAreaRepository.HasChanges();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterProductSavedEvent>()
-                .Publish(new AfterProductSavedEventArgs { Product = Product.Model });
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Product>>()
+                .Publish(new AfterDataModelSavedEventArgs<Product> { Model = Product.Model });
         }
 
         /// <inheritdoc/>
@@ -156,8 +156,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _productRepository.Remove(Product.Model);
             await _productRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterProductDeletedEvent>()
-                .Publish(Product.Id);
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Product>>()
+                .Publish(new AfterDataModelDeletedEventArgs<Product> { Model = Product.Model });
         }
 
         private void Product_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

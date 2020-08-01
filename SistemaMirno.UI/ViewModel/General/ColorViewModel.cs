@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Events;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
@@ -39,9 +40,9 @@ namespace SistemaMirno.UI.ViewModel.General
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ShowColorViewEvent>()
                 .Subscribe(ViewModelSelected);
-            _eventAggregator.GetEvent<AfterColorSavedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Color>>()
                 .Subscribe(AfterColorSaved);
-            _eventAggregator.GetEvent<AfterColorDeletedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Color>>()
                 .Subscribe(AfterColorDeleted);
 
             Colors = new ObservableCollection<ColorWrapper>();
@@ -141,24 +142,24 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterColorSaved(AfterColorSavedEventArgs args)
+        private void AfterColorSaved(AfterDataModelSavedEventArgs<Color> args)
         {
-            var item = Colors.SingleOrDefault(c => c.Id == args.Color.Id);
+            var item = Colors.SingleOrDefault(c => c.Id == args.Model.Id);
 
             if (item == null)
             {
-                Colors.Add(new ColorWrapper(args.Color));
+                Colors.Add(new ColorWrapper(args.Model));
                 ColorDetailViewModel = null;
             }
             else
             {
-                item.Name = args.Color.Name;
+                item.Name = args.Model.Name;
             }
         }
 
-        private void AfterColorDeleted(int colorId)
+        private void AfterColorDeleted(AfterDataModelDeletedEventArgs<Color> args)
         {
-            var item = Colors.SingleOrDefault(m => m.Id == colorId);
+            var item = Colors.SingleOrDefault(m => m.Id == args.Model.Id);
 
             if (item != null)
             {

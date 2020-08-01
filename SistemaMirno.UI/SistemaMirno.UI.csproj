@@ -111,6 +111,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\Repositories\EmployeeRepository.cs" />
+    <Compile Include="Data\Repositories\EmployeeRoleRepository.cs" />
+    <Compile Include="Data\Repositories\IEmployeeRepository.cs" />
+    <Compile Include="Data\Repositories\IEmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductionAreaRepository.cs" />
@@ -122,15 +126,8 @@
     <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\Repositories\ProductRepository.cs" />
     <Compile Include="Data\WorkUnitDataService.cs" />
-    <Compile Include="Event\AfterColorDeletedEvent.cs" />
-    <Compile Include="Event\AfterColorSavedEvent.cs" />
-    <Compile Include="Event\AfterMaterialDeletedEvent.cs" />
-    <Compile Include="Event\AfterMaterialSavedEvent.cs" />
-    <Compile Include="Event\AfterProductCategoryDeletedEvent.cs" />
-    <Compile Include="Event\AfterProductCategorySavedEvent.cs" />
-    <Compile Include="Event\AfterProductDeletedEvent.cs" />
-    <Compile Include="Event\AfterProductionAreaDeletedEvent.cs" />
-    <Compile Include="Event\AfterProductSavedEvent.cs" />
+    <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
+    <Compile Include="Event\AfterDataModelSavedEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ShowColorViewEvent.cs" />
     <Compile Include="Event\ShowMaterialViewEvent.cs" />
@@ -140,7 +137,6 @@
     <Compile Include="Event\ShowSupervisorView.cs" />
     <Compile Include="Event\ShowWorkUnitsViewEvent.cs" />
     <Compile Include="Event\ShowProductViewEvent.cs" />
-    <Compile Include="Event\AfterProductionAreaSavedEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IColorDetailViewModel.cs" />

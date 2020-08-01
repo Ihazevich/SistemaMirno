@@ -90,8 +90,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _colorRepository.SaveAsync();
             //HasChanges = _productionAreaRepository.HasChanges();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterColorSavedEvent>()
-                .Publish(new AfterColorSavedEventArgs { Color = Color.Model });
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Color>>()
+                .Publish(new AfterDataModelSavedEventArgs<Color> { Model = Color.Model });
         }
 
         /// <inheritdoc/>
@@ -104,8 +104,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _colorRepository.Remove(Color.Model);
             await _colorRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterColorDeletedEvent>()
-                .Publish(Color.Id);
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Color>>()
+                .Publish(new AfterDataModelDeletedEventArgs<Color> { Model = Color.Model }); 
         }
 
         private void Color_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

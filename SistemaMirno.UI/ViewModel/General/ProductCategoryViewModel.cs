@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Events;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
@@ -39,9 +40,9 @@ namespace SistemaMirno.UI.ViewModel.General
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ShowProductCategoryViewEvent>()
                 .Subscribe(ViewModelSelected);
-            _eventAggregator.GetEvent<AfterProductCategorySavedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<ProductCategory>>()
                 .Subscribe(AfterProductCategorySaved);
-            _eventAggregator.GetEvent<AfterProductCategoryDeletedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<ProductCategory>>()
                 .Subscribe(AfterProductCategoryDeleted);
 
             ProductCategories = new ObservableCollection<ProductCategoryWrapper>();
@@ -141,24 +142,24 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterProductCategorySaved(AfterProductCategorySavedEventArgs args)
+        private void AfterProductCategorySaved(AfterDataModelSavedEventArgs<ProductCategory> args)
         {
-            var item = ProductCategories.SingleOrDefault(c => c.Id == args.ProductCategory.Id);
+            var item = ProductCategories.SingleOrDefault(c => c.Id == args.Model.Id);
 
             if (item == null)
             {
-                ProductCategories.Add(new ProductCategoryWrapper(args.ProductCategory));
+                ProductCategories.Add(new ProductCategoryWrapper(args.Model));
                 ProductCategoryDetailViewModel = null;
             }
             else
             {
-                item.Name = args.ProductCategory.Name;
+                item.Name = args.Model.Name;
             }
         }
 
-        private void AfterProductCategoryDeleted(int productCategoryId)
+        private void AfterProductCategoryDeleted(AfterDataModelDeletedEventArgs<ProductCategory> args)
         {
-            var item = ProductCategories.SingleOrDefault(c => c.Id == productCategoryId);
+            var item = ProductCategories.SingleOrDefault(c => c.Id == args.Model.Id);
 
             if (item != null)
             {

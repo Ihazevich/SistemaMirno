@@ -90,8 +90,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _productCategoryRepository.SaveAsync();
             //HasChanges = _productionAreaRepository.HasChanges();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterProductCategorySavedEvent>()
-                .Publish(new AfterProductCategorySavedEventArgs { ProductCategory = ProductCategory.Model });
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<ProductCategory>>()
+                .Publish(new AfterDataModelSavedEventArgs<ProductCategory> { Model = ProductCategory.Model });
         }
 
         /// <inheritdoc/>
@@ -104,8 +104,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _productCategoryRepository.Remove(ProductCategory.Model);
             await _productCategoryRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterProductCategoryDeletedEvent>()
-                .Publish(ProductCategory.Id);
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<ProductCategory>>()
+                .Publish(new AfterDataModelDeletedEventArgs<ProductCategory> { Model = ProductCategory.Model });
         }
 
         private void ProductCategory_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

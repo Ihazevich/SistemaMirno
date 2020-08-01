@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Events;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
@@ -39,9 +40,9 @@ namespace SistemaMirno.UI.ViewModel.General
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ShowProductViewEvent>()
                 .Subscribe(ViewModelSelected);
-            _eventAggregator.GetEvent<AfterProductSavedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Product>>()
                 .Subscribe(AfterProductSaved);
-            _eventAggregator.GetEvent<AfterProductDeletedEvent>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Product>>()
                 .Subscribe(AfterProductDeleted);
 
             Products = new ObservableCollection<ProductWrapper>();
@@ -141,24 +142,24 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterProductSaved(AfterProductSavedEventArgs args)
+        private void AfterProductSaved(AfterDataModelSavedEventArgs<Product> args)
         {
-            var item = Products.SingleOrDefault(p => p.Id == args.Product.Id);
+            var item = Products.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item == null)
             {
-                Products.Add(new ProductWrapper(args.Product));
+                Products.Add(new ProductWrapper(args.Model));
                 ProductDetailViewModel = null;
             }
             else
             {
-                item.Name = args.Product.Name;
+                item.Name = args.Model.Name;
             }
         }
 
-        private void AfterProductDeleted(int productId)
+        private void AfterProductDeleted(AfterDataModelDeletedEventArgs<Product> args)
         {
-            var item = Products.SingleOrDefault(p => p.Id == productId);
+            var item = Products.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item != null)
             {
