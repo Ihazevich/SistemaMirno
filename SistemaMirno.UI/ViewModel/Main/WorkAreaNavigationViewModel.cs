@@ -12,19 +12,19 @@ namespace SistemaMirno.UI.ViewModel.Main
     /// <summary>
     /// Production areas navigation view model class.
     /// </summary>
-    public class ProductionAreasNavigationViewModel : ViewModelBase, IProductionAreasNavigationViewModel
+    public class WorkAreaNavigationViewModel : ViewModelBase, IWorkAreaNavigationViewModel
     {
-        private IProductionAreaRepository _productionAreaRepository;
+        private IWorkAreaRepository _productionAreaRepository;
         private IEventAggregator _eventAggregator;
         private ProductionAreaWrapper _selectedProductionArea;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductionAreasNavigationViewModel"/> class.
+        /// Initializes a new instance of the <see cref="WorkAreaNavigationViewModel"/> class.
         /// </summary>
-        /// <param name="productionAreaRepository">A <see cref="IProductionAreaRepository"/> representing the model repository.</param>
+        /// <param name="productionAreaRepository">A <see cref="IWorkAreaRepository"/> representing the model repository.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> representing the event aggregator.</param>
-        public ProductionAreasNavigationViewModel(
-            IProductionAreaRepository productionAreaRepository,
+        public WorkAreaNavigationViewModel(
+            IWorkAreaRepository productionAreaRepository,
             IEventAggregator eventAggregator)
         {
             _productionAreaRepository = productionAreaRepository;
@@ -52,8 +52,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                 OnPropertyChanged();
                 if (_selectedProductionArea != null)
                 {
-                    _eventAggregator.GetEvent<ShowWorkUnitsViewEvent>()
-                        .Publish(_selectedProductionArea.Id);
+                    _eventAggregator.GetEvent<ShowViewEvent<WorkArea>>()
+                        .Publish(SelectedProductionArea.Id);
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using Prism.Events;
 using SistemaMirno.UI.ViewModel;
+using System;
 
 namespace SistemaMirno.UI.Event
 {

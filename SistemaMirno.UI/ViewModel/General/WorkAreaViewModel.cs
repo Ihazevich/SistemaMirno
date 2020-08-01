@@ -1,4 +1,9 @@
-﻿using Prism.Commands;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
@@ -6,34 +11,29 @@ using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.Wrapper;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
     /// <summary>
     /// View Model for Production Areas.
     /// </summary>
-    public class ProductionAreaViewModel : ViewModelBase, IProductionAreaViewModel
+    public class WorkAreaViewModel : ViewModelBase, IWorkAreaViewModel
     {
-        private IProductionAreaRepository _productionAreaRepository;
+        private IWorkAreaRepository _productionAreaRepository;
         private IMessageDialogService _messageDialogService;
         private IEventAggregator _eventAggregator;
         private ProductionAreaWrapper _selectedArea;
-        private IProductionAreaDetailViewModel _productionAreaDetailViewModel;
-        private Func<IProductionAreaDetailViewModel> _productionAreaDetailViewModelCreator;
+        private IWorkAreaDetailViewModel _productionAreaDetailViewModel;
+        private Func<IWorkAreaDetailViewModel> _productionAreaDetailViewModelCreator;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductionAreaViewModel"/> class.
+        /// Initializes a new instance of the <see cref="WorkAreaViewModel"/> class.
         /// </summary>
         /// <param name="productionAreaDetailViewModelCreator">A function to create detailviewmodel instances.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
-        public ProductionAreaViewModel(
-            Func<IProductionAreaDetailViewModel> productionAreaDetailViewModelCreator,
-            IProductionAreaRepository productionAreaRepository,
+        public WorkAreaViewModel(
+            Func<IWorkAreaDetailViewModel> productionAreaDetailViewModelCreator,
+            IWorkAreaRepository productionAreaRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
         {
@@ -41,7 +41,7 @@ namespace SistemaMirno.UI.ViewModel.General
             _productionAreaRepository = productionAreaRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowProductionAreaViewEvent>()
+            _eventAggregator.GetEvent<ShowViewEvent<WorkAreaViewModel>>()
                 .Subscribe(ViewModelSelected);
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterProductionAreaSaved);
@@ -55,7 +55,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Gets the Production Area detail view model.
         /// </summary>
-        public IProductionAreaDetailViewModel ProductionAreaDetailViewModel
+        public IWorkAreaDetailViewModel ProductionAreaDetailViewModel
         {
             get
             {
@@ -103,7 +103,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Loads the view model and publishes the Change View event.
         /// </summary>
-        public async void ViewModelSelected()
+        public async void ViewModelSelected(int id)
         {
             await LoadAsync();
             _eventAggregator.GetEvent<ChangeViewEvent>().

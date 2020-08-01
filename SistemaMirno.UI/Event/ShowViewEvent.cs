@@ -2,7 +2,7 @@
 
 namespace SistemaMirno.UI.Event
 {
-    public class ShowColorViewEvent : PubSubEvent
+    public class ShowViewEvent<T> : PubSubEvent<int>
     {
     }
 }

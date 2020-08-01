@@ -21,33 +21,33 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
-        /// <param name="productionAreasViewModel">A <see cref="IProductionAreasNavigationViewModel"/> instance representing the area navigation view model.</param>
+        /// <param name="workAreaNavigationViewModel">A <see cref="IWorkAreaNavigationViewModel"/> instance representing the area navigation view model.</param>
         /// <param name="materialViewModel">A <see cref="IMaterialViewModel"/> instance representing the area navigation view model.</param>
         /// <param name="colorViewModel">A <see cref="IColorViewModel"/> instance representing the area navigation view model.</param>
         /// <param name="workUnitViewModel">A <see cref="IWorkUnitViewModel"/> instance representing the area navigation view model.</param>
         /// <param name="productViewModel">A <see cref="IProductViewModel"/> instance representing the area navigation view model.</param>
-        /// <param name="productionAreaViewModel">A <see cref="IProductionAreaViewModel"/> instance representing the area navigation view model.</param>
+        /// <param name="workAreaViewModel">A <see cref="IWorkAreaViewModel"/> instance representing the area navigation view model.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the area navigation view model.</param>
         public MainViewModel(
-            IProductionAreasNavigationViewModel productionAreasViewModel,
+            IWorkAreaNavigationViewModel workAreaNavigationViewModel,
             IMaterialViewModel materialViewModel,
             IColorViewModel colorViewModel,
             IProductCategoryViewModel productCategoryViewModel,
             IWorkUnitViewModel workUnitViewModel,
             IProductViewModel productViewModel,
-            IProductionAreaViewModel productionAreaViewModel,
+            IWorkAreaViewModel workAreaViewModel,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
         {
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
 
-            ProductionAreasNavigationViewModel = productionAreasViewModel;
+            WorkAreaNavigationViewModel = workAreaNavigationViewModel;
             WorkUnitViewModel = workUnitViewModel;
             MaterialViewModel = materialViewModel;
             ColorViewModel = colorViewModel;
             ProductViewModel = productViewModel;
-            ProductionAreaViewModel = productionAreaViewModel;
+            WorkAreaViewModel = workAreaViewModel;
             ProductCategoryViewModel = productCategoryViewModel;
 
             _eventAggregator.GetEvent<ChangeViewEvent>()
@@ -76,7 +76,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets the area navigation view model.
         /// </summary>
-        public IProductionAreasNavigationViewModel ProductionAreasNavigationViewModel { get; }
+        public IWorkAreaNavigationViewModel WorkAreaNavigationViewModel { get; }
 
         /// <summary>
         /// Gets the work unit view model.
@@ -101,7 +101,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets the production area view model.
         /// </summary>
-        public IProductionAreaViewModel ProductionAreaViewModel { get; }
+        public IWorkAreaViewModel WorkAreaViewModel { get; }
 
         /// <summary>
         /// Gets the product category area view model.
@@ -129,7 +129,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public async Task LoadAsync()
         {
-            await ProductionAreasNavigationViewModel.LoadAsync();
+            await WorkAreaNavigationViewModel.LoadAsync();
         }
 
         private void ChangeViewExecute(string viewModel)
@@ -137,38 +137,28 @@ namespace SistemaMirno.UI.ViewModel.Main
             switch (viewModel)
             {
                 case "Materials":
-                    _eventAggregator.GetEvent<ShowMaterialViewEvent>().
-                        Publish();
+                    _eventAggregator.GetEvent<ShowViewEvent<MaterialViewModel>>().
+                        Publish(-1);
                     break;
 
                 case "Colors":
-                    _eventAggregator.GetEvent<ShowColorViewEvent>().
-                        Publish();
+                    _eventAggregator.GetEvent<ShowViewEvent<ColorViewModel>>().
+                        Publish(-1);
                     break;
 
                 case "Products":
-                    _eventAggregator.GetEvent<ShowProductViewEvent>().
-                        Publish();
+                    _eventAggregator.GetEvent<ShowViewEvent<ProductViewModel>>().
+                        Publish(-1);
                     break;
 
                 case "ProductCategories":
-                    _eventAggregator.GetEvent<ShowProductCategoryViewEvent>().
-                        Publish();
+                    _eventAggregator.GetEvent<ShowViewEvent<ProductCategoryViewModel>>().
+                        Publish(-1);
                     break;
 
                 case "ProductionAreas":
-                    _eventAggregator.GetEvent<ShowProductionAreaViewEvent>().
-                        Publish();
-                    break;
-
-                case "Responsibles":
-                    _eventAggregator.GetEvent<ShowResponsibleView>().
-                        Publish();
-                    break;
-
-                case "Supervisors":
-                    _eventAggregator.GetEvent<ShowSupervisorView>().
-                        Publish();
+                    _eventAggregator.GetEvent<ShowViewEvent<WorkAreaViewModel>>().
+                        Publish(-1);
                     break;
 
                 default:
@@ -187,7 +177,7 @@ namespace SistemaMirno.UI.ViewModel.Main
                     return !nameof(SelectedViewModel).Equals(nameof(MaterialViewModel));
 
                 case "ProductionAreas":
-                    return !nameof(SelectedViewModel).Equals(nameof(ProductionAreaViewModel));
+                    return !nameof(SelectedViewModel).Equals(nameof(WorkAreaViewModel));
 
                 case "ProductCategories":
                     return !nameof(SelectedViewModel).Equals(nameof(ProductCategoryViewModel));

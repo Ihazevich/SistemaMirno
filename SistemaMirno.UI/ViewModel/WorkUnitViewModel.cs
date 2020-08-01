@@ -41,11 +41,11 @@ namespace SistemaMirno.UI.ViewModel
             WorkUnits = new ObservableCollection<WorkUnit>();
             _workUnitDataService = workUnitDataService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowWorkUnitsViewEvent>()
-                .Subscribe(OnProductionAreaSelected);
+            _eventAggregator.GetEvent<ShowViewEvent<WorkUnitViewModel>>()
+                .Subscribe(OnWorkAreaSelected);
         }
 
-        private async void OnProductionAreaSelected(int productionAreaId)
+        private async void OnWorkAreaSelected(int productionAreaId)
         {
             await LoadAsync(productionAreaId);
             _eventAggregator.GetEvent<ChangeViewEvent>()

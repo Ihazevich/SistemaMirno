@@ -117,7 +117,7 @@
     <Compile Include="Data\Repositories\IEmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
-    <Compile Include="Data\Repositories\ProductionAreaRepository.cs" />
+    <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\ColorRepository.cs" />
     <Compile Include="Data\Repositories\IColorRepository.cs" />
     <Compile Include="Data\Repositories\IMaterialRepository.cs" />
@@ -129,14 +129,7 @@
     <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
-    <Compile Include="Event\ShowColorViewEvent.cs" />
-    <Compile Include="Event\ShowMaterialViewEvent.cs" />
-    <Compile Include="Event\ShowProductCategoryViewEvent.cs" />
-    <Compile Include="Event\ShowProductionAreaViewEvent.cs" />
-    <Compile Include="Event\ShowResponsibleView.cs" />
-    <Compile Include="Event\ShowSupervisorView.cs" />
-    <Compile Include="Event\ShowWorkUnitsViewEvent.cs" />
-    <Compile Include="Event\ShowProductViewEvent.cs" />
+    <Compile Include="Event\ShowViewEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IColorDetailViewModel.cs" />
@@ -148,24 +141,24 @@
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\IMaterialDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IProductionAreaDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IWorkAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\ProductionAreaDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\WorkAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\General\IColorViewModel.cs" />
     <Compile Include="ViewModel\General\IMaterialViewModel.cs" />
     <Compile Include="ViewModel\General\IProductCategoryViewModel.cs" />
-    <Compile Include="ViewModel\General\IProductionAreaViewModel.cs" />
+    <Compile Include="ViewModel\General\IWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IProductViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
-    <Compile Include="ViewModel\General\ProductionAreaViewModel.cs" />
+    <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="ViewModel\Main\IProductionAreasNavigationViewModel.cs" />
+    <Compile Include="ViewModel\Main\IWorkAreaNavigationViewModel.cs" />
     <Compile Include="ViewModel\IWorkUnitViewModel.cs" />
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
-    <Compile Include="ViewModel\Main\ProductionAreasNavigationViewModel.cs" />
+    <Compile Include="ViewModel\Main\WorkAreaNavigationViewModel.cs" />
     <Compile Include="ViewModel\WorkUnitViewModel.cs" />
     <Compile Include="View\ColorDetailView.xaml.cs">
       <DependentUpon>ColorDetailView.xaml</DependentUpon>
@@ -188,26 +181,20 @@
     <Compile Include="View\ProductDetailView.xaml.cs">
       <DependentUpon>ProductDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProductionAreaDetailView.xaml.cs">
-      <DependentUpon>ProductionAreaDetailView.xaml</DependentUpon>
+    <Compile Include="View\WorkAreaDetailView.xaml.cs">
+      <DependentUpon>WorkAreaDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProductionAreasNavigationView.xaml.cs">
-      <DependentUpon>ProductionAreasNavigationView.xaml</DependentUpon>
+    <Compile Include="View\WorkAreaNavigationView.xaml.cs">
+      <DependentUpon>WorkAreaNavigationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProductionAreaView.xaml.cs">
-      <DependentUpon>ProductionAreaView.xaml</DependentUpon>
+    <Compile Include="View\WorkAreaView.xaml.cs">
+      <DependentUpon>WorkAreaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProductView.xaml.cs">
       <DependentUpon>ProductView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ResponsibleView.xaml.cs">
-      <DependentUpon>ResponsibleView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Services\IMessageDialogService.cs" />
     <Compile Include="View\Services\MessageDialogService.cs" />
-    <Compile Include="View\SupervisorView.xaml.cs">
-      <DependentUpon>SupervisorView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\WorkUnitView.xaml.cs">
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
     </Compile>
@@ -227,7 +214,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\Repositories\IProductionAreaRepository.cs" />
+    <Compile Include="Data\Repositories\IWorkAreaRepository.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -260,27 +247,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProductionAreaDetailView.xaml">
+    <Page Include="View\WorkAreaDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProductionAreasNavigationView.xaml">
+    <Page Include="View\WorkAreaNavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProductionAreaView.xaml">
+    <Page Include="View\WorkAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProductView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ResponsibleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\SupervisorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

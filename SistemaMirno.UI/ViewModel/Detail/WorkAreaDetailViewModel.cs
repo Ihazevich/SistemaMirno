@@ -12,20 +12,20 @@ namespace SistemaMirno.UI.ViewModel.Detail
     /// <summary>
     /// Class representing the detailed view model of a single Production Area.
     /// </summary>
-    public class ProductionAreaDetailViewModel : DetailViewModelBase, IProductionAreaDetailViewModel
+    public class WorkAreaDetailViewModel : DetailViewModelBase, IWorkAreaDetailViewModel
     {
-        private IProductionAreaRepository _productionAreaRepository;
+        private IWorkAreaRepository _productionAreaRepository;
         private IEventAggregator _eventAggregator;
         private ProductionAreaWrapper _productionArea;
         private bool _hasChanges;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductionAreaDetailViewModel"/> class.
+        /// Initializes a new instance of the <see cref="WorkAreaDetailViewModel"/> class.
         /// </summary>
         /// <param name="productionAreaRepository">The data repository.</param>
         /// <param name="eventAggregator">The event aggregator.</param>
-        public ProductionAreaDetailViewModel(
-            IProductionAreaRepository productionAreaRepository,
+        public WorkAreaDetailViewModel(
+            IWorkAreaRepository productionAreaRepository,
             IEventAggregator eventAggregator)
         {
             _productionAreaRepository = productionAreaRepository;

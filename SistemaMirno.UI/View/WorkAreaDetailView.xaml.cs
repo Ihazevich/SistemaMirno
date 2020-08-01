@@ -7,12 +7,12 @@ namespace SistemaMirno.UI.View
     /// <summary>
     /// Interaction logic for ProductionAreaDetailView.xaml
     /// </summary>
-    public partial class ProductionAreaDetailView : UserControl
+    public partial class WorkAreaDetailView : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductionAreaDetailView"/> class.
+        /// Initializes a new instance of the <see cref="WorkAreaDetailView"/> class.
         /// </summary>
-        public ProductionAreaDetailView()
+        public WorkAreaDetailView()
         {
             InitializeComponent();
         }

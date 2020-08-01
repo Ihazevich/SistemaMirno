@@ -9,15 +9,15 @@ namespace SistemaMirno.UI.Data.Repositories
     /// <summary>
     /// Class representing the Production Area model repository.
     /// </summary>
-    public class ProductionAreaRepository : IProductionAreaRepository
+    public class WorkAreaRepository : IWorkAreaRepository
     {
         private MirnoDbContext _context;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductionAreaRepository"/> class.
+        /// Initializes a new instance of the <see cref="WorkAreaRepository"/> class.
         /// </summary>
         /// <param name="context">A <see cref="MirnoDbContext"/> instance representing the database context.</param>
-        public ProductionAreaRepository(MirnoDbContext context)
+        public WorkAreaRepository(MirnoDbContext context)
         {
             _context = context;
         }

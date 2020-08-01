@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 namespace SistemaMirno.UI.Data.Repositories
 {
     /// <summary>
-    /// Interface for the <see cref="ProductionAreaRepository"/> class.
+    /// Interface for the <see cref="WorkAreaRepository"/> class.
     /// </summary>
-    public interface IProductionAreaRepository
+    public interface IWorkAreaRepository
     {
         /// <summary>
         /// Gets all the Production Areas from the database context.

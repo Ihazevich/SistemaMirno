@@ -20,11 +20,11 @@
             <DataTemplate DataType="{x:Type viewmodel:WorkUnitViewModel}">
                 <view:WorkUnitView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:ProductionAreaViewModel}">
-                <view:ProductionAreaView />
+            <DataTemplate DataType="{x:Type generalviewmodel:WorkAreaViewModel}">
+                <view:WorkAreaView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:ProductionAreaDetailViewModel}">
-                <view:ProductionAreaDetailView />
+            <DataTemplate DataType="{x:Type detailviewmodel:WorkAreaDetailViewModel}">
+                <view:WorkAreaDetailView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:MaterialViewModel}">
                 <view:MaterialView />

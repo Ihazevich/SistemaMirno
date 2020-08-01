@@ -23,7 +23,7 @@
                 <MenuItem Header="Supervisores" Command="{Binding ChangeViewCommand}" CommandParameter="Supervisors" />
             </MenuItem>
         </Menu>
-        <view:ProductionAreasNavigationView DockPanel.Dock="Left" DataContext="{Binding ProductionAreasNavigationViewModel}" />
+        <view:WorkAreaNavigationView DockPanel.Dock="Left" DataContext="{Binding WorkAreaNavigationViewModel}" />
         <ContentPresenter DockPanel.Dock="Right" Content="{Binding SelectedViewModel}" />
     </DockPanel>
 </mah:MetroWindow>

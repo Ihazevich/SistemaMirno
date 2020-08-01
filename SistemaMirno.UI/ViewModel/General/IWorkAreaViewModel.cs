@@ -2,7 +2,7 @@
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public interface IProductionAreaViewModel
+    public interface IWorkAreaViewModel
     {
         Task LoadAsync();
     }

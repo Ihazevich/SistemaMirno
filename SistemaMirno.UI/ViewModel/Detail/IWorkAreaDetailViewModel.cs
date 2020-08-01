@@ -2,7 +2,7 @@
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public interface IProductionAreaDetailViewModel
+    public interface IWorkAreaDetailViewModel
     {
         /// <summary>
         /// Loads the view model with a data model that matches the provided id.

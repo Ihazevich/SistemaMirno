@@ -3,12 +3,14 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.View;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.Wrapper;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -38,7 +40,7 @@ namespace SistemaMirno.UI.ViewModel.General
             _colorRepository = colorRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowColorViewEvent>()
+            _eventAggregator.GetEvent<ShowViewEvent<ColorViewModel>>()
                 .Subscribe(ViewModelSelected);
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<Color>>()
                 .Subscribe(AfterColorSaved);
@@ -100,7 +102,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Loads the view model and publishes the Change View event.
         /// </summary>
-        public async void ViewModelSelected()
+        public async void ViewModelSelected(int id)
         {
             await LoadAsync();
             _eventAggregator.GetEvent<ChangeViewEvent>().
