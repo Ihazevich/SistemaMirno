@@ -126,9 +126,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private ProductionArea CreateNewProductionArea()
+        private WorkArea CreateNewProductionArea()
         {
-            var productionArea = new ProductionArea();
+            var productionArea = new WorkArea();
             _productionAreaRepository.Add(productionArea);
             return productionArea;
         }

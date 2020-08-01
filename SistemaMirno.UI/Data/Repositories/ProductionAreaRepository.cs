@@ -23,15 +23,15 @@ namespace SistemaMirno.UI.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<List<ProductionArea>> GetAllAsync()
+        public async Task<List<WorkArea>> GetAllAsync()
         {
             return await _context.ProductionAreas.ToListAsync();
         }
 
         /// <inheritdoc/>
-        public async Task<ProductionArea> GetByIdAsync(int id)
+        public async Task<WorkArea> GetByIdAsync(int id)
         {
-            return await _context.ProductionAreas.SingleAsync<ProductionArea>(p => p.Id == id);
+            return await _context.ProductionAreas.SingleAsync<WorkArea>(p => p.Id == id);
         }
 
         /// <inheritdoc/>
@@ -47,12 +47,12 @@ namespace SistemaMirno.UI.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public void Add(ProductionArea productionArea)
+        public void Add(WorkArea productionArea)
         {
             _context.ProductionAreas.Add(productionArea);
         }
 
-        public void Remove(ProductionArea model)
+        public void Remove(WorkArea model)
         {
             _context.ProductionAreas.Remove(model);
         }

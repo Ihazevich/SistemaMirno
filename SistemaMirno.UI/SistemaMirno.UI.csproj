@@ -111,7 +111,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Data\ISupervisorDataService.cs" />
     <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductionAreaRepository.cs" />
@@ -119,12 +118,9 @@
     <Compile Include="Data\Repositories\IColorRepository.cs" />
     <Compile Include="Data\Repositories\IMaterialRepository.cs" />
     <Compile Include="Data\Repositories\IProductRepository.cs" />
-    <Compile Include="Data\IResponsibleDataService.cs" />
     <Compile Include="Data\IWorkUnitDataService.cs" />
     <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\Repositories\ProductRepository.cs" />
-    <Compile Include="Data\ResponsibleDataService.cs" />
-    <Compile Include="Data\SupervisorDataService.cs" />
     <Compile Include="Data\WorkUnitDataService.cs" />
     <Compile Include="Event\AfterColorDeletedEvent.cs" />
     <Compile Include="Event\AfterColorSavedEvent.cs" />

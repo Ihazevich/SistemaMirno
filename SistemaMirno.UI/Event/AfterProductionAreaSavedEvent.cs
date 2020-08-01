@@ -12,6 +12,6 @@ namespace SistemaMirno.UI.Event
 
     public class AfterProductionAreaSavedEventArgs
     {
-        public ProductionArea ProductionArea { get; set; }
+        public WorkArea ProductionArea { get; set; }
     }
 }

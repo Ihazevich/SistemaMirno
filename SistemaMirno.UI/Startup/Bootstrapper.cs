@@ -47,8 +47,6 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductCategoryRepository>().As<IProductCategoryRepository>();
             builder.RegisterType<WorkUnitDataService>().As<IWorkUnitDataService>();
             builder.RegisterType<ProductRepository>().As<IProductRepository>();
-            builder.RegisterType<ResponsibleDataService>().As<IResponsibleDataService>();
-            builder.RegisterType<SupervisorDataService>().As<ISupervisorDataService>();
 
             return builder.Build();
         }

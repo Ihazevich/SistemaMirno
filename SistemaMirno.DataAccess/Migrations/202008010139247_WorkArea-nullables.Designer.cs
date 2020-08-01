@@ -7,13 +7,13 @@ namespace SistemaMirno.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class AddedForeignKeys : IMigrationMetadata
+    public sealed partial class WorkAreanullables : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedForeignKeys));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(WorkAreanullables));
         
         string IMigrationMetadata.Id
         {
-            get { return "202007311420132_AddedForeignKeys"; }
+            get { return "202008010139247_WorkArea-nullables"; }
         }
         
         string IMigrationMetadata.Source

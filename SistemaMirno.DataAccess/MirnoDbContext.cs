@@ -14,10 +14,10 @@ namespace SistemaMirno.DataAccess
         public DbSet<Color> Colors { get; set; }
         public DbSet<Material> Materials { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductionArea> ProductionAreas { get; set; }
+        public DbSet<WorkArea> ProductionAreas { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
-        public DbSet<Responsible> Responsibles { get; set; }
-        public DbSet<Supervisor> Supervisors { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<EmployeeRole> EmployeeRoles { get; set; }
         public DbSet<WorkOrder> WorkOrders { get; set; }
         public DbSet<WorkUnit> WorkUnits { get; set; }
 

@@ -6,13 +6,13 @@ namespace SistemaMirno.UI.Wrapper
     /// <summary>
     /// A class representing the wrapper for the Production Area class.
     /// </summary>
-    public class ProductionAreaWrapper : ModelWrapper<ProductionArea>
+    public class ProductionAreaWrapper : ModelWrapper<WorkArea>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductionAreaWrapper"/> class.
         /// </summary>
-        /// <param name="model">Instance of <see cref="ProductionArea"> to use as model.</param>
-        public ProductionAreaWrapper(ProductionArea model)
+        /// <param name="model">Instance of <see cref="WorkArea"> to use as model.</param>
+        public ProductionAreaWrapper(WorkArea model)
             : base(model)
         {
         }

@@ -13,14 +13,14 @@ namespace SistemaMirno.UI.Data.Repositories
         /// Gets all the Production Areas from the database context.
         /// </summary>
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
-        Task<List<ProductionArea>> GetAllAsync();
+        Task<List<WorkArea>> GetAllAsync();
 
         /// <summary>
         /// Gets a Production Area that matches the provided id.
         /// </summary>
         /// <param name="id">A <see cref="int"/> value representing the id.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<ProductionArea> GetByIdAsync(int id);
+        Task<WorkArea> GetByIdAsync(int id);
 
         /// <summary>
         /// Saves all changes made to the database context.
@@ -34,8 +34,8 @@ namespace SistemaMirno.UI.Data.Repositories
         /// <returns>True or false.</returns>
         bool HasChanges();
 
-        void Add(ProductionArea productionArea);
+        void Add(WorkArea productionArea);
 
-        void Remove(ProductionArea model);
+        void Remove(WorkArea model);
     }
 }

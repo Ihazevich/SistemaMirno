@@ -7,13 +7,13 @@ namespace SistemaMirno.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class AddedAreaOrder : IMigrationMetadata
+    public sealed partial class InitialEmployeeRework : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedAreaOrder));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialEmployeeRework));
         
         string IMigrationMetadata.Id
         {
-            get { return "202007291201131_AddedAreaOrder"; }
+            get { return "202008010131479_Initial-EmployeeRework"; }
         }
         
         string IMigrationMetadata.Source

@@ -29,6 +29,6 @@ namespace SistemaMirno.Model
         [Required]
         public int ProductionAreaId { get; set; }
 
-        public ProductionArea ProductionArea { get; set; }
+        public WorkArea ProductionArea { get; set; }
     }
 }

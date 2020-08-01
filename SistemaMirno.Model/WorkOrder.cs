@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
@@ -20,15 +21,15 @@ namespace SistemaMirno.Model
 
         public int ProductionAreaId { get; set; }
 
-        public ProductionArea ProductionArea { get; set; }
+        public WorkArea ProductionArea { get; set; }
 
-        public int ResponsibleId { get; set; }
+        [ForeignKey("ResponsibleEmployee")]
+        public int ResponsibleEmployeeId { get; set; }
+        public Employee ResponsibleEmployee { get; set; }
 
-        public Responsible Responsible { get; set; }
-
-        public int SupervisorID { get; set; }
-
-        public Supervisor Supervisor { get; set; }
+        [ForeignKey("SupervisorEmployee")]
+        public int SupervisorEmployeeID { get; set; }
+        public Employee SupervisorEmployee { get; set; }
 
         public Collection<WorkUnit> WorkUnits { get; set; }
     }

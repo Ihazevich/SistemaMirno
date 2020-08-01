@@ -14,18 +14,18 @@
         {
             context.ProductionAreas.AddOrUpdate(
                 a => a.Name,
-                new ProductionArea { Name = "Pedidos" },
-                new ProductionArea { Name = "Lamina" },
-                new ProductionArea { Name = "Terciados" },
-                new ProductionArea { Name = "Prensa" },
-                new ProductionArea { Name = "Maquina" },
-                new ProductionArea { Name = "Perforacion" },
-                new ProductionArea { Name = "Lija" },
-                new ProductionArea { Name = "Filos" },
-                new ProductionArea { Name = "Banco" },
-                new ProductionArea { Name = "Lustre" },
-                new ProductionArea { Name = "Terminacion" },
-                new ProductionArea { Name = "Stock" }
+                new WorkArea { Name = "Pedidos" },
+                new WorkArea { Name = "Lamina" },
+                new WorkArea { Name = "Terciados" },
+                new WorkArea { Name = "Prensa" },
+                new WorkArea { Name = "Maquina" },
+                new WorkArea { Name = "Perforacion" },
+                new WorkArea { Name = "Lija" },
+                new WorkArea { Name = "Filos" },
+                new WorkArea { Name = "Banco" },
+                new WorkArea { Name = "Lustre" },
+                new WorkArea { Name = "Terminacion" },
+                new WorkArea { Name = "Stock" }
                 );
         }
     }
