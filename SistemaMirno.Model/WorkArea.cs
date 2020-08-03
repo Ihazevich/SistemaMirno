@@ -11,6 +11,8 @@ namespace SistemaMirno.Model
         {
             WorkUnits = new Collection<WorkUnit>();
             WorkOrders = new Collection<WorkOrder>();
+            FromAreaConnections = new Collection<AreaConnection>();
+            AreaConnectionsTo = new Collection<AreaConnection>();
         }
 
         public int Id { get; set; }
@@ -31,7 +33,14 @@ namespace SistemaMirno.Model
         public int? WorkAreaSupervisorRoleId { get; set; }
         public EmployeeRole WorkAreaSupervisorRole { get; set; }
 
+        [InverseProperty("FromWorkArea")]
+        public Collection<AreaConnection> FromAreaConnections { get; set; }
+
+        [InverseProperty("ToWorkArea")]
+        public Collection<AreaConnection> AreaConnectionsTo { get; set; }
+
         public Collection<WorkUnit> WorkUnits { get; set; }
         public Collection<WorkOrder> WorkOrders { get; set; }
+
     }
 }

@@ -37,6 +37,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             IWorkUnitViewModel workUnitViewModel,
             IProductViewModel productViewModel,
             IWorkAreaViewModel workAreaViewModel,
+            IWorkOrderViewModel workOrderViewModel,
             IEmployeeViewModel employeeViewModel,
             IEmployeeRoleViewModel employeeRoleViewModel,
             IEventAggregator eventAggregator,
@@ -54,11 +55,12 @@ namespace SistemaMirno.UI.ViewModel.Main
             ProductCategoryViewModel = productCategoryViewModel;
             EmployeeViewModel = employeeViewModel;
             EmployeeRoleViewModel = employeeRoleViewModel;
+            WorkOrderViewModel = workOrderViewModel;
 
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(OnViewChanged);
 
-            ChangeViewCommand = new DelegateCommand<string>(ChangeViewExecute, ChangeViewCanExecute);
+            ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute, ChangeViewCanExecute);
         }
 
         /// <summary>
@@ -124,6 +126,11 @@ namespace SistemaMirno.UI.ViewModel.Main
         public IEmployeeRoleViewModel EmployeeRoleViewModel { get; }
 
         /// <summary>
+        /// Gets the product category area view model.
+        /// </summary>
+        public IWorkOrderViewModel WorkOrderViewModel { get; }
+
+        /// <summary>
         /// Gets or sets the currently selected view model.
         /// </summary>
         public IViewModelBase SelectedViewModel
@@ -147,7 +154,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             await WorkAreaNavigationViewModel.LoadAsync();
         }
 
-        private void ChangeViewExecute(string viewModel)
+        private void OnChangeViewExecute(string viewModel)
         {
             switch (viewModel)
             {

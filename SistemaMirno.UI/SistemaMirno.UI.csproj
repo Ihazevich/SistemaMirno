@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.160.20216</AssemblyVersion>
+    <AssemblyVersion>0.1.177.20216</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -116,16 +116,18 @@
     <Compile Include="Data\Repositories\IEmployeeRepository.cs" />
     <Compile Include="Data\Repositories\IEmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
+    <Compile Include="Data\Repositories\IWorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\ColorRepository.cs" />
     <Compile Include="Data\Repositories\IColorRepository.cs" />
     <Compile Include="Data\Repositories\IMaterialRepository.cs" />
     <Compile Include="Data\Repositories\IProductRepository.cs" />
-    <Compile Include="Data\IWorkUnitDataService.cs" />
+    <Compile Include="Data\Repositories\IWorkUnitRepository.cs" />
     <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\Repositories\ProductRepository.cs" />
-    <Compile Include="Data\WorkUnitDataService.cs" />
+    <Compile Include="Data\Repositories\WorkOrderRepository.cs" />
+    <Compile Include="Data\Repositories\WorkUnitRepository.cs" />
     <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
@@ -139,8 +141,10 @@
     <Compile Include="ViewModel\Detail\IEmployeeRoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IWorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\General\ColorViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
@@ -156,18 +160,20 @@
     <Compile Include="ViewModel\General\IMaterialViewModel.cs" />
     <Compile Include="ViewModel\General\IProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkAreaViewModel.cs" />
+    <Compile Include="ViewModel\General\IWorkOrderViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IProductViewModel.cs" />
+    <Compile Include="ViewModel\General\WorkOrderViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\Main\IWorkAreaNavigationViewModel.cs" />
-    <Compile Include="ViewModel\IWorkUnitViewModel.cs" />
+    <Compile Include="ViewModel\General\IWorkUnitViewModel.cs" />
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
     <Compile Include="ViewModel\Main\WorkAreaNavigationViewModel.cs" />
-    <Compile Include="ViewModel\WorkUnitViewModel.cs" />
+    <Compile Include="ViewModel\General\WorkUnitViewModel.cs" />
     <Compile Include="View\ColorDetailView.xaml.cs">
       <DependentUpon>ColorDetailView.xaml</DependentUpon>
     </Compile>
@@ -215,6 +221,12 @@
     </Compile>
     <Compile Include="View\Services\IMessageDialogService.cs" />
     <Compile Include="View\Services\MessageDialogService.cs" />
+    <Compile Include="View\WorkOrderDetailView.xaml.cs">
+      <DependentUpon>WorkOrderDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WorkOrderView.xaml.cs">
+      <DependentUpon>WorkOrderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WorkUnitView.xaml.cs">
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
     </Compile>
@@ -227,6 +239,7 @@
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\ProductWrapper.cs" />
+    <Compile Include="Wrapper\WorkOrderWrapper.cs" />
     <Compile Include="Wrapper\WrapperBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -298,6 +311,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProductView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WorkOrderDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WorkOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

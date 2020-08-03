@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
@@ -10,9 +11,13 @@ namespace SistemaMirno.Model
         public int Id { get; set; }
 
         [Required]
-        public int FromAreaId { get; set; }
+        [ForeignKey("FromWorkArea")]
+        public int FromWorkAreaId { get; set; }
+        public WorkArea FromWorkArea { get; set; }
 
         [Required]
-        public int ToAreaId { get; set; }
+        [ForeignKey("ToWorkArea")]
+        public int ToWorkAreaId { get; set; }
+        public WorkArea ToWorkArea { get; set; }
     }
 }

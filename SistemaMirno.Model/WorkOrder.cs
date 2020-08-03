@@ -19,9 +19,9 @@ namespace SistemaMirno.Model
 
         public DateTime FinishTime { get; set; }
 
-        public int ProductionAreaId { get; set; }
+        public int WorkAreaId { get; set; }
 
-        public WorkArea ProductionArea { get; set; }
+        public WorkArea WorkArea { get; set; }
 
         [ForeignKey("ResponsibleEmployee")]
         public int ResponsibleEmployeeId { get; set; }

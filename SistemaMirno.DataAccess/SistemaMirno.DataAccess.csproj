@@ -15,7 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>1.0.33.20216</AssemblyVersion>
+    <AssemblyVersion>1.0.40.20216</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,6 +73,14 @@
     <Compile Include="Migrations\202008010139247_WorkArea-nullables.designer.cs">
       <DependentUpon>202008010139247_WorkArea-nullables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008031316273_WorkOrders.cs" />
+    <Compile Include="Migrations\202008031316273_WorkOrders.designer.cs">
+      <DependentUpon>202008031316273_WorkOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008031423024_AreaConnections.cs" />
+    <Compile Include="Migrations\202008031423024_AreaConnections.designer.cs">
+      <DependentUpon>202008031423024_AreaConnections.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +105,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008010139247_WorkArea-nullables.resx">
       <DependentUpon>202008010139247_WorkArea-nullables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008031316273_WorkOrders.resx">
+      <DependentUpon>202008031316273_WorkOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008031423024_AreaConnections.resx">
+      <DependentUpon>202008031423024_AreaConnections.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="SistemaMirno.UI.View.WorkOrderDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SistemaMirno.UI.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel Orientation="Vertical">
+        <Label Content="Detalles de la orden de trabajo" FontSize="20" Margin="5" />
+        <Separator />
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Area de trabajo" />
+            <TextBox Grid.Row="1"
+                 Text="{Binding WorkOrder.Name, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Margin="5" />
+            <Label Grid.Row="2" Content="Fecha y hora de comienzo" />
+            <TextBox Grid.Row="3"
+                 Text="{Binding WorkOrder.Name, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Margin="5" />
+            <Label Grid.Row="4" Content="Fecha y hora de finalizado" />
+            <TextBox Grid.Row="5"
+                 Text="{Binding WorkOrder.Name, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Margin="5" />
+            <Label Grid.Row="6" Content="Responsable" />
+            <TextBox Grid.Row="7"
+                 Text="{Binding WorkOrder.ResponsibleEmployee.FirstName, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Margin="5" />
+            <Label Grid.Row="8" Content="Supervisor" />
+            <TextBox Grid.Row="9"
+                 Text="{Binding WorkOrder.SupervisorEmployee.FirstName, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Margin="5" />
+            <DataGrid Grid.Row="10" ItemsSource="{Binding WorkOrder.WorkUnits}"/>
+            <StackPanel Grid.Row="11" Orientation="Horizontal">
+                <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}" />
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

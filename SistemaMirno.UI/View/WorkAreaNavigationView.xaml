@@ -33,6 +33,6 @@
     <mah:HamburgerMenu ItemTemplate="{StaticResource MenuItemTemplate}"
                         IsPaneOpen="false"
                         DisplayMode="CompactOverlay"
-                        ItemsSource="{Binding ProductionAreas}"
-                        SelectedItem="{Binding SelectedProductionArea, Mode=TwoWay}" />
+                        ItemsSource="{Binding WorkAreas}"
+                        SelectedItem="{Binding SelectedWorkArea, Mode=TwoWay}" />
 </UserControl>

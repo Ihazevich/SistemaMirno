@@ -2,6 +2,7 @@
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace SistemaMirno.UI.ViewModel.Main
     {
         private IWorkAreaRepository _productionAreaRepository;
         private IEventAggregator _eventAggregator;
-        private WorkAreaWrapper _selectedProductionArea;
+        private WorkAreaWrapper _selectedWorkArea;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkAreaNavigationViewModel"/> class.
@@ -28,32 +29,32 @@ namespace SistemaMirno.UI.ViewModel.Main
             IEventAggregator eventAggregator)
         {
             _productionAreaRepository = productionAreaRepository;
-            ProductionAreas = new ObservableCollection<WorkAreaWrapper>();
+            WorkAreas = new ObservableCollection<WorkAreaWrapper>();
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
-                .Subscribe(AfterProductionAreaSaved);
+                .Subscribe(AfterWorkAreaSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
-                .Subscribe(AfterProductionAreaDeleted);
+                .Subscribe(AfterWorkAreaDeleted);
         }
 
         /// <summary>
-        /// Gets or sets the selected production area.
+        /// Gets or sets the selected work area.
         /// </summary>
-        public WorkAreaWrapper SelectedProductionArea
+        public WorkAreaWrapper SelectedWorkArea
         {
             get
             {
-                return _selectedProductionArea;
+                return _selectedWorkArea;
             }
 
             set
             {
-                _selectedProductionArea = value;
+                _selectedWorkArea = value;
                 OnPropertyChanged();
-                if (_selectedProductionArea != null)
+                if (_selectedWorkArea != null)
                 {
-                    _eventAggregator.GetEvent<ShowViewEvent<WorkArea>>()
-                        .Publish(SelectedProductionArea.Id);
+                    _eventAggregator.GetEvent<ShowViewEvent<WorkUnitViewModel>>()
+                        .Publish(SelectedWorkArea.Id);
                 }
             }
         }
@@ -61,16 +62,16 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets the production areas stored in the view model.
         /// </summary>
-        public ObservableCollection<WorkAreaWrapper> ProductionAreas { get; }
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
 
         /// <inheritdoc/>
         public async Task LoadAsync()
         {
             var productionAreas = await _productionAreaRepository.GetAllAsync();
-            ProductionAreas.Clear();
+            WorkAreas.Clear();
             foreach (var area in productionAreas)
             {
-                ProductionAreas.Add(new WorkAreaWrapper(area));
+                WorkAreas.Add(new WorkAreaWrapper(area));
             }
         }
 
@@ -78,13 +79,13 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterProductionAreaSaved(AfterDataModelSavedEventArgs<WorkArea> args)
+        private void AfterWorkAreaSaved(AfterDataModelSavedEventArgs<WorkArea> args)
         {
-            var item = ProductionAreas.SingleOrDefault(p => p.Id == args.Model.Id);
+            var item = WorkAreas.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item == null)
             {
-                ProductionAreas.Add(new WorkAreaWrapper(args.Model));
+                WorkAreas.Add(new WorkAreaWrapper(args.Model));
             }
             else
             {
@@ -92,13 +93,13 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
-        private void AfterProductionAreaDeleted(AfterDataModelDeletedEventArgs<WorkArea> args)
+        private void AfterWorkAreaDeleted(AfterDataModelDeletedEventArgs<WorkArea> args)
         {
-            var item = ProductionAreas.SingleOrDefault(p => p.Id == args.Model.Id);
+            var item = WorkAreas.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item != null)
             {
-                ProductionAreas.Remove(item);
+                WorkAreas.Remove(item);
             }
         }
     }

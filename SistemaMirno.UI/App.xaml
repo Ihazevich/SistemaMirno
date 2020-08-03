@@ -16,9 +16,6 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            <DataTemplate DataType="{x:Type viewmodel:WorkUnitViewModel}">
-                <view:WorkUnitView />
-            </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:WorkAreaViewModel}">
                 <view:WorkAreaView />
             </DataTemplate>
@@ -60,6 +57,15 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:EmployeeRoleDetailViewModel}">
                 <view:EmployeeRoleDetailView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:WorkUnitViewModel}">
+                <view:WorkUnitView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:WorkOrderViewModel}">
+                <view:WorkOrderView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type detailviewmodel:WorkOrderDetailViewModel}">
+                <view:WorkOrderDetailView />
             </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->

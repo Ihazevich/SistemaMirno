@@ -33,9 +33,10 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ColorViewModel>().As<IColorViewModel>().SingleInstance();
             builder.RegisterType<ProductCategoryViewModel>().As<IProductCategoryViewModel>().SingleInstance();
             builder.RegisterType<ProductViewModel>().As<IProductViewModel>().SingleInstance();
-            builder.RegisterType<WorkUnitViewModel>().As<IWorkUnitViewModel>().SingleInstance();
             builder.RegisterType<EmployeeViewModel>().As<IEmployeeViewModel>().SingleInstance();
             builder.RegisterType<EmployeeRoleViewModel>().As<IEmployeeRoleViewModel>().SingleInstance();
+            builder.RegisterType<WorkUnitViewModel>().As<IWorkUnitViewModel>().SingleInstance();
+            builder.RegisterType<WorkOrderViewModel>().As<IWorkOrderViewModel>().SingleInstance();
 
             builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>();
             builder.RegisterType<MaterialDetailViewModel>().As<IMaterialDetailViewModel>();
@@ -44,15 +45,17 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductDetailViewModel>().As<IProductDetailViewModel>();
             builder.RegisterType<EmployeeDetailViewModel>().As<IEmployeeDetailViewModel>();
             builder.RegisterType<EmployeeRoleDetailViewModel>().As<IEmployeeRoleDetailViewModel>();
+            builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>();
 
             builder.RegisterType<WorkAreaRepository>().As<IWorkAreaRepository>();
             builder.RegisterType<MaterialRepository>().As<IMaterialRepository>();
             builder.RegisterType<ColorRepository>().As<IColorRepository>();
             builder.RegisterType<ProductCategoryRepository>().As<IProductCategoryRepository>();
-            builder.RegisterType<WorkUnitDataService>().As<IWorkUnitDataService>();
             builder.RegisterType<ProductRepository>().As<IProductRepository>();
             builder.RegisterType<EmployeeRepository>().As<IEmployeeRepository>();
             builder.RegisterType<EmployeeRoleRepository>().As<IEmployeeRoleRepository>();
+            builder.RegisterType<WorkUnitRepository>().As<IWorkUnitRepository>();
+            builder.RegisterType<WorkOrderRepository>().As<IWorkOrderRepository>();
 
             return builder.Build();
         }
