@@ -12,9 +12,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public class WorkOrderDetailViewModel : DetailViewModelBase, IWorkOrderDetailViewModel
     {
         private IWorkOrderRepository _workOrderRepository;
-        private IEventAggregator _eventAggregator;
         private WorkOrderWrapper _workOrder;
-        private bool _hasChanges;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkOrderDetailViewModel"/> class.
@@ -24,9 +22,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public WorkOrderDetailViewModel(
             IWorkOrderRepository workOrderRepository,
             IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
             _workOrderRepository = workOrderRepository;
-            _eventAggregator = eventAggregator;
         }
 
         /// <summary>
@@ -46,47 +44,25 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the database context has changes.
-        /// </summary>
-        public bool HasChanges
-        {
-            get
-            {
-                return _hasChanges;
-            }
-
-            set
-            {
-                if (_hasChanges != value)
-                {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         /// <inheritdoc/>
-        public async Task LoadAsync(int WorkOrderId)
+        public override async Task LoadAsync(int? workOrderId)
         {
-            var workOrder = await _workOrderRepository.GetByIdAsync(WorkOrderId);
+            if(workOrderId.HasValue)
+            {
+                var workOrder = await _workOrderRepository.GetByIdAsync(workOrderId.Value);
 
-            WorkOrder = new WorkOrderWrapper(workOrder);
-            WorkOrder.PropertyChanged += ProductionArea_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-            // TODO: Here goes the validation triggers
+                WorkOrder = new WorkOrderWrapper(workOrder);
+                WorkOrder.PropertyChanged += WorkOrder_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            }
         }
 
         /// <inheritdoc/>
         protected override void OnSaveExecute()
         {
             _workOrderRepository.SaveAsync();
-            //HasChanges = _productionAreaRepository.HasChanges();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkOrder>>()
-                .Publish(new AfterDataModelSavedEventArgs<WorkOrder> { Model = WorkOrder.Model });
+            RaiseDataModelSavedEvent(WorkOrder.Model);
         }
 
         /// <inheritdoc/>
@@ -99,11 +75,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _workOrderRepository.Remove(WorkOrder.Model);
             await _workOrderRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkOrder>>()
-                .Publish(new AfterDataModelDeletedEventArgs<WorkOrder> { Model = WorkOrder.Model });
+            RaiseDataModelDeletedEvent(WorkOrder.Model);
         }
 
-        private void ProductionArea_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void WorkOrder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Console.WriteLine(e.PropertyName);
             if (!HasChanges)

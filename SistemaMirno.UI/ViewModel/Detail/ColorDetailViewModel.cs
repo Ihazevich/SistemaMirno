@@ -11,9 +11,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public class ColorDetailViewModel : DetailViewModelBase, IColorDetailViewModel
     {
         private IColorRepository _colorRepository;
-        private IEventAggregator _eventAggregator;
         private ColorWrapper _color;
-        private bool _hasChanges;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ColorDetailViewModel"/> class.
@@ -23,9 +21,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public ColorDetailViewModel(
             IColorRepository colorRepository,
             IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
             _colorRepository = colorRepository;
-            _eventAggregator = eventAggregator;
         }
 
         /// <summary>
@@ -45,29 +43,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the database context has changes.
-        /// </summary>
-        public bool HasChanges
-        {
-            get
-            {
-                return _hasChanges;
-            }
-
-            set
-            {
-                if (_hasChanges != value)
-                {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         /// <inheritdoc/>
-        public async Task LoadAsync(int? colorId)
+        public override async Task LoadAsync(int? colorId)
         {
             var color = colorId.HasValue
                 ? await _colorRepository.GetByIdAsync(colorId.Value)
@@ -89,8 +66,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _colorRepository.SaveAsync();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Color>>()
-                .Publish(new AfterDataModelSavedEventArgs<Color> { Model = Color.Model });
+            RaiseDataModelSavedEvent(Color.Model);
         }
 
         /// <inheritdoc/>
@@ -103,8 +79,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _colorRepository.Remove(Color.Model);
             await _colorRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Color>>()
-                .Publish(new AfterDataModelDeletedEventArgs<Color> { Model = Color.Model }); 
+            RaiseDataModelDeletedEvent(Color.Model);
         }
 
         private void Color_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

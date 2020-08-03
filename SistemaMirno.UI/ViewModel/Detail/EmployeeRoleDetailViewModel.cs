@@ -1,14 +1,10 @@
-﻿using Prism.Commands;
+﻿using System.Threading.Tasks;
+using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
@@ -16,9 +12,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     {
 
         private IEmployeeRoleRepository _employeeRoleRepository;
-        private IEventAggregator _eventAggregator;
         private EmployeeRoleWrapper _employeRolee;
-        private bool _hasChanges;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeRoleDetailViewModel"/> class.
@@ -28,9 +22,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public EmployeeRoleDetailViewModel(
             IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
             _employeeRoleRepository = employeeRoleRepository;
-            _eventAggregator = eventAggregator;
         }
 
         /// <summary>
@@ -50,29 +44,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the database context has changes.
-        /// </summary>
-        public bool HasChanges
-        {
-            get
-            {
-                return _hasChanges;
-            }
-
-            set
-            {
-                if (_hasChanges != value)
-                {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         /// <inheritdoc/>
-        public async Task LoadAsync(int? employeeRoleId)
+        public override async Task LoadAsync(int? employeeRoleId)
         {
             var role = employeeRoleId.HasValue
                 ? await _employeeRoleRepository.GetByIdAsync(employeeRoleId.Value)
@@ -94,8 +67,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _employeeRoleRepository.SaveAsync();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<EmployeeRole>>()
-                .Publish(new AfterDataModelSavedEventArgs<EmployeeRole> { Model = EmployeeRole.Model });
+            RaiseDataModelSavedEvent(EmployeeRole.Model);
         }
 
         /// <inheritdoc/>
@@ -108,8 +80,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _employeeRoleRepository.Remove(EmployeeRole.Model);
             await _employeeRoleRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<EmployeeRole>>()
-                .Publish(new AfterDataModelDeletedEventArgs<EmployeeRole> { Model = EmployeeRole.Model });
+            RaiseDataModelDeletedEvent(EmployeeRole.Model);
         }
 
         private void Color_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

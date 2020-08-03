@@ -13,11 +13,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class AreaConnectionDetailViewModel : DetailViewModelBase, IAreaConnectionDetailViewModel
     {
+        private AreaConnectionWrapper _areaConnection;
         private IAreaConnectionRepository _areaConnectionRepository;
         private IWorkAreaRepository _workAreaRepository;
-        private IEventAggregator _eventAggregator;
-        private AreaConnectionWrapper _areaConnection;
-        private bool _hasChanges;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeDetailViewModel"/> class.
@@ -28,17 +26,72 @@ namespace SistemaMirno.UI.ViewModel.Detail
             IAreaConnectionRepository areaConnectionRepository,
             IWorkAreaRepository workAreaRepository,
             IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
             _areaConnectionRepository = areaConnectionRepository;
             _workAreaRepository = workAreaRepository;
-            _eventAggregator = eventAggregator;
 
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
+            EventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaSaved);
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
+            EventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaDeleted);
 
             WorkAreas = new ObservableCollection<WorkAreaWrapper>();
+        }
+
+        /// <summary>
+        /// Gets or sets the data model wrapper.
+        /// </summary>
+        public AreaConnectionWrapper AreaConnection
+        {
+            get
+            {
+                return _areaConnection;
+            }
+
+            set
+            {
+                _areaConnection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
+
+        /// <inheritdoc/>
+        public override async Task LoadAsync(int? areaConnectionId)
+        {
+            var areaConnection = areaConnectionId.HasValue
+                ? await _areaConnectionRepository.GetByIdAsync(areaConnectionId.Value)
+                : CreateNewAreaConnection();
+
+            AreaConnection = new AreaConnectionWrapper(areaConnection);
+            AreaConnection.PropertyChanged += AreaConnection_PropertyChanged;
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+            await LoadWorkAreasAsync();
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            _areaConnectionRepository.Remove(AreaConnection.Model);
+            await _areaConnectionRepository.SaveAsync();
+            RaiseDataModelDeletedEvent(AreaConnection.Model);
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return AreaConnection != null && !AreaConnection.HasErrors && HasChanges;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnSaveExecute()
+        {
+            _areaConnectionRepository.SaveAsync();
+            HasChanges = false;
+            RaiseDataModelSavedEvent(AreaConnection.Model);
         }
 
         private void AfterWorkAreaDeleted(AfterDataModelDeletedEventArgs<WorkArea> args)
@@ -65,93 +118,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        /// <summary>
-        /// Gets or sets the data model wrapper.
-        /// </summary>
-        public AreaConnectionWrapper AreaConnection
-        {
-            get
-            {
-                return _areaConnection;
-            }
-
-            set
-            {
-                _areaConnection = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the database context has changes.
-        /// </summary>
-        public bool HasChanges
-        {
-            get
-            {
-                return _hasChanges;
-            }
-
-            set
-            {
-                if (_hasChanges != value)
-                {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task LoadAsync(int? areaConnectionId)
-        {
-            var areaConnection = areaConnectionId.HasValue
-                ? await _areaConnectionRepository.GetByIdAsync(areaConnectionId.Value)
-                : CreateNewAreaConnection();
-
-            AreaConnection = new AreaConnectionWrapper(areaConnection);
-            AreaConnection.PropertyChanged += AreaConnection_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-            await LoadWorkAreasAsync();
-        }
-
-        private async Task LoadWorkAreasAsync()
-        {
-            var areas = await _workAreaRepository.GetAllAsync();
-            WorkAreas.Clear();
-            foreach (var area in areas)
-            {
-                WorkAreas.Add(new WorkAreaWrapper(area));
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override void OnSaveExecute()
-        {
-            _areaConnectionRepository.SaveAsync();
-            HasChanges = false;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<AreaConnection>>()
-                .Publish(new AfterDataModelSavedEventArgs<AreaConnection> { Model = AreaConnection.Model });
-        }
-
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return AreaConnection != null && !AreaConnection.HasErrors && HasChanges;
-        }
-
-        protected override async void OnDeleteExecute()
-        {
-            _areaConnectionRepository.Remove(AreaConnection.Model);
-            await _areaConnectionRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<AreaConnection>>()
-                .Publish(new AfterDataModelDeletedEventArgs<AreaConnection> { Model = AreaConnection.Model });
-        }
-
         private void AreaConnection_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Console.WriteLine(e.PropertyName);
@@ -171,6 +137,16 @@ namespace SistemaMirno.UI.ViewModel.Detail
             var areaConnection = new AreaConnection();
             _areaConnectionRepository.Add(areaConnection);
             return areaConnection;
+        }
+
+        private async Task LoadWorkAreasAsync()
+        {
+            var areas = await _workAreaRepository.GetAllAsync();
+            WorkAreas.Clear();
+            foreach (var area in areas)
+            {
+                WorkAreas.Add(new WorkAreaWrapper(area));
+            }
         }
     }
 }

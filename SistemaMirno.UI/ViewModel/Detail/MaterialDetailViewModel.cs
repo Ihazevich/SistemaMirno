@@ -1,20 +1,18 @@
-﻿using Prism.Commands;
+﻿using System;
+using System.Threading.Tasks;
+using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
-using System;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class MaterialDetailViewModel : DetailViewModelBase, IMaterialDetailViewModel
     {
-        private IMaterialRepository _materialRepository;
-        private IEventAggregator _eventAggregator;
         private MaterialWrapper _material;
-        private bool _hasChanges;
+        private IMaterialRepository _materialRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialDetailViewModel"/> class.
@@ -24,9 +22,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public MaterialDetailViewModel(
             IMaterialRepository materialRepository,
             IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
             _materialRepository = materialRepository;
-            _eventAggregator = eventAggregator;
         }
 
         /// <summary>
@@ -46,29 +44,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the database context has changes.
-        /// </summary>
-        public bool HasChanges
-        {
-            get
-            {
-                return _hasChanges;
-            }
-
-            set
-            {
-                if (_hasChanges != value)
-                {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         /// <inheritdoc/>
-        public async Task LoadAsync(int? materialId)
+        public override async Task LoadAsync(int? materialId)
         {
             var material = materialId.HasValue
                 ? await _materialRepository.GetByIdAsync(materialId.Value)
@@ -85,14 +62,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnSaveExecute()
+        protected override async void OnDeleteExecute()
         {
-            _materialRepository.SaveAsync();
-            //HasChanges = _productionAreaRepository.HasChanges();
-            HasChanges = false;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Material>>()
-                .Publish(new AfterDataModelSavedEventArgs<Material> { Model = Material.Model });
+            _materialRepository.Remove(Material.Model);
+            await _materialRepository.SaveAsync();
+            RaiseDataModelDeletedEvent(Material.Model);
         }
 
         /// <inheritdoc/>
@@ -101,12 +75,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
             return Material != null && !Material.HasErrors && HasChanges;
         }
 
-        protected override async void OnDeleteExecute()
+        /// <inheritdoc/>
+        protected override void OnSaveExecute()
         {
-            _materialRepository.Remove(Material.Model);
-            await _materialRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Material>>()
-                .Publish(new AfterDataModelDeletedEventArgs<Material> { Model = Material.Model });
+            _materialRepository.SaveAsync();
+            HasChanges = false;
+            RaiseDataModelSavedEvent(Material.Model);
+        }
+        private Material CreateNewMaterial()
+        {
+            var material = new Material();
+            _materialRepository.Add(material);
+            return material;
         }
 
         private void Material_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -121,13 +101,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
-        }
-
-        private Material CreateNewMaterial()
-        {
-            var material = new Material();
-            _materialRepository.Add(material);
-            return material;
         }
     }
 }

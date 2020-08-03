@@ -17,11 +17,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
     /// </summary>
     public class WorkAreaDetailViewModel : DetailViewModelBase, IWorkAreaDetailViewModel
     {
-        private IWorkAreaRepository _productionAreaRepository;
         private IEmployeeRoleRepository _employeeRoleRepository;
-        private IEventAggregator _eventAggregator;
         private WorkAreaWrapper _productionArea;
-        private bool _hasChanges;
+        private IWorkAreaRepository _productionAreaRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkAreaDetailViewModel"/> class.
@@ -32,19 +30,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
             IWorkAreaRepository productionAreaRepository,
             IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
             _productionAreaRepository = productionAreaRepository;
             _employeeRoleRepository = employeeRoleRepository;
-            _eventAggregator = eventAggregator;
 
             EmployeeRoles = new ObservableCollection<EmployeeRoleWrapper>();
             EditAreaConnectionsCommand = new DelegateCommand(OnOpenAreaConnectionViewExecute);
-        }
-
-        private void OnOpenAreaConnectionViewExecute()
-        {
-            _eventAggregator.GetEvent<ShowViewEvent<AreaConnectionViewModel>>()
-                .Publish(ProductionArea.Id);
         }
 
         public ICommand EditAreaConnectionsCommand { get; }
@@ -54,7 +46,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <summary>
         /// Gets or sets the data model wrapper.
         /// </summary>
-        public WorkAreaWrapper ProductionArea
+        public WorkAreaWrapper WorkArea
         {
             get
             {
@@ -68,45 +60,52 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the database context has changes.
-        /// </summary>
-        public bool HasChanges
-        {
-            get
-            {
-                return _hasChanges;
-            }
-
-            set
-            {
-                if (_hasChanges != value)
-                {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         /// <inheritdoc/>
-        public async Task LoadAsync(int? productionAreaId)
+        public override async Task LoadAsync(int? productionAreaId)
         {
             var productionArea = productionAreaId.HasValue
                 ? await _productionAreaRepository.GetByIdAsync(productionAreaId.Value)
                 : CreateNewProductionArea();
 
-            ProductionArea = new WorkAreaWrapper(productionArea);
-            ProductionArea.PropertyChanged += ProductionArea_PropertyChanged;
+            WorkArea = new WorkAreaWrapper(productionArea);
+            WorkArea.PropertyChanged += ProductionArea_PropertyChanged;
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
 
             if (productionArea.Id == 0)
             {
                 // This triggers the validation.
-                ProductionArea.Name = string.Empty;
+                WorkArea.Name = string.Empty;
             }
 
             await LoadEmployeeRolesAsync();
+        }
+
+        protected override async void OnDeleteExecute()
+        {
+            _productionAreaRepository.Remove(WorkArea.Model);
+            await _productionAreaRepository.SaveAsync();
+            RaiseDataModelDeletedEvent(WorkArea.Model);
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return WorkArea != null && !WorkArea.HasErrors && HasChanges;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnSaveExecute()
+        {
+            _productionAreaRepository.SaveAsync();
+            HasChanges = false;
+            RaiseDataModelSavedEvent(WorkArea.Model);
+        }
+
+        private WorkArea CreateNewProductionArea()
+        {
+            var productionArea = new WorkArea();
+            _productionAreaRepository.Add(productionArea);
+            return productionArea;
         }
 
         private async Task LoadEmployeeRolesAsync()
@@ -119,28 +118,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnSaveExecute()
+        private void OnOpenAreaConnectionViewExecute()
         {
-            _productionAreaRepository.SaveAsync();
-            //HasChanges = _productionAreaRepository.HasChanges();
-            HasChanges = false;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
-                .Publish(new AfterDataModelSavedEventArgs<WorkArea> { Model = ProductionArea.Model });
-        }
-
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return ProductionArea != null && !ProductionArea.HasErrors && HasChanges;
-        }
-
-        protected override async void OnDeleteExecute()
-        {
-            _productionAreaRepository.Remove(ProductionArea.Model);
-            await _productionAreaRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
-                .Publish(new AfterDataModelDeletedEventArgs<WorkArea> { Model = ProductionArea.Model });
+            EventAggregator.GetEvent<ShowViewEvent<AreaConnectionViewModel>>()
+                .Publish(WorkArea.Id);
         }
 
         private void ProductionArea_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -151,17 +132,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 HasChanges = _productionAreaRepository.HasChanges();
             }
 
-            if (e.PropertyName == nameof(ProductionArea.HasErrors))
+            if (e.PropertyName == nameof(WorkArea.HasErrors))
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
-        }
-
-        private WorkArea CreateNewProductionArea()
-        {
-            var productionArea = new WorkArea();
-            _productionAreaRepository.Add(productionArea);
-            return productionArea;
         }
     }
 }
