@@ -15,10 +15,22 @@ namespace SistemaMirno.UI.ViewModel.General
     /// </summary>
     public class WorkUnitViewModel : ViewModelBase, IWorkUnitViewModel
     {
-        private IWorkUnitRepository _workUnitRepository;
-        private IEventAggregator _eventAggregator;
-        private string _areaName;
         private int _areaId;
+        private string _areaName;
+        private IEventAggregator _eventAggregator;
+        private IWorkUnitRepository _workUnitRepository;
+
+        public WorkUnitViewModel(IWorkUnitRepository workUnitRepository,
+                    IEventAggregator eventAggregator)
+        {
+            _workUnitRepository = workUnitRepository;
+            _eventAggregator = eventAggregator;
+            _eventAggregator.GetEvent<ShowViewEvent<WorkUnitViewModel>>()
+                .Subscribe(OnWorkAreaSelected);
+
+            WorkUnits = new ObservableCollection<WorkUnit>();
+            OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
+        }
 
         /// <summary>
         /// Gets or sets the production area name for the view.
@@ -37,20 +49,23 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
+        public ICommand OpenNewWorkOrderViewCommand { get; }
+
         public ICommand OpenWorkOrderViewCommand { get; }
 
         public ObservableCollection<WorkUnit> WorkUnits { get; set; }
 
-        public WorkUnitViewModel(IWorkUnitRepository workUnitRepository,
-            IEventAggregator eventAggregator)
+        public async Task LoadAsync(int productionAreaId)
         {
-            _workUnitRepository = workUnitRepository;
-            _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<WorkUnitViewModel>>()
-                .Subscribe(OnWorkAreaSelected);
+            WorkUnits.Clear();
+            AreaName = await _workUnitRepository.GetWorkAreaNameAsync(productionAreaId);
+            _areaId = productionAreaId;
+            var workUnits = await _workUnitRepository.GetByAreaIdAsync(productionAreaId);
 
-            WorkUnits = new ObservableCollection<WorkUnit>();
-            OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
+            foreach (var workUnit in workUnits)
+            {
+                WorkUnits.Add(workUnit);
+            }
         }
 
         private void OnOpenWorkOrderViewExecute()
@@ -64,19 +79,6 @@ namespace SistemaMirno.UI.ViewModel.General
             await LoadAsync(productionAreaId);
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(this);
-        }
-
-        public async Task LoadAsync(int productionAreaId)
-        {
-            WorkUnits.Clear();
-            AreaName = await _workUnitRepository.GetWorkAreaNameAsync(productionAreaId);
-            _areaId = productionAreaId;
-            var workUnits = await _workUnitRepository.GetByAreaIdAsync(productionAreaId);
-
-            foreach (var workUnit in workUnits)
-            {
-                WorkUnits.Add(workUnit);
-            }
         }
     }
 }

@@ -5,15 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
-    public class Employee
+    public class Employee : BaseModel
     {
         public Employee()
         {
             ResponsibleWorkOrders = new Collection<WorkOrder>();
             SupervisorWorkOrders = new Collection<WorkOrder>();
         }
-
-        public int Id { get; set; }
 
         [Required]
         [MaxLength(30)]

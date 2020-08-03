@@ -6,14 +6,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
-    public class WorkOrder
+    public class WorkOrder : BaseModel
     {
         public WorkOrder()
         {
             WorkUnits = new Collection<WorkUnit>();
         }
-
-        public int Id { get; set; }
 
         public DateTime StartTime { get; set; }
 

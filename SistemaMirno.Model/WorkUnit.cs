@@ -4,8 +4,6 @@ namespace SistemaMirno.Model
 {
     public class WorkUnit : BaseModel
     {
-        public int Id { get; set; }
-
         [Required]
         public int ProductId { get; set; }
 

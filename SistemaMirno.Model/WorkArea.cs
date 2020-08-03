@@ -15,8 +15,6 @@ namespace SistemaMirno.Model
             AreaConnectionsTo = new Collection<AreaConnection>();
         }
 
-        public int Id { get; set; }
-
         [Required]
         [MinLength(3)]
         [MaxLength(20)]

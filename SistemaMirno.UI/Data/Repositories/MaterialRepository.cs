@@ -6,52 +6,15 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
-    public class MaterialRepository : IMaterialRepository
+    public class MaterialRepository : GenericRepository<Material, MirnoDbContext>, IMaterialRepository
     {
-        private MirnoDbContext _context;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialRepository"/> class.
         /// </summary>
         /// <param name="context">A <see cref="MirnoDbContext"/> instance representing the database context.</param>
         public MaterialRepository(MirnoDbContext context)
+            : base(context)
         {
-            _context = context;
-        }
-
-        /// <inheritdoc/>
-        public async Task<List<Material>> GetAllAsync()
-        {
-            return await _context.Materials.ToListAsync();
-        }
-
-        /// <inheritdoc/>
-        public async Task<Material> GetByIdAsync(int id)
-        {
-            return await _context.Materials.SingleAsync<Material>(m => m.Id == id);
-        }
-
-        /// <inheritdoc/>
-        public async Task SaveAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
-
-        /// <inheritdoc/>
-        public bool HasChanges()
-        {
-            return _context.ChangeTracker.HasChanges();
-        }
-
-        /// <inheritdoc/>
-        public void Add(Material model)
-        {
-            _context.Materials.Add(model);
-        }
-
-        public void Remove(Material model)
-        {
-            _context.Materials.Remove(model);
         }
     }
 }

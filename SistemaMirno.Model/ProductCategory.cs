@@ -4,14 +4,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMirno.Model
 {
-    public class ProductCategory
+    public class ProductCategory : BaseModel
     {
         public ProductCategory()
         {
             Products = new Collection<Product>();
         }
-
-        public int Id { get; set; }
 
         [Required]
         [MaxLength(20)]

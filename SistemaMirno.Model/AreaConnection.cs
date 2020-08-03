@@ -6,10 +6,8 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing the AreaConnection.
     /// </summary>
-    public class AreaConnection
+    public class AreaConnection : BaseModel
     {
-        public int Id { get; set; }
-
         [Required]
         [ForeignKey("FromWorkArea")]
         public int? FromWorkAreaId { get; set; }
