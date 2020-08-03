@@ -32,12 +32,24 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        public WorkArea FromWorkArea
+        {
+            get { return GetValue<WorkArea>(); }
+            set { SetValue(value); }
+        }
+
         /// <summary>
         /// Gets or sets the AreaConnection ToAreaId.
         /// </summary>
         public int? ToWorkAreaId
         {
             get { return GetValue<int?>(); }
+            set { SetValue(value); }
+        }
+
+        public WorkArea ToWorkArea
+        {
+            get { return GetValue<WorkArea>(); }
             set { SetValue(value); }
         }
 

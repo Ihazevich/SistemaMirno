@@ -13,11 +13,11 @@ namespace SistemaMirno.Model
         [Required]
         [ForeignKey("FromWorkArea")]
         public int? FromWorkAreaId { get; set; }
-        public WorkArea FromWorkArea { get; set; }
+        public virtual WorkArea FromWorkArea { get; set; }
 
         [Required]
         [ForeignKey("ToWorkArea")]
         public int? ToWorkAreaId { get; set; }
-        public WorkArea ToWorkArea { get; set; }
+        public virtual WorkArea ToWorkArea { get; set; }
     }
 }
