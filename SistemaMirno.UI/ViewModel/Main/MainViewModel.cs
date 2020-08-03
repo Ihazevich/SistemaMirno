@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Events;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.General;
@@ -36,6 +37,8 @@ namespace SistemaMirno.UI.ViewModel.Main
             IWorkUnitViewModel workUnitViewModel,
             IProductViewModel productViewModel,
             IWorkAreaViewModel workAreaViewModel,
+            IEmployeeViewModel employeeViewModel,
+            IEmployeeRoleViewModel employeeRoleViewModel,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
         {
@@ -49,6 +52,8 @@ namespace SistemaMirno.UI.ViewModel.Main
             ProductViewModel = productViewModel;
             WorkAreaViewModel = workAreaViewModel;
             ProductCategoryViewModel = productCategoryViewModel;
+            EmployeeViewModel = employeeViewModel;
+            EmployeeRoleViewModel = employeeRoleViewModel;
 
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(OnViewChanged);
@@ -109,6 +114,16 @@ namespace SistemaMirno.UI.ViewModel.Main
         public IProductCategoryViewModel ProductCategoryViewModel { get; }
 
         /// <summary>
+        /// Gets the product category area view model.
+        /// </summary>
+        public IEmployeeViewModel EmployeeViewModel { get; }
+
+        /// <summary>
+        /// Gets the product category area view model.
+        /// </summary>
+        public IEmployeeRoleViewModel EmployeeRoleViewModel { get; }
+
+        /// <summary>
         /// Gets or sets the currently selected view model.
         /// </summary>
         public IViewModelBase SelectedViewModel
@@ -158,6 +173,16 @@ namespace SistemaMirno.UI.ViewModel.Main
 
                 case "ProductionAreas":
                     _eventAggregator.GetEvent<ShowViewEvent<WorkAreaViewModel>>().
+                        Publish(-1);
+                    break;
+
+                case "Employees":
+                    _eventAggregator.GetEvent<ShowViewEvent<EmployeeViewModel>>().
+                        Publish(-1);
+                    break;
+
+                case "EmployeeRoles":
+                    _eventAggregator.GetEvent<ShowViewEvent<EmployeeRoleViewModel>>().
                         Publish(-1);
                     break;
 

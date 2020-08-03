@@ -4,43 +4,48 @@ using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public class ColorDetailViewModel : DetailViewModelBase, IColorDetailViewModel
+    public class EmployeeRoleDetailViewModel : DetailViewModelBase, IEmployeeRoleDetailViewModel
     {
-        private IColorRepository _colorRepository;
+
+        private IEmployeeRoleRepository _employeeRoleRepository;
         private IEventAggregator _eventAggregator;
-        private ColorWrapper _color;
+        private EmployeeRoleWrapper _employeRolee;
         private bool _hasChanges;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorDetailViewModel"/> class.
+        /// Initializes a new instance of the <see cref="EmployeeRoleDetailViewModel"/> class.
         /// </summary>
-        /// <param name="colorRepository">The data repository.</param>
+        /// <param name="employeeRoleRepository">The data repository.</param>
         /// <param name="eventAggregator">The event aggregator.</param>
-        public ColorDetailViewModel(
-            IColorRepository colorRepository,
+        public EmployeeRoleDetailViewModel(
+            IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator)
         {
-            _colorRepository = colorRepository;
+            _employeeRoleRepository = employeeRoleRepository;
             _eventAggregator = eventAggregator;
         }
 
         /// <summary>
         /// Gets or sets the data model wrapper.
         /// </summary>
-        public ColorWrapper Color
+        public EmployeeRoleWrapper EmployeeRole
         {
             get
             {
-                return _color;
+                return _employeRolee;
             }
 
             set
             {
-                _color = value;
+                _employeRolee = value;
                 OnPropertyChanged();
             }
         }
@@ -67,64 +72,64 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         /// <inheritdoc/>
-        public async Task LoadAsync(int? colorId)
+        public async Task LoadAsync(int? employeeRoleId)
         {
-            var color = colorId.HasValue
-                ? await _colorRepository.GetByIdAsync(colorId.Value)
-                : CreateNewColor();
+            var role = employeeRoleId.HasValue
+                ? await _employeeRoleRepository.GetByIdAsync(employeeRoleId.Value)
+                : CreateNewEmployeeRole();
 
-            Color = new ColorWrapper(color);
-            Color.PropertyChanged += Color_PropertyChanged;
+            EmployeeRole = new EmployeeRoleWrapper(role);
+            EmployeeRole.PropertyChanged += Color_PropertyChanged;
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
 
-            if (color.Id == 0)
+            if (role.Id == 0)
             {
                 // This triggers the validation.
-                Color.Name = string.Empty;
+                EmployeeRole.Name = string.Empty;
             }
         }
 
         /// <inheritdoc/>
         protected override void OnSaveExecute()
         {
-            _colorRepository.SaveAsync();
+            _employeeRoleRepository.SaveAsync();
             HasChanges = false;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Color>>()
-                .Publish(new AfterDataModelSavedEventArgs<Color> { Model = Color.Model });
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<EmployeeRole>>()
+                .Publish(new AfterDataModelSavedEventArgs<EmployeeRole> { Model = EmployeeRole.Model });
         }
 
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return Color != null && !Color.HasErrors && HasChanges;
+            return EmployeeRole != null && !EmployeeRole.HasErrors && HasChanges;
         }
 
         protected override async void OnDeleteExecute()
         {
-            _colorRepository.Remove(Color.Model);
-            await _colorRepository.SaveAsync();
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Color>>()
-                .Publish(new AfterDataModelDeletedEventArgs<Color> { Model = Color.Model }); 
+            _employeeRoleRepository.Remove(EmployeeRole.Model);
+            await _employeeRoleRepository.SaveAsync();
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<EmployeeRole>>()
+                .Publish(new AfterDataModelDeletedEventArgs<EmployeeRole> { Model = EmployeeRole.Model });
         }
 
         private void Color_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!HasChanges)
             {
-                HasChanges = _colorRepository.HasChanges();
+                HasChanges = _employeeRoleRepository.HasChanges();
             }
 
-            if (e.PropertyName == nameof(Color.HasErrors))
+            if (e.PropertyName == nameof(EmployeeRole.HasErrors))
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
         }
 
-        private Color CreateNewColor()
+        private EmployeeRole CreateNewEmployeeRole()
         {
-            var color = new Color();
-            _colorRepository.Add(color);
-            return color;
+            var role = new EmployeeRole();
+            _employeeRoleRepository.Add(role);
+            return role;
         }
     }
 }

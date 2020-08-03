@@ -50,6 +50,18 @@
             <DataTemplate DataType="{x:Type detailviewmodel:ProductDetailViewModel}">
                 <view:ProductDetailView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:EmployeeViewModel}">
+                <view:EmployeeView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type detailviewmodel:EmployeeDetailViewModel}">
+                <view:EmployeeDetailView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:EmployeeRoleViewModel}">
+                <view:EmployeeRoleView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type detailviewmodel:EmployeeRoleDetailViewModel}">
+                <view:EmployeeRoleDetailView />
+            </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />

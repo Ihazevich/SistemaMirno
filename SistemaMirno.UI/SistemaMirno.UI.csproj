@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.101.20213</AssemblyVersion>
+    <AssemblyVersion>0.1.142.20216</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -132,7 +132,11 @@
     <Compile Include="Event\ShowViewEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\EmployeeRoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IColorDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IEmployeeDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IEmployeeRoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
@@ -144,7 +148,11 @@
     <Compile Include="ViewModel\Detail\IWorkAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkAreaDetailViewModel.cs" />
+    <Compile Include="ViewModel\General\EmployeeRoleViewModel.cs" />
+    <Compile Include="ViewModel\General\EmployeeViewModel.cs" />
     <Compile Include="ViewModel\General\IColorViewModel.cs" />
+    <Compile Include="ViewModel\General\IEmployeeRoleViewModel.cs" />
+    <Compile Include="ViewModel\General\IEmployeeViewModel.cs" />
     <Compile Include="ViewModel\General\IMaterialViewModel.cs" />
     <Compile Include="ViewModel\General\IProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkAreaViewModel.cs" />
@@ -165,6 +173,18 @@
     </Compile>
     <Compile Include="View\ColorView.xaml.cs">
       <DependentUpon>ColorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeDetailView.xaml.cs">
+      <DependentUpon>EmployeeDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeRoleDetailView.xaml.cs">
+      <DependentUpon>EmployeeRoleDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeRoleView.xaml.cs">
+      <DependentUpon>EmployeeRoleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeView.xaml.cs">
+      <DependentUpon>EmployeeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MaterialDetailView.xaml.cs">
       <DependentUpon>MaterialDetailView.xaml</DependentUpon>
@@ -200,6 +220,8 @@
     </Compile>
     <Compile Include="Wrapper\AreaConnectionWrapper.cs" />
     <Compile Include="Wrapper\ColorWrapper.cs" />
+    <Compile Include="Wrapper\EmployeeRoleWrapper.cs" />
+    <Compile Include="Wrapper\EmployeeWrapper.cs" />
     <Compile Include="Wrapper\MaterialWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
@@ -224,6 +246,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ColorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeRoleDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeRoleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

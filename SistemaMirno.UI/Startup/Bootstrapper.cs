@@ -34,12 +34,16 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductCategoryViewModel>().As<IProductCategoryViewModel>().SingleInstance();
             builder.RegisterType<ProductViewModel>().As<IProductViewModel>().SingleInstance();
             builder.RegisterType<WorkUnitViewModel>().As<IWorkUnitViewModel>().SingleInstance();
+            builder.RegisterType<EmployeeViewModel>().As<IEmployeeViewModel>().SingleInstance();
+            builder.RegisterType<EmployeeRoleViewModel>().As<IEmployeeRoleViewModel>().SingleInstance();
 
             builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>();
             builder.RegisterType<MaterialDetailViewModel>().As<IMaterialDetailViewModel>();
             builder.RegisterType<ColorDetailViewModel>().As<IColorDetailViewModel>();
             builder.RegisterType<ProductCategoryDetailViewModel>().As<IProductCategoryDetailViewModel>();
             builder.RegisterType<ProductDetailViewModel>().As<IProductDetailViewModel>();
+            builder.RegisterType<EmployeeDetailViewModel>().As<IEmployeeDetailViewModel>();
+            builder.RegisterType<EmployeeRoleDetailViewModel>().As<IEmployeeRoleDetailViewModel>();
 
             builder.RegisterType<WorkAreaRepository>().As<IWorkAreaRepository>();
             builder.RegisterType<MaterialRepository>().As<IMaterialRepository>();
@@ -47,6 +51,8 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductCategoryRepository>().As<IProductCategoryRepository>();
             builder.RegisterType<WorkUnitDataService>().As<IWorkUnitDataService>();
             builder.RegisterType<ProductRepository>().As<IProductRepository>();
+            builder.RegisterType<EmployeeRepository>().As<IEmployeeRepository>();
+            builder.RegisterType<EmployeeRoleRepository>().As<IEmployeeRoleRepository>();
 
             return builder.Build();
         }

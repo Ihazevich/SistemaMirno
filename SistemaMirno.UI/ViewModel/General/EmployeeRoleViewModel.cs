@@ -14,54 +14,54 @@ using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class ColorViewModel : ViewModelBase, IColorViewModel
+    public class EmployeeRoleViewModel : ViewModelBase, IEmployeeRoleViewModel
     {
-        private IColorRepository _colorRepository;
+        private IEmployeeRoleRepository _employeeRoleRepository;
         private IMessageDialogService _messageDialogService;
         private IEventAggregator _eventAggregator;
-        private ColorWrapper _selectedColor;
-        private IColorDetailViewModel _colorDetailViewModel;
-        private Func<IColorDetailViewModel> _colorDetailViewModelCreator;
+        private EmployeeRoleWrapper _selectedEmployeeRole;
+        private IEmployeeRoleDetailViewModel _employeeRoleDetailViewModel;
+        private Func<IEmployeeRoleDetailViewModel> _employeeRoleDetailViewModelCreator;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorViewModel"/> class.
+        /// Initializes a new instance of the <see cref="EmployeeRoleViewModel"/> class.
         /// </summary>
-        /// <param name="colorDetailViewModelCreator">A function to create detailviewmodel instances.</param>
+        /// <param name="employeeRoleDetailViewModelCreator">A function to create detailviewmodel instances.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
-        public ColorViewModel(
-            Func<IColorDetailViewModel> colorDetailViewModelCreator,
-            IColorRepository colorRepository,
+        public EmployeeRoleViewModel(
+            Func<IEmployeeRoleDetailViewModel> employeeRoleDetailViewModelCreator,
+            IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
         {
-            _colorDetailViewModelCreator = colorDetailViewModelCreator;
-            _colorRepository = colorRepository;
+            _employeeRoleDetailViewModelCreator = employeeRoleDetailViewModelCreator;
+            _employeeRoleRepository = employeeRoleRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<ColorViewModel>>()
+            _eventAggregator.GetEvent<ShowViewEvent<EmployeeRoleViewModel>>()
                 .Subscribe(ViewModelSelected);
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Color>>()
-                .Subscribe(AfterColorSaved);
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Color>>()
-                .Subscribe(AfterColorDeleted);
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<EmployeeRole>>()
+                .Subscribe(AfterEmployeeRoleSaved);
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<EmployeeRole>>()
+                .Subscribe(AfterEmployeeRoleDeleted);
 
-            Colors = new ObservableCollection<ColorWrapper>();
-            CreateNewColorCommand = new DelegateCommand(OnCreateNewColorExecute);
+            EmployeeRoles = new ObservableCollection<EmployeeRoleWrapper>();
+            CreateNewEmployeeRoleCommand = new DelegateCommand(OnCreateNewEmployeeRoleExecute);
         }
 
         /// <summary>
         /// Gets the Color detail view model.
         /// </summary>
-        public IColorDetailViewModel ColorDetailViewModel
+        public IEmployeeRoleDetailViewModel EmployeeRoleDetailViewModel
         {
             get
             {
-                return _colorDetailViewModel;
+                return _employeeRoleDetailViewModel;
             }
 
             private set
             {
-                _colorDetailViewModel = value;
+                _employeeRoleDetailViewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -69,25 +69,25 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Gets or sets the collection of Colors.
         /// </summary>
-        public ObservableCollection<ColorWrapper> Colors { get; set; }
+        public ObservableCollection<EmployeeRoleWrapper> EmployeeRoles { get; set; }
 
         /// <summary>
         /// Gets or sets the selected Color.
         /// </summary>
-        public ColorWrapper SelectedColor
+        public EmployeeRoleWrapper SelectedEmployeeRole
         {
             get
             {
-                return _selectedColor;
+                return _selectedEmployeeRole;
             }
 
             set
             {
                 OnPropertyChanged();
-                _selectedColor = value;
-                if (_selectedColor != null)
+                _selectedEmployeeRole = value;
+                if (_selectedEmployeeRole != null)
                 {
-                    UpdateDetailViewModel(_selectedColor.Id);
+                    UpdateDetailViewModel(_selectedEmployeeRole.Id);
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Gets the CreateNewColor command.
         /// </summary>
-        public ICommand CreateNewColorCommand { get; }
+        public ICommand CreateNewEmployeeRoleCommand { get; }
 
         /// <summary>
         /// Loads the view model and publishes the Change View event.
@@ -113,17 +113,17 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
         public async Task LoadAsync()
         {
-            Colors.Clear();
-            var colors = await _colorRepository.GetAllAsync();
-            foreach (var color in colors)
+            EmployeeRoles.Clear();
+            var roles = await _employeeRoleRepository.GetAllAsync();
+            foreach (var role in roles)
             {
-                Colors.Add(new ColorWrapper(color));
+                EmployeeRoles.Add(new EmployeeRoleWrapper(role));
             }
         }
 
         private async void UpdateDetailViewModel(int? id)
         {
-            if (ColorDetailViewModel != null && ColorDetailViewModel.HasChanges)
+            if (EmployeeRoleDetailViewModel != null && EmployeeRoleDetailViewModel.HasChanges)
             {
                 var result = _messageDialogService.ShowOkCancelDialog(
                     "Ha realizado cambios, si selecciona otro item estos cambios seran perdidos. ¿Esta seguro?",
@@ -134,22 +134,22 @@ namespace SistemaMirno.UI.ViewModel.General
                 }
             }
 
-            ColorDetailViewModel = _colorDetailViewModelCreator();
-            await ColorDetailViewModel.LoadAsync(id);
+            EmployeeRoleDetailViewModel = _employeeRoleDetailViewModelCreator();
+            await EmployeeRoleDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterColorSaved(AfterDataModelSavedEventArgs<Color> args)
+        private void AfterEmployeeRoleSaved(AfterDataModelSavedEventArgs<EmployeeRole> args)
         {
-            var item = Colors.SingleOrDefault(c => c.Id == args.Model.Id);
+            var item = EmployeeRoles.SingleOrDefault(r => r.Id == args.Model.Id);
 
             if (item == null)
             {
-                Colors.Add(new ColorWrapper(args.Model));
-                ColorDetailViewModel = null;
+                EmployeeRoles.Add(new EmployeeRoleWrapper(args.Model));
+                EmployeeRoleDetailViewModel = null;
             }
             else
             {
@@ -157,19 +157,19 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private void AfterColorDeleted(AfterDataModelDeletedEventArgs<Color> args)
+        private void AfterEmployeeRoleDeleted(AfterDataModelDeletedEventArgs<EmployeeRole> args)
         {
-            var item = Colors.SingleOrDefault(m => m.Id == args.Model.Id);
+            var item = EmployeeRoles.SingleOrDefault(r => r.Id == args.Model.Id);
 
             if (item != null)
             {
-                Colors.Remove(item);
+                EmployeeRoles.Remove(item);
             }
 
-            ColorDetailViewModel = null;
+            EmployeeRoleDetailViewModel = null;
         }
 
-        private void OnCreateNewColorExecute()
+        private void OnCreateNewEmployeeRoleExecute()
         {
             UpdateDetailViewModel(null);
         }

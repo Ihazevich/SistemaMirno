@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
-    interface IEmployeeRepository
+    public interface IEmployeeRepository
     {
         /// <summary>
         /// Gets all the Employees from the database context.
