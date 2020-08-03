@@ -1,5 +1,6 @@
 ﻿using SistemaMirno.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SistemaMirno.UI.Wrapper
 {
@@ -28,6 +29,12 @@ namespace SistemaMirno.UI.Wrapper
         public string Name
         {
             get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual Collection<Product> Products
+        {
+            get { return GetValue<Collection<Product>>(); }
             set { SetValue(value); }
         }
 

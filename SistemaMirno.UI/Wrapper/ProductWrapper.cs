@@ -1,5 +1,6 @@
 ﻿using SistemaMirno.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SistemaMirno.UI.Wrapper
 {
@@ -49,6 +50,12 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        public ProductCategory ProductCategory
+        {
+            get { return GetValue<ProductCategory>(); }
+            set { SetValue(value); }
+        }
+
         /// <summary>
         /// Gets or sets the Product Price.
         /// </summary>
@@ -73,6 +80,12 @@ namespace SistemaMirno.UI.Wrapper
         public int ProductionPrice
         {
             get { return GetValue<int>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual Collection<WorkUnit> WorkUnits
+        {
+            get { return GetValue<Collection<WorkUnit>>(); }
             set { SetValue(value); }
         }
 

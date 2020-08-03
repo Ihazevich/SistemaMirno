@@ -1,5 +1,6 @@
-﻿using SistemaMirno.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
@@ -49,12 +50,48 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        public EmployeeRole WorkAreaResponsibleRole
+        {
+            get { return GetValue<EmployeeRole>(); }
+            set { SetValue(value); }
+        }
+
         /// <summary>
         /// Gets or sets the Production Area order.
         /// </summary>
         public int? WorkAreaSupervisorRoleId
         {
             get { return GetValue<int?>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual EmployeeRole WorkAreaSupervisorRole
+        {
+            get { return GetValue<EmployeeRole>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual Collection<AreaConnection> FromAreaConnections
+        {
+            get { return GetValue<Collection<AreaConnection>>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual Collection<AreaConnection> AreaConnectionsTo
+        {
+            get { return GetValue<Collection<AreaConnection>>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual Collection<WorkUnit> WorkUnits
+        {
+            get { return GetValue<Collection<WorkUnit>>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual Collection<WorkOrder> WorkOrders
+        {
+            get { return GetValue<Collection<WorkOrder>>(); }
             set { SetValue(value); }
         }
 

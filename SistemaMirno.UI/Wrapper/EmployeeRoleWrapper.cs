@@ -1,9 +1,6 @@
-﻿using SistemaMirno.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
@@ -31,6 +28,25 @@ namespace SistemaMirno.UI.Wrapper
             get { return GetValue<string>(); }
             set { SetValue(value); }
         }
+
+        public Collection<Employee> Employees
+        {
+            get { return GetValue<Collection<Employee>>(); }
+            set { SetValue(value); }
+        }
+
+        public Collection<WorkArea> WorkAreasResponsibles
+        {
+            get { return GetValue<Collection<WorkArea>>(); }
+            set { SetValue(value); }
+        }
+
+        public Collection<WorkArea> WorkAreasSupervisors
+        {
+            get { return GetValue<Collection<WorkArea>>(); }
+            set { SetValue(value); }
+        }
+
 
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)

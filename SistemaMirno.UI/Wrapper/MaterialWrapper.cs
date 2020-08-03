@@ -1,5 +1,6 @@
 ﻿using SistemaMirno.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SistemaMirno.UI.Wrapper
 {
@@ -28,6 +29,12 @@ namespace SistemaMirno.UI.Wrapper
         public string Name
         {
             get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public Collection<WorkUnit> WorkUnits
+        {
+            get { return GetValue<Collection<WorkUnit>>(); }
             set { SetValue(value); }
         }
 
