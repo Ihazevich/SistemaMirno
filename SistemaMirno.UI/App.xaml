@@ -6,8 +6,7 @@
              xmlns:viewmodel="clr-namespace:SistemaMirno.UI.ViewModel"
              xmlns:generalviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.General"
              xmlns:detailviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.Detail"
-             Startup="Application_Startup"
-             DispatcherUnhandledException="Application_DispatcherUnhandledException">
+             Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
             <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">

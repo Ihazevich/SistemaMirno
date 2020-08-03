@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.142.20216</AssemblyVersion>
+    <AssemblyVersion>0.1.160.20216</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -225,7 +225,7 @@
     <Compile Include="Wrapper\MaterialWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
-    <Compile Include="Wrapper\ProductionAreaWrapper.cs" />
+    <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\ProductWrapper.cs" />
     <Compile Include="Wrapper\WrapperBase.cs" />
     <Page Include="MainWindow.xaml">

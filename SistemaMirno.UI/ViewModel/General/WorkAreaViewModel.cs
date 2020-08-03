@@ -22,7 +22,7 @@ namespace SistemaMirno.UI.ViewModel.General
         private IWorkAreaRepository _productionAreaRepository;
         private IMessageDialogService _messageDialogService;
         private IEventAggregator _eventAggregator;
-        private ProductionAreaWrapper _selectedArea;
+        private WorkAreaWrapper _selectedArea;
         private IWorkAreaDetailViewModel _productionAreaDetailViewModel;
         private Func<IWorkAreaDetailViewModel> _productionAreaDetailViewModelCreator;
 
@@ -48,7 +48,7 @@ namespace SistemaMirno.UI.ViewModel.General
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
                 .Subscribe(AfterProductionAreaDeleted);
 
-            ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
+            ProductionAreas = new ObservableCollection<WorkAreaWrapper>();
             CreateNewProductionAreaCommand = new DelegateCommand(OnCreateNewProductionAreaExecute);
         }
 
@@ -72,12 +72,12 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Gets or sets the collection of Production Areas.
         /// </summary>
-        public ObservableCollection<ProductionAreaWrapper> ProductionAreas { get; set; }
+        public ObservableCollection<WorkAreaWrapper> ProductionAreas { get; set; }
 
         /// <summary>
         /// Gets or sets the selected Production Area.
         /// </summary>
-        public ProductionAreaWrapper SelectedArea
+        public WorkAreaWrapper SelectedArea
         {
             get
             {
@@ -120,7 +120,7 @@ namespace SistemaMirno.UI.ViewModel.General
             var areas = await _productionAreaRepository.GetAllAsync();
             foreach (var area in areas)
             {
-                ProductionAreas.Add(new ProductionAreaWrapper(area));
+                ProductionAreas.Add(new WorkAreaWrapper(area));
             }
         }
 
@@ -151,7 +151,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
             if (item == null)
             {
-                ProductionAreas.Add(new ProductionAreaWrapper(args.Model));
+                ProductionAreas.Add(new WorkAreaWrapper(args.Model));
                 ProductionAreaDetailViewModel = null;
             }
             else

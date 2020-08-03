@@ -18,7 +18,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private IEmployeeRepository _employeeRepository;
         private IEmployeeRoleRepository _employeeRoleRepository;
         private IEventAggregator _eventAggregator;
-        private EmployeeWrapper _product;
+        private EmployeeWrapper _employee;
         private bool _hasChanges;
 
         /// <summary>
@@ -74,12 +74,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             get
             {
-                return _product;
+                return _employee;
             }
 
             set
             {
-                _product = value;
+                _employee = value;
                 OnPropertyChanged();
             }
         }

@@ -22,6 +22,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Nombre" />
             <TextBox Grid.Row="1"
@@ -32,7 +34,21 @@
                  Text="{Binding ProductionArea.Order, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
                  PreviewTextInput="TextboxNumberValidation"
                  Margin="5" />
-            <StackPanel Grid.Row="4" Orientation="Horizontal">
+            <Label Grid.Row="4" Content="Rol de Responsables" />
+            <ComboBox Grid.Row="5"
+                      ItemsSource="{Binding EmployeeRoles}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding ProductionArea.WorkAreaResponsibleRoleId, Mode=TwoWay}"
+                      Margin="5" />
+            <Label Grid.Row="6" Content="Rol de Supervisores" />
+            <ComboBox Grid.Row="7"
+                      ItemsSource="{Binding EmployeeRoles}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding ProductionArea.WorkAreaSupervisorRoleId, Mode=TwoWay}"
+                      Margin="5" />
+            <StackPanel Grid.Row="8" Orientation="Horizontal">
                 <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}" />
                 <Button Content="Eliminar area"
                         Margin="10"

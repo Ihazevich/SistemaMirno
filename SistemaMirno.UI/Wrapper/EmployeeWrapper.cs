@@ -9,6 +9,8 @@ namespace SistemaMirno.UI.Wrapper
 {
     public class EmployeeWrapper : ModelWrapper<Employee>
     {
+        private string _fullName;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeWrapper"/> class.
         /// </summary>
@@ -33,7 +35,7 @@ namespace SistemaMirno.UI.Wrapper
             set
             {
                 SetValue(value);
-                OnPropertyChanged(FullName);
+                OnPropertyChanged("FullName");
             }
         }
 
@@ -47,7 +49,7 @@ namespace SistemaMirno.UI.Wrapper
             set
             {
                 SetValue(value);
-                OnPropertyChanged(FullName);
+                OnPropertyChanged("FullName");
             }
         }
 

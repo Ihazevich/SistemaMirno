@@ -16,7 +16,7 @@ namespace SistemaMirno.UI.ViewModel.Main
     {
         private IWorkAreaRepository _productionAreaRepository;
         private IEventAggregator _eventAggregator;
-        private ProductionAreaWrapper _selectedProductionArea;
+        private WorkAreaWrapper _selectedProductionArea;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkAreaNavigationViewModel"/> class.
@@ -28,7 +28,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             IEventAggregator eventAggregator)
         {
             _productionAreaRepository = productionAreaRepository;
-            ProductionAreas = new ObservableCollection<ProductionAreaWrapper>();
+            ProductionAreas = new ObservableCollection<WorkAreaWrapper>();
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterProductionAreaSaved);
@@ -39,7 +39,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets or sets the selected production area.
         /// </summary>
-        public ProductionAreaWrapper SelectedProductionArea
+        public WorkAreaWrapper SelectedProductionArea
         {
             get
             {
@@ -61,7 +61,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets the production areas stored in the view model.
         /// </summary>
-        public ObservableCollection<ProductionAreaWrapper> ProductionAreas { get; }
+        public ObservableCollection<WorkAreaWrapper> ProductionAreas { get; }
 
         /// <inheritdoc/>
         public async Task LoadAsync()
@@ -70,7 +70,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             ProductionAreas.Clear();
             foreach (var area in productionAreas)
             {
-                ProductionAreas.Add(new ProductionAreaWrapper(area));
+                ProductionAreas.Add(new WorkAreaWrapper(area));
             }
         }
 
@@ -84,7 +84,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             if (item == null)
             {
-                ProductionAreas.Add(new ProductionAreaWrapper(args.Model));
+                ProductionAreas.Add(new WorkAreaWrapper(args.Model));
             }
             else
             {

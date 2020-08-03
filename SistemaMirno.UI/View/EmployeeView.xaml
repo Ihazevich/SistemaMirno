@@ -19,7 +19,7 @@
         <Label Content="Empleados" FontSize="30" />
         <Separator Grid.Row="1" Grid.ColumnSpan="2" />
         <ListView Grid.Row="2"
-                  ItemsSource="{Binding Employees}"
+                  ItemsSource="{Binding Employees, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedEmployee, Mode=TwoWay}"
                   Margin="20">
             <ListView.ItemTemplate>

@@ -5,6 +5,7 @@ using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Detail
@@ -15,8 +16,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public class WorkAreaDetailViewModel : DetailViewModelBase, IWorkAreaDetailViewModel
     {
         private IWorkAreaRepository _productionAreaRepository;
+        private IEmployeeRoleRepository _employeeRoleRepository;
         private IEventAggregator _eventAggregator;
-        private ProductionAreaWrapper _productionArea;
+        private WorkAreaWrapper _productionArea;
         private bool _hasChanges;
 
         /// <summary>
@@ -26,16 +28,22 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <param name="eventAggregator">The event aggregator.</param>
         public WorkAreaDetailViewModel(
             IWorkAreaRepository productionAreaRepository,
+            IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator)
         {
             _productionAreaRepository = productionAreaRepository;
+            _employeeRoleRepository = employeeRoleRepository;
             _eventAggregator = eventAggregator;
+
+            EmployeeRoles = new ObservableCollection<EmployeeRoleWrapper>();
         }
+
+        public ObservableCollection<EmployeeRoleWrapper> EmployeeRoles { get; }
 
         /// <summary>
         /// Gets or sets the data model wrapper.
         /// </summary>
-        public ProductionAreaWrapper ProductionArea
+        public WorkAreaWrapper ProductionArea
         {
             get
             {
@@ -77,7 +85,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 ? await _productionAreaRepository.GetByIdAsync(productionAreaId.Value)
                 : CreateNewProductionArea();
 
-            ProductionArea = new ProductionAreaWrapper(productionArea);
+            ProductionArea = new WorkAreaWrapper(productionArea);
             ProductionArea.PropertyChanged += ProductionArea_PropertyChanged;
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
 
@@ -85,6 +93,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 // This triggers the validation.
                 ProductionArea.Name = string.Empty;
+            }
+
+            await LoadEmployeeRolesAsync();
+        }
+
+        private async Task LoadEmployeeRolesAsync()
+        {
+            var roles = await _employeeRoleRepository.GetAllAsync();
+            EmployeeRoles.Clear();
+            foreach (var role in roles)
+            {
+                EmployeeRoles.Add(new EmployeeRoleWrapper(role));
             }
         }
 

@@ -30,11 +30,11 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Nombre(s)" />
             <TextBox Grid.Row="1"
-                 Text="{Binding Employee.FirstName, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Text="{Binding Employee.FirstName, UpdateSourceTrigger=PropertyChanged}"
                  Margin="5" />
             <Label Grid.Row="2" Content="Apellido(s)" />
             <TextBox Grid.Row="3"
-                 Text="{Binding Employee.LastName, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Text="{Binding Employee.LastName, UpdateSourceTrigger=PropertyChanged}"
                  Margin="5" />
             <Label Grid.Row="4" Content="Numero de Documento" />
             <TextBox Grid.Row="5"
@@ -42,14 +42,14 @@
                  Margin="5" />
             <Label Grid.Row="6" Content="Fecha de contratacion" />
             <DatePicker Grid.Row="7"
-                 Text="{Binding Employee.DateHired, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                 Margin="5" />
+                        Text="{Binding Employee.HiredDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Margin="5" />
             <Label Grid.Row="8" Content="Rol" />
             <ComboBox Grid.Row="9"
                       ItemsSource="{Binding EmployeeRoles}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding Product.EmployeeRoleId, Mode=TwoWay}"
+                      SelectedValue="{Binding Employee.EmployeeRoleId, Mode=TwoWay}"
                       Margin="5" />
             <StackPanel Grid.Row="10" Orientation="Horizontal">
                 <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}" />
