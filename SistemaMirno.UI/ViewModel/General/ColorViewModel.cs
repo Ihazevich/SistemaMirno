@@ -38,8 +38,6 @@ namespace SistemaMirno.UI.ViewModel.General
             _colorRepository = colorRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<ColorViewModel>>()
-                .Subscribe(ViewModelSelected);
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<Color>>()
                 .Subscribe(AfterColorSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Color>>()
@@ -96,16 +94,6 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Gets the CreateNewColor command.
         /// </summary>
         public ICommand CreateNewColorCommand { get; }
-
-        /// <summary>
-        /// Loads the view model and publishes the Change View event.
-        /// </summary>
-        public async void ViewModelSelected(int id)
-        {
-            await LoadAsync(id);
-            _eventAggregator.GetEvent<ChangeViewEvent>().
-                Publish(nameof(ColorViewModel));
-        }
 
         /// <summary>
         /// Loads the view model asynchronously from the data service.

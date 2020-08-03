@@ -135,7 +135,6 @@
     <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
-    <Compile Include="Event\UpdateViewEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />

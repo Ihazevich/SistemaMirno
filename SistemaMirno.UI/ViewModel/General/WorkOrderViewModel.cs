@@ -9,9 +9,18 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class WorkOrderViewModel : ViewModelBase, IWorkOrderViewModel
     {
-        private IWorkOrderRepository _workOrderRepository;
-        private IEventAggregator _eventAggregator;
         private string _areaName;
+        private IEventAggregator _eventAggregator;
+        private IWorkOrderRepository _workOrderRepository;
+        public WorkOrderViewModel(
+                    IWorkOrderRepository workOrderRepository,
+                    IEventAggregator eventAggregator)
+        {
+            _workOrderRepository = workOrderRepository;
+            _eventAggregator = eventAggregator;
+
+            WorkOrders = new ObservableCollection<WorkOrder>();
+        }
 
         /// <summary>
         /// Gets or sets the production area name for the view.
@@ -31,26 +40,6 @@ namespace SistemaMirno.UI.ViewModel.General
         }
 
         public ObservableCollection<WorkOrder> WorkOrders { get; set; }
-
-        public WorkOrderViewModel(
-            IWorkOrderRepository workOrderRepository,
-            IEventAggregator eventAggregator)
-        {
-            _workOrderRepository = workOrderRepository;
-            _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<WorkOrderViewModel>>()
-                .Subscribe(OnAreaWorkOrderSelected);
-
-            WorkOrders = new ObservableCollection<WorkOrder>();
-        }
-
-        private async void OnAreaWorkOrderSelected(int workAreaId)
-        {
-            await LoadAsync(workAreaId);
-            _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(nameof(WorkOrderViewModel));
-        }
-
         public async Task LoadAsync(int workAreaId)
         {
             WorkOrders.Clear();

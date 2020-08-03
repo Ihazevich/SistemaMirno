@@ -41,8 +41,6 @@ namespace SistemaMirno.UI.ViewModel.General
             _productionAreaRepository = productionAreaRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<WorkAreaViewModel>>()
-                .Subscribe(ViewModelSelected);
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterProductionAreaSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
@@ -99,16 +97,6 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Gets the CreateNewProductionArea.
         /// </summary>
         public ICommand CreateNewProductionAreaCommand { get; }
-
-        /// <summary>
-        /// Loads the view model and publishes the Change View event.
-        /// </summary>
-        public async void ViewModelSelected(int id)
-        {
-            await LoadAsync(id);
-            _eventAggregator.GetEvent<ChangeViewEvent>().
-                Publish(nameof(WorkAreaViewModel));
-        }
 
         /// <summary>
         /// Loads the view model asynchronously from the data service.

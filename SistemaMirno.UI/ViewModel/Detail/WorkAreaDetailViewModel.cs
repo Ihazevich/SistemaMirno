@@ -120,8 +120,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private void OnOpenAreaConnectionViewExecute()
         {
-            EventAggregator.GetEvent<ShowViewEvent<AreaConnectionViewModel>>()
-                .Publish(WorkArea.Id);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs { ViewModel = nameof(AreaConnectionViewModel), Id = WorkArea.Id });
         }
 
         private void ProductionArea_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

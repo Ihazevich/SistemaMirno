@@ -38,8 +38,6 @@ namespace SistemaMirno.UI.ViewModel.General
             _materialRepository = materialRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<MaterialViewModel>>()
-                .Subscribe(ViewModelSelected);
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<Material>>()
                 .Subscribe(AfterMaterialSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Material>>()
@@ -96,16 +94,6 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Gets the CreateNewMaterial command.
         /// </summary>
         public ICommand CreateNewMaterialCommand { get; }
-
-        /// <summary>
-        /// Loads the view model and publishes the Change View event.
-        /// </summary>
-        public async void ViewModelSelected(int id)
-        {
-            await LoadAsync(id);
-            _eventAggregator.GetEvent<ChangeViewEvent>().
-                Publish(nameof(MaterialViewModel));
-        }
 
         /// <summary>
         /// Loads the view model asynchronously from the data service.

@@ -53,8 +53,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                 OnPropertyChanged();
                 if (_selectedWorkArea != null)
                 {
-                    _eventAggregator.GetEvent<ShowViewEvent<WorkUnitViewModel>>()
-                        .Publish(SelectedWorkArea.Id);
+                    _eventAggregator.GetEvent<ChangeViewEvent>()
+                        .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkUnitViewModel), Id = SelectedWorkArea.Id });
                 }
             }
         }

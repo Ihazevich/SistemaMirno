@@ -38,8 +38,6 @@ namespace SistemaMirno.UI.ViewModel.General
             _productCategoryRepository = productCategoryRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<ProductCategoryViewModel>>()
-                .Subscribe(ViewModelSelected);
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<ProductCategory>>()
                 .Subscribe(AfterProductCategorySaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<ProductCategory>>()
@@ -96,16 +94,6 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Gets the CreateNewProductCategory command.
         /// </summary>
         public ICommand CreateNewProductCategoryCommand { get; }
-
-        /// <summary>
-        /// Loads the view model and publishes the Change View event.
-        /// </summary>
-        public async void ViewModelSelected(int id)
-        {
-            await LoadAsync(id);
-            _eventAggregator.GetEvent<ChangeViewEvent>().
-                Publish(nameof(ProductCategoryViewModel));
-        }
 
         /// <summary>
         /// Loads the view model asynchronously from the data service.

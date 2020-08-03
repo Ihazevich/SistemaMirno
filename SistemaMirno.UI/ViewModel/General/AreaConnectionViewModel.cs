@@ -36,8 +36,6 @@ namespace SistemaMirno.UI.ViewModel.General
             _areaConnectionRepository = areaConnectionRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<AreaConnectionViewModel>>()
-                .Subscribe(OnWorkAreaAreaConnectionSelected);
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<AreaConnection>>()
                 .Subscribe(AfterAreaConnectionSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<AreaConnection>>()
@@ -113,16 +111,6 @@ namespace SistemaMirno.UI.ViewModel.General
         public ICommand CreateNewAreaConnectionCommand { get; }
 
         /// <summary>
-        /// Loads the view model and publishes the Change View event.
-        /// </summary>
-        public async void ViewModelSelected(int id)
-        {
-            await LoadAsync(id);
-            _eventAggregator.GetEvent<ChangeViewEvent>().
-                Publish(nameof(AreaConnectionViewModel));
-        }
-
-        /// <summary>
         /// Loads the view model asynchronously from the data service.
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
@@ -189,13 +177,6 @@ namespace SistemaMirno.UI.ViewModel.General
         private void OnCreateNewAreaConnectionExecute()
         {
             UpdateDetailViewModel(null);
-        }
-
-        private async void OnWorkAreaAreaConnectionSelected(int productionAreaId)
-        {
-            await LoadAsync(productionAreaId);
-            _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(nameof(AreaConnectionViewModel));
         }
     }
 }

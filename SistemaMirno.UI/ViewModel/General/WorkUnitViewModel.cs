@@ -25,8 +25,6 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             _workUnitRepository = workUnitRepository;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<WorkUnitViewModel>>()
-                .Subscribe(OnWorkAreaSelected);
 
             WorkUnits = new ObservableCollection<WorkUnit>();
             OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
@@ -70,15 +68,8 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void OnOpenWorkOrderViewExecute()
         {
-            _eventAggregator.GetEvent<ShowViewEvent<WorkOrderViewModel>>()
-                .Publish(_areaId);
-        }
-
-        private async void OnWorkAreaSelected(int productionAreaId)
-        {
-            await LoadAsync(productionAreaId);
             _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(nameof(WorkUnitViewModel));
+                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderViewModel), Id = _areaId });
         }
     }
 }

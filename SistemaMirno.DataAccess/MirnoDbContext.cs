@@ -6,7 +6,7 @@ namespace SistemaMirno.DataAccess
 {
     public class MirnoDbContext : DbContext
     {
-        public MirnoDbContext() : base("LaptopMirnoDb")
+        public MirnoDbContext() : base("DesktopMirnoDb")
         {
         }
 

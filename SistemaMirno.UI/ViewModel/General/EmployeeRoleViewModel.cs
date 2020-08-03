@@ -38,8 +38,6 @@ namespace SistemaMirno.UI.ViewModel.General
             _employeeRoleRepository = employeeRoleRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ShowViewEvent<EmployeeRoleViewModel>>()
-                .Subscribe(ViewModelSelected);
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<EmployeeRole>>()
                 .Subscribe(AfterEmployeeRoleSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<EmployeeRole>>()
@@ -96,16 +94,6 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Gets the CreateNewColor command.
         /// </summary>
         public ICommand CreateNewEmployeeRoleCommand { get; }
-
-        /// <summary>
-        /// Loads the view model and publishes the Change View event.
-        /// </summary>
-        public async void ViewModelSelected(int id)
-        {
-            await LoadAsync(id);
-            _eventAggregator.GetEvent<ChangeViewEvent>().
-                Publish(nameof(EmployeeRoleViewModel));
-        }
 
         /// <summary>
         /// Loads the view model asynchronously from the data service.
