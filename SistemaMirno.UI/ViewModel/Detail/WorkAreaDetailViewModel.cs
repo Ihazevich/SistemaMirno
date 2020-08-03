@@ -3,10 +3,12 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
@@ -36,7 +38,16 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _eventAggregator = eventAggregator;
 
             EmployeeRoles = new ObservableCollection<EmployeeRoleWrapper>();
+            EditAreaConnectionsCommand = new DelegateCommand(OnOpenAreaConnectionViewExecute);
         }
+
+        private void OnOpenAreaConnectionViewExecute()
+        {
+            _eventAggregator.GetEvent<ShowViewEvent<AreaConnectionViewModel>>()
+                .Publish(ProductionArea.Id);
+        }
+
+        public ICommand EditAreaConnectionsCommand { get; }
 
         public ObservableCollection<EmployeeRoleWrapper> EmployeeRoles { get; }
 

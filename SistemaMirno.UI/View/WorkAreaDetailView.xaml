@@ -50,6 +50,7 @@
                       Margin="5" />
             <StackPanel Grid.Row="8" Orientation="Horizontal">
                 <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}" />
+                <Button Content="Editar conexiones" Width="125" Margin="10" Command="{Binding EditAreaConnectionsCommand}" />
                 <Button Content="Eliminar area"
                         Margin="10"
                         Background="Red"

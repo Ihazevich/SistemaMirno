@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.177.20216</AssemblyVersion>
+    <AssemblyVersion>0.1.190.20216</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -111,8 +111,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\Repositories\AreaConnectionRepository.cs" />
     <Compile Include="Data\Repositories\EmployeeRepository.cs" />
     <Compile Include="Data\Repositories\EmployeeRoleRepository.cs" />
+    <Compile Include="Data\Repositories\IAreaConnectionRepository.cs" />
     <Compile Include="Data\Repositories\IEmployeeRepository.cs" />
     <Compile Include="Data\Repositories\IEmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
@@ -133,9 +135,11 @@
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ShowViewEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
+    <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\EmployeeRoleDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IAreaConnectionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IEmployeeDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IEmployeeRoleDetailViewModel.cs" />
@@ -145,6 +149,7 @@
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
+    <Compile Include="ViewModel\General\AreaConnectionViewModel.cs" />
     <Compile Include="ViewModel\General\ColorViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
@@ -154,6 +159,7 @@
     <Compile Include="ViewModel\Detail\WorkAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\General\EmployeeRoleViewModel.cs" />
     <Compile Include="ViewModel\General\EmployeeViewModel.cs" />
+    <Compile Include="ViewModel\General\IAreaConnectionViewModel.cs" />
     <Compile Include="ViewModel\General\IColorViewModel.cs" />
     <Compile Include="ViewModel\General\IEmployeeRoleViewModel.cs" />
     <Compile Include="ViewModel\General\IEmployeeViewModel.cs" />
@@ -174,6 +180,12 @@
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
     <Compile Include="ViewModel\Main\WorkAreaNavigationViewModel.cs" />
     <Compile Include="ViewModel\General\WorkUnitViewModel.cs" />
+    <Compile Include="View\AreaConnectionDetailView.xaml.cs">
+      <DependentUpon>AreaConnectionDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AreaConnectionView.xaml.cs">
+      <DependentUpon>AreaConnectionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ColorDetailView.xaml.cs">
       <DependentUpon>ColorDetailView.xaml</DependentUpon>
     </Compile>
@@ -254,6 +266,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\AreaConnectionDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AreaConnectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ColorDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

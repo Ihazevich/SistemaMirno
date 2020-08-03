@@ -43,18 +43,18 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the Production Area order.
         /// </summary>
-        public int WorkAreaResponsibleRoleId
+        public int? WorkAreaResponsibleRoleId
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<int?>(); }
             set { SetValue(value); }
         }
 
         /// <summary>
         /// Gets or sets the Production Area order.
         /// </summary>
-        public int WorkAreaSupervisorRoleId
+        public int? WorkAreaSupervisorRoleId
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<int?>(); }
             set { SetValue(value); }
         }
 

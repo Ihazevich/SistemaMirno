@@ -1,5 +1,6 @@
 ﻿using SistemaMirno.Model;
 using System.Collections.Generic;
+using System.Xml.Schema;
 
 namespace SistemaMirno.UI.Wrapper
 {
@@ -25,25 +26,28 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the AreaConnection FromAreaId.
         /// </summary>
-        public string FromAreaId
+        public int? FromWorkAreaId
         {
-            get { return GetValue<string>(); }
+            get { return GetValue<int?>(); }
             set { SetValue(value); }
         }
 
         /// <summary>
         /// Gets or sets the AreaConnection ToAreaId.
         /// </summary>
-        public string ToAreaId
+        public int? ToWorkAreaId
         {
-            get { return GetValue<string>(); }
+            get { return GetValue<int?>(); }
             set { SetValue(value); }
         }
 
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {
-            yield return null;
+            if (ToWorkAreaId == FromWorkAreaId)
+            {
+                yield return "El area de destino y el area de origen no pueden ser iguales.";
+            }
         }
     }
 }

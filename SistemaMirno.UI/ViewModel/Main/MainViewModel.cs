@@ -30,6 +30,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <param name="workAreaViewModel">A <see cref="IWorkAreaViewModel"/> instance representing the area navigation view model.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the area navigation view model.</param>
         public MainViewModel(
+            IAreaConnectionViewModel areaConnectionViewModel,
             IWorkAreaNavigationViewModel workAreaNavigationViewModel,
             IMaterialViewModel materialViewModel,
             IColorViewModel colorViewModel,
@@ -46,6 +47,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
 
+            AreaConnectionViewModel = areaConnectionViewModel;
             WorkAreaNavigationViewModel = workAreaNavigationViewModel;
             WorkUnitViewModel = workUnitViewModel;
             MaterialViewModel = materialViewModel;
@@ -129,6 +131,11 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// Gets the product category area view model.
         /// </summary>
         public IWorkOrderViewModel WorkOrderViewModel { get; }
+
+        /// <summary>
+        /// Gets the product category area view model.
+        /// </summary>
+        public IAreaConnectionViewModel AreaConnectionViewModel { get; }
 
         /// <summary>
         /// Gets or sets the currently selected view model.

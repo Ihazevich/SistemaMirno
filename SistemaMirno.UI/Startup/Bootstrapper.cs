@@ -28,6 +28,7 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<WorkAreaNavigationViewModel>().As<IWorkAreaNavigationViewModel>().SingleInstance();
 
+            builder.RegisterType<AreaConnectionViewModel>().As<IAreaConnectionViewModel>().SingleInstance();
             builder.RegisterType<WorkAreaViewModel>().As<IWorkAreaViewModel>().SingleInstance();
             builder.RegisterType<MaterialViewModel>().As<IMaterialViewModel>().SingleInstance();
             builder.RegisterType<ColorViewModel>().As<IColorViewModel>().SingleInstance();
@@ -38,6 +39,7 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<WorkUnitViewModel>().As<IWorkUnitViewModel>().SingleInstance();
             builder.RegisterType<WorkOrderViewModel>().As<IWorkOrderViewModel>().SingleInstance();
 
+            builder.RegisterType<AreaConnectionDetailViewModel>().As<IAreaConnectionDetailViewModel>();
             builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>();
             builder.RegisterType<MaterialDetailViewModel>().As<IMaterialDetailViewModel>();
             builder.RegisterType<ColorDetailViewModel>().As<IColorDetailViewModel>();
@@ -47,6 +49,7 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<EmployeeRoleDetailViewModel>().As<IEmployeeRoleDetailViewModel>();
             builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>();
 
+            builder.RegisterType<AreaConnectionRepository>().As<IAreaConnectionRepository>();
             builder.RegisterType<WorkAreaRepository>().As<IWorkAreaRepository>();
             builder.RegisterType<MaterialRepository>().As<IMaterialRepository>();
             builder.RegisterType<ColorRepository>().As<IColorRepository>();
