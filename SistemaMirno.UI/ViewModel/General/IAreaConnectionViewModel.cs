@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public interface IAreaConnectionViewModel
+    public interface IAreaConnectionViewModel : IViewModelBase
     {
-        Task LoadAsync(int productionAreaId);
     }
 }

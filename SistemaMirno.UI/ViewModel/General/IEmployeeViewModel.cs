@@ -2,8 +2,7 @@
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public interface IEmployeeViewModel
+    public interface IEmployeeViewModel : IViewModelBase
     {
-        Task LoadAsync();
     }
 }

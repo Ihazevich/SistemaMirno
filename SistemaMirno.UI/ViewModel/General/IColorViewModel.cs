@@ -2,8 +2,7 @@
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public interface IColorViewModel
+    public interface IColorViewModel : IViewModelBase
     {
-        Task LoadAsync();
     }
 }

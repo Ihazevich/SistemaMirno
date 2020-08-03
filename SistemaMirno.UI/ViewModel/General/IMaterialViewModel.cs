@@ -2,8 +2,7 @@
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public interface IMaterialViewModel
+    public interface IMaterialViewModel : IViewModelBase
     {
-        Task LoadAsync();
     }
 }

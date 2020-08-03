@@ -119,7 +119,7 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             await LoadAsync(id);
             _eventAggregator.GetEvent<ChangeViewEvent>().
-                Publish(this);
+                Publish(nameof(AreaConnectionViewModel));
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             await LoadAsync(productionAreaId);
             _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(this);
+                .Publish(nameof(AreaConnectionViewModel));
         }
     }
 }

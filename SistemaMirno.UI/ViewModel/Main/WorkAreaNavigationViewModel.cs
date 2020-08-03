@@ -1,12 +1,12 @@
-﻿using Prism.Events;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Main
 {
@@ -65,7 +65,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
 
         /// <inheritdoc/>
-        public async Task LoadAsync()
+        public async Task LoadAsync(int id)
         {
             var productionAreas = await _productionAreaRepository.GetAllAsync();
             WorkAreas.Clear();

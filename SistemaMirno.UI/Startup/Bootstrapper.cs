@@ -26,18 +26,29 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
 
             builder.RegisterType<MainViewModel>().AsSelf();
-            builder.RegisterType<WorkAreaNavigationViewModel>().As<IWorkAreaNavigationViewModel>().SingleInstance();
+            builder.RegisterType<WorkAreaNavigationViewModel>()
+                .Keyed<IViewModelBase>(nameof(WorkAreaNavigationViewModel));
 
-            builder.RegisterType<AreaConnectionViewModel>().As<IAreaConnectionViewModel>().SingleInstance();
-            builder.RegisterType<WorkAreaViewModel>().As<IWorkAreaViewModel>().SingleInstance();
-            builder.RegisterType<MaterialViewModel>().As<IMaterialViewModel>().SingleInstance();
-            builder.RegisterType<ColorViewModel>().As<IColorViewModel>().SingleInstance();
-            builder.RegisterType<ProductCategoryViewModel>().As<IProductCategoryViewModel>().SingleInstance();
-            builder.RegisterType<ProductViewModel>().As<IProductViewModel>().SingleInstance();
-            builder.RegisterType<EmployeeViewModel>().As<IEmployeeViewModel>().SingleInstance();
-            builder.RegisterType<EmployeeRoleViewModel>().As<IEmployeeRoleViewModel>().SingleInstance();
-            builder.RegisterType<WorkUnitViewModel>().As<IWorkUnitViewModel>().SingleInstance();
-            builder.RegisterType<WorkOrderViewModel>().As<IWorkOrderViewModel>().SingleInstance();
+            builder.RegisterType<AreaConnectionViewModel>()
+                .Keyed<IViewModelBase>(nameof(AreaConnectionViewModel));
+            builder.RegisterType<WorkAreaViewModel>()
+                .Keyed<IViewModelBase>(nameof(WorkAreaViewModel));
+            builder.RegisterType<MaterialViewModel>()
+                .Keyed<IViewModelBase>(nameof(MaterialViewModel));
+            builder.RegisterType<ColorViewModel>()
+                .Keyed<IViewModelBase>(nameof(ColorViewModel));
+            builder.RegisterType<ProductCategoryViewModel>()
+                .Keyed<IViewModelBase>(nameof(ProductCategoryViewModel));
+            builder.RegisterType<ProductViewModel>()
+                .Keyed<IViewModelBase>(nameof(ProductViewModel));
+            builder.RegisterType<EmployeeViewModel>()
+                .Keyed<IViewModelBase>(nameof(EmployeeViewModel));
+            builder.RegisterType<EmployeeRoleViewModel>()
+                .Keyed<IViewModelBase>(nameof(EmployeeRoleViewModel));
+            builder.RegisterType<WorkUnitViewModel>()
+                .Keyed<IViewModelBase>(nameof(WorkUnitViewModel));
+            builder.RegisterType<WorkOrderViewModel>()
+                .Keyed<IViewModelBase>(nameof(WorkOrderViewModel));
 
             builder.RegisterType<AreaConnectionDetailViewModel>().As<IAreaConnectionDetailViewModel>();
             builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>();

@@ -2,8 +2,7 @@
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public interface IProductCategoryViewModel
+    public interface IProductCategoryViewModel : IViewModelBase
     {
-        Task LoadAsync();
     }
 }

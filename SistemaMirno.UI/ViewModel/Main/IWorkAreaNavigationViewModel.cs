@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
-
-namespace SistemaMirno.UI.ViewModel.Main
+﻿namespace SistemaMirno.UI.ViewModel.Main
 {
-    public interface IWorkAreaNavigationViewModel
+    public interface IWorkAreaNavigationViewModel : IViewModelBase
     {
-        Task LoadAsync();
     }
 }

@@ -2,8 +2,7 @@
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public interface IWorkOrderViewModel
+    public interface IWorkOrderViewModel : IViewModelBase
     {
-        Task LoadAsync(int productionAreaId);
     }
 }

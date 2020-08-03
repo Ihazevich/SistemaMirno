@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel
 {
     public interface IViewModelBase
     {
-        event PropertyChangedEventHandler PropertyChanged;
+        Task LoadAsync(int id);
     }
 }

@@ -1,11 +1,12 @@
-﻿using Prism.Commands;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Autofac.Features.Indexed;
+using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.Model;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.General;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SistemaMirno.UI.ViewModel.Main
 {
@@ -16,53 +17,29 @@ namespace SistemaMirno.UI.ViewModel.Main
     {
         private IViewModelBase _selectedViewModel;
         private IEventAggregator _eventAggregator;
+        private IIndex<string, IViewModelBase> _viewModelCreator;
         private IMessageDialogService _messageDialogService;
         private string _windowTitle = $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
-        /// <param name="workAreaNavigationViewModel">A <see cref="IWorkAreaNavigationViewModel"/> instance representing the area navigation view model.</param>
-        /// <param name="materialViewModel">A <see cref="IMaterialViewModel"/> instance representing the area navigation view model.</param>
-        /// <param name="colorViewModel">A <see cref="IColorViewModel"/> instance representing the area navigation view model.</param>
-        /// <param name="workUnitViewModel">A <see cref="IWorkUnitViewModel"/> instance representing the area navigation view model.</param>
-        /// <param name="productViewModel">A <see cref="IProductViewModel"/> instance representing the area navigation view model.</param>
-        /// <param name="workAreaViewModel">A <see cref="IWorkAreaViewModel"/> instance representing the area navigation view model.</param>
-        /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the area navigation view model.</param>
+        /// <param name="viewModelCreator">The view model creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
+        /// <param name="messageDialogService">The message dialog service.</param>
         public MainViewModel(
-            IAreaConnectionViewModel areaConnectionViewModel,
-            IWorkAreaNavigationViewModel workAreaNavigationViewModel,
-            IMaterialViewModel materialViewModel,
-            IColorViewModel colorViewModel,
-            IProductCategoryViewModel productCategoryViewModel,
-            IWorkUnitViewModel workUnitViewModel,
-            IProductViewModel productViewModel,
-            IWorkAreaViewModel workAreaViewModel,
-            IWorkOrderViewModel workOrderViewModel,
-            IEmployeeViewModel employeeViewModel,
-            IEmployeeRoleViewModel employeeRoleViewModel,
+            IIndex<string, IViewModelBase> viewModelCreator,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
         {
-            _eventAggregator = eventAggregator;
+            _viewModelCreator = viewModelCreator;
             _messageDialogService = messageDialogService;
-
-            AreaConnectionViewModel = areaConnectionViewModel;
-            WorkAreaNavigationViewModel = workAreaNavigationViewModel;
-            WorkUnitViewModel = workUnitViewModel;
-            MaterialViewModel = materialViewModel;
-            ColorViewModel = colorViewModel;
-            ProductViewModel = productViewModel;
-            WorkAreaViewModel = workAreaViewModel;
-            ProductCategoryViewModel = productCategoryViewModel;
-            EmployeeViewModel = employeeViewModel;
-            EmployeeRoleViewModel = employeeRoleViewModel;
-            WorkOrderViewModel = workOrderViewModel;
-
+            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Subscribe(OnViewChanged);
+                .Subscribe(ShowNewView);
 
             ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute, ChangeViewCanExecute);
+            WorkAreaNavigationViewModel = _viewModelCreator[nameof(WorkAreaNavigationViewModel)];
         }
 
         /// <summary>
@@ -85,57 +62,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets the area navigation view model.
         /// </summary>
-        public IWorkAreaNavigationViewModel WorkAreaNavigationViewModel { get; }
-
-        /// <summary>
-        /// Gets the work unit view model.
-        /// </summary>
-        public IWorkUnitViewModel WorkUnitViewModel { get; }
-
-        /// <summary>
-        /// Gets the material view model.
-        /// </summary>
-        public IMaterialViewModel MaterialViewModel { get; }
-
-        /// <summary>
-        /// Gets the color view model.
-        /// </summary>
-        public IColorViewModel ColorViewModel { get; }
-
-        /// <summary>
-        /// Gets the product view model.
-        /// </summary>
-        public IProductViewModel ProductViewModel { get; }
-
-        /// <summary>
-        /// Gets the production area view model.
-        /// </summary>
-        public IWorkAreaViewModel WorkAreaViewModel { get; }
-
-        /// <summary>
-        /// Gets the product category area view model.
-        /// </summary>
-        public IProductCategoryViewModel ProductCategoryViewModel { get; }
-
-        /// <summary>
-        /// Gets the product category area view model.
-        /// </summary>
-        public IEmployeeViewModel EmployeeViewModel { get; }
-
-        /// <summary>
-        /// Gets the product category area view model.
-        /// </summary>
-        public IEmployeeRoleViewModel EmployeeRoleViewModel { get; }
-
-        /// <summary>
-        /// Gets the product category area view model.
-        /// </summary>
-        public IWorkOrderViewModel WorkOrderViewModel { get; }
-
-        /// <summary>
-        /// Gets the product category area view model.
-        /// </summary>
-        public IAreaConnectionViewModel AreaConnectionViewModel { get; }
+        public IViewModelBase WorkAreaNavigationViewModel { get; }
 
         /// <summary>
         /// Gets or sets the currently selected view model.
@@ -158,44 +85,45 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public async Task LoadAsync()
         {
-            await WorkAreaNavigationViewModel.LoadAsync();
+            await WorkAreaNavigationViewModel.LoadAsync(-1);
         }
 
         private void OnChangeViewExecute(string viewModel)
         {
+            SelectedViewModel = _viewModelCreator[viewModel];
             switch (viewModel)
             {
-                case "Materials":
+                case "MaterialViewModel":
                     _eventAggregator.GetEvent<ShowViewEvent<MaterialViewModel>>().
                         Publish(-1);
                     break;
 
-                case "Colors":
+                case "ColorViewModel":
                     _eventAggregator.GetEvent<ShowViewEvent<ColorViewModel>>().
                         Publish(-1);
                     break;
 
-                case "Products":
+                case "ProductViewModel":
                     _eventAggregator.GetEvent<ShowViewEvent<ProductViewModel>>().
                         Publish(-1);
                     break;
 
-                case "ProductCategories":
+                case "ProductCategoryViewModel":
                     _eventAggregator.GetEvent<ShowViewEvent<ProductCategoryViewModel>>().
                         Publish(-1);
                     break;
 
-                case "ProductionAreas":
+                case "WorkAreaViewModel":
                     _eventAggregator.GetEvent<ShowViewEvent<WorkAreaViewModel>>().
                         Publish(-1);
                     break;
 
-                case "Employees":
+                case "EmployeeViewModel":
                     _eventAggregator.GetEvent<ShowViewEvent<EmployeeViewModel>>().
                         Publish(-1);
                     break;
 
-                case "EmployeeRoles":
+                case "EmployeeRoleViewModel":
                     _eventAggregator.GetEvent<ShowViewEvent<EmployeeRoleViewModel>>().
                         Publish(-1);
                     break;
@@ -226,9 +154,9 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
-        private void OnViewChanged(IViewModelBase viewModel)
+        private void ShowNewView(string viewModel)
         {
-            SelectedViewModel = viewModel;
+            SelectedViewModel = _viewModelCreator[viewModel];
         }
     }
 }

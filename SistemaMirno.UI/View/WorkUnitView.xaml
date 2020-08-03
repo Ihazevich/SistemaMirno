@@ -18,9 +18,9 @@
         <Label Content="{Binding AreaName}" FontSize="30" />
         <DataGrid Grid.Row="1" ItemsSource="{Binding WorkUnits, Mode=TwoWay}" AutoGenerateColumns="True">
         </DataGrid>
-        <StackPanel>
-            <Button Grid.Column="1" Grid.Row="1" Content="Nueva Orden" Command="{Binding OpenWorkOrderViewCommand}"/>
-            <Button Grid.Column="1" Grid.Row="1" Content="Ver Ordenes" Command="{Binding OpenNewWorkOrderViewCommand}"/>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <Button Content="Nueva Orden" Command="{Binding OpenNewWorkOrderViewCommand}"/>
+            <Button Content="Ver Ordenes" Command="{Binding OpenWorkOrderViewCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

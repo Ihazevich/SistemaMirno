@@ -102,16 +102,16 @@ namespace SistemaMirno.UI.ViewModel.General
         /// </summary>
         public async void ViewModelSelected(int id)
         {
-            await LoadAsync();
+            await LoadAsync(id);
             _eventAggregator.GetEvent<ChangeViewEvent>().
-                Publish(this);
+                Publish(nameof(MaterialViewModel));
         }
 
         /// <summary>
         /// Loads the view model asynchronously from the data service.
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
-        public async Task LoadAsync()
+        public async Task LoadAsync(int id)
         {
             Materials.Clear();
             var materials = await _materialRepository.GetAllAsync();

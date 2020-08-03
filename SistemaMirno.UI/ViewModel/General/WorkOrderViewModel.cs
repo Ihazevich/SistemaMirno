@@ -48,14 +48,14 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             await LoadAsync(workAreaId);
             _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(this);
+                .Publish(nameof(WorkOrderViewModel));
         }
 
-        public async Task LoadAsync(int productionAreaId)
+        public async Task LoadAsync(int workAreaId)
         {
             WorkOrders.Clear();
-            AreaName = await _workOrderRepository.GetWorkAreaNameAsync(productionAreaId);
-            var workUnits = await _workOrderRepository.GetByAreaIdAsync(productionAreaId);
+            AreaName = await _workOrderRepository.GetWorkAreaNameAsync(workAreaId);
+            var workUnits = await _workOrderRepository.GetByAreaIdAsync(workAreaId);
 
             foreach (var workUnit in workUnits)
             {

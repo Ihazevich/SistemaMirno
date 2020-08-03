@@ -55,12 +55,12 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public ObservableCollection<WorkUnit> WorkUnits { get; set; }
 
-        public async Task LoadAsync(int productionAreaId)
+        public async Task LoadAsync(int workAreaId)
         {
             WorkUnits.Clear();
-            AreaName = await _workUnitRepository.GetWorkAreaNameAsync(productionAreaId);
-            _areaId = productionAreaId;
-            var workUnits = await _workUnitRepository.GetByAreaIdAsync(productionAreaId);
+            AreaName = await _workUnitRepository.GetWorkAreaNameAsync(workAreaId);
+            _areaId = workAreaId;
+            var workUnits = await _workUnitRepository.GetByAreaIdAsync(workAreaId);
 
             foreach (var workUnit in workUnits)
             {
@@ -78,7 +78,7 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             await LoadAsync(productionAreaId);
             _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(this);
+                .Publish(nameof(WorkUnitViewModel));
         }
     }
 }

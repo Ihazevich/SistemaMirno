@@ -6,15 +6,8 @@ namespace SistemaMirno.UI.ViewModel
     /// <summary>
     /// Base view model class.
     /// </summary>
-    public class ViewModelBase : INotifyPropertyChanged, IViewModelBase
+    public class ViewModelBase : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ViewModelBase"/> class.
-        /// </summary>
-        public ViewModelBase()
-        {
-        }
-
         /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
 
