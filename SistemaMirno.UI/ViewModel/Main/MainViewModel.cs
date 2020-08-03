@@ -36,7 +36,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Subscribe(ShowNewView);
+                .Subscribe(ChangeView);
 
             ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute, ChangeViewCanExecute);
             WorkAreaNavigationViewModel = _viewModelCreator[nameof(WorkAreaNavigationViewModel)];
@@ -90,47 +90,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private void OnChangeViewExecute(string viewModel)
         {
-            SelectedViewModel = _viewModelCreator[viewModel];
-            switch (viewModel)
-            {
-                case "MaterialViewModel":
-                    _eventAggregator.GetEvent<ShowViewEvent<MaterialViewModel>>().
-                        Publish(-1);
-                    break;
-
-                case "ColorViewModel":
-                    _eventAggregator.GetEvent<ShowViewEvent<ColorViewModel>>().
-                        Publish(-1);
-                    break;
-
-                case "ProductViewModel":
-                    _eventAggregator.GetEvent<ShowViewEvent<ProductViewModel>>().
-                        Publish(-1);
-                    break;
-
-                case "ProductCategoryViewModel":
-                    _eventAggregator.GetEvent<ShowViewEvent<ProductCategoryViewModel>>().
-                        Publish(-1);
-                    break;
-
-                case "WorkAreaViewModel":
-                    _eventAggregator.GetEvent<ShowViewEvent<WorkAreaViewModel>>().
-                        Publish(-1);
-                    break;
-
-                case "EmployeeViewModel":
-                    _eventAggregator.GetEvent<ShowViewEvent<EmployeeViewModel>>().
-                        Publish(-1);
-                    break;
-
-                case "EmployeeRoleViewModel":
-                    _eventAggregator.GetEvent<ShowViewEvent<EmployeeRoleViewModel>>().
-                        Publish(-1);
-                    break;
-
-                default:
-                    break;
-            }
+            ChangeView(new ChangeViewEventArgs { ViewModel = viewModel, Id = -1 });
         }
 
         private bool ChangeViewCanExecute(string viewModel = null)
@@ -154,9 +114,10 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
-        private void ShowNewView(string viewModel)
+        private void ChangeView(ChangeViewEventArgs args)
         {
-            SelectedViewModel = _viewModelCreator[viewModel];
+            SelectedViewModel = _viewModelCreator[args.ViewModel];
+            SelectedViewModel.LoadAsync(args.Id);
         }
     }
 }

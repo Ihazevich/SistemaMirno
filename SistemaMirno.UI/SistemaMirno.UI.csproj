@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.206.20216</AssemblyVersion>
+    <AssemblyVersion>0.1.207.20216</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -135,7 +135,7 @@
     <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
-    <Compile Include="Event\ShowViewEvent.cs" />
+    <Compile Include="Event\UpdateViewEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
