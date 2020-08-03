@@ -15,6 +15,6 @@ namespace SistemaMirno.Model
         [MaxLength(20)]
         public string Name { get; set; }
 
-        public Collection<Product> Products { get; set; }
+        public virtual Collection<Product> Products { get; set; }
     }
 }

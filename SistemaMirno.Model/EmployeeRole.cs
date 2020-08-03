@@ -10,12 +10,12 @@ namespace SistemaMirno.Model
         [MinLength(4)]
         public string Name { get; set; }
 
-        public Collection<Employee> Employees { get; set; }
+        public virtual Collection<Employee> Employees { get; set; }
 
         [InverseProperty("WorkAreaResponsibleRole")]
-        public Collection<WorkArea> WorkAreasResponsibles { get; set; }
+        public virtual Collection<WorkArea> WorkAreasResponsibles { get; set; }
         
         [InverseProperty("WorkAreaSupervisorRole")]
-        public Collection<WorkArea> WorkAreasSupervisors { get; set; }
+        public virtual Collection<WorkArea> WorkAreasSupervisors { get; set; }
     }
 }

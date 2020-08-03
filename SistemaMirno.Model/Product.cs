@@ -22,7 +22,7 @@ namespace SistemaMirno.Model
         [Required]
         public int ProductCategoryId { get; set; }
 
-        public ProductCategory ProductCategory { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
 
         [Required]
         public int Price { get; set; }
@@ -33,6 +33,6 @@ namespace SistemaMirno.Model
         [Required]
         public int ProductionPrice { get; set; }
 
-        public Collection<WorkUnit> WorkUnits { get; set; }
+        public virtual Collection<WorkUnit> WorkUnits { get; set; }
     }
 }

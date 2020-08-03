@@ -25,20 +25,20 @@ namespace SistemaMirno.Model
 
         [ForeignKey("WorkAreaResponsibleRole")]
         public int? WorkAreaResponsibleRoleId { get; set; }
-        public EmployeeRole WorkAreaResponsibleRole { get; set; }
+        public virtual EmployeeRole WorkAreaResponsibleRole { get; set; }
 
         [ForeignKey("WorkAreaSupervisorRole")]
         public int? WorkAreaSupervisorRoleId { get; set; }
-        public EmployeeRole WorkAreaSupervisorRole { get; set; }
+        public virtual EmployeeRole WorkAreaSupervisorRole { get; set; }
 
         [InverseProperty("FromWorkArea")]
-        public Collection<AreaConnection> FromAreaConnections { get; set; }
+        public virtual Collection<AreaConnection> FromAreaConnections { get; set; }
 
         [InverseProperty("ToWorkArea")]
-        public Collection<AreaConnection> AreaConnectionsTo { get; set; }
+        public virtual Collection<AreaConnection> AreaConnectionsTo { get; set; }
 
-        public Collection<WorkUnit> WorkUnits { get; set; }
-        public Collection<WorkOrder> WorkOrders { get; set; }
+        public virtual Collection<WorkUnit> WorkUnits { get; set; }
+        public virtual Collection<WorkOrder> WorkOrders { get; set; }
 
     }
 }

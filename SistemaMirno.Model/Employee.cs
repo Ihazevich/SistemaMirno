@@ -28,10 +28,10 @@ namespace SistemaMirno.Model
         public int EmployeeRoleId { get; set; }
 
         [InverseProperty("ResponsibleEmployee")]
-        public Collection<WorkOrder> ResponsibleWorkOrders { get; set; }
+        public virtual Collection<WorkOrder> ResponsibleWorkOrders { get; set; }
 
         [InverseProperty("SupervisorEmployee")]
-        public Collection<WorkOrder> SupervisorWorkOrders { get; set; }
+        public virtual Collection<WorkOrder> SupervisorWorkOrders { get; set; }
 
         //TODO: Add SaleOrders
     }

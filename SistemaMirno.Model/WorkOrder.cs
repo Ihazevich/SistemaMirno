@@ -19,16 +19,16 @@ namespace SistemaMirno.Model
 
         public int WorkAreaId { get; set; }
 
-        public WorkArea WorkArea { get; set; }
+        public virtual WorkArea WorkArea { get; set; }
 
         [ForeignKey("ResponsibleEmployee")]
         public int ResponsibleEmployeeId { get; set; }
-        public Employee ResponsibleEmployee { get; set; }
+        public virtual Employee ResponsibleEmployee { get; set; }
 
         [ForeignKey("SupervisorEmployee")]
         public int SupervisorEmployeeID { get; set; }
-        public Employee SupervisorEmployee { get; set; }
+        public virtual Employee SupervisorEmployee { get; set; }
 
-        public Collection<WorkUnit> WorkUnits { get; set; }
+        public virtual Collection<WorkUnit> WorkUnits { get; set; }
     }
 }
