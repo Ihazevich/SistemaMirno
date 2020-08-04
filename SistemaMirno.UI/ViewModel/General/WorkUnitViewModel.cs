@@ -30,7 +30,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
             WorkUnits = new ObservableCollection<WorkUnitWrapper>();
             OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
-            OpenWorkOrderDetailViewCommand = new DelegateCommand(OnOpenWorkOrderDetailViewExecute);
+            NewWorkOrderCommand = new DelegateCommand(OnNewWorkOrderExecute);
         }
 
         /// <summary>
@@ -50,7 +50,9 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand OpenWorkOrderDetailViewCommand { get; }
+        public ICommand NewWorkOrderCommand { get; }
+
+        public ICommand MoveToWorkAreaCommand { get; }
 
         public ICommand OpenWorkOrderViewCommand { get; }
 
@@ -78,7 +80,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderViewModel), Id = _areaId });
         }
 
-        private void OnOpenWorkOrderDetailViewExecute()
+        private void OnNewWorkOrderExecute()
         {
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderDetailViewModel), Id = _areaId });

@@ -31,8 +31,8 @@
         </DataTemplate>
     </UserControl.Resources>
     <mah:HamburgerMenu ItemTemplate="{StaticResource MenuItemTemplate}"
-                        IsPaneOpen="false"
-                        DisplayMode="CompactOverlay"
-                        ItemsSource="{Binding WorkAreas}"
-                        SelectedItem="{Binding SelectedWorkArea, Mode=TwoWay}" />
+                       IsPaneOpen="true"
+                       DisplayMode="CompactOverlay"
+                       ItemsSource="{Binding WorkAreas}"
+                       SelectedItem="{Binding SelectedWorkArea, Mode=TwoWay}" />
 </UserControl>
