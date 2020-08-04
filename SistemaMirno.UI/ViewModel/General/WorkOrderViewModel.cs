@@ -12,6 +12,7 @@ namespace SistemaMirno.UI.ViewModel.General
         private string _areaName;
         private IEventAggregator _eventAggregator;
         private IWorkOrderRepository _workOrderRepository;
+
         public WorkOrderViewModel(
                     IWorkOrderRepository workOrderRepository,
                     IEventAggregator eventAggregator)
@@ -40,15 +41,19 @@ namespace SistemaMirno.UI.ViewModel.General
         }
 
         public ObservableCollection<WorkOrder> WorkOrders { get; set; }
-        public async Task LoadAsync(int workAreaId)
-        {
-            WorkOrders.Clear();
-            AreaName = await _workOrderRepository.GetWorkAreaNameAsync(workAreaId);
-            var workUnits = await _workOrderRepository.GetByAreaIdAsync(workAreaId);
 
-            foreach (var workUnit in workUnits)
+        public override async Task LoadAsync(int? workAreaId)
+        {
+            if (workAreaId.HasValue)
             {
-                WorkOrders.Add(workUnit);
+                WorkOrders.Clear();
+                AreaName = await _workOrderRepository.GetWorkAreaNameAsync(workAreaId.Value);
+                var workUnits = await _workOrderRepository.GetByAreaIdAsync(workAreaId.Value);
+
+                foreach (var workUnit in workUnits)
+                {
+                    WorkOrders.Add(workUnit);
+                }
             }
         }
     }

@@ -114,15 +114,22 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Loads the view model asynchronously from the data service.
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
-        public async Task LoadAsync(int workAreaId)
+        public override async Task LoadAsync(int? workAreaId)
         {
-            AreaConnections.Clear();
-            _areaId = workAreaId;
-            var connections = await _areaConnectionRepository.GetByAreaIdAsync(workAreaId);
-            AreaName = await _areaConnectionRepository.GetWorkAreaNameAsync(workAreaId);
-            foreach (var connection in connections)
+            if (workAreaId.HasValue)
             {
-                AreaConnections.Add(new AreaConnectionWrapper(connection));
+                AreaConnections.Clear();
+                _areaId = workAreaId.Value;
+                var connections = await _areaConnectionRepository.GetByAreaIdAsync(workAreaId.Value);
+                AreaName = await _areaConnectionRepository.GetWorkAreaNameAsync(workAreaId.Value);
+                foreach (var connection in connections)
+                {
+                    AreaConnections.Add(new AreaConnectionWrapper(connection));
+                }
+            }
+            else
+            {
+                throw new Exception("Calling AreaConnection view without areaId");
             }
         }
 

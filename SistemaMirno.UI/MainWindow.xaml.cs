@@ -25,7 +25,7 @@ namespace SistemaMirno.UI
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            await _viewModel.LoadAsync();
+            await _viewModel.LoadAsync(null);
         }
     }
 }

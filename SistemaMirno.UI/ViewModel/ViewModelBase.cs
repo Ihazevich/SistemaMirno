@@ -1,15 +1,18 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel
 {
     /// <summary>
     /// Base view model class.
     /// </summary>
-    public class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : IViewModelBase, INotifyPropertyChanged
     {
         /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public abstract Task LoadAsync(int? id);
 
         /// <summary>
         /// Invokes the PropertyChanged event.

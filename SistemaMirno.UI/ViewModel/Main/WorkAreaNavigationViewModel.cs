@@ -65,7 +65,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
 
         /// <inheritdoc/>
-        public async Task LoadAsync(int id)
+        public override async Task LoadAsync(int? id)
         {
             var productionAreas = await _productionAreaRepository.GetAllAsync();
             WorkAreas.Clear();

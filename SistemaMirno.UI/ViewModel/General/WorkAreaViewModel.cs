@@ -19,50 +19,50 @@ namespace SistemaMirno.UI.ViewModel.General
     /// </summary>
     public class WorkAreaViewModel : ViewModelBase, IWorkAreaViewModel
     {
-        private IWorkAreaRepository _productionAreaRepository;
+        private IWorkAreaRepository _workAreaRepository;
         private IMessageDialogService _messageDialogService;
         private IEventAggregator _eventAggregator;
         private WorkAreaWrapper _selectedArea;
-        private IWorkAreaDetailViewModel _productionAreaDetailViewModel;
-        private Func<IWorkAreaDetailViewModel> _productionAreaDetailViewModelCreator;
+        private IWorkAreaDetailViewModel _workAreaDetailViewModel;
+        private Func<IWorkAreaDetailViewModel> _workAreaDetailViewModelCreator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkAreaViewModel"/> class.
         /// </summary>
-        /// <param name="productionAreaDetailViewModelCreator">A function to create detailviewmodel instances.</param>
+        /// <param name="workAreaDetailViewModelCreator">A function to create detailviewmodel instances.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
         public WorkAreaViewModel(
-            Func<IWorkAreaDetailViewModel> productionAreaDetailViewModelCreator,
-            IWorkAreaRepository productionAreaRepository,
+            Func<IWorkAreaDetailViewModel> workAreaDetailViewModelCreator,
+            IWorkAreaRepository workAreaRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
         {
-            _productionAreaDetailViewModelCreator = productionAreaDetailViewModelCreator;
-            _productionAreaRepository = productionAreaRepository;
+            _workAreaDetailViewModelCreator = workAreaDetailViewModelCreator;
+            _workAreaRepository = workAreaRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
-                .Subscribe(AfterProductionAreaSaved);
+                .Subscribe(AfterWorkAreaSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
-                .Subscribe(AfterProductionAreaDeleted);
+                .Subscribe(AfterWorkAreaDeleted);
 
-            ProductionAreas = new ObservableCollection<WorkAreaWrapper>();
-            CreateNewProductionAreaCommand = new DelegateCommand(OnCreateNewProductionAreaExecute);
+            WorkAreas = new ObservableCollection<WorkAreaWrapper>();
+            CreateNewWorkAreaCommand = new DelegateCommand(OnCreateNewProductionAreaExecute);
         }
 
         /// <summary>
         /// Gets the Production Area detail view model.
         /// </summary>
-        public IWorkAreaDetailViewModel ProductionAreaDetailViewModel
+        public IWorkAreaDetailViewModel WorkAreaDetailViewModel
         {
             get
             {
-                return _productionAreaDetailViewModel;
+                return _workAreaDetailViewModel;
             }
 
             private set
             {
-                _productionAreaDetailViewModel = value;
+                _workAreaDetailViewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -70,7 +70,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Gets or sets the collection of Production Areas.
         /// </summary>
-        public ObservableCollection<WorkAreaWrapper> ProductionAreas { get; set; }
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; set; }
 
         /// <summary>
         /// Gets or sets the selected Production Area.
@@ -96,25 +96,25 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Gets the CreateNewProductionArea.
         /// </summary>
-        public ICommand CreateNewProductionAreaCommand { get; }
+        public ICommand CreateNewWorkAreaCommand { get; }
 
         /// <summary>
         /// Loads the view model asynchronously from the data service.
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
-        public async Task LoadAsync(int id)
+        public override async Task LoadAsync(int? id)
         {
-            ProductionAreas.Clear();
-            var areas = await _productionAreaRepository.GetAllAsync();
+            WorkAreas.Clear();
+            var areas = await _workAreaRepository.GetAllAsync();
             foreach (var area in areas)
             {
-                ProductionAreas.Add(new WorkAreaWrapper(area));
+                WorkAreas.Add(new WorkAreaWrapper(area));
             }
         }
 
         private async void UpdateDetailViewModel(int? id)
         {
-            if (ProductionAreaDetailViewModel != null && ProductionAreaDetailViewModel.HasChanges)
+            if (WorkAreaDetailViewModel != null && WorkAreaDetailViewModel.HasChanges)
             {
                 var result = _messageDialogService.ShowOkCancelDialog(
                     "Ha realizado cambios, si selecciona otro item estos cambios seran perdidos. ¿Esta seguro?",
@@ -125,22 +125,22 @@ namespace SistemaMirno.UI.ViewModel.General
                 }
             }
 
-            ProductionAreaDetailViewModel = _productionAreaDetailViewModelCreator();
-            await ProductionAreaDetailViewModel.LoadAsync(id);
+            WorkAreaDetailViewModel = _workAreaDetailViewModelCreator();
+            await WorkAreaDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterProductionAreaSaved(AfterDataModelSavedEventArgs<WorkArea> args)
+        private void AfterWorkAreaSaved(AfterDataModelSavedEventArgs<WorkArea> args)
         {
-            var item = ProductionAreas.SingleOrDefault(p => p.Id == args.Model.Id);
+            var item = WorkAreas.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item == null)
             {
-                ProductionAreas.Add(new WorkAreaWrapper(args.Model));
-                ProductionAreaDetailViewModel = null;
+                WorkAreas.Add(new WorkAreaWrapper(args.Model));
+                WorkAreaDetailViewModel = null;
             }
             else
             {
@@ -148,16 +148,16 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private void AfterProductionAreaDeleted(AfterDataModelDeletedEventArgs<WorkArea> args)
+        private void AfterWorkAreaDeleted(AfterDataModelDeletedEventArgs<WorkArea> args)
         {
-            var item = ProductionAreas.SingleOrDefault(p => p.Id == args.Model.Id);
+            var item = WorkAreas.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item != null)
             {
-                ProductionAreas.Remove(item);
+                WorkAreas.Remove(item);
             }
 
-            ProductionAreaDetailViewModel = null;
+            WorkAreaDetailViewModel = null;
         }
 
         private void OnCreateNewProductionAreaExecute()

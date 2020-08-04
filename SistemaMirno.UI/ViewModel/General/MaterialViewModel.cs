@@ -1,4 +1,9 @@
-﻿using Prism.Commands;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
@@ -6,11 +11,6 @@ using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.Wrapper;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
@@ -99,7 +99,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Loads the view model asynchronously from the data service.
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
-        public async Task LoadAsync(int id)
+        public override async Task LoadAsync(int? id)
         {
             Materials.Clear();
             var materials = await _materialRepository.GetAllAsync();

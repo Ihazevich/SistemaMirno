@@ -99,7 +99,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Loads the view model asynchronously from the data service.
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
-        public async Task LoadAsync(int id)
+        public override async Task LoadAsync(int? id)
         {
             Colors.Clear();
             var colors = await _colorRepository.GetAllAsync();

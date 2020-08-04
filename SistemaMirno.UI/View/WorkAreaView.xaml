@@ -19,7 +19,7 @@
         <Label Content="Areas de Produccion" FontSize="30" />
         <Separator Grid.Row="1" Grid.ColumnSpan="2" />
         <ListView Grid.Row="2"
-                  ItemsSource="{Binding ProductionAreas}"
+                  ItemsSource="{Binding WorkAreas}"
                   SelectedItem="{Binding SelectedArea, Mode=TwoWay}"
                   Margin="20">
             <ListView.ItemTemplate>
@@ -33,9 +33,9 @@
                 <Button Content="Añadir nueva area"
                         Width="180" Height="30" Margin="10"
                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
-                        Command="{Binding CreateNewProductionAreaCommand}" />
+                        Command="{Binding CreateNewWorkAreaCommand}" />
             </StackPanel>
-            <ContentControl Content="{Binding ProductionAreaDetailViewModel}" Margin="5" />
+            <ContentControl Content="{Binding WorkAreaDetailViewModel}" Margin="5" />
         </StackPanel>
     </Grid>
 </UserControl>

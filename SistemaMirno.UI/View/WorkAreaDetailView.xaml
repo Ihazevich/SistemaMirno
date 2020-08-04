@@ -27,11 +27,11 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Nombre" />
             <TextBox Grid.Row="1"
-                 Text="{Binding ProductionArea.Name, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Text="{Binding WorkArea.Name, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
                  Margin="5" />
             <Label Grid.Row="2" Content="Orden" />
             <TextBox Grid.Row="3"
-                 Text="{Binding ProductionArea.Order, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Text="{Binding WorkArea.Order, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
                  PreviewTextInput="TextboxNumberValidation"
                  Margin="5" />
             <Label Grid.Row="4" Content="Rol de Responsables" />
@@ -39,14 +39,14 @@
                       ItemsSource="{Binding EmployeeRoles}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding ProductionArea.WorkAreaResponsibleRoleId, Mode=TwoWay}"
+                      SelectedValue="{Binding WorkArea.WorkAreaResponsibleRoleId, Mode=TwoWay}"
                       Margin="5" />
             <Label Grid.Row="6" Content="Rol de Supervisores" />
             <ComboBox Grid.Row="7"
                       ItemsSource="{Binding EmployeeRoles}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding ProductionArea.WorkAreaSupervisorRoleId, Mode=TwoWay}"
+                      SelectedValue="{Binding WorkArea.WorkAreaSupervisorRoleId, Mode=TwoWay}"
                       Margin="5" />
             <StackPanel Grid.Row="8" Orientation="Horizontal">
                 <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}" />

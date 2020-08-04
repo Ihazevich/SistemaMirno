@@ -14,7 +14,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     /// A class representing the base detail view model.
     /// </summary>
     /// <typeparam name="T">The type of data model the view model will use.</typeparam>
-    public abstract class DetailViewModelBase : INotifyPropertyChanged
+    public abstract class DetailViewModelBase : ViewModelBase, IDetailViewModelBase
     {
         private bool _hasChanges;
         protected readonly IEventAggregator EventAggregator;
@@ -29,11 +29,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute);
         }
-
-        public abstract Task LoadAsync(int? colorId);
-
-        /// <inheritdoc/>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Gets or sets the save command for the view model.
@@ -76,15 +71,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             EventAggregator.GetEvent<AfterDataModelDeletedEvent<T>>()
                 .Publish(new AfterDataModelDeletedEventArgs<T> { Model = model });
-        }
-
-        /// <summary>
-        /// Invokes the PropertyChanged event.
-        /// </summary>
-        /// <param name="propertyName">The name of the property that changed.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>

@@ -53,16 +53,19 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public ObservableCollection<WorkUnit> WorkUnits { get; set; }
 
-        public async Task LoadAsync(int workAreaId)
+        public override async Task LoadAsync(int? workAreaId)
         {
-            WorkUnits.Clear();
-            AreaName = await _workUnitRepository.GetWorkAreaNameAsync(workAreaId);
-            _areaId = workAreaId;
-            var workUnits = await _workUnitRepository.GetByAreaIdAsync(workAreaId);
-
-            foreach (var workUnit in workUnits)
+            if (workAreaId.HasValue)
             {
-                WorkUnits.Add(workUnit);
+                WorkUnits.Clear();
+                AreaName = await _workUnitRepository.GetWorkAreaNameAsync(workAreaId.Value);
+                _areaId = workAreaId.Value;
+                var workUnits = await _workUnitRepository.GetByAreaIdAsync(workAreaId.Value);
+
+                foreach (var workUnit in workUnits)
+                {
+                    WorkUnits.Add(workUnit);
+                }
             }
         }
 

@@ -83,7 +83,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// </summary>
         public ICommand ChangeViewCommand { get; set; }
 
-        public async Task LoadAsync()
+        public override async Task LoadAsync(int? id)
         {
             await WorkAreaNavigationViewModel.LoadAsync(-1);
         }
