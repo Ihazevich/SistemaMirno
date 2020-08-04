@@ -25,8 +25,8 @@ namespace SistemaMirno.Model
         public virtual WorkOrder WorkOrder { get; set; }
 
         [Required]
-        public int ProductionAreaId { get; set; }
+        public int WorkAreaId { get; set; }
 
-        public virtual WorkArea ProductionArea { get; set; }
+        public virtual WorkArea WorkArea { get; set; }
     }
 }

@@ -15,7 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>1.0.51.20217</AssemblyVersion>
+    <AssemblyVersion>1.0.60.20217</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,6 +89,18 @@
     <Compile Include="Migrations\202008040120073_smol.designer.cs">
       <DependentUpon>202008040120073_smol.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008041806287_nullableFinishDatetime.cs" />
+    <Compile Include="Migrations\202008041806287_nullableFinishDatetime.designer.cs">
+      <DependentUpon>202008041806287_nullableFinishDatetime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008041825284_FixedTypo.cs" />
+    <Compile Include="Migrations\202008041825284_FixedTypo.designer.cs">
+      <DependentUpon>202008041825284_FixedTypo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008041837001_anothertypo.cs" />
+    <Compile Include="Migrations\202008041837001_anothertypo.designer.cs">
+      <DependentUpon>202008041837001_anothertypo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -125,6 +137,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008040120073_smol.resx">
       <DependentUpon>202008040120073_smol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008041806287_nullableFinishDatetime.resx">
+      <DependentUpon>202008041806287_nullableFinishDatetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008041825284_FixedTypo.resx">
+      <DependentUpon>202008041825284_FixedTypo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008041837001_anothertypo.resx">
+      <DependentUpon>202008041837001_anothertypo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

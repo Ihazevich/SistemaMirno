@@ -15,7 +15,7 @@ namespace SistemaMirno.Model
 
         public DateTime StartTime { get; set; }
 
-        public DateTime FinishTime { get; set; }
+        public DateTime? FinishTime { get; set; }
 
         public int WorkAreaId { get; set; }
 
@@ -26,7 +26,7 @@ namespace SistemaMirno.Model
         public virtual Employee ResponsibleEmployee { get; set; }
 
         [ForeignKey("SupervisorEmployee")]
-        public int? SupervisorEmployeeID { get; set; }
+        public int? SupervisorEmployeeId { get; set; }
         public virtual Employee SupervisorEmployee { get; set; }
 
         public virtual Collection<WorkUnit> WorkUnits { get; set; }

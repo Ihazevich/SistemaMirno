@@ -16,6 +16,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public class WorkOrderDetailViewModel : DetailViewModelBase, IWorkOrderDetailViewModel
     {
         private IWorkOrderRepository _workOrderRepository;
+        private IWorkUnitRepository _workUnitRepository;
         private WorkOrderWrapper _workOrder;
         private WorkUnitWrapper _workUnit;
 
@@ -26,10 +27,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <param name="eventAggregator">The event aggregator.</param>
         public WorkOrderDetailViewModel(
             IWorkOrderRepository workOrderRepository,
+            IWorkUnitRepository workUnitRepository,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             _workOrderRepository = workOrderRepository;
+            _workUnitRepository = workUnitRepository;
 
             WorkUnit = new WorkUnitWrapper(new WorkUnit());
             WorkUnits = new ObservableCollection<WorkUnitWrapper>();
@@ -41,7 +44,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             Responsibles = new ObservableCollection<EmployeeWrapper>();
             Supervisors = new ObservableCollection<EmployeeWrapper>();
 
-            AddWorkUnitToWorkOrderCommand = new DelegateCommand(OnAddWorkUnitToWorkOrderExecute);
+            AddWorkUnitToWorkOrderCommand = new DelegateCommand(OnAddWorkUnitExecute);
         }
 
         /// <summary>
@@ -112,6 +115,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override void OnSaveExecute()
         {
+            WorkOrder.StartTime = DateTime.Now;
             _workOrderRepository.SaveAsync();
             HasChanges = false;
             RaiseDataModelSavedEvent(WorkOrder.Model);
@@ -201,13 +205,26 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private void OnAddWorkUnitToWorkOrderExecute()
+        private void OnAddWorkUnitExecute()
         {
             WorkUnit.Product = Products.Where(p => p.Id == WorkUnit.ProductId).Single().Model;
             WorkUnit.Material = Materials.Where(m => m.Id == WorkUnit.MaterialId).Single().Model;
             WorkUnit.Color = Colors.Where(c => c.Id == WorkUnit.ColorId).Single().Model;
+
             var newWorkUnit = new WorkUnitWrapper(WorkUnit.Model);
             newWorkUnit.Quantity = WorkUnit.Quantity;
+            for (int i = 0; i < newWorkUnit.Quantity; i++)
+            {
+                var workUnit = new WorkUnit {
+                    WorkAreaId = WorkOrder.WorkAreaId,
+                    ColorId = WorkUnit.ColorId,
+                    MaterialId = WorkUnit.MaterialId,
+                    ProductId = WorkUnit.ProductId,
+                };
+
+                WorkOrder.WorkUnits.Add(workUnit);
+            }
+
             WorkUnits.Add(newWorkUnit);
             WorkUnit = new WorkUnitWrapper(new WorkUnit());
         }

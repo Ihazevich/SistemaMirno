@@ -20,7 +20,7 @@ namespace SistemaMirno.UI.Data.Repositories
 
         public async Task<IEnumerable<WorkUnit>> GetByAreaIdAsync(int areaId)
         {
-            return await Context.WorkUnits.Where(w => w.ProductionAreaId == areaId).ToListAsync();
+            return await Context.WorkUnits.Where(w => w.WorkAreaId == areaId).ToListAsync();
         }
 
         public async Task<string> GetWorkAreaNameAsync(int areaId)

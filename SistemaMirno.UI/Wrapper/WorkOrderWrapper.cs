@@ -71,9 +71,9 @@ namespace SistemaMirno.UI.Wrapper
         }
 
         /// <summary>
-        /// Gets or sets the ResponsibleEmployeeId.
+        /// Gets or sets the SupervisorEmployeeID.
         /// </summary>
-        public int? SupervisorEmployeeID
+        public int? SupervisorEmployeeId
         {
             get { return GetValue<int?>(); }
             set { SetValue(value); }
