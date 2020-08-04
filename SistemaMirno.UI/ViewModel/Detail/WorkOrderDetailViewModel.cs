@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Util;
+using System.Windows.Input;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
@@ -15,6 +17,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     {
         private IWorkOrderRepository _workOrderRepository;
         private WorkOrderWrapper _workOrder;
+        private WorkUnitWrapper _workUnit;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkOrderDetailViewModel"/> class.
@@ -28,9 +31,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _workOrderRepository = workOrderRepository;
 
+            WorkUnit = new WorkUnitWrapper(new WorkUnit());
+            WorkUnits = new ObservableCollection<WorkUnitWrapper>();
+
             Colors = new ObservableCollection<ColorWrapper>();
             Materials = new ObservableCollection<MaterialWrapper>();
             Products = new ObservableCollection<ProductWrapper>();
+
+            AddWorkUnitToWorkOrderCommand = new DelegateCommand(OnAddWorkUnitToWorkOrderExecute);
         }
 
         /// <summary>
@@ -50,13 +58,29 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public WorkUnitWrapper WorkUnit
+        {
+            get
+            {
+                return _workUnit;
+            }
+
+            set
+            {
+                _workUnit = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand AddWorkUnitToWorkOrderCommand { get; }
+
         public ObservableCollection<ProductWrapper> Products { get; set; }
 
         public ObservableCollection<MaterialWrapper> Materials { get; set; }
 
         public ObservableCollection<ColorWrapper> Colors { get; set; }
 
-        public ObservableCollection<WorkUnit> WorkUnits { get; set; }
+        public ObservableCollection<WorkUnitWrapper> WorkUnits { get; set; }
 
         /// <inheritdoc/>
         public override async Task LoadAsync(int? workOrderId)
@@ -144,6 +168,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 Products.Add(new ProductWrapper(product));
             }
+        }
+
+        private void OnAddWorkUnitToWorkOrderExecute()
+        {
+            WorkUnit.Product = Products.Where(p => p.Id == WorkUnit.ProductId).Single().Model;
+            WorkUnit.Material = Materials.Where(m => m.Id == WorkUnit.MaterialId).Single().Model;
+            WorkUnit.Color = Colors.Where(c => c.Id == WorkUnit.ColorId).Single().Model;
+            var newWorkUnit = new WorkUnitWrapper(WorkUnit.Model);
+            newWorkUnit.Quantity = WorkUnit.Quantity;
+            WorkUnits.Add(newWorkUnit);
+            WorkUnit = new WorkUnitWrapper(new WorkUnit());
         }
     }
 }
