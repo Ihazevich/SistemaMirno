@@ -58,13 +58,13 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the ResponsibleEmployeeId.
         /// </summary>
-        public int ResponsibleEmployeeId
+        public int? ResponsibleEmployeeId
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<int?>(); }
             set { SetValue(value); }
         }
 
-        public Employee ResponsibleEmployee
+        public virtual Employee ResponsibleEmployee
         {
             get { return GetValue<Employee>(); }
             set { SetValue(value); }
@@ -73,19 +73,19 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the ResponsibleEmployeeId.
         /// </summary>
-        public int SupervisorEmployeeID
+        public int? SupervisorEmployeeID
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<int?>(); }
             set { SetValue(value); }
         }
 
-        public Employee SupervisorEmployee
+        public virtual Employee SupervisorEmployee
         {
             get { return GetValue<Employee>(); }
             set { SetValue(value); }
         }
 
-        public Collection<WorkUnit> WorkUnits
+        public virtual Collection<WorkUnit> WorkUnits
         {
             get { return GetValue<Collection<WorkUnit>>(); }
             set { SetValue(value); }

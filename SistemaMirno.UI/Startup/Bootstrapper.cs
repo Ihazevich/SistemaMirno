@@ -58,7 +58,8 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductDetailViewModel>().As<IProductDetailViewModel>();
             builder.RegisterType<EmployeeDetailViewModel>().As<IEmployeeDetailViewModel>();
             builder.RegisterType<EmployeeRoleDetailViewModel>().As<IEmployeeRoleDetailViewModel>();
-            builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>();
+            builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
 
             builder.RegisterType<AreaConnectionRepository>().As<IAreaConnectionRepository>();
             builder.RegisterType<WorkAreaRepository>().As<IWorkAreaRepository>();

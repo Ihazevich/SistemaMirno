@@ -29,5 +29,20 @@ namespace SistemaMirno.UI.Data.Repositories
 
             return area.Name;
         }
+
+        public async Task<IEnumerable<Product>> GetProductsAsync()
+        {
+            return await Context.Set<Product>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<Color>> GetColorsAsync()
+        {
+            return await Context.Set<Color>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<Material>> GetMaterialsAsync()
+        {
+            return await Context.Set<Material>().ToListAsync();
+        }
     }
 }

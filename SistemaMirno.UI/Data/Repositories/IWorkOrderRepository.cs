@@ -14,5 +14,11 @@ namespace SistemaMirno.UI.Data.Repositories
         Task<IEnumerable<WorkOrder>> GetByAreaIdAsync(int areaId);
 
         Task<string> GetWorkAreaNameAsync(int areaId);
+
+        Task<IEnumerable<Product>> GetProductsAsync();
+
+        Task<IEnumerable<Color>> GetColorsAsync();
+
+        Task<IEnumerable<Material>> GetMaterialsAsync();
     }
 }
