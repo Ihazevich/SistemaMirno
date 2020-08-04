@@ -6,6 +6,14 @@
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="cvsWorkUnits" Source="{Binding WorkUnits}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Product.Name"/>
+                <PropertyGroupDescription PropertyName="Material.Name"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -16,12 +24,50 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Label Content="{Binding AreaName}" FontSize="30" />
-        <DataGrid Grid.Row="1" ItemsSource="{Binding WorkUnits, Mode=TwoWay}" AutoGenerateColumns="false">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Source={StaticResource cvsWorkUnits}}" AutoGenerateColumns="false" SelectionMode="Extended">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Producto" Binding="{Binding Product.Name}"/>
                 <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
                 <DataGridTextColumn Header="Color" Binding="{Binding Color.Name}"/>
             </DataGrid.Columns>
+            <DataGrid.GroupStyle>
+                <!-- Style for groups at top level. -->
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Margin" Value="0,0,0,5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="False" BorderThickness="1,1,1,5">
+                                            <Expander.Header>
+                                                <DockPanel>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" Width="100"/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
+                                                </DockPanel>
+                                            </Expander.Header>
+                                            <Expander.Content>
+                                                <ItemsPresenter />
+                                            </Expander.Content>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+                <!-- Style for groups under the top level. -->
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <DockPanel Background="LightGray">
+                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" Width="100"/>
+                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
         </DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="1">
             <Button Content="Nueva Orden" Command="{Binding OpenWorkOrderDetailViewCommand}"/>

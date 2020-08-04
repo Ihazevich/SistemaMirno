@@ -8,6 +8,7 @@ using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
@@ -27,7 +28,7 @@ namespace SistemaMirno.UI.ViewModel.General
             _workUnitRepository = workUnitRepository;
             _eventAggregator = eventAggregator;
 
-            WorkUnits = new ObservableCollection<WorkUnit>();
+            WorkUnits = new ObservableCollection<WorkUnitWrapper>();
             OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
             OpenWorkOrderDetailViewCommand = new DelegateCommand(OnOpenWorkOrderDetailViewExecute);
         }
@@ -53,7 +54,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public ICommand OpenWorkOrderViewCommand { get; }
 
-        public ObservableCollection<WorkUnit> WorkUnits { get; set; }
+        public ObservableCollection<WorkUnitWrapper> WorkUnits { get; set; }
 
         public override async Task LoadAsync(int? workAreaId)
         {
@@ -66,7 +67,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
                 foreach (var workUnit in workUnits)
                 {
-                    WorkUnits.Add(workUnit);
+                    WorkUnits.Add(new WorkUnitWrapper(workUnit));
                 }
             }
         }
