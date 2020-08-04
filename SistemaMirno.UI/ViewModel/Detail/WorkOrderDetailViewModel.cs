@@ -9,6 +9,7 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
@@ -16,7 +17,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public class WorkOrderDetailViewModel : DetailViewModelBase, IWorkOrderDetailViewModel
     {
         private IWorkOrderRepository _workOrderRepository;
-        private IWorkUnitRepository _workUnitRepository;
         private WorkOrderWrapper _workOrder;
         private WorkUnitWrapper _workUnit;
 
@@ -27,12 +27,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <param name="eventAggregator">The event aggregator.</param>
         public WorkOrderDetailViewModel(
             IWorkOrderRepository workOrderRepository,
-            IWorkUnitRepository workUnitRepository,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             _workOrderRepository = workOrderRepository;
-            _workUnitRepository = workUnitRepository;
 
             WorkUnit = new WorkUnitWrapper(new WorkUnit());
             WorkUnits = new ObservableCollection<WorkUnitWrapper>();
@@ -119,6 +117,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _workOrderRepository.SaveAsync();
             HasChanges = false;
             RaiseDataModelSavedEvent(WorkOrder.Model);
+            ExitView();
         }
 
         /// <inheritdoc/>
@@ -132,6 +131,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _workOrderRepository.Remove(WorkOrder.Model);
             await _workOrderRepository.SaveAsync();
             RaiseDataModelDeletedEvent(WorkOrder.Model);
+            ExitView();
         }
 
         private void WorkOrder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -227,6 +227,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             WorkUnits.Add(newWorkUnit);
             WorkUnit = new WorkUnitWrapper(new WorkUnit());
+        }
+
+        private void ExitView()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkUnitViewModel), Id = WorkOrder.WorkAreaId });
         }
     }
 }
