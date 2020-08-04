@@ -38,6 +38,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             Materials = new ObservableCollection<MaterialWrapper>();
             Products = new ObservableCollection<ProductWrapper>();
 
+            Responsibles = new ObservableCollection<EmployeeWrapper>();
+            Supervisors = new ObservableCollection<EmployeeWrapper>();
+
             AddWorkUnitToWorkOrderCommand = new DelegateCommand(OnAddWorkUnitToWorkOrderExecute);
         }
 
@@ -82,12 +85,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public ObservableCollection<WorkUnitWrapper> WorkUnits { get; set; }
 
+        public ObservableCollection<EmployeeWrapper> Responsibles { get; set; }
+
+        public ObservableCollection<EmployeeWrapper> Supervisors { get; set; }
+
         /// <inheritdoc/>
-        public override async Task LoadAsync(int? workOrderId)
+        public override async Task LoadAsync(int? areaId)
         {
-            var workOrder = workOrderId.HasValue
-                ? await _workOrderRepository.GetByIdAsync(workOrderId.Value)
-                : CreateNewWorkOrder();
+            var workOrder = CreateNewWorkOrder();
+            workOrder.WorkAreaId = areaId.Value;
+
+            workOrder.WorkArea = await _workOrderRepository.GetWorkAreaAsync(areaId.Value);
 
             WorkOrder = new WorkOrderWrapper(workOrder);
             WorkOrder.PropertyChanged += WorkOrder_PropertyChanged;
@@ -96,6 +104,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             await LoadColorsAsync();
             await LoadMaterialsAsync();
             await LoadProductsAsync();
+
+            await LoadResponsiblesAsync(WorkOrder.WorkArea.WorkAreaResponsibleRoleId.Value);
+            await LoadSupervisorsAsync(WorkOrder.WorkArea.WorkAreaSupervisorRoleId.Value);
         }
 
         /// <inheritdoc/>
@@ -167,6 +178,26 @@ namespace SistemaMirno.UI.ViewModel.Detail
             foreach (var product in products)
             {
                 Products.Add(new ProductWrapper(product));
+            }
+        }
+
+        private async Task LoadResponsiblesAsync(int roleId)
+        {
+            var responsibles = await _workOrderRepository.GetEmployeesAsync(roleId);
+            Responsibles.Clear();
+            foreach (var responsible in responsibles)
+            {
+                Responsibles.Add(new EmployeeWrapper(responsible));
+            }
+        }
+
+        private async Task LoadSupervisorsAsync(int roleId)
+        {
+            var supervisors = await _workOrderRepository.GetEmployeesAsync(roleId);
+            Supervisors.Clear();
+            foreach (var supervisor in supervisors)
+            {
+                Supervisors.Add(new EmployeeWrapper(supervisor));
             }
         }
 

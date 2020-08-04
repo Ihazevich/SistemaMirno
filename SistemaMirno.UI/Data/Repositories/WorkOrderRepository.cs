@@ -44,5 +44,15 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             return await Context.Set<Material>().ToListAsync();
         }
+
+        public async Task<WorkArea> GetWorkAreaAsync(int id)
+        {
+            return await Context.Set<WorkArea>().FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Employee>> GetEmployeesAsync(int roleId)
+        {
+            return await Context.Set<Employee>().Where(e => e.EmployeeRoleId == roleId).ToListAsync();
+        }
     }
 }

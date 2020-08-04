@@ -6,7 +6,11 @@
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
              mc:Ignorable="d" >
     <StackPanel Orientation="Vertical">
-        <Label Content="Nueva orden de trabajo" FontSize="20" Margin="5" />
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Nueva orden de trabajo" FontSize="20" Margin="5" />
+            <Label Content="-" FontSize="20" Margin="5" />
+            <Label Content="{Binding WorkOrder.WorkArea.Name}" FontSize="20" Margin="5" />
+        </StackPanel>
         <Separator />
         <Grid Grid.Row="2" Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -36,15 +40,15 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="Responsable" />
                 <ComboBox Grid.Column="1"
-                          ItemsSource="{Binding ResponsibleEmployees}"
-                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding Responsibles}"
+                          DisplayMemberPath="FullName"
                           SelectedValuePath="Id"
                           SelectedValue="{Binding WorkOrder.ResponsibleEmployeeId, Mode=TwoWay}"
                           Margin="5" />
                 <Label Grid.Column="2" Content="Supervisor" />
                 <ComboBox Grid.Column="3"
-                          ItemsSource="{Binding SupervisorEmployees}"
-                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding Supervisors}"
+                          DisplayMemberPath="FullName"
                           SelectedValuePath="Id"
                           SelectedValue="{Binding WorkOrder.SupervisorEmployeeId, Mode=TwoWay}"
                           Margin="5" />

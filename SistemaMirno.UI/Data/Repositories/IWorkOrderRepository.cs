@@ -20,5 +20,9 @@ namespace SistemaMirno.UI.Data.Repositories
         Task<IEnumerable<Color>> GetColorsAsync();
 
         Task<IEnumerable<Material>> GetMaterialsAsync();
+
+        Task<WorkArea> GetWorkAreaAsync(int id);
+
+        Task<IEnumerable<Employee>> GetEmployeesAsync(int roleId);
     }
 }
