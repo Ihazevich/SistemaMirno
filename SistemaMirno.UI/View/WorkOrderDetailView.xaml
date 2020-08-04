@@ -22,6 +22,11 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Area de trabajo" />
             <TextBox Grid.Row="1"
@@ -36,14 +41,27 @@
                  Text="{Binding WorkOrder.Name, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
                  Margin="5" />
             <Label Grid.Row="6" Content="Responsable" />
-            <TextBox Grid.Row="7"
-                 Text="{Binding WorkOrder.ResponsibleEmployee.FirstName, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
-                 Margin="5" />
+            <ComboBox Grid.Row="7"
+                      ItemsSource="{Binding ResponsibleEmployees}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding Work.ResponsibleEmployeeId, Mode=TwoWay}"
+                      Margin="5" />
             <Label Grid.Row="8" Content="Supervisor" />
-            <TextBox Grid.Row="9"
-                 Text="{Binding WorkOrder.SupervisorEmployee.FirstName, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
-                 Margin="5" />
-            <DataGrid Grid.Row="10" ItemsSource="{Binding WorkOrder.WorkUnits}"/>
+            <ComboBox Grid.Row="9"
+                      ItemsSource="{Binding SupervisorEmployees}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding Work.SupervisorEmployeeId, Mode=TwoWay}"
+                      Margin="5" />
+            <DataGrid Grid.Row="10" ItemsSource="{Binding WorkUnits, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Cantidad"/>
+                    <DataGridComboBoxColumn Header="Producto" ItemsSource="{Binding Products, Mode=TwoWay}"/>
+                    <DataGridComboBoxColumn Header="Material"  ItemsSource="{Binding Materials, Mode=TwoWay}"/>
+                    <DataGridComboBoxColumn Header="Lustre/Color" ItemsSource="{Binding Colors, Mode=TwoWay}"/>
+                </DataGrid.Columns>
+            </DataGrid>
             <StackPanel Grid.Row="11" Orientation="Horizontal">
                 <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}" />
             </StackPanel>

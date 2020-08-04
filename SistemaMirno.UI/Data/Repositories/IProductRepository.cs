@@ -1,7 +1,6 @@
 ﻿using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
 
-namespace SistemaMirno.UI.Data
+namespace SistemaMirno.UI.Data.Repositories
 {
     public interface IProductRepository : IGenericRepository<Product>
     {

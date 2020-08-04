@@ -22,11 +22,11 @@ namespace SistemaMirno.Model
         public virtual WorkArea WorkArea { get; set; }
 
         [ForeignKey("ResponsibleEmployee")]
-        public int ResponsibleEmployeeId { get; set; }
+        public int? ResponsibleEmployeeId { get; set; }
         public virtual Employee ResponsibleEmployee { get; set; }
 
         [ForeignKey("SupervisorEmployee")]
-        public int SupervisorEmployeeID { get; set; }
+        public int? SupervisorEmployeeID { get; set; }
         public virtual Employee SupervisorEmployee { get; set; }
 
         public virtual Collection<WorkUnit> WorkUnits { get; set; }

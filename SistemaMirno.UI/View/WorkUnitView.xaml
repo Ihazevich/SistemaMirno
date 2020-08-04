@@ -19,7 +19,7 @@
         <DataGrid Grid.Row="1" ItemsSource="{Binding WorkUnits, Mode=TwoWay}" AutoGenerateColumns="True">
         </DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="1">
-            <Button Content="Nueva Orden" Command="{Binding OpenNewWorkOrderViewCommand}"/>
+            <Button Content="Nueva Orden" Command="{Binding OpenWorkOrderDetailViewCommand}"/>
             <Button Content="Ver Ordenes" Command="{Binding OpenWorkOrderViewCommand}"/>
         </StackPanel>
     </Grid>

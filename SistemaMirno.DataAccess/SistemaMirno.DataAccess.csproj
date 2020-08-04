@@ -85,6 +85,10 @@
     <Compile Include="Migrations\202008031859072_BaseModel.designer.cs">
       <DependentUpon>202008031859072_BaseModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008040120073_smol.cs" />
+    <Compile Include="Migrations\202008040120073_smol.designer.cs">
+      <DependentUpon>202008040120073_smol.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -118,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008031859072_BaseModel.resx">
       <DependentUpon>202008031859072_BaseModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008040120073_smol.resx">
+      <DependentUpon>202008040120073_smol.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

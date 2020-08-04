@@ -7,6 +7,7 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
@@ -28,6 +29,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
             WorkUnits = new ObservableCollection<WorkUnit>();
             OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
+            OpenWorkOrderDetailViewCommand = new DelegateCommand(OnOpenWorkOrderDetailViewExecute);
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand OpenNewWorkOrderViewCommand { get; }
+        public ICommand OpenWorkOrderDetailViewCommand { get; }
 
         public ICommand OpenWorkOrderViewCommand { get; }
 
@@ -73,6 +75,12 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderViewModel), Id = _areaId });
+        }
+
+        private void OnOpenWorkOrderDetailViewExecute()
+        {
+            _eventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderDetailViewModel), Id = _areaId });
         }
     }
 }
