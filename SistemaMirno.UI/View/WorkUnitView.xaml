@@ -16,7 +16,12 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Label Content="{Binding AreaName}" FontSize="30" />
-        <DataGrid Grid.Row="1" ItemsSource="{Binding WorkUnits, Mode=TwoWay}" AutoGenerateColumns="True">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding WorkUnits, Mode=TwoWay}" AutoGenerateColumns="false">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Producto" Binding="{Binding Product.Name}"/>
+                <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
+                <DataGridTextColumn Header="Color" Binding="{Binding Color.Name}"/>
+            </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="1">
             <Button Content="Nueva Orden" Command="{Binding OpenWorkOrderDetailViewCommand}"/>
