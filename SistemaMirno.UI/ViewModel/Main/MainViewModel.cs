@@ -6,6 +6,7 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
+using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.General;
 
 namespace SistemaMirno.UI.ViewModel.Main
@@ -37,6 +38,8 @@ namespace SistemaMirno.UI.ViewModel.Main
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(ChangeView);
+            _eventAggregator.GetEvent<NewMoveWorkOrderEvent>()
+                .Subscribe(NewMoveWorkOrder);
 
             ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute, ChangeViewCanExecute);
             WorkAreaNavigationViewModel = _viewModelCreator[nameof(WorkAreaNavigationViewModel)];
@@ -118,6 +121,12 @@ namespace SistemaMirno.UI.ViewModel.Main
         {
             SelectedViewModel = _viewModelCreator[args.ViewModel];
             SelectedViewModel.LoadAsync(args.Id);
+        }
+
+        private void NewMoveWorkOrder(NewMoveWorkOrderEventArgs args)
+        {
+            ChangeView(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderDetailViewModel), Id = args.WorkAreaId });
+            ((WorkOrderDetailViewModel)SelectedViewModel).CreateNewWorkOrder(args.WorkUnits);
         }
     }
 }

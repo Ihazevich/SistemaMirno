@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Prism.Events;
 using SistemaMirno.Model;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.Event
 {
@@ -10,8 +11,8 @@ namespace SistemaMirno.UI.Event
 
     public class NewMoveWorkOrderEventArgs
     {
-        ICollection<WorkUnit> WorkUnits { get; set; }
+        public ICollection<WorkUnitWrapper> WorkUnits { get; set; }
 
-        int WorkAreaId { get; set; }
+        public int WorkAreaId { get; set; }
     }
 }

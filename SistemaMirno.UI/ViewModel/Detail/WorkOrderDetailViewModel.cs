@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +21,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private IWorkOrderRepository _workOrderRepository;
         private WorkOrderWrapper _workOrder;
         private WorkUnitWrapper _workUnit;
+        private bool _isNewOrder = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkOrderDetailViewModel"/> class.
@@ -89,6 +92,32 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public ObservableCollection<EmployeeWrapper> Responsibles { get; set; }
 
         public ObservableCollection<EmployeeWrapper> Supervisors { get; set; }
+
+        public async void CreateNewWorkOrder(ICollection<WorkUnitWrapper> workUnits = null)
+        {
+            if (workUnits != null)
+            {
+                foreach (var workUnit in workUnits)
+                {
+                    for (int i = 0; i < workUnit.Quantity; i++)
+                    {
+                        var newWorkUnit = new WorkUnit
+                        {
+                            WorkAreaId = WorkOrder.WorkAreaId,
+                            ColorId = WorkUnit.ColorId,
+                            MaterialId = WorkUnit.MaterialId,
+                            ProductId = WorkUnit.ProductId,
+                        };
+
+                        WorkOrder.WorkUnits.Add(newWorkUnit);
+                    }
+
+                    WorkUnits.Add(workUnit);
+                }
+
+                _isNewOrder = false;
+            }
+        }
 
         /// <inheritdoc/>
         public override async Task LoadAsync(int? areaId)

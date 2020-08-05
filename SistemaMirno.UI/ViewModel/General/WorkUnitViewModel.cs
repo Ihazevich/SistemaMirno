@@ -178,7 +178,8 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void OnMoveToWorkAreaExecute()
         {
-            throw new NotImplementedException();
+            _eventAggregator.GetEvent<NewMoveWorkOrderEvent>()
+                .Publish(new NewMoveWorkOrderEventArgs { WorkUnits = OrderWorkUnits, WorkAreaId = _areaId });
         }
 
         private bool CanMoveToWorkAreaExecute()
