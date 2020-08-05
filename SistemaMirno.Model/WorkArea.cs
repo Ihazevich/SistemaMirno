@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,7 +9,8 @@ namespace SistemaMirno.Model
         public WorkArea()
         {
             WorkUnits = new Collection<WorkUnit>();
-            WorkOrders = new Collection<WorkOrder>();
+            IncomingWorkOrders = new Collection<WorkOrder>();
+            OutgoingWorkOrders = new Collection<WorkOrder>();
             FromAreaConnections = new Collection<AreaConnection>();
             AreaConnectionsTo = new Collection<AreaConnection>();
         }
@@ -25,10 +25,12 @@ namespace SistemaMirno.Model
 
         [ForeignKey("WorkAreaResponsibleRole")]
         public int? WorkAreaResponsibleRoleId { get; set; }
+
         public virtual EmployeeRole WorkAreaResponsibleRole { get; set; }
 
         [ForeignKey("WorkAreaSupervisorRole")]
         public int? WorkAreaSupervisorRoleId { get; set; }
+
         public virtual EmployeeRole WorkAreaSupervisorRole { get; set; }
 
         [InverseProperty("FromWorkArea")]
@@ -38,7 +40,12 @@ namespace SistemaMirno.Model
         public virtual Collection<AreaConnection> AreaConnectionsTo { get; set; }
 
         public virtual Collection<WorkUnit> WorkUnits { get; set; }
-        public virtual Collection<WorkOrder> WorkOrders { get; set; }
+
+        [InverseProperty("EnteringWorkArea")]
+        public virtual Collection<WorkOrder> IncomingWorkOrders { get; set; }
+
+        [InverseProperty("LeavingWorkArea")]
+        public virtual Collection<WorkOrder> OutgoingWorkOrders { get; set; }
 
     }
 }

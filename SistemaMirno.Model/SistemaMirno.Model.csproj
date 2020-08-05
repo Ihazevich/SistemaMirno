@@ -75,6 +75,7 @@
     <Compile Include="Material.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="WorkOrder.cs" />
+    <Compile Include="WorkOrderUnit.cs" />
     <Compile Include="WorkUnit.cs" />
   </ItemGroup>
   <ItemGroup>
