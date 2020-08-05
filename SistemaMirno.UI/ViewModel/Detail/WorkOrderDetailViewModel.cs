@@ -29,6 +29,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private PropertyGroupDescription _colorName = new PropertyGroupDescription("Color.Name");
         private PropertyGroupDescription _materialName = new PropertyGroupDescription("Material.Name");
         private PropertyGroupDescription _productName = new PropertyGroupDescription("Product.Name");
+        private int _workUnitQuantity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkOrderDetailViewModel"/> class.
@@ -60,6 +61,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             FilterByColorCommand = new DelegateCommand<object>(OnFilterByColorExecute);
             FilterByMaterialCommand = new DelegateCommand<object>(OnFilterByMaterialExecute);
             FilterByProductCommand = new DelegateCommand<object>(OnFilterByProductExecute);
+        }
+
+        public int WorkUnitQuantity
+        {
+            get => _workUnitQuantity;
+
+            set
+            {
+                _workUnitQuantity = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -234,13 +246,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private void OnAddWorkUnitExecute()
         {
-            WorkUnit.Product = Products.Where(p => p.Id == WorkUnit.ProductId).Single().Model;
-            WorkUnit.Material = Materials.Where(m => m.Id == WorkUnit.MaterialId).Single().Model;
-            WorkUnit.Color = Colors.Where(c => c.Id == WorkUnit.ColorId).Single().Model;
-
             var newWorkUnit = new WorkUnitWrapper(WorkUnit.Model);
-            newWorkUnit.Quantity = WorkUnit.Quantity;
-            for (int i = 0; i < newWorkUnit.Quantity; i++)
+            for (int i = 0; i < WorkUnitQuantity; i++)
             {
                 var workUnit = new WorkUnit {
                     WorkAreaId = WorkOrder.WorkAreaId,
@@ -250,10 +257,15 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 };
 
                 WorkOrder.WorkUnits.Add(workUnit);
+                WorkUnit.Model = workUnit;
+                WorkUnit.Product = Products.Where(p => p.Id == WorkUnit.ProductId).Single().Model;
+                WorkUnit.Material = Materials.Where(m => m.Id == WorkUnit.MaterialId).Single().Model;
+                WorkUnit.Color = Colors.Where(c => c.Id == WorkUnit.ColorId).Single().Model;
+                WorkUnits.Add(WorkUnit);
             }
 
-            WorkUnits.Add(newWorkUnit);
             WorkUnit = new WorkUnitWrapper(new WorkUnit());
+            WorkUnitQuantity = 0;
         }
 
         public async void CreateNewWorkOrder(ICollection<WorkUnitWrapper> workUnits = null)
@@ -262,18 +274,15 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 foreach (var workUnit in workUnits)
                 {
-                    for (int i = 0; i < workUnit.Quantity; i++)
+                    var newWorkUnit = new WorkUnit
                     {
-                        var newWorkUnit = new WorkUnit
-                        {
-                            WorkAreaId = WorkOrder.WorkAreaId,
-                            ColorId = WorkUnit.ColorId,
-                            MaterialId = WorkUnit.MaterialId,
-                            ProductId = WorkUnit.ProductId,
-                        };
+                        WorkAreaId = workUnit.WorkAreaId,
+                        ColorId = workUnit.ColorId,
+                        MaterialId = workUnit.MaterialId,
+                        ProductId = workUnit.ProductId,
+                    };
 
-                        WorkOrder.WorkUnits.Add(newWorkUnit);
-                    }
+                    WorkOrder.WorkUnits.Add(newWorkUnit);
 
                     WorkUnits.Add(workUnit);
                 }

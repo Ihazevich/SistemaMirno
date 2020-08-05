@@ -72,19 +72,17 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public int ProductionAreaId
+        public int WorkAreaId
         {
             get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
-        public virtual WorkArea ProductionArea
+        public virtual WorkArea WorkArea
         {
             get { return GetValue<WorkArea>(); }
             set { SetValue(value); }
         }
-
-        public int Quantity { get; set; }
 
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
