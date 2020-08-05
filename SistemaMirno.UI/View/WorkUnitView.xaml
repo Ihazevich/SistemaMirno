@@ -86,20 +86,16 @@
             <Button Content="⮞" FontSize="20" Width="30" Command="{Binding AddWorkUnitCommand}" Margin="10"/>
             <Button Content="⮜" FontSize="20" Width="30" Command="{Binding RemoveWorkUnitCommand}" Margin="10"/>
             <Label Content="Filtrar por:"  FontSize="15"  Margin="10"/>
-            <CheckBox Grid.Column="1" 
-                      Content="Cliente"
+            <CheckBox Content="Cliente"
                       Command="{Binding FilterByClientCommand}" 
                       CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
-            <CheckBox Grid.Column="1" Grid.Row="1" 
-                      Content="Producto"
+            <CheckBox Content="Producto"
                       Command="{Binding FilterByProductCommand}" 
                       CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
-            <CheckBox Grid.Column="1" Grid.Row="2" 
-                      Content="Material"
+            <CheckBox Content="Material"
                       Command="{Binding FilterByMaterialCommand}" 
                       CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
-            <CheckBox Grid.Column="1" Grid.Row="3" 
-                      Content="Color"
+            <CheckBox Content="Color"
                       Command="{Binding FilterByColorCommand}" 
                       CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
         </StackPanel>

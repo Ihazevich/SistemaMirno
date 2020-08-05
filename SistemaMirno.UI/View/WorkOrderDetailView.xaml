@@ -15,6 +15,7 @@
         <Grid Grid.Row="2" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="400" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -53,15 +54,73 @@
                           SelectedValue="{Binding WorkOrder.SupervisorEmployeeId, Mode=TwoWay}"
                           Margin="5" />
             </Grid>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding WorkUnits, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" CanUserAddRows="True" AutoGenerateColumns="False">
+            <DataGrid Grid.Row="1" 
+                      ItemsSource="{Binding WorkUnitCollection}" 
+                      SelectedItem="{Binding SelectedWorkUnit}"
+                      AutoGenerateColumns="false" 
+                      SelectionMode="Extended"
+                      Margin="10,0,10,0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Cantidad" Width="100" Binding="{Binding Quantity, Mode=TwoWay}"/>
                     <DataGridTextColumn Header="Producto" Width="300" Binding="{Binding Product.Name, Mode=TwoWay}"/>
                     <DataGridTextColumn Header="Material" Width="200" Binding="{Binding Material.Name, Mode=TwoWay}"/>
                     <DataGridTextColumn Header="Lustre/Color" Width="200" Binding="{Binding Color.Name, Mode=TwoWay}"/>
                 </DataGrid.Columns>
+                <DataGrid.GroupStyle>
+                    <!-- Style for groups at top level. -->
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Margin" Value="0,0,0,5"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                            <Expander IsExpanded="False" BorderThickness="1,1,1,5">
+                                                <Expander.Header>
+                                                    <DockPanel>
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" Width="100"/>
+                                                    </DockPanel>
+                                                </Expander.Header>
+                                                <Expander.Content>
+                                                    <ItemsPresenter />
+                                                </Expander.Content>
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                    <!-- Style for groups under the top level. -->
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <DockPanel Background="LightGray">
+                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black"/>
+                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" Width="100"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </DataGrid.GroupStyle>
             </DataGrid>
             <StackPanel Grid.Column="1" Grid.Row="1">
+                <Label Content="Filtrar por:"  FontSize="15"  Margin="10"/>
+                <CheckBox Content="Cliente"
+                          Command="{Binding FilterByClientCommand}" 
+                          CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
+                <CheckBox Content="Producto"
+                          Command="{Binding FilterByProductCommand}" 
+                          CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
+                <CheckBox Content="Material"
+                          Command="{Binding FilterByMaterialCommand}" 
+                          CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
+                <CheckBox Content="Color"
+                          Command="{Binding FilterByColorCommand}" 
+                          CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
+            </StackPanel>
+            <StackPanel Grid.Column="2" Grid.Row="1">
                 <Label Content="Cantidad" Margin="5" />
                 <TextBox Text="{Binding WorkUnit.Quantity, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
                          Margin="5" />
