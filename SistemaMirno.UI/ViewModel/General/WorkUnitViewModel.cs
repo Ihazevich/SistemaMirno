@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Prism.Commands;
@@ -25,6 +27,11 @@ namespace SistemaMirno.UI.ViewModel.General
         private IEventAggregator _eventAggregator;
         private IWorkUnitRepository _workUnitRepository;
 
+        private PropertyGroupDescription _clientName = new PropertyGroupDescription("Client.Name");
+        private PropertyGroupDescription _colorName = new PropertyGroupDescription("Color.Name");
+        private PropertyGroupDescription _materialName = new PropertyGroupDescription("Material.Name");
+        private PropertyGroupDescription _productName = new PropertyGroupDescription("Product.Name");
+
         public WorkUnitViewModel(IWorkUnitRepository workUnitRepository,
                     IEventAggregator eventAggregator)
         {
@@ -33,10 +40,21 @@ namespace SistemaMirno.UI.ViewModel.General
 
             AreaWorkUnits = new ObservableCollection<WorkUnitWrapper>();
             OrderWorkUnits = new ObservableCollection<WorkUnitWrapper>();
+
             OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
             NewWorkOrderCommand = new DelegateCommand(OnNewWorkOrderExecute);
-            AddWorkUnitCommand = new DelegateCommand(OnAddWorkUnitExecute);
-            RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute);
+            MoveToWorkAreaCommand = new DelegateCommand(OnMoveToWorkAreaExecute, CanMoveToWorkAreaExecute);
+
+            AddWorkUnitCommand = new DelegateCommand(OnAddWorkUnitExecute, CanAddWorkUnitExecute);
+            RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, CanRemoveWorkUnitExecute);
+
+            FilterByClientCommand = new DelegateCommand<object>(OnFilterByClientExecute);
+            FilterByColorCommand = new DelegateCommand<object>(OnFilterByColorExecute);
+            FilterByMaterialCommand = new DelegateCommand<object>(OnFilterByMaterialExecute);
+            FilterByProductCommand = new DelegateCommand<object>(OnFilterByProductExecute);
+
+            AreaCollection = CollectionViewSource.GetDefaultView(AreaWorkUnits);
+            OrderCollection = CollectionViewSource.GetDefaultView(OrderWorkUnits);
         }
 
         /// <summary>
@@ -66,9 +84,21 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public ICommand RemoveWorkUnitCommand { get; }
 
+        public ICommand FilterByClientCommand { get; }
+
+        public ICommand FilterByColorCommand { get; }
+
+        public ICommand FilterByMaterialCommand { get; }
+
+        public ICommand FilterByProductCommand { get; }
+
         public ObservableCollection<WorkUnitWrapper> AreaWorkUnits { get; set; }
 
+        public ICollectionView AreaCollection { get; set; }
+
         public ObservableCollection<WorkUnitWrapper> OrderWorkUnits { get; set; }
+
+        public ICollectionView OrderCollection { get; set; }
 
         public WorkUnitWrapper SelectedAreaWorkUnit
         {
@@ -78,6 +108,7 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _selectedAreaWorkUnit = value;
                 OnPropertyChanged();
+                ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -89,6 +120,7 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _selectedOrderWorkUnit = value;
                 OnPropertyChanged();
+                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -124,12 +156,102 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             OrderWorkUnits.Add(SelectedAreaWorkUnit);
             AreaWorkUnits.Remove(SelectedAreaWorkUnit);
+            ((DelegateCommand)MoveToWorkAreaCommand).RaiseCanExecuteChanged();
         }
 
         private void OnRemoveWorkUnitExecute()
         {
             AreaWorkUnits.Add(SelectedOrderWorkUnit);
             OrderWorkUnits.Remove(SelectedOrderWorkUnit);
+            ((DelegateCommand)MoveToWorkAreaCommand).RaiseCanExecuteChanged();
+        }
+
+        private bool CanRemoveWorkUnitExecute()
+        {
+            return SelectedOrderWorkUnit != null;
+        }
+
+        private bool CanAddWorkUnitExecute()
+        {
+            return SelectedAreaWorkUnit != null;
+        }
+
+        private void OnMoveToWorkAreaExecute()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanMoveToWorkAreaExecute()
+        {
+            return OrderWorkUnits.Count > 0;
+        }
+
+        private void OnFilterByClientExecute(object isChecked)
+        {
+            if (((bool?)isChecked).HasValue)
+            {
+                if (((bool?)isChecked).Value)
+                {
+                    OrderCollection.GroupDescriptions.Add(_clientName);
+                    AreaCollection.GroupDescriptions.Add(_clientName);
+                }
+                else
+                {
+                    OrderCollection.GroupDescriptions.Remove(_clientName);
+                    AreaCollection.GroupDescriptions.Remove(_clientName);
+                }
+            }
+        }
+
+        private void OnFilterByColorExecute(object isChecked)
+        {
+            if (((bool?)isChecked).HasValue)
+            {
+                if (((bool?)isChecked).Value)
+                {
+                    OrderCollection.GroupDescriptions.Add(_colorName);
+                    AreaCollection.GroupDescriptions.Add(_colorName);
+                }
+                else
+                {
+                    OrderCollection.GroupDescriptions.Remove(_colorName);
+                    AreaCollection.GroupDescriptions.Remove(_colorName);
+                }
+            }
+        }
+
+        private void OnFilterByMaterialExecute(object isChecked)
+        {
+            if (((bool?)isChecked).HasValue)
+            {
+                if (((bool?)isChecked).Value)
+                {
+                    OrderCollection.GroupDescriptions.Add(_materialName);
+                    AreaCollection.GroupDescriptions.Add(_materialName);
+                }
+                else
+                {
+                    OrderCollection.GroupDescriptions.Remove(_materialName);
+                    AreaCollection.GroupDescriptions.Remove(_materialName);
+                }
+            }
+        }
+
+        private void OnFilterByProductExecute(object isChecked)
+        {
+            if (((bool?)isChecked).HasValue)
+            {
+                if (((bool?)isChecked).Value)
+                {
+                    OrderCollection.GroupDescriptions.Add(_productName);
+                    AreaCollection.GroupDescriptions.Add(_productName);
+                }
+                else
+                {
+                    OrderCollection.GroupDescriptions.Remove(_productName);
+                    AreaCollection.GroupDescriptions.Remove(_productName);
+                }
+            }
         }
     }
 }
