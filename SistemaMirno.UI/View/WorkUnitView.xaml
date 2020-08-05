@@ -7,13 +7,13 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <CollectionViewSource x:Key="cvsWorkUnits" Source="{Binding WorkUnits}">
+        <CollectionViewSource x:Key="cvsAreaWorkUnits" Source="{Binding AreaWorkUnits}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Product.Name"/>
                 <PropertyGroupDescription PropertyName="Material.Name"/>
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
-        <CollectionViewSource x:Key="cvsSelectedWorkUnits" Source="{Binding SelectedWorkUnits}">
+        <CollectionViewSource x:Key="cvsOrderWorkUnits" Source="{Binding OrderWorkUnits}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Product.Name"/>
                 <PropertyGroupDescription PropertyName="Material.Name"/>
@@ -32,8 +32,8 @@
         </Grid.RowDefinitions>
         <Label Content="{Binding AreaName}" FontSize="30" />
         <DataGrid Grid.Row="1" 
-                  ItemsSource="{Binding Source={StaticResource cvsWorkUnits}}" 
-                  SelectedItem="{Binding SelectedWorkUnit}"
+                  ItemsSource="{Binding Source={StaticResource cvsAreaWorkUnits}}" 
+                  SelectedItem="{Binding SelectedAreaWorkUnit}"
                   AutoGenerateColumns="false" 
                   SelectionMode="Extended"
                   Margin="10,0,10,0">
@@ -90,7 +90,8 @@
         </StackPanel>
         <DataGrid Grid.Column="2" 
                   Grid.Row="1" 
-                  ItemsSource="{Binding Source={StaticResource cvsSelectedWorkUnits}}" 
+                  ItemsSource="{Binding Source={StaticResource cvsOrderWorkUnits}}" 
+                  SelectedItem="{Binding SelectedOrderWorkUnit}"
                   AutoGenerateColumns="false" 
                   SelectionMode="Extended"
                   Margin="10,0,10,0">
