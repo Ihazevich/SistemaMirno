@@ -26,13 +26,13 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the AreaConnection FromAreaId.
         /// </summary>
-        public int? FromWorkAreaId
+        public int WorkAreaId
         {
-            get { return GetValue<int?>(); }
+            get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
-        public WorkArea FromWorkArea
+        public WorkArea WorkArea
         {
             get { return GetValue<WorkArea>(); }
             set { SetValue(value); }
@@ -41,13 +41,13 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the AreaConnection ToAreaId.
         /// </summary>
-        public int? ToWorkAreaId
+        public int ConnectedWorkAreaId
         {
-            get { return GetValue<int?>(); }
+            get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
-        public WorkArea ToWorkArea
+        public WorkArea ConnectedWorkArea
         {
             get { return GetValue<WorkArea>(); }
             set { SetValue(value); }
@@ -56,7 +56,7 @@ namespace SistemaMirno.UI.Wrapper
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {
-            if (ToWorkAreaId == FromWorkAreaId)
+            if (WorkAreaId == ConnectedWorkAreaId)
             {
                 yield return "El area de destino y el area de origen no pueden ser iguales.";
             }

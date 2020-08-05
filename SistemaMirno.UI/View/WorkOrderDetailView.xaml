@@ -9,7 +9,7 @@
         <StackPanel Orientation="Horizontal">
             <Label Content="Nueva orden de trabajo" FontSize="20" Margin="5" />
             <Label Content="-" FontSize="20" Margin="5" />
-            <Label Content="{Binding WorkOrder.WorkArea.Name}" FontSize="20" Margin="5" />
+            <Label Content="{Binding WorkOrder.DestinationWorkArea.Name}" FontSize="20" Margin="5" />
         </StackPanel>
         <Separator />
         <Grid Grid.Row="2" Grid.Column="1">

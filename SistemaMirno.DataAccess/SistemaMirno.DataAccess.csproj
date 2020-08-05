@@ -15,7 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>1.0.62.20218</AssemblyVersion>
+    <AssemblyVersion>1.0.73.20218</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -101,6 +101,26 @@
     <Compile Include="Migrations\202008041837001_anothertypo.designer.cs">
       <DependentUpon>202008041837001_anothertypo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008051751596_WorkOrderUnits.cs" />
+    <Compile Include="Migrations\202008051751596_WorkOrderUnits.designer.cs">
+      <DependentUpon>202008051751596_WorkOrderUnits.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008051800514_nullableLeavingWorkAreaId.cs" />
+    <Compile Include="Migrations\202008051800514_nullableLeavingWorkAreaId.designer.cs">
+      <DependentUpon>202008051800514_nullableLeavingWorkAreaId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008051852234_collectionInWorkUnit.cs" />
+    <Compile Include="Migrations\202008051852234_collectionInWorkUnit.designer.cs">
+      <DependentUpon>202008051852234_collectionInWorkUnit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008051908122_renamedWorkOrderAreas.cs" />
+    <Compile Include="Migrations\202008051908122_renamedWorkOrderAreas.designer.cs">
+      <DependentUpon>202008051908122_renamedWorkOrderAreas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008051944031_ConnectionsRefactor.cs" />
+    <Compile Include="Migrations\202008051944031_ConnectionsRefactor.designer.cs">
+      <DependentUpon>202008051944031_ConnectionsRefactor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -146,6 +166,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008041837001_anothertypo.resx">
       <DependentUpon>202008041837001_anothertypo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008051751596_WorkOrderUnits.resx">
+      <DependentUpon>202008051751596_WorkOrderUnits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008051800514_nullableLeavingWorkAreaId.resx">
+      <DependentUpon>202008051800514_nullableLeavingWorkAreaId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008051852234_collectionInWorkUnit.resx">
+      <DependentUpon>202008051852234_collectionInWorkUnit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008051908122_renamedWorkOrderAreas.resx">
+      <DependentUpon>202008051908122_renamedWorkOrderAreas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008051944031_ConnectionsRefactor.resx">
+      <DependentUpon>202008051944031_ConnectionsRefactor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

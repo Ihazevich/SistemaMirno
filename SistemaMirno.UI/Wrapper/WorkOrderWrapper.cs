@@ -43,13 +43,25 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the ProductionAreaId.
         /// </summary>
-        public int WorkAreaId
+        public int OriginWorkAreaId
         {
             get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
-        public WorkArea WorkArea
+        public WorkArea OriginWorkArea
+        {
+            get { return GetValue<WorkArea>(); }
+            set { SetValue(value); }
+        }
+
+        public int DestinationWorkAreaId
+        {
+            get { return GetValue<int>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual WorkArea DestinationWorkArea
         {
             get { return GetValue<WorkArea>(); }
             set { SetValue(value); }
@@ -85,9 +97,9 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public virtual Collection<WorkUnit> WorkUnits
+        public virtual Collection<WorkOrderUnit> WorkOrderUnits
         {
-            get { return GetValue<Collection<WorkUnit>>(); }
+            get { return GetValue<Collection<WorkOrderUnit>>(); }
             set { SetValue(value); }
         }
 

@@ -5,14 +5,16 @@ using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.Event
 {
-    public class NewMoveWorkOrderEvent : PubSubEvent<NewMoveWorkOrderEventArgs>
+    public class NewWorkOrderEvent : PubSubEvent<NewWorkOrderEventArgs>
     {
     }
 
-    public class NewMoveWorkOrderEventArgs
+    public class NewWorkOrderEventArgs
     {
         public ICollection<WorkUnitWrapper> WorkUnits { get; set; }
 
-        public int WorkAreaId { get; set; }
+        public int OriginWorkAreaId { get; set; }
+
+        public int DestinationWorkAreaId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -21,6 +22,7 @@ namespace SistemaMirno.UI.ViewModel.General
     public class WorkUnitViewModel : ViewModelBase, IWorkUnitViewModel
     {
         private int _areaId;
+        private int _destinationAreaId;
         private string _areaName;
         private WorkUnitWrapper _selectedAreaWorkUnit;
         private WorkUnitWrapper _selectedOrderWorkUnit;
@@ -148,8 +150,8 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void OnNewWorkOrderExecute()
         {
-            _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderDetailViewModel), Id = _areaId });
+            _eventAggregator.GetEvent<NewWorkOrderEvent>()
+                .Publish(new NewWorkOrderEventArgs { OriginWorkAreaId = _areaId, DestinationWorkAreaId = _areaId });
         }
 
         private void OnAddWorkUnitExecute()
@@ -178,8 +180,8 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void OnMoveToWorkAreaExecute()
         {
-            _eventAggregator.GetEvent<NewMoveWorkOrderEvent>()
-                .Publish(new NewMoveWorkOrderEventArgs { WorkUnits = OrderWorkUnits, WorkAreaId = _areaId });
+            _eventAggregator.GetEvent<NewWorkOrderEvent>()
+                .Publish(new NewWorkOrderEventArgs { WorkUnits = OrderWorkUnits, OriginWorkAreaId = _areaId });
         }
 
         private bool CanMoveToWorkAreaExecute()

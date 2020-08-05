@@ -20,7 +20,7 @@ namespace SistemaMirno.UI.Data.Repositories
 
         public async Task<IEnumerable<AreaConnection>> GetByAreaIdAsync(int areaId)
         {
-            return await Context.AreaConnections.Where(c => c.FromWorkAreaId == areaId).ToListAsync();
+            return await Context.AreaConnections.Where(c => c.WorkAreaId == areaId).ToListAsync();
         }
 
         public async Task<string> GetWorkAreaNameAsync(int areaId)

@@ -38,7 +38,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(ChangeView);
-            _eventAggregator.GetEvent<NewMoveWorkOrderEvent>()
+            _eventAggregator.GetEvent<NewWorkOrderEvent>()
                 .Subscribe(NewMoveWorkOrder);
 
             ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute, ChangeViewCanExecute);
@@ -123,10 +123,10 @@ namespace SistemaMirno.UI.ViewModel.Main
             SelectedViewModel.LoadAsync(args.Id);
         }
 
-        private void NewMoveWorkOrder(NewMoveWorkOrderEventArgs args)
+        private void NewMoveWorkOrder(NewWorkOrderEventArgs args)
         {
-            ChangeView(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderDetailViewModel), Id = args.WorkAreaId });
-            ((WorkOrderDetailViewModel)SelectedViewModel).CreateNewWorkOrder(args.WorkUnits);
+            ChangeView(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderDetailViewModel), Id = args.DestinationWorkAreaId });
+            ((WorkOrderDetailViewModel)SelectedViewModel).CreateNewWorkOrder(args.DestinationWorkAreaId, args.OriginWorkAreaId, args.WorkUnits);
         }
     }
 }

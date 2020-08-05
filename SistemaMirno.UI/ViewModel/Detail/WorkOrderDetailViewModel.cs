@@ -24,6 +24,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private WorkOrderWrapper _workOrder;
         private WorkUnitWrapper _workUnit;
         private bool _isNewOrder = true;
+        private int _originAreaId;
+        private int _destinationAreaId;
 
         private PropertyGroupDescription _clientName = new PropertyGroupDescription("Client.Name");
         private PropertyGroupDescription _colorName = new PropertyGroupDescription("Color.Name");
@@ -132,21 +134,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         public override async Task LoadAsync(int? areaId)
         {
-            var workOrder = CreateNewWorkOrder();
-            workOrder.WorkAreaId = areaId.Value;
-
-            workOrder.WorkArea = await _workOrderRepository.GetWorkAreaAsync(areaId.Value);
-
-            WorkOrder = new WorkOrderWrapper(workOrder);
-            WorkOrder.PropertyChanged += WorkOrder_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
             await LoadColorsAsync();
             await LoadMaterialsAsync();
             await LoadProductsAsync();
-
-            await LoadResponsiblesAsync(WorkOrder.WorkArea.WorkAreaResponsibleRoleId.Value);
-            await LoadSupervisorsAsync(WorkOrder.WorkArea.WorkAreaSupervisorRoleId.Value);
         }
 
         /// <inheritdoc/>
@@ -246,34 +236,70 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private void OnAddWorkUnitExecute()
         {
-            var newWorkUnit = new WorkUnitWrapper(WorkUnit.Model);
+            // Create a new Wrapper for the WorkUnit Model.
+            var newWorkUnitWrapper = new WorkUnitWrapper(WorkUnit.Model);
+
+            // Create an ammount of Work Units equal to the specified quantity.
             for (int i = 0; i < WorkUnitQuantity; i++)
             {
-                var workUnit = new WorkUnit {
-                    WorkAreaId = WorkOrder.WorkAreaId,
+                var newWorkUnit = new WorkUnit {
+                    WorkAreaId = WorkOrder.DestinationWorkAreaId,
                     ColorId = WorkUnit.ColorId,
                     MaterialId = WorkUnit.MaterialId,
                     ProductId = WorkUnit.ProductId,
                 };
 
-                WorkOrder.WorkUnits.Add(workUnit);
-                WorkUnit.Model = workUnit;
+                // Attach the Work Unit to a new Work Order Unit.
+                var newWorkOrderUnit = new WorkOrderUnit();
+                newWorkOrderUnit.WorkUnit = newWorkUnit;
+
+                // Add the Work Unit to the Work Order
+                WorkOrder.WorkOrderUnits.Add(newWorkOrderUnit);
+
+                // Set the model for the Work Unit, add extra details to it.
+                WorkUnit.Model = newWorkUnit;
                 WorkUnit.Product = Products.Where(p => p.Id == WorkUnit.ProductId).Single().Model;
                 WorkUnit.Material = Materials.Where(m => m.Id == WorkUnit.MaterialId).Single().Model;
                 WorkUnit.Color = Colors.Where(c => c.Id == WorkUnit.ColorId).Single().Model;
+
+                // Add the Work Unit to the Observable Collection to display it on the view datagrid.
                 WorkUnits.Add(WorkUnit);
             }
 
+            // After processing, reset the WorkUnit and the quantity.
             WorkUnit = new WorkUnitWrapper(new WorkUnit());
             WorkUnitQuantity = 0;
         }
 
-        public async void CreateNewWorkOrder(ICollection<WorkUnitWrapper> workUnits = null)
+        public async void CreateNewWorkOrder(int destinationAreaId, int originAreaId, ICollection<WorkUnitWrapper> workUnits = null)
         {
+            // Create a new work order and add it to the repository
+            var workOrder = CreateNewWorkOrder();
+
+            // Set the entering and leaving areas
+            workOrder.DestinationWorkAreaId = destinationAreaId;
+            workOrder.OriginWorkAreaId = originAreaId;
+
+            // Also save the id's in private variables to prevent data loss if the model gets deleted
+            _destinationAreaId = destinationAreaId;
+            _originAreaId = originAreaId;
+
+            workOrder.DestinationWorkArea = await _workOrderRepository.GetWorkAreaAsync(destinationAreaId);
+            workOrder.OriginWorkArea = await _workOrderRepository.GetWorkAreaAsync(originAreaId);
+
+            // Create a new wrapper with the model and attach an event handler
+            WorkOrder = new WorkOrderWrapper(workOrder);
+            WorkOrder.PropertyChanged += WorkOrder_PropertyChanged;
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+            // If the order is a move order, it will have a collection of work units to move
+            // if the collection exists, create the corresponding workOrder units and attach them
+            // to the model.
             if (workUnits != null)
             {
                 foreach (var workUnit in workUnits)
                 {
+                    // Create a new Work Unit.
                     var newWorkUnit = new WorkUnit
                     {
                         WorkAreaId = workUnit.WorkAreaId,
@@ -282,19 +308,39 @@ namespace SistemaMirno.UI.ViewModel.Detail
                         ProductId = workUnit.ProductId,
                     };
 
-                    WorkOrder.WorkUnits.Add(newWorkUnit);
+                    // Attach this Work Unit to a new Work Order Unit.
+                    var newWorkOrderUnit = new WorkOrderUnit();
+                    newWorkOrderUnit.WorkUnit = newWorkUnit;
 
+                    // Add the Work Order Unit to the Work Order.
+                    WorkOrder.WorkOrderUnits.Add(newWorkOrderUnit);
+
+                    // Add the Work Unit to the Observable Collection for display on the view Datagrid.
                     WorkUnits.Add(workUnit);
                 }
 
+                // Since the Work Order has a collection of Work Units, its not a new order.
                 _isNewOrder = false;
+            }
+
+            // Check if Responsibles and Supervisors for this area exist.
+            // If they exist, Load Responsibles and Supervisors for the destination Work Area.
+            if (WorkOrder.DestinationWorkArea.WorkAreaResponsibleRoleId.HasValue)
+            {
+                await LoadResponsiblesAsync(WorkOrder.DestinationWorkArea.WorkAreaResponsibleRoleId.Value);
+            }
+
+            if (WorkOrder.DestinationWorkArea.WorkAreaSupervisorRoleId.HasValue)
+            {
+                await LoadSupervisorsAsync(WorkOrder.DestinationWorkArea.WorkAreaSupervisorRoleId.Value);
             }
         }
 
         private void ExitView()
         {
+            // Return to the area view where the order originated from.
             EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkUnitViewModel), Id = WorkOrder.WorkAreaId });
+                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkUnitViewModel), Id = _originAreaId });
         }
 
         private void OnFilterByClientExecute(object isChecked)

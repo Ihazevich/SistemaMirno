@@ -9,13 +9,14 @@ namespace SistemaMirno.Model
     public class AreaConnection : BaseModel
     {
         [Required]
-        [ForeignKey("FromWorkArea")]
-        public int? FromWorkAreaId { get; set; }
-        public virtual WorkArea FromWorkArea { get; set; }
+        public int WorkAreaId { get; set; }
+
+        public virtual WorkArea WorkArea { get; set; }
 
         [Required]
-        [ForeignKey("ToWorkArea")]
-        public int? ToWorkAreaId { get; set; }
-        public virtual WorkArea ToWorkArea { get; set; }
+        [ForeignKey("ConnectedWorkArea")]
+        public int ConnectedWorkAreaId { get; set; }
+
+        public virtual WorkArea ConnectedWorkArea { get; set; }
     }
 }

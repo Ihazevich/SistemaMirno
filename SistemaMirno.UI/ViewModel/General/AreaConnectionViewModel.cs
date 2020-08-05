@@ -165,7 +165,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
             else
             {
-                item.ToWorkAreaId = args.Model.ToWorkAreaId;
+                item.ConnectedWorkAreaId = args.Model.ConnectedWorkAreaId;
             }
         }
 

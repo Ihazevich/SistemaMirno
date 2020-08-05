@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.1.305.20218</AssemblyVersion>
+    <AssemblyVersion>0.1.318.20218</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
@@ -163,7 +163,7 @@
     <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
-    <Compile Include="Event\NewMoveWorkOrderEvent.cs" />
+    <Compile Include="Event\NewWorkOrderEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
@@ -281,6 +281,7 @@
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\ProductWrapper.cs" />
+    <Compile Include="Wrapper\WorkOrderUnitWrapper.cs" />
     <Compile Include="Wrapper\WorkOrderWrapper.cs" />
     <Compile Include="Wrapper\WorkUnitWrapper.cs" />
     <Compile Include="Wrapper\WrapperBase.cs" />

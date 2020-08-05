@@ -1,6 +1,7 @@
 ﻿using SistemaMirno.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,6 +82,12 @@ namespace SistemaMirno.UI.Wrapper
         public virtual WorkArea WorkArea
         {
             get { return GetValue<WorkArea>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual Collection<WorkOrderUnit> WorkOrderUnits
+        {
+            get { return GetValue<Collection<WorkOrderUnit>>(); }
             set { SetValue(value); }
         }
 

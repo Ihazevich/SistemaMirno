@@ -15,15 +15,15 @@ namespace SistemaMirno.Model
 
         public DateTime? FinishTime { get; set; }
 
-        [ForeignKey("LeavingWorkArea")]
-        public int LeavingWorkAreaId { get; set; }
+        [ForeignKey("OriginWorkArea")]
+        public int? OriginWorkAreaId { get; set; }
 
-        public virtual WorkArea LeavingWorkArea { get; set; }
+        public virtual WorkArea OriginWorkArea { get; set; }
 
-        [ForeignKey("EnteringWorkArea")]
-        public int EnteringWorkAreaId { get; set; }
+        [ForeignKey("DestinationWorkArea")]
+        public int DestinationWorkAreaId { get; set; }
 
-        public virtual WorkArea EnteringWorkArea { get; set; }
+        public virtual WorkArea DestinationWorkArea { get; set; }
 
         [ForeignKey("ResponsibleEmployee")]
         public int? ResponsibleEmployeeId { get; set; }
