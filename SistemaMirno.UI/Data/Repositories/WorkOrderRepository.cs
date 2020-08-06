@@ -20,7 +20,7 @@ namespace SistemaMirno.UI.Data.Repositories
 
         public async Task<IEnumerable<WorkOrder>> GetByAreaIdAsync(int areaId)
         {
-            return await Context.WorkOrders.Where(w => w.DestinationWorkAreaId == areaId).ToListAsync();
+            return await Context.WorkOrders.Where(w => w.OriginWorkAreaId == areaId).ToListAsync();
         }
 
         public async Task<string> GetWorkAreaNameAsync(int areaId)

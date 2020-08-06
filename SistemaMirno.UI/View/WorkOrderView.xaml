@@ -16,18 +16,30 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Label Content="Ordenes de trabajo del area de..." FontSize="30" />
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Ordenes de trabajo" FontSize="30" />
+            <Label Content="-" FontSize="30" />
+            <Label Content="{Binding AreaName}" FontSize="30" />
+        </StackPanel>
         <Separator Grid.Row="1" Grid.ColumnSpan="2" />
-        <ListView Grid.Row="2"
+        <DataGrid Grid.Row="2" 
+                  Margin="20"
                   ItemsSource="{Binding WorkOrders}"
                   SelectedItem="{Binding SelectedWorkOrder, Mode=TwoWay}"
-                  Margin="20">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding StartDate}" FontSize="15" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Area de Destino"
+                                    Binding="{Binding DestinationWorkArea.Name}"/>
+                <DataGridTextColumn Header="Fecha y Hora de creacion"
+                                    Binding="{Binding StartTime}"/>
+                <DataGridTextColumn Header="Cantidad de productos"
+                                    Binding="{Binding WorkOrderUnits.Count}"/>
+                <DataGridTextColumn Header="Responsable"
+                                    Binding="{Binding ResponsibleEmployee.FirstName}"/>
+                <DataGridTextColumn Header="Supervisor"
+                                    Binding="{Binding SupervisorEmployee.FirstName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <StackPanel Grid.Row="2" Grid.Column="1">
             <StackPanel  Orientation="Horizontal">
                 <Button Content="Imprimir Orden"

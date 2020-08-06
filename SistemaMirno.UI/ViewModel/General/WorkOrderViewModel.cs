@@ -48,11 +48,11 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 WorkOrders.Clear();
                 AreaName = await _workOrderRepository.GetWorkAreaNameAsync(workAreaId.Value);
-                var workUnits = await _workOrderRepository.GetByAreaIdAsync(workAreaId.Value);
+                var workOrders = await _workOrderRepository.GetByAreaIdAsync(workAreaId.Value);
 
-                foreach (var workUnit in workUnits)
+                foreach (var workOrder in workOrders)
                 {
-                    WorkOrders.Add(workUnit);
+                    WorkOrders.Add(workOrder);
                 }
             }
         }
