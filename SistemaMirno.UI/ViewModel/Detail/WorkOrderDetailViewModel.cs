@@ -65,6 +65,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             FilterByProductCommand = new DelegateCommand<object>(OnFilterByProductExecute);
         }
 
+        public bool IsNewOrder
+        {
+            get => _isNewOrder;
+
+            set
+            {
+                _isNewOrder = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int WorkUnitQuantity
         {
             get => _workUnitQuantity;
@@ -299,18 +310,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 foreach (var workUnit in workUnits)
                 {
-                    // Create a new Work Unit.
-                    var newWorkUnit = new WorkUnit
-                    {
-                        WorkAreaId = workUnit.WorkAreaId,
-                        ColorId = workUnit.ColorId,
-                        MaterialId = workUnit.MaterialId,
-                        ProductId = workUnit.ProductId,
-                    };
+                    // Set the Work Area of the Work Unit as the destination Work Area.
+                    workUnit.WorkAreaId = _destinationAreaId;
 
                     // Attach this Work Unit to a new Work Order Unit.
                     var newWorkOrderUnit = new WorkOrderUnit();
-                    newWorkOrderUnit.WorkUnit = newWorkUnit;
+                    newWorkOrderUnit.WorkUnit = workUnit.Model;
 
                     // Add the Work Order Unit to the Work Order.
                     WorkOrder.WorkOrderUnits.Add(newWorkOrderUnit);

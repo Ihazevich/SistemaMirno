@@ -19,7 +19,7 @@ namespace SistemaMirno.UI.Startup
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 
-            builder.RegisterType<MirnoDbContext>().AsSelf();
+            builder.RegisterType<MirnoDbContext>().AsSelf().SingleInstance();
 
             builder.RegisterType<MainWindow>().AsSelf();
 

@@ -18,7 +18,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Grid.ColumnSpan="3">
-            <Label Content="{Binding AreaName}" FontSize="30" />
+            <Label Content="{Binding WorkArea.Name}" FontSize="30" />
             <Separator/>
         </StackPanel>
         <StackPanel Grid.Row="1"
@@ -26,8 +26,10 @@
             <Label Content="Productos en area" FontSize="15"/>
         </StackPanel>
         <StackPanel Grid.Column="2" Grid.Row="1"
+                    Orientation="Horizontal"
                     HorizontalAlignment="Center">
-            <Label Content="Productos a trasladar" FontSize="15"/>
+            <Label Content="Productos a trasladar a" FontSize="15"/>
+            <Label Content="{Binding DestinationWorkArea.Name}" FontSize="15"/>
         </StackPanel>
         <DataGrid Grid.Row="2" 
                   ItemsSource="{Binding AreaCollection}" 
@@ -82,7 +84,11 @@
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Center">
             <Button Content="Nueva Orden" Command="{Binding NewWorkOrderCommand}" Margin="10"/>
             <Button Content="Trasladar a Area" Command="{Binding MoveToWorkAreaCommand}" Margin="10"/>
-            <ComboBox ItemsSource="{Binding}"/>
+            <ComboBox ItemsSource="{Binding WorkArea.AreaConnections}"
+                      DisplayMemberPath="ConnectedWorkArea.Name"
+                      SelectedValuePath="ConnectedWorkArea"
+                      SelectedValue="{Binding DestinationWorkArea, Mode=TwoWay}"
+                      IsEnabled="{Binding ConnectionComboBoxEnabled}"/>
             <Button Content="Ver Ordenes" Command="{Binding OpenWorkOrderViewCommand}" Margin="10"/>
             <Button Content="⮞" FontSize="20" Width="30" Command="{Binding AddWorkUnitCommand}" Margin="10"/>
             <Button Content="⮜" FontSize="20" Width="30" Command="{Binding RemoveWorkUnitCommand}" Margin="10"/>

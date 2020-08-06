@@ -13,6 +13,6 @@ namespace SistemaMirno.UI.Data.Repositories
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<IEnumerable<WorkUnit>> GetByAreaIdAsync(int areaId);
 
-        Task<string> GetWorkAreaNameAsync(int areaId);
+        Task<WorkArea> GetWorkAreaByIdAsync(int areaId);
     }
 }

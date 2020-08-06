@@ -21,9 +21,9 @@ namespace SistemaMirno.UI.ViewModel.General
     /// </summary>
     public class WorkUnitViewModel : ViewModelBase, IWorkUnitViewModel
     {
-        private int _areaId;
-        private int _destinationAreaId;
-        private string _areaName;
+        private bool _connectionComboBoxEnabled = false;
+        private WorkAreaWrapper _workArea;
+        private WorkArea _destinationWorkArea;
         private WorkUnitWrapper _selectedAreaWorkUnit;
         private WorkUnitWrapper _selectedOrderWorkUnit;
         private IEventAggregator _eventAggregator;
@@ -62,16 +62,38 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Gets or sets the production area name for the view.
         /// </summary>
-        public string AreaName
+        public WorkAreaWrapper WorkArea
         {
             get
             {
-                return _areaName;
+                return _workArea;
             }
 
             set
             {
-                _areaName = value;
+                _workArea = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public WorkArea DestinationWorkArea
+        {
+            get => _destinationWorkArea;
+
+            set
+            {
+                _destinationWorkArea = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ConnectionComboBoxEnabled
+        {
+            get => _connectionComboBoxEnabled;
+
+            set
+            {
+                _connectionComboBoxEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -131,9 +153,8 @@ namespace SistemaMirno.UI.ViewModel.General
             if (workAreaId.HasValue)
             {
                 AreaWorkUnits.Clear();
-                AreaName = await _workUnitRepository.GetWorkAreaNameAsync(workAreaId.Value);
-                _areaId = workAreaId.Value;
-                var workUnits = await _workUnitRepository.GetByAreaIdAsync(workAreaId.Value);
+                WorkArea = new WorkAreaWrapper(await _workUnitRepository.GetWorkAreaByIdAsync(workAreaId.Value));
+                var workUnits = await _workUnitRepository.GetByAreaIdAsync(WorkArea.Id);
 
                 foreach (var workUnit in workUnits)
                 {
@@ -145,13 +166,13 @@ namespace SistemaMirno.UI.ViewModel.General
         private void OnOpenWorkOrderViewExecute()
         {
             _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderViewModel), Id = _areaId });
+                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderViewModel), Id = WorkArea.Id });
         }
 
         private void OnNewWorkOrderExecute()
         {
             _eventAggregator.GetEvent<NewWorkOrderEvent>()
-                .Publish(new NewWorkOrderEventArgs { OriginWorkAreaId = _areaId, DestinationWorkAreaId = _areaId });
+                .Publish(new NewWorkOrderEventArgs { OriginWorkAreaId = WorkArea.Id, DestinationWorkAreaId = WorkArea.Id });
         }
 
         private void OnAddWorkUnitExecute()
@@ -181,12 +202,21 @@ namespace SistemaMirno.UI.ViewModel.General
         private void OnMoveToWorkAreaExecute()
         {
             _eventAggregator.GetEvent<NewWorkOrderEvent>()
-                .Publish(new NewWorkOrderEventArgs { WorkUnits = OrderWorkUnits, OriginWorkAreaId = _areaId });
+                .Publish(new NewWorkOrderEventArgs { WorkUnits = OrderWorkUnits, OriginWorkAreaId = WorkArea.Id, DestinationWorkAreaId = DestinationWorkArea.Id });
         }
 
         private bool CanMoveToWorkAreaExecute()
         {
-            return OrderWorkUnits.Count > 0;
+            if (OrderWorkUnits.Count > 0)
+            {
+                ConnectionComboBoxEnabled = true;
+                return true;
+            }
+            else
+            {
+                ConnectionComboBoxEnabled = false;
+                return false;
+            }
         }
 
         private void OnFilterByClientExecute(object isChecked)

@@ -23,11 +23,9 @@ namespace SistemaMirno.UI.Data.Repositories
             return await Context.WorkUnits.Where(w => w.WorkAreaId == areaId).ToListAsync();
         }
 
-        public async Task<string> GetWorkAreaNameAsync(int areaId)
+        public async Task<WorkArea> GetWorkAreaByIdAsync(int areaId)
         {
-            var area = await Context.ProductionAreas.Where(a => a.Id == areaId).SingleAsync();
-
-            return area.Name;
+            return await Context.ProductionAreas.FindAsync(areaId);
         }
     }
 }
