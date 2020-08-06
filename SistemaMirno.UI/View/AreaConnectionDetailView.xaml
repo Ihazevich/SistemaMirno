@@ -24,18 +24,15 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Area de Origen" />
-            <ComboBox Grid.Row="1"
-                      ItemsSource="{Binding WorkAreas}"
-                      DisplayMemberPath="Name"
-                      SelectedValuePath="Id"
-                      SelectedValue="{Binding AreaConnection.FromWorkAreaId, Mode=TwoWay}"
-                      Margin="5" />
+            <TextBox Grid.Row="1" Text="{Binding AreaConnection.WorkArea.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     IsEnabled="False"
+                     Margin="5" />
             <Label Grid.Row="2" Content="Area de Destino" />
             <ComboBox Grid.Row="3"
                       ItemsSource="{Binding WorkAreas}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding AreaConnection.ToWorkAreaId, Mode=TwoWay}"
+                      SelectedValue="{Binding AreaConnection.ConnectedWorkAreaId, Mode=TwoWay}"
                       Margin="5" />
             <StackPanel Grid.Row="4" Orientation="Horizontal">
                 <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}" />

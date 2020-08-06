@@ -23,8 +23,7 @@ namespace SistemaMirno.UI.ViewModel.General
         private AreaConnectionWrapper _selectedAreaConnection;
         private IAreaConnectionDetailViewModel _areaConnectionDetailViewModel;
         private Func<IAreaConnectionDetailViewModel> _areaConnectionDetailViewModelCreator;
-        private string _areaName;
-        private int _areaId;
+        private WorkAreaWrapper _workArea;
 
         public AreaConnectionViewModel(
             Func<IAreaConnectionDetailViewModel> areaConnectionDetailViewModelCreator,
@@ -42,28 +41,30 @@ namespace SistemaMirno.UI.ViewModel.General
                 .Subscribe(AfterAreaConnectionDeleted);
 
             AreaConnections = new ObservableCollection<AreaConnectionWrapper>();
+
             CreateNewAreaConnectionCommand = new DelegateCommand(OnCreateNewAreaConnectionExecute);
+            GoBackCommand = new DelegateCommand(OnGoBackExecute);
         }
 
         /// <summary>
-        /// Gets or sets the production area name for the view.
+        /// Gets or sets the Work Area.
         /// </summary>
-        public string AreaName
+        public WorkAreaWrapper WorkArea
         {
             get
             {
-                return _areaName;
+                return _workArea;
             }
 
             set
             {
-                _areaName = value;
+                _workArea = value;
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Gets the Color detail view model.
+        /// Gets the Area Connection detail view model.
         /// </summary>
         public IAreaConnectionDetailViewModel AreaConnectionDetailViewModel
         {
@@ -110,19 +111,25 @@ namespace SistemaMirno.UI.ViewModel.General
         /// </summary>
         public ICommand CreateNewAreaConnectionCommand { get; }
 
+        public ICommand GoBackCommand { get; }
+
         /// <summary>
         /// Loads the view model asynchronously from the data service.
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
         public override async Task LoadAsync(int? workAreaId)
         {
+            // Check if we have a Work Area Id.
             if (workAreaId.HasValue)
             {
+                // Clear the connections collection.
                 AreaConnections.Clear();
-                _areaId = workAreaId.Value;
-                var connections = await _areaConnectionRepository.GetByAreaIdAsync(workAreaId.Value);
-                AreaName = await _areaConnectionRepository.GetWorkAreaNameAsync(workAreaId.Value);
-                foreach (var connection in connections)
+
+                // Get the Work Area for the given Id.
+                WorkArea = new WorkAreaWrapper(await _areaConnectionRepository.GetWorkAreaByIdAsync(workAreaId.Value));
+
+                // Add all the Work Area Connections to the observable collection.
+                foreach (var connection in WorkArea.AreaConnections)
                 {
                     AreaConnections.Add(new AreaConnectionWrapper(connection));
                 }
@@ -148,6 +155,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
             AreaConnectionDetailViewModel = _areaConnectionDetailViewModelCreator();
             await AreaConnectionDetailViewModel.LoadAsync(id);
+            AreaConnectionDetailViewModel.SetWorkAreaId(WorkArea.Id);
         }
 
         /// <summary>
@@ -184,6 +192,13 @@ namespace SistemaMirno.UI.ViewModel.General
         private void OnCreateNewAreaConnectionExecute()
         {
             UpdateDetailViewModel(null);
+            AreaConnectionDetailViewModel.SetWorkAreaId(WorkArea.Id);
+        }
+
+        private void OnGoBackExecute()
+        {
+            _eventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkAreaViewModel), Id = -1 });
         }
     }
 }

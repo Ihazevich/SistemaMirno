@@ -17,17 +17,18 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal">
-            <Label Content="Conexiones de " FontSize="30" />
-            <Label Content="{Binding AreaName}" FontSize="30" />
+            <Label Content="Conexiones" FontSize="30" />
+            <Label Content="-" FontSize="30" />
+            <Label Content="{Binding WorkArea.Name}" FontSize="30" />
         </StackPanel>
         <Separator Grid.Row="1" Grid.ColumnSpan="2" />
         <ListView Grid.Row="2"
                   ItemsSource="{Binding AreaConnections}"
-                  SelectedItem="{Binding SelectedConnection, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedAreaConnection, Mode=TwoWay}"
                   Margin="20">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding ToWorkArea.Name}" FontSize="15" />
+                    <TextBlock Text="{Binding ConnectedWorkArea.Name}" FontSize="15" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -39,6 +40,7 @@
                         Command="{Binding CreateNewAreaConnectionCommand}" />
             </StackPanel>
             <ContentControl Content="{Binding AreaConnectionDetailViewModel}" Margin="5" />
+            <Button Content="Atras" Command="{Binding GoBackCommand}" Margin="5"/>
         </StackPanel>
     </Grid>
 </UserControl>

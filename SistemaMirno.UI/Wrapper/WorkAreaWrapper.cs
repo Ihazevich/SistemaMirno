@@ -71,13 +71,13 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public virtual Collection<AreaConnection> FromAreaConnections
+        public virtual Collection<AreaConnection> AreaConnections
         {
             get { return GetValue<Collection<AreaConnection>>(); }
             set { SetValue(value); }
         }
 
-        public virtual Collection<AreaConnection> AreaConnectionsTo
+        public virtual Collection<AreaConnection> IncomingAreaConnections
         {
             get { return GetValue<Collection<AreaConnection>>(); }
             set { SetValue(value); }

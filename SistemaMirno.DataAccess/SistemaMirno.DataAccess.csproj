@@ -15,7 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>1.0.73.20218</AssemblyVersion>
+    <AssemblyVersion>1.0.76.20219</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -121,6 +121,10 @@
     <Compile Include="Migrations\202008051944031_ConnectionsRefactor.designer.cs">
       <DependentUpon>202008051944031_ConnectionsRefactor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008061121489_hmmm.cs" />
+    <Compile Include="Migrations\202008061121489_hmmm.designer.cs">
+      <DependentUpon>202008061121489_hmmm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -181,6 +185,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008051944031_ConnectionsRefactor.resx">
       <DependentUpon>202008051944031_ConnectionsRefactor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008061121489_hmmm.resx">
+      <DependentUpon>202008061121489_hmmm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

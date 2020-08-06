@@ -23,11 +23,14 @@ namespace SistemaMirno.UI.Data.Repositories
             return await Context.AreaConnections.Where(c => c.WorkAreaId == areaId).ToListAsync();
         }
 
-        public async Task<string> GetWorkAreaNameAsync(int areaId)
+        public async Task<IEnumerable<WorkArea>> GetWorkAreasAsync()
         {
-            var area = await Context.ProductionAreas.Where(a => a.Id == areaId).SingleAsync();
+            return await Context.ProductionAreas.ToListAsync();
+        }
 
-            return area.Name;
+        public async Task<WorkArea> GetWorkAreaByIdAsync(int id)
+        {
+            return await Context.ProductionAreas.FindAsync(id);
         }
     }
 }

@@ -11,7 +11,8 @@ namespace SistemaMirno.Model
             WorkUnits = new Collection<WorkUnit>();
             IncomingWorkOrders = new Collection<WorkOrder>();
             OutgoingWorkOrders = new Collection<WorkOrder>();
-            ConnectedWorkAreas = new Collection<AreaConnection>();
+            AreaConnections = new Collection<AreaConnection>();
+            IncomingAreaConnections = new Collection<AreaConnection>();
         }
 
         [Required]
@@ -32,8 +33,10 @@ namespace SistemaMirno.Model
 
         public virtual EmployeeRole WorkAreaSupervisorRole { get; set; }
 
+        public virtual Collection<AreaConnection> AreaConnections { get; set; }
+
         [InverseProperty("ConnectedWorkArea")]
-        public virtual Collection<AreaConnection> ConnectedWorkAreas { get; set; }
+        public virtual Collection<AreaConnection> IncomingAreaConnections { get; set; }
 
         [InverseProperty("DestinationWorkArea")]
         public virtual Collection<WorkOrder> IncomingWorkOrders { get; set; }

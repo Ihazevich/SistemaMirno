@@ -2,5 +2,6 @@
 {
     public interface IAreaConnectionDetailViewModel : IDetailViewModelBase
     {
+        void SetWorkAreaId(int id);
     }
 }

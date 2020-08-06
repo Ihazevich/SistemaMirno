@@ -15,7 +15,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
     {
         private AreaConnectionWrapper _areaConnection;
         private IAreaConnectionRepository _areaConnectionRepository;
-        private IWorkAreaRepository _workAreaRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeDetailViewModel"/> class.
@@ -24,12 +23,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <param name="eventAggregator">The event aggregator.</param>
         public AreaConnectionDetailViewModel(
             IAreaConnectionRepository areaConnectionRepository,
-            IWorkAreaRepository workAreaRepository,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             _areaConnectionRepository = areaConnectionRepository;
-            _workAreaRepository = workAreaRepository;
 
             EventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaSaved);
@@ -70,6 +67,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
 
             await LoadWorkAreasAsync();
+        }
+
+        public void SetWorkAreaId(int id)
+        {
+            AreaConnection.WorkAreaId = id;
         }
 
         /// <inheritdoc/>
@@ -141,7 +143,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private async Task LoadWorkAreasAsync()
         {
-            var areas = await _workAreaRepository.GetAllAsync();
+            var areas = await _areaConnectionRepository.GetWorkAreasAsync();
             WorkAreas.Clear();
             foreach (var area in areas)
             {

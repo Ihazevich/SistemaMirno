@@ -8,6 +8,8 @@ namespace SistemaMirno.UI.Data.Repositories
     {
         Task<IEnumerable<AreaConnection>> GetByAreaIdAsync(int areaId);
 
-        Task<string> GetWorkAreaNameAsync(int areaId);
+        Task<IEnumerable<WorkArea>> GetWorkAreasAsync();
+
+        Task<WorkArea> GetWorkAreaByIdAsync(int id);
     }
 }
