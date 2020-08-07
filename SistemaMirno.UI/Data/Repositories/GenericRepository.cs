@@ -45,5 +45,10 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             await Context.SaveChangesAsync();
         }
+
+        public void Save()
+        {
+            Context.SaveChanges();
+        }
     }
 }

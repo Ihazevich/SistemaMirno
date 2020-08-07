@@ -160,7 +160,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override void OnSaveExecute()
         {
             WorkOrder.StartTime = DateTime.Now;
-            _workOrderRepository.SaveAsync();
+            _workOrderRepository.Save();
             HasChanges = false;
             RaiseDataModelSavedEvent(WorkOrder.Model);
 
@@ -420,7 +420,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private string CreateWorkOrderReport()
         {
             // Create a new report class with the Work Order data.
-            var workOrderReport = new WorkOrderReport {
+            var workOrderReport = new WorkOrderReport
+            {
                 Id = WorkOrder.Id,
                 CreationDateTime = WorkOrder.StartTime.ToString(),
                 OriginWorkArea = WorkOrder.OriginWorkArea.Name,
@@ -477,6 +478,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             var rs = new ReportingService("http://127.0.0.1:5488","admin","mirno");
+            workOrderReport.Id = WorkOrder.Id;
             var jsonString = JsonConvert.SerializeObject(workOrderReport);
             var report = rs.RenderByNameAsync("workorder-main", jsonString).Result;
 
