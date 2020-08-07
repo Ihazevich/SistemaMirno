@@ -3,14 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Util;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using jsreport.Client;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
+using SistemaMirno.UI.Data.Reports;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.General;
@@ -157,6 +163,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _workOrderRepository.SaveAsync();
             HasChanges = false;
             RaiseDataModelSavedEvent(WorkOrder.Model);
+
+            SendToPrinter(CreateWorkOrderReport());
+
             ExitView();
         }
 
@@ -406,6 +415,82 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     WorkUnitCollection.GroupDescriptions.Remove(_productName);
                 }
             }
+        }
+
+        private string CreateWorkOrderReport()
+        {
+            // Create a new report class with the Work Order data.
+            var workOrderReport = new WorkOrderReport {
+                Id = WorkOrder.Id,
+                CreationDateTime = WorkOrder.StartTime.ToString(),
+                OriginWorkArea = WorkOrder.OriginWorkArea.Name,
+                DestinationWorkArea = WorkOrder.DestinationWorkArea.Name,
+                Responsible = WorkOrder.ResponsibleEmployee.FirstName + " " + WorkOrder.ResponsibleEmployee.LastName,
+                Supervisor = WorkOrder.SupervisorEmployee.FirstName + " " + WorkOrder.SupervisorEmployee.LastName,
+            };
+
+            // Create the reports for each Work Unit in the Work Order.
+            foreach (var workOrderUnit in WorkOrder.WorkOrderUnits)
+            {
+                var workUnit = workOrderUnit.WorkUnit;
+
+                // If there is already a work unit in the report, check to group the similar ones
+                // else just add the Work Unit.
+                if (workOrderReport.WorkUnits.Count > 0)
+                {
+                    bool found = false;
+                    foreach (var workUnitReport in workOrderReport.WorkUnits)
+                    {
+                        // If there is a work unit in the report that has the same properties, just add to the quantity.
+                        if (workUnitReport.Product == workUnit.Product.Name
+                            && workUnitReport.Material == workUnit.Material.Name
+                            && workUnitReport.Color == workUnit.Color.Name)
+                        {
+                            workUnitReport.Quantity++;
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // If there wasn't any work unit with the same properties, add the work unit to the report.
+                    if (!found)
+                    {
+                        workOrderReport.WorkUnits.Add(new WorkUnitReport
+                        {
+                            Quantity = 1,
+                            Product = workUnit.Product.Name,
+                            Material = workUnit.Material.Name,
+                            Color = workUnit.Color.Name,
+                        });
+                    }
+                }
+                else
+                {
+                    workOrderReport.WorkUnits.Add(new WorkUnitReport
+                    {
+                        Quantity = 1,
+                        Product = workUnit.Product.Name,
+                        Material = workUnit.Material.Name,
+                        Color = workUnit.Color.Name,
+                    });
+                }
+            }
+
+            var rs = new ReportingService("http://127.0.0.1:5488","admin","mirno");
+            var jsonString = JsonConvert.SerializeObject(workOrderReport);
+            var report = rs.RenderByNameAsync("workorder-main", jsonString).Result;
+
+            string filename = $"C:\\WorkOrders\\WorkOrder{WorkOrder.Id}.pdf";
+            FileStream stream = new FileStream(filename, FileMode.Create);
+
+            report.Content.CopyTo(stream);
+            stream.Close();
+
+            return filename;
+        }
+
+        private void SendToPrinter(string fileName)
+        {
         }
     }
 }
