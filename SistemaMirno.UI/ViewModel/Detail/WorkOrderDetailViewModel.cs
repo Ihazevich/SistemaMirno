@@ -491,6 +491,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private void SendToPrinter(string fileName)
         {
+            ProcessStartInfo info = new ProcessStartInfo();
+            info.Verb = "print";
+            info.FileName = fileName;
+
+            Process.Start(info);
         }
     }
 }
