@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.2.33.20220</AssemblyVersion>
+    <AssemblyVersion>0.2.35.20223</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
@@ -455,7 +455,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="SistemaMirno.UI.ruleset" />
-    <None Include="SistemaMirno.UI_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

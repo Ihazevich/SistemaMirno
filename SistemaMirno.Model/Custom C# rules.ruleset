@@ -5,4 +5,11 @@
   <Include Path="globalizationrules.ruleset" Action="Default" />
   <Include Path="minimumrecommendedrules.ruleset" Action="Default" />
   <Include Path="securityrules.ruleset" Action="Default" />
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA1101" Action="None" />
+    <Rule Id="SA1200" Action="None" />
+    <Rule Id="SX1101" Action="Warning" />
+    <Rule Id="SX1309" Action="Warning" />
+    <Rule Id="SX1309S" Action="Warning" />
+  </Rules>
 </RuleSet>
