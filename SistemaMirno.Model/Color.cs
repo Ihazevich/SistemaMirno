@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="Color.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMirno.Model
@@ -17,7 +21,7 @@ namespace SistemaMirno.Model
         }
 
         /// <summary>
-        /// Gets or sets the name of the color. 
+        /// Gets or sets the name of the color.
         /// </summary>
         [Required]
         [MaxLength(20)]

@@ -1,17 +1,15 @@
-﻿using SistemaMirno.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
+    /// <summary>
+    /// A class representing the wrapper for the Employee model.
+    /// </summary>
     public class EmployeeWrapper : ModelWrapper<Employee>
     {
-        private string _fullName;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeWrapper"/> class.
         /// </summary>
@@ -54,6 +52,9 @@ namespace SistemaMirno.UI.Wrapper
             }
         }
 
+        /// <summary>
+        /// Gets the employee full name.
+        /// </summary>
         public string FullName
         {
             get
@@ -71,24 +72,36 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        /// <summary>
+        /// Gets or sets the date the employee started working.
+        /// </summary>
         public DateTime HiredDate
         {
             get { return GetValue<DateTime>(); }
             set { SetValue(value); }
         }
 
+        /// <summary>
+        /// Gets or sets the role id assigned to the employee.
+        /// </summary>
         public int EmployeeRoleId
         {
             get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
+        /// <summary>
+        /// Gets or sets the collection of work orders of which the employee is/was responsible.
+        /// </summary>
         public Collection<WorkOrder> ResponsibleWorkOrders
         {
             get { return GetValue<Collection<WorkOrder>>(); }
             set { SetValue(value); }
         }
 
+        /// <summary>
+        /// Gets or sets the collection of work orders the employee is/was supervising.
+        /// </summary>
         public Collection<WorkOrder> SupervisorWorkOrders
         {
             get { return GetValue<Collection<WorkOrder>>(); }

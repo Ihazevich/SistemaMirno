@@ -1,4 +1,8 @@
-﻿namespace SistemaMirno.Model
+﻿// <copyright file="BaseModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+namespace SistemaMirno.Model
 {
     /// <summary>
     /// A class that represents the basic data model.

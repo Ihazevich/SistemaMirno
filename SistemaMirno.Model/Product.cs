@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="Product.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMirno.Model

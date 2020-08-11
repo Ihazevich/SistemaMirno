@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="WorkOrderRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +11,9 @@ using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// A class representing the data repository of the work order data.
+    /// </summary>
     public class WorkOrderRepository : GenericRepository<WorkOrder, MirnoDbContext>, IWorkOrderRepository
     {
         /// <summary>
@@ -25,7 +32,7 @@ namespace SistemaMirno.UI.Data.Repositories
 
         public async Task<string> GetWorkAreaNameAsync(int areaId)
         {
-            var area = await Context.ProductionAreas.Where(a => a.Id == areaId).SingleAsync();
+            var area = await Context.WorkAreas.Where(a => a.Id == areaId).SingleAsync();
 
             return area.Name;
         }

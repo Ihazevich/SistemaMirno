@@ -7,6 +7,9 @@ using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// A class representing the data repository of the work areas connection data.
+    /// </summary>
     public class AreaConnectionRepository : GenericRepository<AreaConnection, MirnoDbContext>, IAreaConnectionRepository
     {
         /// <summary>
@@ -18,19 +21,33 @@ namespace SistemaMirno.UI.Data.Repositories
         {
         }
 
+        /// <summary>
+        /// Gets the connections matching the provided work area Id.
+        /// </summary>
+        /// <param name="areaId">The work area id</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task<IEnumerable<AreaConnection>> GetByAreaIdAsync(int areaId)
         {
             return await Context.AreaConnections.Where(c => c.WorkAreaId == areaId).ToListAsync();
         }
 
+        /// <summary>
+        /// Gets a collection of all work areas.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task<IEnumerable<WorkArea>> GetWorkAreasAsync()
         {
-            return await Context.ProductionAreas.ToListAsync();
+            return await Context.WorkAreas.ToListAsync();
         }
 
+        /// <summary>
+        /// Gets a work area that matches the provided id.
+        /// </summary>
+        /// <param name="id">The work area id.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task<WorkArea> GetWorkAreaByIdAsync(int id)
         {
-            return await Context.ProductionAreas.FindAsync(id);
+            return await Context.WorkAreas.FindAsync(id);
         }
     }
 }

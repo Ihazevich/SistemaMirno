@@ -1,4 +1,8 @@
-﻿namespace SistemaMirno.Model
+﻿// <copyright file="WorkOrderUnit.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+namespace SistemaMirno.Model
 {
     /// <summary>
     /// A class representing a single unit in a work order.

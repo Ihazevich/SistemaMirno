@@ -1,8 +1,15 @@
-﻿using SistemaMirno.DataAccess;
+﻿// <copyright file="EmployeeRoleRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// A class representing the data repository of the employee's role data.
+    /// </summary>
     public class EmployeeRoleRepository : GenericRepository<EmployeeRole,MirnoDbContext>, IEmployeeRoleRepository
     {
         /// <summary>

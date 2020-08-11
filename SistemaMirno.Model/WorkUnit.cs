@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="WorkUnit.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMirno.Model
@@ -48,7 +52,7 @@ namespace SistemaMirno.Model
         /// Gets or sets the color of the work unit.
         /// </summary>
         public virtual Color Color { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the id of the work area the work unit is presently in.
         /// </summary>

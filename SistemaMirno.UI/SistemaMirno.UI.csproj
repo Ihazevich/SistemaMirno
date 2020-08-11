@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.2.35.20223</AssemblyVersion>
+    <AssemblyVersion>0.2.38.20223</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
@@ -213,9 +213,13 @@
     <Compile Include="Data\Repositories\WorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\WorkUnitRepository.cs" />
     <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
+    <Compile Include="Event\AfterDataModelDeletedEventArgs.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
+    <Compile Include="Event\AfterDataModelSavedEventArgs.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
+    <Compile Include="Event\ChangeViewEventArgs.cs" />
     <Compile Include="Event\NewWorkOrderEvent.cs" />
+    <Compile Include="Event\NewWorkOrderEventArgs.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
@@ -455,6 +459,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="SistemaMirno.UI.ruleset" />
+    <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

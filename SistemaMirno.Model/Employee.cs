@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="Employee.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -60,6 +64,6 @@ namespace SistemaMirno.Model
         [InverseProperty("SupervisorEmployee")]
         public virtual Collection<WorkOrder> SupervisorWorkOrders { get; set; }
 
-        //TODO: Add SaleOrders
+        // TODO: Add SaleOrders
     }
 }

@@ -1,9 +1,16 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="IGenericRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// An interface for the generic data repository.
+    /// </summary>
     public interface IGenericRepository<T>
         where T : BaseModel
     {

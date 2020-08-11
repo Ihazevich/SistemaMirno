@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="WorkOrder.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,12 +22,12 @@ namespace SistemaMirno.Model
         }
 
         /// <summary>
-        /// Gets or sets the date and time the Work Order started. 
+        /// Gets or sets the date and time the Work Order started.
         /// </summary>
         public DateTime StartTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the date and time the Work Order was completed. 
+        /// Gets or sets the date and time the Work Order was completed.
         /// </summary>
         public DateTime? FinishTime { get; set; }
 
