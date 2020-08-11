@@ -17,6 +17,11 @@ namespace SistemaMirno.DataAccess
         }
 
         /// <summary>
+        /// Gets or sets the database set representing the users.
+        /// </summary>
+        public DbSet<User> Users { get; set; }
+
+        /// <summary>
         /// Gets or sets the database set representing the work areas' connections.
         /// </summary>
         public DbSet<AreaConnection> AreaConnections { get; set; }
