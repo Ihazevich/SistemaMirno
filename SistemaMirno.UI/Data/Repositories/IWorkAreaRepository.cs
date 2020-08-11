@@ -1,10 +1,13 @@
-﻿using SistemaMirno.Model;
+﻿// <copyright file="IWorkAreaRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
-
     /// <summary>
-    /// Interface for the <see cref="WorkAreaRepository"/> class.
+    /// An interface for the work area data repository.
     /// </summary>
     public interface IWorkAreaRepository : IGenericRepository<WorkArea>
     {

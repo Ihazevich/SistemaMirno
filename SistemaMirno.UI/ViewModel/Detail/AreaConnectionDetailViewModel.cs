@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="AreaConnectionDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;

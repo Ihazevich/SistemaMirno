@@ -1,9 +1,16 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="IAreaConnectionRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// An interface for the area connection data repository.
+    /// </summary>
     public interface IAreaConnectionRepository : IGenericRepository<AreaConnection>
     {
         Task<IEnumerable<AreaConnection>> GetByAreaIdAsync(int areaId);

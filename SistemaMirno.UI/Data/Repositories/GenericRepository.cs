@@ -1,10 +1,17 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="GenericRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// A class representing a generic data repository.
+    /// </summary>
     public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         where TEntity : BaseModel
         where TContext : DbContext
@@ -44,6 +51,11 @@ namespace SistemaMirno.UI.Data.Repositories
         public async Task SaveAsync()
         {
             await Context.SaveChangesAsync();
+        }
+
+        public void Save()
+        {
+            Context.SaveChanges();
         }
     }
 }

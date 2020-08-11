@@ -1,20 +1,16 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="NewWorkOrderEvent.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using Prism.Events;
-using SistemaMirno.Model;
-using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.Event
 {
+    /// <summary>
+    /// A class representing the event triggered when a new work order is made.
+    /// </summary>
+    /// <typeparam name="T">The type of the saved model.</typeparam>
     public class NewWorkOrderEvent : PubSubEvent<NewWorkOrderEventArgs>
     {
-    }
-
-    public class NewWorkOrderEventArgs
-    {
-        public ICollection<WorkUnitWrapper> WorkUnits { get; set; }
-
-        public int OriginWorkAreaId { get; set; }
-
-        public int DestinationWorkAreaId { get; set; }
     }
 }

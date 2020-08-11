@@ -1,7 +1,10 @@
-﻿using Autofac;
+﻿// <copyright file="Bootstrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using Autofac;
 using Prism.Events;
 using SistemaMirno.DataAccess;
-using SistemaMirno.UI.Data;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel;
@@ -11,8 +14,15 @@ using SistemaMirno.UI.ViewModel.Main;
 
 namespace SistemaMirno.UI.Startup
 {
+    /// <summary>
+    /// A class represneting the Autofac boostrapper.
+    /// </summary>
     public class Bootstrapper
     {
+        /// <summary>
+        /// Initializes the Autofac builder and registers all the relevant classes.
+        /// </summary>
+        /// <returns>An <see cref="IContainer"/> used by Autofac to resolve the dependencies.</returns>
         public IContainer Bootstrap()
         {
             var builder = new ContainerBuilder();

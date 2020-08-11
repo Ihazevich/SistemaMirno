@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Threading.Tasks;
+﻿// <copyright file="ColorRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// A class representing the data repository of the color data.
+    /// </summary>
     public class ColorRepository : GenericRepository<Color, MirnoDbContext>, IColorRepository
     {
         /// <summary>

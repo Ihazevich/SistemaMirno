@@ -1,11 +1,14 @@
-﻿using SistemaMirno.DataAccess;
+﻿// <copyright file="WorkAreaRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
-
     /// <summary>
-    /// Class representing the Production Area model repository.
+    /// A class representing the data repository of the product material data.
     /// </summary>
     public class WorkAreaRepository : GenericRepository<WorkArea, MirnoDbContext>, IWorkAreaRepository
     {

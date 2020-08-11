@@ -1,9 +1,16 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="IWorkUnitRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// An interface for the work unit data repository.
+    /// </summary>
     public interface IWorkUnitRepository : IGenericRepository<WorkUnit>
     {
         /// <summary>
