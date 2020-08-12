@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:SistemaMirno.UI"
              xmlns:view="clr-namespace:SistemaMirno.UI.View"
              xmlns:viewmodel="clr-namespace:SistemaMirno.UI.ViewModel"
+             xmlns:mainviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.Main"
              xmlns:generalviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.General"
              xmlns:detailviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.Detail"
              Startup="Application_Startup">
@@ -16,6 +17,9 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            <DataTemplate DataType="{x:Type mainviewmodel:LoginViewModel}">
+                <view:LoginView />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:WorkAreaViewModel}">
                 <view:WorkAreaView />
             </DataTemplate>
@@ -72,6 +76,12 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:AreaConnectionDetailViewModel}">
                 <view:AreaConnectionDetailView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:UserViewModel}">
+                <view:UserView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type detailviewmodel:UserDetailViewModel}">
+                <view:UserDetailView />
             </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->

@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="SistemaMirno.UI.View.UserDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SistemaMirno.UI.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel Orientation="Vertical">
+        <Label Content="Detalles del usuario" FontSize="20" Margin="5" />
+        <Separator />
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Nombre" />
+            <TextBox Grid.Row="1"
+                 Text="{Binding User.Name, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Margin="5" />
+            <Label Grid.Row="2" Content="Contraseña" />
+            <TextBox Grid.Row="3"
+                 Text="{Binding User.Password, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Margin="5" />
+            <Label Grid.Row="4" Content="Nivel de acceso" />
+            <TextBox Grid.Row="5"
+                 Text="{Binding User.AccessLevel, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                 Margin="5" />
+            <StackPanel Grid.Row="6" Orientation="Horizontal">
+                <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}" />
+                <Button Content="Eliminar usuario"
+                        Margin="10"
+                        Background="Red"
+                        Command="{Binding DeleteCommand}" />
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

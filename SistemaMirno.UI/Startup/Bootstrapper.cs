@@ -6,6 +6,7 @@ using Autofac;
 using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.View;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
@@ -39,6 +40,11 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<WorkAreaNavigationViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkAreaNavigationViewModel));
 
+            builder.RegisterType<LoginViewModel>()
+                .Keyed<IViewModelBase>(nameof(LoginViewModel));
+
+            builder.RegisterType<UserViewModel>()
+                .Keyed<IViewModelBase>(nameof(UserViewModel));
             builder.RegisterType<AreaConnectionViewModel>()
                 .Keyed<IViewModelBase>(nameof(AreaConnectionViewModel));
             builder.RegisterType<WorkAreaViewModel>()
@@ -60,6 +66,7 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<WorkOrderViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkOrderViewModel));
 
+            builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
             builder.RegisterType<AreaConnectionDetailViewModel>().As<IAreaConnectionDetailViewModel>();
             builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>();
             builder.RegisterType<MaterialDetailViewModel>().As<IMaterialDetailViewModel>();
@@ -71,6 +78,7 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
 
+            builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<AreaConnectionRepository>().As<IAreaConnectionRepository>();
             builder.RegisterType<WorkAreaRepository>().As<IWorkAreaRepository>();
             builder.RegisterType<MaterialRepository>().As<IMaterialRepository>();

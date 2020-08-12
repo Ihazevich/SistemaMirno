@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.2.39.20224</AssemblyVersion>
+    <AssemblyVersion>0.2.74.20225</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
@@ -125,6 +125,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
@@ -200,8 +201,10 @@
     <Compile Include="Data\Repositories\IEmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\IGenericRepository.cs" />
     <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
+    <Compile Include="Data\Repositories\IUserRepository.cs" />
     <Compile Include="Data\Repositories\IWorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
+    <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\ColorRepository.cs" />
     <Compile Include="Data\Repositories\IColorRepository.cs" />
@@ -218,9 +221,13 @@
     <Compile Include="Event\AfterDataModelSavedEventArgs.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ChangeViewEventArgs.cs" />
+    <Compile Include="Event\ExitApplicationEvent.cs" />
     <Compile Include="Event\NewWorkOrderEvent.cs" />
     <Compile Include="Event\NewWorkOrderEventArgs.cs" />
+    <Compile Include="Event\UserChangedEvent.cs" />
+    <Compile Include="Event\UserChangedEventArgs.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
+    <Compile Include="Utilities\DialogCloser.cs" />
     <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
@@ -231,9 +238,11 @@
     <Compile Include="ViewModel\Detail\IEmployeeRoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IUserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IWorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\General\AreaConnectionViewModel.cs" />
     <Compile Include="ViewModel\General\ColorViewModel.cs" />
@@ -251,15 +260,19 @@
     <Compile Include="ViewModel\General\IEmployeeViewModel.cs" />
     <Compile Include="ViewModel\General\IMaterialViewModel.cs" />
     <Compile Include="ViewModel\General\IProductCategoryViewModel.cs" />
+    <Compile Include="ViewModel\General\IUserViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkOrderViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IProductViewModel.cs" />
+    <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\General\WorkOrderViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
+    <Compile Include="ViewModel\Main\ILoginViewModel.cs" />
+    <Compile Include="ViewModel\Main\LoginViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\Main\IWorkAreaNavigationViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkUnitViewModel.cs" />
@@ -290,6 +303,9 @@
     <Compile Include="View\EmployeeView.xaml.cs">
       <DependentUpon>EmployeeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MaterialDetailView.xaml.cs">
       <DependentUpon>MaterialDetailView.xaml</DependentUpon>
     </Compile>
@@ -304,6 +320,12 @@
     </Compile>
     <Compile Include="View\ProductDetailView.xaml.cs">
       <DependentUpon>ProductDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserDetailView.xaml.cs">
+      <DependentUpon>UserDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserView.xaml.cs">
+      <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WorkAreaDetailView.xaml.cs">
       <DependentUpon>WorkAreaDetailView.xaml</DependentUpon>
@@ -335,6 +357,7 @@
     <Compile Include="Wrapper\MaterialWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
+    <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\ProductWrapper.cs" />
     <Compile Include="Wrapper\WorkOrderUnitWrapper.cs" />
@@ -386,6 +409,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MaterialDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -403,6 +430,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProductDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
