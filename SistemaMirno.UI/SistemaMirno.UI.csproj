@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.2.68.20225</AssemblyVersion>
+    <AssemblyVersion>0.2.74.20225</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
@@ -238,9 +238,11 @@
     <Compile Include="ViewModel\Detail\IEmployeeRoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IUserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IWorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\General\AreaConnectionViewModel.cs" />
     <Compile Include="ViewModel\General\ColorViewModel.cs" />
@@ -258,10 +260,12 @@
     <Compile Include="ViewModel\General\IEmployeeViewModel.cs" />
     <Compile Include="ViewModel\General\IMaterialViewModel.cs" />
     <Compile Include="ViewModel\General\IProductCategoryViewModel.cs" />
+    <Compile Include="ViewModel\General\IUserViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkOrderViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IProductViewModel.cs" />
+    <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\General\WorkOrderViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
@@ -316,6 +320,12 @@
     </Compile>
     <Compile Include="View\ProductDetailView.xaml.cs">
       <DependentUpon>ProductDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserDetailView.xaml.cs">
+      <DependentUpon>UserDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserView.xaml.cs">
+      <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WorkAreaDetailView.xaml.cs">
       <DependentUpon>WorkAreaDetailView.xaml</DependentUpon>
@@ -420,6 +430,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProductDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

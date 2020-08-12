@@ -43,6 +43,8 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<LoginViewModel>()
                 .Keyed<IViewModelBase>(nameof(LoginViewModel));
 
+            builder.RegisterType<UserViewModel>()
+                .Keyed<IViewModelBase>(nameof(UserViewModel));
             builder.RegisterType<AreaConnectionViewModel>()
                 .Keyed<IViewModelBase>(nameof(AreaConnectionViewModel));
             builder.RegisterType<WorkAreaViewModel>()
@@ -64,6 +66,7 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<WorkOrderViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkOrderViewModel));
 
+            builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
             builder.RegisterType<AreaConnectionDetailViewModel>().As<IAreaConnectionDetailViewModel>();
             builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>();
             builder.RegisterType<MaterialDetailViewModel>().As<IMaterialDetailViewModel>();
