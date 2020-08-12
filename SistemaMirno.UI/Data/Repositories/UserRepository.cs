@@ -2,6 +2,8 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using System.Data.Entity;
+using System.Threading.Tasks;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 
@@ -19,6 +21,11 @@ namespace SistemaMirno.UI.Data.Repositories
         public UserRepository(MirnoDbContext context)
             : base(context)
         {
+        }
+
+        public async Task<User> GetByNameAsync(string name)
+        {
+            return await Context.Users.SingleOrDefaultAsync(u => u.Name == name);
         }
     }
 }

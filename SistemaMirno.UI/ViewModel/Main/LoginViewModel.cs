@@ -50,15 +50,31 @@ namespace SistemaMirno.UI.ViewModel.Main
                 .Publish();
         }
 
-        private void OnLoginExecute()
+        private async void OnLoginExecute()
         {
-            _eventAggregator.GetEvent<UserChangedEvent>()
-                .Publish(new UserChangedEventArgs { Username = User.Name, AccessLevel = User.AccessLevel });
+            await CheckUser();
         }
 
         private bool CanLoginExecute()
         {
             return User != null && !User.HasErrors;
+        }
+
+        private async Task CheckUser()
+        {
+            var user = new UserWrapper(await _userRepository.GetByNameAsync(User.Name));
+
+            if (user.Model != null)
+            {
+                if (user.Password == User.Password)
+                {
+                    _eventAggregator.GetEvent<UserChangedEvent>()
+                        .Publish(new UserChangedEventArgs { Username = User.Name, AccessLevel = User.AccessLevel });
+                }
+            }
+
+            User.Name = string.Empty;
+            User.Password = string.Empty;
         }
 
         /// <summary>
