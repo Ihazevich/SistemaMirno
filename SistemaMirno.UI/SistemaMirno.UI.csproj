@@ -290,6 +290,9 @@
     <Compile Include="View\EmployeeView.xaml.cs">
       <DependentUpon>EmployeeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MaterialDetailView.xaml.cs">
       <DependentUpon>MaterialDetailView.xaml</DependentUpon>
     </Compile>
@@ -384,6 +387,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EmployeeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
