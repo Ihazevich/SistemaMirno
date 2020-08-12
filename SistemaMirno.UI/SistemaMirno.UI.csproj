@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.2.38.20223</AssemblyVersion>
+    <AssemblyVersion>0.2.63.20225</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
@@ -125,6 +125,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
@@ -200,8 +201,10 @@
     <Compile Include="Data\Repositories\IEmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\IGenericRepository.cs" />
     <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
+    <Compile Include="Data\Repositories\IUserRepository.cs" />
     <Compile Include="Data\Repositories\IWorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
+    <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\ColorRepository.cs" />
     <Compile Include="Data\Repositories\IColorRepository.cs" />
@@ -218,9 +221,13 @@
     <Compile Include="Event\AfterDataModelSavedEventArgs.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ChangeViewEventArgs.cs" />
+    <Compile Include="Event\ExitApplicationEvent.cs" />
     <Compile Include="Event\NewWorkOrderEvent.cs" />
     <Compile Include="Event\NewWorkOrderEventArgs.cs" />
+    <Compile Include="Event\UserChangedEvent.cs" />
+    <Compile Include="Event\UserChangedEventArgs.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
+    <Compile Include="Utilities\DialogCloser.cs" />
     <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
@@ -260,6 +267,8 @@
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
+    <Compile Include="ViewModel\Main\ILoginViewModel.cs" />
+    <Compile Include="ViewModel\Main\LoginViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\Main\IWorkAreaNavigationViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkUnitViewModel.cs" />

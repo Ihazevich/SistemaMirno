@@ -1,6 +1,10 @@
-﻿using MahApps.Metro.Controls;
-using SistemaMirno.UI.ViewModel.Main;
+﻿// <copyright file="MainWindow.xaml.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Windows;
+using MahApps.Metro.Controls;
+using SistemaMirno.UI.ViewModel.Main;
 
 namespace SistemaMirno.UI
 {
@@ -20,12 +24,6 @@ namespace SistemaMirno.UI
             InitializeComponent();
             _viewModel = viewModel;
             DataContext = _viewModel;
-            Loaded += MainWindow_Loaded;
-        }
-
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            await _viewModel.LoadAsync(null);
         }
     }
 }

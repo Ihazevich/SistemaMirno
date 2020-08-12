@@ -5,6 +5,7 @@
                  xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:local="clr-namespace:SistemaMirno.UI"
+                 xmlns:utilities="clr-namespace:SistemaMirno.UI.Utilities"
                  xmlns:view="clr-namespace:SistemaMirno.UI.View"
                  mc:Ignorable="d"
                  Title="{Binding WindowTitle}"
@@ -12,10 +13,11 @@
                  Width="800"
                  WindowStartupLocation="CenterScreen"
                  WindowState="Maximized"
-                 WindowStyle="SingleBorderWindow">
+                 WindowStyle="SingleBorderWindow"
+                 utilities:DialogCloser.DialogResult="{Binding DialogResult}">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
-            <MenuItem Header="Datos">
+            <MenuItem Header="Datos" IsEnabled="{Binding UserLoggedIn}">
                 <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="MaterialViewModel" />
                 <MenuItem Header="Colores" Command="{Binding ChangeViewCommand}" CommandParameter="ColorViewModel" />
                 <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="ProductViewModel" />
@@ -26,13 +28,14 @@
                     <MenuItem Header="Roles" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeRoleViewModel" />
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="Salir del sistema" Command="{Binding CloseApplicationCommand}"/>
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <view:WorkAreaNavigationView DataContext="{Binding WorkAreaNavigationViewModel}" />
+            <view:WorkAreaNavigationView DataContext="{Binding NavigationViewModel}" />
             <ContentPresenter Grid.Column="1" Content="{Binding SelectedViewModel}" />
         </Grid>
     </DockPanel>

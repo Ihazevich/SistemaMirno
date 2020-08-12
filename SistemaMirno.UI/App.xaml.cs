@@ -20,7 +20,7 @@ namespace SistemaMirno.UI
             var container = bootstrapper.Bootstrap();
 
             var mainWindow = container.Resolve<MainWindow>();
-            mainWindow.Show();
+            mainWindow.ShowDialog();
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
