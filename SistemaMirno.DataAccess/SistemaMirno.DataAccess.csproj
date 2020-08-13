@@ -141,12 +141,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SistemaMirno.Model\SistemaMirno.Model.csproj">
-      <Project>{78a9511d-22bb-4af6-bcdd-c1198d1eb2d3}</Project>
-      <Name>SistemaMirno.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="SistemaMirno.DataAccess.ruleset" />
