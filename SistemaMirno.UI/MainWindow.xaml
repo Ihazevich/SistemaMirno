@@ -17,6 +17,24 @@
                  utilities:DialogCloser.DialogResult="{Binding DialogResult}">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
+            <MenuItem Header="Listados" IsEnabled="{Binding UserLoggedIn}">
+                <MenuItem Header="En proceso por areas" IsEnabled="False" />
+                <MenuItem Header="En proceso por areas con precio" IsEnabled="False" />
+                <MenuItem Header="Produccion por areas" IsEnabled="False" />
+            </MenuItem>
+            <MenuItem Header="Historiales" IsEnabled="{Binding UserLoggedIn}">
+                <MenuItem Header="Ordenes por dia" IsEnabled="False" />
+                <MenuItem Header="Productos por dia" IsEnabled="False" />
+                <MenuItem Header="Productos en proceso" IsEnabled="False" />
+                <MenuItem Header="Productos por responsable" IsEnabled="False" />
+                <MenuItem Header="Movimientos entre sucursales" IsEnabled="False" />
+                <MenuItem Header="Historial de eventos" IsEnabled="False" />
+                <MenuItem Header="Historial de logins" IsEnabled="False" />
+            </MenuItem>
+            <MenuItem Header="Stock" IsEnabled="{Binding UserLoggedIn}">
+                <MenuItem Header="Disponibilidad" IsEnabled="False" />
+                <MenuItem Header="Historial de ingresos y egresos" IsEnabled="False" />                
+            </MenuItem>
             <MenuItem Header="Utilidades" IsEnabled="{Binding UserLoggedIn}">
                 <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="MaterialViewModel" />
                 <MenuItem Header="Colores" Command="{Binding ChangeViewCommand}" CommandParameter="ColorViewModel" />
@@ -26,8 +44,11 @@
                     <MenuItem Header="Empleados" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeViewModel" />
                     <MenuItem Header="Roles" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeRoleViewModel" />
                 </MenuItem>
+                <MenuItem Header="Importar productos desde archivo" IsEnabled="False" />
+                <MenuItem Header="Mover productos entre sucursales" IsEnabled="False" />
+                <MenuItem Header="Buscar productos" IsEnabled="False" />
             </MenuItem>
-            <MenuItem Header="Opciones">
+            <MenuItem Header="Opciones" IsEnabled="{Binding UserLoggedIn}">
                 <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
                 <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
             </MenuItem>
