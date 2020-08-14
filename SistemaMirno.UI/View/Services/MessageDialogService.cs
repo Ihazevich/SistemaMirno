@@ -23,5 +23,11 @@ namespace SistemaMirno.UI.View.Services
                 ? MessageDialogResult.OK
                 : MessageDialogResult.Cancel;
         }
+
+        public MessageDialogResult ShowOkDialog(string text, string title)
+        {
+            MessageBox.Show(text, title, MessageBoxButton.OK);
+            return MessageDialogResult.OK;
+        }
     }
 }

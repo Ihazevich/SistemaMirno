@@ -34,6 +34,10 @@
                         Width="180" Height="30" Margin="10"
                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
                         Command="{Binding CreateNewProductCommand}" />
+                <Button Content="Importar productos desde archivo"
+                        Width="230" Height="30" Margin="10"
+                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
+                        Command="{Binding ImportFromFileCommand}" />
             </StackPanel>
             <ContentControl Content="{Binding ProductDetailViewModel}" Margin="5" />
         </StackPanel>
