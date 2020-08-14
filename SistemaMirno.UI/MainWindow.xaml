@@ -35,20 +35,7 @@
                 <MenuItem Header="Disponibilidad" IsEnabled="False" />
                 <MenuItem Header="Historial de ingresos y egresos" IsEnabled="False" />                
             </MenuItem>
-            <MenuItem Header="Utilidades" IsEnabled="{Binding UserLoggedIn}">
-                <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="MaterialViewModel" />
-                <MenuItem Header="Colores" Command="{Binding ChangeViewCommand}" CommandParameter="ColorViewModel" />
-                <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="ProductViewModel" />
-                <MenuItem Header="Categorias de Producto" Command="{Binding ChangeViewCommand}" CommandParameter="ProductCategoryViewModel" />
-                <MenuItem Header="Recursos Humanos">
-                    <MenuItem Header="Empleados" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeViewModel" />
-                    <MenuItem Header="Roles" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeRoleViewModel" />
-                </MenuItem>
-                <MenuItem Header="Importar productos desde archivo" IsEnabled="False" />
-                <MenuItem Header="Mover productos entre sucursales" IsEnabled="False" />
-                <MenuItem Header="Buscar productos" IsEnabled="False" />
-            </MenuItem>
-            <MenuItem Header="Opciones" IsEnabled="{Binding UserLoggedIn}">
+            <MenuItem Header="Opciones">
                 <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
                 <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
             </MenuItem>
