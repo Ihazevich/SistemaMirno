@@ -53,10 +53,10 @@
                                     <ControlTemplate TargetType="{x:Type GroupItem}">
                                         <Expander IsExpanded="False" BorderThickness="1,1,1,5">
                                             <Expander.Header>
-                                                <DockPanel>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" Width="100"/>
-                                                </DockPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
+                                                </StackPanel>
                                             </Expander.Header>
                                             <Expander.Content>
                                                 <ItemsPresenter />
@@ -72,10 +72,10 @@
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <DockPanel Background="LightGray">
-                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black"/>
-                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" Width="100"/>
-                            </DockPanel>
+                            <StackPanel Background="LightGray">
+                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" />
+                            </StackPanel>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
                 </GroupStyle>
