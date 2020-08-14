@@ -20,7 +20,7 @@
         <Separator Grid.Row="1" Grid.ColumnSpan="2" />
         <ListView Grid.Row="2"
                   ItemsSource="{Binding ProductCategories}"
-                  SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedProductCategory, Mode=TwoWay}"
                   Margin="20">
             <ListView.ItemTemplate>
                 <DataTemplate>

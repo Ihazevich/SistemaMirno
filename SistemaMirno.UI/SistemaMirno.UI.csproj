@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.2.87.20227</AssemblyVersion>
+    <AssemblyVersion>0.2.89.20227</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
