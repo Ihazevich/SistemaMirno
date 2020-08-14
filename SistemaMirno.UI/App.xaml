@@ -3,10 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SistemaMirno.UI"
              xmlns:view="clr-namespace:SistemaMirno.UI.View"
+             xmlns:reportsview="clr-namespace:SistemaMirno.UI.View.Reports"
              xmlns:viewmodel="clr-namespace:SistemaMirno.UI.ViewModel"
              xmlns:mainviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.Main"
              xmlns:generalviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.General"
              xmlns:detailviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.Detail"
+             xmlns:reportsviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.Reports"
              Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
@@ -82,6 +84,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:UserDetailViewModel}">
                 <view:UserDetailView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type reportsviewmodel:InProcessByWorkAreasViewModel}">
+                <reportsview:InProcessByWorkAreasView />
             </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->

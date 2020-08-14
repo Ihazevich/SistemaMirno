@@ -7,7 +7,7 @@ using System;
 namespace SistemaMirno.UI.Data.Reports
 {
     /// <summary>
-    /// A class representing the data for a work unit report.
+    /// A class representing the data of a work unit  
     /// </summary>
     [Serializable]
     public class WorkUnitReport
@@ -39,5 +39,20 @@ namespace SistemaMirno.UI.Data.Reports
         /// Gets or sets the name of the color of the work unit.
         /// </summary>
         public string Color { get; set; }
+
+        /// <summary>
+        /// Gets or sets the responsible's name of the work unit.
+        /// </summary>
+        public string Responsible { get; set; }
+
+        /// <summary>
+        /// Gets or sets the supervisor's name of the work unit.
+        /// </summary>
+        public string Supervisor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the client's name the work unit is assigned to.
+        /// </summary>
+        public string Client { get; set; }
     }
 }

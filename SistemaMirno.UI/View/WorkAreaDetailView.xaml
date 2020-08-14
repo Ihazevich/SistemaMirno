@@ -48,6 +48,8 @@
                       SelectedValuePath="Id"
                       SelectedValue="{Binding WorkArea.WorkAreaSupervisorRoleId, Mode=TwoWay}"
                       Margin="5" />
+            <CheckBox Content="Reporta En Proceso"
+                      IsChecked="{Binding WorkArea.ReportsInProcess}"/>
             <StackPanel Grid.Row="8" Orientation="Horizontal">
                 <Button Content="Guardar cambios" Width="125" Margin="10" Command="{Binding SaveCommand}" />
                 <Button Content="Editar conexiones" Width="125" Margin="10" Command="{Binding EditAreaConnectionsCommand}" />

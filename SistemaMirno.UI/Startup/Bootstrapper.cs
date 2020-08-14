@@ -12,6 +12,7 @@ using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.ViewModel.Main;
+using SistemaMirno.UI.ViewModel.Reports;
 
 namespace SistemaMirno.UI.Startup
 {
@@ -65,6 +66,9 @@ namespace SistemaMirno.UI.Startup
                 .Keyed<IViewModelBase>(nameof(WorkUnitViewModel));
             builder.RegisterType<WorkOrderViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkOrderViewModel));
+
+            builder.RegisterType<InProcessByWorkAreasViewModel>()
+                .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));
 
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
             builder.RegisterType<AreaConnectionDetailViewModel>().As<IAreaConnectionDetailViewModel>();
