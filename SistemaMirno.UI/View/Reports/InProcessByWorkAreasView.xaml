@@ -70,12 +70,12 @@
             </DataGrid.GroupStyle>
         </DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Center">
-            <Button Content="Imprimir Reporte" Command="{Binding PrintReport}" Margin="10"/>
+            <Button Content="Imprimir Reporte" Command="{Binding PrintReportCommand}" Margin="10"/>
             <Label Content="Opciones:"  FontSize="15"  Margin="10"/>
             <CheckBox Content="Incluir precio"
                       IsChecked="{Binding IncludePrice, Mode=TwoWay}"/>
             <CheckBox Content="Incluir responsable"
-                      IsChecked="{Binding IncludeResposnible, Mode=TwoWay}"/>
+                      IsChecked="{Binding IncludeResponsible, Mode=TwoWay}"/>
             <CheckBox Content="Incluir supervisor"
                       IsChecked="{Binding IncludeSupervisor, Mode=TwoWay}"/>
             <CheckBox Content="Incluir cliente"
