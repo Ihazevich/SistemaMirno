@@ -33,5 +33,15 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             return await Context.WorkAreas.FindAsync(areaId);
         }
+
+        public async Task<IEnumerable<WorkUnit>> GetWorkUnitsInProcessAsync()
+        {
+            return await Context.WorkUnits.Where(w => w.WorkArea.ReportsInProcess == true).ToListAsync();
+        }
+
+        public async Task<IEnumerable<WorkArea>> GetWorkAreasThatReportInProcess()
+        {
+            return await Context.WorkAreas.Where(a => a.ReportsInProcess == true).ToListAsync();
+        }
     }
 }

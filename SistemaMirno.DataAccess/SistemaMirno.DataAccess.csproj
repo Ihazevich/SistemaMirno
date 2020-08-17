@@ -20,7 +20,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>1.1.19.20227</AssemblyVersion>
+    <AssemblyVersion>1.1.22.20227</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -136,6 +136,10 @@
     <Compile Include="Migrations\202008101742007_Workunit-changeworkorderkey.designer.cs">
       <DependentUpon>202008101742007_Workunit-changeworkorderkey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008141735327_reportsbool.cs" />
+    <Compile Include="Migrations\202008141735327_reportsbool.designer.cs">
+      <DependentUpon>202008141735327_reportsbool.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -206,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008101742007_Workunit-changeworkorderkey.resx">
       <DependentUpon>202008101742007_Workunit-changeworkorderkey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008141735327_reportsbool.resx">
+      <DependentUpon>202008141735327_reportsbool.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

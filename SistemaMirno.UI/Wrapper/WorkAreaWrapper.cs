@@ -95,6 +95,12 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        public bool ReportsInProcess
+        {
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
+        }
+
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {

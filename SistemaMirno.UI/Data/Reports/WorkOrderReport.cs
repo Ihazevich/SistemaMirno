@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace SistemaMirno.UI.Data.Reports
 {
     /// <summary>
-    /// A class representing the data for a work order report.
+    /// A class representing the data of a work order used for reports.
     /// </summary>
     [Serializable]
     public class WorkOrderReport

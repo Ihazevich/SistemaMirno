@@ -18,7 +18,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
             <MenuItem Header="Listados" IsEnabled="{Binding UserLoggedIn}">
-                <MenuItem Header="En proceso por areas" IsEnabled="False" />
+                <MenuItem Header="En proceso por areas" Command="{Binding ChangeViewCommand}" CommandParameter="InProcessByWorkAreasViewModel"/>
                 <MenuItem Header="En proceso por areas con precio" IsEnabled="False" />
                 <MenuItem Header="Produccion por areas" IsEnabled="False" />
             </MenuItem>

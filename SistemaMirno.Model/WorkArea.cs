@@ -88,5 +88,11 @@ namespace SistemaMirno.Model
         /// Gets or sets the collection of work units currently in the work area.
         /// </summary>
         public virtual Collection<WorkUnit> WorkUnits { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the work area is included in the InProcess report.
+        /// </summary>
+        [Required]
+        public bool ReportsInProcess { get; set; }
     }
 }

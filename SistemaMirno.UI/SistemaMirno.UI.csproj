@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.2.89.20227</AssemblyVersion>
+    <AssemblyVersion>0.2.99.20227</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
@@ -194,6 +194,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\FileHelpers\ProductFileHelper.cs" />
+    <Compile Include="Data\Reports\InProcessReport.cs" />
+    <Compile Include="Data\Reports\WorkAreaReport.cs" />
     <Compile Include="Data\Reports\WorkOrderReport.cs" />
     <Compile Include="Data\Reports\WorkUnitReport.cs" />
     <Compile Include="Data\Repositories\AreaConnectionRepository.cs" />
@@ -277,6 +279,7 @@
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
     <Compile Include="ViewModel\Main\ILoginViewModel.cs" />
     <Compile Include="ViewModel\Main\LoginViewModel.cs" />
+    <Compile Include="ViewModel\Reports\InProcessByWorkAreasViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\Main\IWorkAreaNavigationViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkUnitViewModel.cs" />
@@ -324,6 +327,9 @@
     </Compile>
     <Compile Include="View\ProductDetailView.xaml.cs">
       <DependentUpon>ProductDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Reports\InProcessByWorkAreasView.xaml.cs">
+      <DependentUpon>InProcessByWorkAreasView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserDetailView.xaml.cs">
       <DependentUpon>UserDetailView.xaml</DependentUpon>
@@ -434,6 +440,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProductDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Reports\InProcessByWorkAreasView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
