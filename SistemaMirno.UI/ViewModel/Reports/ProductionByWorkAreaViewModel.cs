@@ -133,6 +133,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
         private async void SelectWorkUnits()
         {
+            WorkUnits.Clear();
             if (SelectedWorkArea.IncomingWorkOrders != null)
             {
                 foreach (WorkOrder workOrder in SelectedWorkArea.IncomingWorkOrders)
