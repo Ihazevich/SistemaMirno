@@ -156,6 +156,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
                                 && workUnitReport.Color == workUnit.Color.Name)
                             {
                                 workUnitReport.Quantity++;
+                                workUnitReport.Price += workUnit.Product.ProductionPrice;
                                 found = true;
                                 break;
                             }

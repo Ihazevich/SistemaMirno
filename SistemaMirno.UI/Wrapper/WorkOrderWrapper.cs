@@ -34,9 +34,9 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the Work Order FinishTime.
         /// </summary>
-        public DateTime FinishTime
+        public DateTime? FinishTime
         {
-            get { return GetValue<DateTime>(); }
+            get { return GetValue<DateTime?>(); }
             set { SetValue(value); }
         }
 

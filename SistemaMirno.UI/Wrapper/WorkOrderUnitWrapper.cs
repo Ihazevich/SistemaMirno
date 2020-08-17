@@ -20,7 +20,7 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public WorkOrder WorkOrder
+        public virtual WorkOrder WorkOrder
         {
             get { return GetValue<WorkOrder>(); }
             set { SetValue(value); }
@@ -32,7 +32,7 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public WorkUnit WorkUnit
+        public virtual WorkUnit WorkUnit
         {
             get { return GetValue<WorkUnit>(); }
             set { SetValue(value); }

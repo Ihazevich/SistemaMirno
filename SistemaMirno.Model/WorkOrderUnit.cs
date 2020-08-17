@@ -17,7 +17,7 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the Work Order the unit belongs to.
         /// </summary>
-        public WorkOrder WorkOrder { get; set; }
+        public virtual WorkOrder WorkOrder { get; set; }
 
         /// <summary>
         /// Gets or sets the Id of the Work Unit the unit belongs to.
@@ -27,6 +27,6 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the Work Unit the unit belongs to.
         /// </summary>
-        public WorkUnit WorkUnit { get; set; }
+        public virtual WorkUnit WorkUnit { get; set; }
     }
 }
