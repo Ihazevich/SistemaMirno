@@ -195,6 +195,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 // Add the area total production to the report total.
                 inProcessReport.Total += workAreaReport.Total;
 
+
                 // Add the work area report to the main report
                 inProcessReport.WorkAreas.Add(workAreaReport);
             }

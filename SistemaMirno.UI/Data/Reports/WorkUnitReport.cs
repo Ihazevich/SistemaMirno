@@ -54,7 +54,7 @@ namespace SistemaMirno.UI.Data.Reports
         /// Gets or sets the client's name the work unit is assigned to.
         /// </summary>
         public string Client { get; set; }
-
+      
         /// <summary>
         /// Gets or sets the price of the work unit.
         /// </summary>
