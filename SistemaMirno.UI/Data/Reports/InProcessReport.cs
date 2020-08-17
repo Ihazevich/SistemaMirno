@@ -21,5 +21,15 @@ namespace SistemaMirno.UI.Data.Reports
         /// Gets or sets the work areas included in the report.
         /// </summary>
         public List<WorkAreaReport> WorkAreas { get; set; }
+      
+        /// <summary>
+        /// Sets or gets if the report includes the work unit's production prices.
+        /// </summary>
+        public bool IncludePrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total production value of the report.
+        /// </summary>
+        public long Total { get; set; }
     }
 }
