@@ -275,12 +275,9 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
             if (StartDate != null && EndDate != null)
             {
-                if (StartDate <= DateTime.Today && EndDate <= DateTime.Today)
+                if (StartDate.Date <= DateTime.Today.Date && EndDate.Date >= StartDate.Date)
                 {
-                    if (EndDate >= StartDate)
-                    {
-                        areDatesValid = true;
-                    }
+                    areDatesValid = true;
                 }
             }
 
@@ -299,6 +296,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
             LineSeries lineSeries = new LineSeries
             {
+                Title = "Produccion total",
                 Values = new ChartValues<int>(monthlyProductions),
                 DataLabels = true,
                 LabelPoint = point => string.Format("{0:n0}", point.Y) + " Gs.",
@@ -332,15 +330,15 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
             LineSeries lineSeriesDaily = new LineSeries
             {
+                Title = "Produccion diaria",
                 Values = new ChartValues<long>(dailyProductions),
-                DataLabels = true,
                 LabelPoint = point => string.Format("{0:n0}", point.Y) + " Gs.",
             };
 
             LineSeries lineSeriesCummulative = new LineSeries
             {
+                Title = "Produccion acumulada",
                 Values = new ChartValues<long>(dailyCummulative),
-                DataLabels = true,
                 LabelPoint = point => string.Format("{0:n0}", point.Y) + " Gs.",
             };
 
