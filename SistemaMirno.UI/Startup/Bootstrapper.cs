@@ -69,6 +69,8 @@ namespace SistemaMirno.UI.Startup
 
             builder.RegisterType<InProcessByWorkAreasViewModel>()
                 .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));
+            builder.RegisterType<ProductionByWorkAreaViewModel>()
+                .Keyed<IViewModelBase>(nameof(ProductionByWorkAreaViewModel));
 
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
             builder.RegisterType<AreaConnectionDetailViewModel>().As<IAreaConnectionDetailViewModel>();

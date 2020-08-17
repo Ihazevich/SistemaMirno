@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.2.103.20230</AssemblyVersion>
+    <AssemblyVersion>0.2.106.20230</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
@@ -280,6 +280,7 @@
     <Compile Include="ViewModel\Main\ILoginViewModel.cs" />
     <Compile Include="ViewModel\Main\LoginViewModel.cs" />
     <Compile Include="ViewModel\Reports\InProcessByWorkAreasViewModel.cs" />
+    <Compile Include="ViewModel\Reports\ProductionByWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\Main\IWorkAreaNavigationViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkUnitViewModel.cs" />
@@ -330,6 +331,9 @@
     </Compile>
     <Compile Include="View\Reports\InProcessByWorkAreasView.xaml.cs">
       <DependentUpon>InProcessByWorkAreasView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Reports\ProductionByWorkAreaView.xaml.cs">
+      <DependentUpon>ProductionByWorkAreaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserDetailView.xaml.cs">
       <DependentUpon>UserDetailView.xaml</DependentUpon>
@@ -444,6 +448,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Reports\InProcessByWorkAreasView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Reports\ProductionByWorkAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
