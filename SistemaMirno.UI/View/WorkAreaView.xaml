@@ -34,6 +34,7 @@
                         Width="180" Height="30" Margin="10"
                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
                         Command="{Binding CreateNewWorkAreaCommand}" />
+                <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
             </StackPanel>
             <ContentControl Content="{Binding WorkAreaDetailViewModel}" Margin="5" />
         </StackPanel>

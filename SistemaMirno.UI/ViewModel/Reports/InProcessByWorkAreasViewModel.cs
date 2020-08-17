@@ -1,10 +1,7 @@
-﻿using jsreport.Client;
-using Newtonsoft.Json;
-using Prism.Commands;
-using Prism.Events;
-using SistemaMirno.UI.Data.Reports;
-using SistemaMirno.UI.Data.Repositories;
-using SistemaMirno.UI.Wrapper;
+﻿// <copyright file="InProcessByWorkAreasViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,16 +9,21 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
+using jsreport.Client;
+using Newtonsoft.Json;
+using Prism.Commands;
+using Prism.Events;
+using SistemaMirno.UI.Data.Reports;
+using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Reports
 {
     public class InProcessByWorkAreasViewModel : ViewModelBase
     {
-        private IEventAggregator _eventAggregator;
         private IWorkUnitRepository _workUnitRepository;
 
         private PropertyGroupDescription _workAreaName = new PropertyGroupDescription("WorkArea.Name");
@@ -34,11 +36,12 @@ namespace SistemaMirno.UI.ViewModel.Reports
         private bool _includeSupervisor = false;
         private bool _includeClient = false;
 
-        public InProcessByWorkAreasViewModel(IWorkUnitRepository workUnitRepository,
+        public InProcessByWorkAreasViewModel(
+                    IWorkUnitRepository workUnitRepository,
                     IEventAggregator eventAggregator)
+            : base (eventAggregator)
         {
             _workUnitRepository = workUnitRepository;
-            _eventAggregator = eventAggregator;
 
             WorkUnits = new ObservableCollection<WorkUnitWrapper>();
 

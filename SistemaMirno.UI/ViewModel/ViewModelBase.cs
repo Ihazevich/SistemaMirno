@@ -1,6 +1,10 @@
-﻿using System.ComponentModel;
+﻿using Prism.Commands;
+using Prism.Events;
+using SistemaMirno.UI.Event;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace SistemaMirno.UI.ViewModel
 {
@@ -9,10 +13,27 @@ namespace SistemaMirno.UI.ViewModel
     /// </summary>
     public abstract class ViewModelBase : IViewModelBase, INotifyPropertyChanged
     {
+        protected IEventAggregator _eventAggregator;
+
+        public ViewModelBase(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+
+            ExitView = new DelegateCommand(OnExitViewExecute);
+        }
+
         /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public ICommand ExitView { get; }
+
         public abstract Task LoadAsync(int? id);
+
+        private void OnExitViewExecute()
+        {
+            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Publish(true);
+        }
 
         /// <summary>
         /// Invokes the PropertyChanged event.

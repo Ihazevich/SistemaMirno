@@ -38,6 +38,7 @@
                         Width="230" Height="30" Margin="10"
                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
                         Command="{Binding ImportFromFileCommand}" />
+                <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
             </StackPanel>
             <ContentControl Content="{Binding ProductDetailViewModel}" Margin="5" />
         </StackPanel>

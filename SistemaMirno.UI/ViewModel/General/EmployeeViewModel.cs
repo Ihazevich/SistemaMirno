@@ -18,7 +18,6 @@ namespace SistemaMirno.UI.ViewModel.General
     {
         private IEmployeeRepository _employeeRepository;
         private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
         private EmployeeWrapper _selectedEmployee;
         private IEmployeeDetailViewModel _employeeDetailViewModel;
         private Func<IEmployeeDetailViewModel> _employeeDetailViewModelCreator;
@@ -33,11 +32,11 @@ namespace SistemaMirno.UI.ViewModel.General
             IEmployeeRepository employeeRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
+            : base (eventAggregator)
         {
             _employeeDetailViewModelCreator = employeeDetailViewModelCreator;
             _employeeRepository = employeeRepository;
             _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<Employee>>()
                 .Subscribe(AfterEmployeeSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Employee>>()

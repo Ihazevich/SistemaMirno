@@ -353,7 +353,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private void ExitView()
         {
             // Return to the area view where the order originated from.
-            EventAggregator.GetEvent<ChangeViewEvent>()
+            _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkUnitViewModel), Id = _originAreaId });
         }
 

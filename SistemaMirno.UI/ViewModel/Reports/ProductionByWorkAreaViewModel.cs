@@ -23,7 +23,6 @@ namespace SistemaMirno.UI.ViewModel.Reports
 {
     public class ProductionByWorkAreaViewModel : ViewModelBase
     {
-        private IEventAggregator _eventAggregator;
         private IWorkAreaRepository _workAreaRepository;
 
         private PropertyGroupDescription _colorName = new PropertyGroupDescription("WorkUnit.Color.Name");
@@ -40,9 +39,9 @@ namespace SistemaMirno.UI.ViewModel.Reports
         public ProductionByWorkAreaViewModel(
                     IWorkAreaRepository workAreaRepository,
                     IEventAggregator eventAggregator)
+            : base (eventAggregator)
         {
             _workAreaRepository = workAreaRepository;
-            _eventAggregator = eventAggregator;
 
             WorkAreas = new ObservableCollection<WorkAreaWrapper>();
             WorkOrderUnits = new ObservableCollection<WorkOrderUnitWrapper>();

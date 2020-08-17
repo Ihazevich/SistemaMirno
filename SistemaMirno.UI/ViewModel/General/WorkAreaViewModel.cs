@@ -21,7 +21,6 @@ namespace SistemaMirno.UI.ViewModel.General
     {
         private IWorkAreaRepository _workAreaRepository;
         private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
         private WorkAreaWrapper _selectedArea;
         private IWorkAreaDetailViewModel _workAreaDetailViewModel;
         private Func<IWorkAreaDetailViewModel> _workAreaDetailViewModelCreator;
@@ -36,11 +35,11 @@ namespace SistemaMirno.UI.ViewModel.General
             IWorkAreaRepository workAreaRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
+            : base(eventAggregator)
         {
             _workAreaDetailViewModelCreator = workAreaDetailViewModelCreator;
             _workAreaRepository = workAreaRepository;
             _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()

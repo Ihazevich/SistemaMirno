@@ -18,7 +18,6 @@ namespace SistemaMirno.UI.ViewModel.General
     {
         private IMaterialRepository _materialRepository;
         private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
         private MaterialWrapper _selectedMaterial;
         private IMaterialDetailViewModel _materialDetailViewModel;
         private Func<IMaterialDetailViewModel> _materialDetailViewModelCreator;
@@ -33,11 +32,11 @@ namespace SistemaMirno.UI.ViewModel.General
             IMaterialRepository materialRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
+            : base (eventAggregator)
         {
             _materialDetailViewModelCreator = materialDetailViewModelCreator;
             _materialRepository = materialRepository;
             _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<Material>>()
                 .Subscribe(AfterMaterialSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Material>>()

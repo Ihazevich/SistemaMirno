@@ -17,7 +17,6 @@ namespace SistemaMirno.UI.ViewModel.Main
     public class LoginViewModel : ViewModelBase, ILoginViewModel
     {
         private IUserRepository _userRepository;
-        private IEventAggregator _eventAggregator;
         private UserWrapper _user;
         private bool _hasChanges;
 
@@ -29,9 +28,9 @@ namespace SistemaMirno.UI.ViewModel.Main
         public LoginViewModel(
             IUserRepository userRepository,
             IEventAggregator eventAggregator)
+            : base (eventAggregator)
         {
             _userRepository = userRepository;
-            _eventAggregator = eventAggregator;
 
             LoginCommand = new DelegateCommand(OnLoginExecute, CanLoginExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute);
@@ -70,6 +69,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                 {
                     _eventAggregator.GetEvent<UserChangedEvent>()
                         .Publish(new UserChangedEventArgs { Username = User.Name, AccessLevel = User.AccessLevel });
+                    _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                        .Publish(true);
                 }
             }
 

@@ -21,7 +21,6 @@ namespace SistemaMirno.UI.ViewModel.Main
     {
         private IViewModelBase _selectedViewModel;
         private IViewModelBase _navigationViewModel;
-        private IEventAggregator _eventAggregator;
         private IIndex<string, IViewModelBase> _viewModelCreator;
         private IMessageDialogService _messageDialogService;
         private string _windowTitle = $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
@@ -31,6 +30,8 @@ namespace SistemaMirno.UI.ViewModel.Main
         private bool _userLoggedIn = false;
         private string _username;
         private int _userAccessLevel;
+
+        private bool _navigationStatus = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -42,16 +43,18 @@ namespace SistemaMirno.UI.ViewModel.Main
             IIndex<string, IViewModelBase> viewModelCreator,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
+            : base (eventAggregator)
         {
             _viewModelCreator = viewModelCreator;
             _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(ChangeView);
             _eventAggregator.GetEvent<NewWorkOrderEvent>()
                 .Subscribe(NewMoveWorkOrder);
             _eventAggregator.GetEvent<UserChangedEvent>()
                 .Subscribe(UserChanged);
+            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Subscribe(ChangeNavigationStatus);
             _eventAggregator.GetEvent<ExitApplicationEvent>()
                 .Subscribe(ExitApplication);
 
@@ -61,14 +64,36 @@ namespace SistemaMirno.UI.ViewModel.Main
             ShowLoginView();
         }
 
+        private void ChangeNavigationStatus(bool arg)
+        {
+            if (NavigationStatus == false && arg)
+            {
+                SelectedViewModel = null;
+            }
+
+            NavigationStatus = arg;
+        }
+
         private void ExitApplication()
         {
             DialogResult = true;
         }
 
+        public bool NavigationStatus
+        {
+            get => _navigationStatus;
+
+            set
+            {
+                _navigationStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void UserChanged(UserChangedEventArgs args)
         {
             UserLoggedIn = true;
+            NavigationStatus = true;
             Username = args.Username;
             UserAccessLevel = args.AccessLevel;
 
@@ -228,17 +253,23 @@ namespace SistemaMirno.UI.ViewModel.Main
         {
             SelectedViewModel = _viewModelCreator[args.ViewModel];
             SelectedViewModel.LoadAsync(args.Id);
+            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Publish(false);
         }
 
         private void NewMoveWorkOrder(NewWorkOrderEventArgs args)
         {
             ChangeView(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderDetailViewModel), Id = args.DestinationWorkAreaId });
             ((WorkOrderDetailViewModel)SelectedViewModel).CreateNewWorkOrder(args.DestinationWorkAreaId, args.OriginWorkAreaId, args.WorkUnits);
+            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Publish(false);
         }
 
         private void ShowLoginView()
         {
             SelectedViewModel = _viewModelCreator[nameof(LoginViewModel)];
+            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Publish(false);
         }
     }
 }

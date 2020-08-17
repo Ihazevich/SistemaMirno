@@ -25,7 +25,6 @@ namespace SistemaMirno.UI.ViewModel.General
     {
         private IUserRepository _userRepository;
         private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
         private UserWrapper _selectedUser;
         private IUserDetailViewModel _userDetailViewModel;
         private Func<IUserDetailViewModel> _userDetailViewModelCreator;
@@ -40,11 +39,11 @@ namespace SistemaMirno.UI.ViewModel.General
             IUserRepository userRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
+            : base(eventAggregator)
         {
             _userDetailViewModelCreator = userDetailViewModelCreator;
             _userRepository = userRepository;
             _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<User>>()
                 .Subscribe(AfterUserSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<User>>()

@@ -17,15 +17,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public abstract class DetailViewModelBase : ViewModelBase, IDetailViewModelBase
     {
         private bool _hasChanges;
-        protected readonly IEventAggregator EventAggregator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailViewModelBase"/> class.
         /// </summary>
         /// <param name="model">A model wrapper instance of type <see cref="T"/>.</param>
         public DetailViewModelBase(IEventAggregator eventAggregator)
+            : base (eventAggregator)
         {
-            EventAggregator = eventAggregator;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute);
         }
@@ -63,13 +62,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected virtual void RaiseDataModelSavedEvent<T>(T model)
         {
-            EventAggregator.GetEvent<AfterDataModelSavedEvent<T>>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<T>>()
                 .Publish(new AfterDataModelSavedEventArgs<T> { Model = model });
         }
 
         protected virtual void RaiseDataModelDeletedEvent<T>(T model)
         {
-            EventAggregator.GetEvent<AfterDataModelDeletedEvent<T>>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<T>>()
                 .Publish(new AfterDataModelDeletedEventArgs<T> { Model = model });
         }
 

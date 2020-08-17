@@ -32,9 +32,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
 
-            EventAggregator.GetEvent<AfterDataModelSavedEvent<ProductCategory>>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<ProductCategory>>()
                 .Subscribe(AfterProductCategorySaved);
-            EventAggregator.GetEvent<AfterDataModelDeletedEvent<ProductCategory>>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<ProductCategory>>()
                 .Subscribe(AfterProductCategoryDeleted);
 
             ProductCategories = new ObservableCollection<ProductCategoryWrapper>();

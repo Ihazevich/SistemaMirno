@@ -17,11 +17,11 @@
                  utilities:DialogCloser.DialogResult="{Binding DialogResult}">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
-            <MenuItem Header="Listados" IsEnabled="{Binding UserLoggedIn}">
+            <MenuItem Header="Listados" IsEnabled="{Binding NavigationStatus}">
                 <MenuItem Header="En proceso por areas" Command="{Binding ChangeViewCommand}" CommandParameter="InProcessByWorkAreasViewModel"/>
                 <MenuItem Header="Produccion por areas" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByWorkAreaViewModel"/>
             </MenuItem>
-            <MenuItem Header="Historiales" IsEnabled="{Binding UserLoggedIn}">
+            <MenuItem Header="Historiales" IsEnabled="{Binding NavigationStatus}">
                 <MenuItem Header="Ordenes por dia" IsEnabled="False" />
                 <MenuItem Header="Productos por dia" IsEnabled="False" />
                 <MenuItem Header="Productos en proceso" IsEnabled="False" />
@@ -30,15 +30,27 @@
                 <MenuItem Header="Historial de eventos" IsEnabled="False" />
                 <MenuItem Header="Historial de logins" IsEnabled="False" />
             </MenuItem>
-            <MenuItem Header="Stock" IsEnabled="{Binding UserLoggedIn}">
+            <MenuItem Header="Stock" IsEnabled="{Binding NavigationStatus}">
                 <MenuItem Header="Disponibilidad" IsEnabled="False" />
                 <MenuItem Header="Historial de ingresos y egresos" IsEnabled="False" />                
             </MenuItem>
-            <MenuItem Header="Opciones">
-                <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
-                <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
+            <MenuItem Header="Utilidades" IsEnabled="{Binding NavigationStatus}">
+                <MenuItem Header="Recursos Humanos">
+                    <MenuItem Header="Empleados" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeViewModel" />
+                    <MenuItem Header="Roles" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeRoleViewModel" />
+                </MenuItem>
+                <MenuItem Header="Administracion">
+                    <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
+                    <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
+                </MenuItem>
+                <MenuItem Header="Produccion">
+                    <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="ProductViewModel" />
+                    <MenuItem Header="Categorias" Command="{Binding ChangeViewCommand}" CommandParameter="ProductCategoryViewModel" />
+                    <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="MaterialViewModel" />
+                    <MenuItem Header="Lustres/Colores" Command="{Binding ChangeViewCommand}" CommandParameter="ColorViewModel" />
+                </MenuItem>
             </MenuItem>
-            <MenuItem Header="Salir del sistema" Command="{Binding CloseApplicationCommand}" IsEnabled="{Binding UserLoggedIn}"/>
+            <MenuItem Header="Salir del sistema" Command="{Binding CloseApplicationCommand}" IsEnabled="{Binding NavigationStatus}"/>
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>

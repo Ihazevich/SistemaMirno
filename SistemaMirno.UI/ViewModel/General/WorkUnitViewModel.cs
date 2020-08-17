@@ -26,7 +26,6 @@ namespace SistemaMirno.UI.ViewModel.General
         private WorkArea _destinationWorkArea;
         private WorkUnitWrapper _selectedAreaWorkUnit;
         private WorkUnitWrapper _selectedOrderWorkUnit;
-        private IEventAggregator _eventAggregator;
         private IWorkUnitRepository _workUnitRepository;
 
         private PropertyGroupDescription _clientName = new PropertyGroupDescription("Client.Name");
@@ -36,9 +35,9 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public WorkUnitViewModel(IWorkUnitRepository workUnitRepository,
                     IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
             _workUnitRepository = workUnitRepository;
-            _eventAggregator = eventAggregator;
 
             AreaWorkUnits = new ObservableCollection<WorkUnitWrapper>();
             OrderWorkUnits = new ObservableCollection<WorkUnitWrapper>();
@@ -58,6 +57,7 @@ namespace SistemaMirno.UI.ViewModel.General
             AreaCollection = CollectionViewSource.GetDefaultView(AreaWorkUnits);
             OrderCollection = CollectionViewSource.GetDefaultView(OrderWorkUnits);
         }
+
 
         /// <summary>
         /// Gets or sets the production area name for the view.

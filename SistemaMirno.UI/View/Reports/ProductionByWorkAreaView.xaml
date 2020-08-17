@@ -102,6 +102,7 @@
             <Label Content="Hasta"/>
             <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}"/>
             <Button Content="Imprimir Reporte" Command="{Binding PrintReportCommand}" Margin="10"/>
+            <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
         </StackPanel>
         <Label Grid.Row="2" Content="Graficos" FontSize="25"/>
         <Label Grid.Row="3" Content="Mensual del presente año" FontSize="20"/>

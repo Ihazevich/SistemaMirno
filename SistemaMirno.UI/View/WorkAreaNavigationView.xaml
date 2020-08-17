@@ -34,5 +34,6 @@
                        IsPaneOpen="true"
                        DisplayMode="CompactOverlay"
                        ItemsSource="{Binding WorkAreas}"
-                       SelectedItem="{Binding SelectedWorkArea, Mode=TwoWay}" />
+                       SelectedItem="{Binding SelectedWorkArea, Mode=TwoWay}" 
+                       IsEnabled="{Binding NavigationEnabled}"/>
 </UserControl>

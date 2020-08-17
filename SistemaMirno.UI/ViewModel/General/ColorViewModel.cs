@@ -18,7 +18,6 @@ namespace SistemaMirno.UI.ViewModel.General
     {
         private IColorRepository _colorRepository;
         private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
         private ColorWrapper _selectedColor;
         private IColorDetailViewModel _colorDetailViewModel;
         private Func<IColorDetailViewModel> _colorDetailViewModelCreator;
@@ -33,6 +32,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IColorRepository colorRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
+            : base (eventAggregator)
         {
             _colorDetailViewModelCreator = colorDetailViewModelCreator;
             _colorRepository = colorRepository;

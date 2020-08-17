@@ -18,7 +18,6 @@ namespace SistemaMirno.UI.ViewModel.General
     {
         private IEmployeeRoleRepository _employeeRoleRepository;
         private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
         private EmployeeRoleWrapper _selectedEmployeeRole;
         private IEmployeeRoleDetailViewModel _employeeRoleDetailViewModel;
         private Func<IEmployeeRoleDetailViewModel> _employeeRoleDetailViewModelCreator;
@@ -33,6 +32,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
+            : base (eventAggregator)
         {
             _employeeRoleDetailViewModelCreator = employeeRoleDetailViewModelCreator;
             _employeeRoleRepository = employeeRoleRepository;

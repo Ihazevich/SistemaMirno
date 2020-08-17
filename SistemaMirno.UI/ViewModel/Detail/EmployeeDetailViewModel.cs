@@ -31,9 +31,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _employeeRepository = employeeRepository;
             _employeeRoleRepository = employeeRoleRepository;
 
-            EventAggregator.GetEvent<AfterDataModelSavedEvent<EmployeeRole>>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<EmployeeRole>>()
                 .Subscribe(AfterEmployeeRoleSaved);
-            EventAggregator.GetEvent<AfterDataModelDeletedEvent<EmployeeRole>>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<EmployeeRole>>()
                 .Subscribe(AfterEmployeeRoleDeleted);
 
             EmployeeRoles = new ObservableCollection<EmployeeRoleWrapper>();

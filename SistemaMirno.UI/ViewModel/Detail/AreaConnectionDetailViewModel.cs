@@ -32,9 +32,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _areaConnectionRepository = areaConnectionRepository;
 
-            EventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaSaved);
-            EventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaDeleted);
 
             WorkAreas = new ObservableCollection<WorkAreaWrapper>();

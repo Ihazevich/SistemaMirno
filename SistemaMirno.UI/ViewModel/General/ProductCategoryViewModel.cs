@@ -18,7 +18,6 @@ namespace SistemaMirno.UI.ViewModel.General
     {
         private IProductCategoryRepository _productCategoryRepository;
         private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
         private ProductCategoryWrapper _selectedProductCategory;
         private IProductCategoryDetailViewModel _productCategoryDetailViewModel;
         private Func<IProductCategoryDetailViewModel> _productCategoryDetailViewModelCreator;
@@ -33,11 +32,11 @@ namespace SistemaMirno.UI.ViewModel.General
             IProductCategoryRepository productCategoryRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
+            : base(eventAggregator)
         {
             _productCategoryDetailViewModelCreator = productCategoryDetailViewModelCreator;
             _productCategoryRepository = productCategoryRepository;
             _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<ProductCategory>>()
                 .Subscribe(AfterProductCategorySaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<ProductCategory>>()

@@ -10,15 +10,14 @@ namespace SistemaMirno.UI.ViewModel.General
     public class WorkOrderViewModel : ViewModelBase, IWorkOrderViewModel
     {
         private string _areaName;
-        private IEventAggregator _eventAggregator;
         private IWorkOrderRepository _workOrderRepository;
 
         public WorkOrderViewModel(
                     IWorkOrderRepository workOrderRepository,
                     IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
             _workOrderRepository = workOrderRepository;
-            _eventAggregator = eventAggregator;
 
             WorkOrders = new ObservableCollection<WorkOrder>();
         }

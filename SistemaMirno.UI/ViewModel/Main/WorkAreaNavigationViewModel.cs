@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Prism.Events;
@@ -16,8 +17,9 @@ namespace SistemaMirno.UI.ViewModel.Main
     public class WorkAreaNavigationViewModel : ViewModelBase, IWorkAreaNavigationViewModel
     {
         private IWorkAreaRepository _productionAreaRepository;
-        private IEventAggregator _eventAggregator;
         private WorkAreaWrapper _selectedWorkArea;
+
+        private bool _navigationEnabled = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkAreaNavigationViewModel"/> class.
@@ -27,14 +29,36 @@ namespace SistemaMirno.UI.ViewModel.Main
         public WorkAreaNavigationViewModel(
             IWorkAreaRepository productionAreaRepository,
             IEventAggregator eventAggregator)
+            : base (eventAggregator)
         {
             _productionAreaRepository = productionAreaRepository;
             WorkAreas = new ObservableCollection<WorkAreaWrapper>();
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaDeleted);
+            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Subscribe(ChangeNavigation);
+        }
+
+        public bool NavigationEnabled
+        {
+            get => _navigationEnabled;
+
+            set
+            {
+                _navigationEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private void ChangeNavigation(bool arg)
+        {
+            NavigationEnabled = arg;
+            if (arg)
+            {
+                SelectedWorkArea = null;
+            }
         }
 
         /// <summary>
@@ -55,6 +79,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                 {
                     _eventAggregator.GetEvent<ChangeViewEvent>()
                         .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkUnitViewModel), Id = SelectedWorkArea.Id });
+                    _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                        .Publish(false);
                 }
             }
         }

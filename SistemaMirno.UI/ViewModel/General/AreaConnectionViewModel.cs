@@ -19,7 +19,6 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private IAreaConnectionRepository _areaConnectionRepository;
         private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
         private AreaConnectionWrapper _selectedAreaConnection;
         private IAreaConnectionDetailViewModel _areaConnectionDetailViewModel;
         private Func<IAreaConnectionDetailViewModel> _areaConnectionDetailViewModelCreator;
@@ -30,11 +29,11 @@ namespace SistemaMirno.UI.ViewModel.General
             IAreaConnectionRepository areaConnectionRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
+            : base (eventAggregator)
         {
             _areaConnectionDetailViewModelCreator = areaConnectionDetailViewModelCreator;
             _areaConnectionRepository = areaConnectionRepository;
             _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<AreaConnection>>()
                 .Subscribe(AfterAreaConnectionSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<AreaConnection>>()
