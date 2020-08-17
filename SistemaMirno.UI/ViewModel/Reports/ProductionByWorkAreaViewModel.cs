@@ -133,9 +133,9 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
         private async void SelectWorkUnits()
         {
-            if (SelectedWorkArea.WorkOrders != null)
+            if (SelectedWorkArea.IncomingWorkOrders != null)
             {
-                foreach (WorkOrder workOrder in SelectedWorkArea.WorkOrders)
+                foreach (WorkOrder workOrder in SelectedWorkArea.IncomingWorkOrders)
                 {
                     if (workOrder.StartTime > StartDate && workOrder.StartTime < EndDate)
                     {

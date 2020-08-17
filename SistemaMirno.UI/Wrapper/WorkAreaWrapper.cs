@@ -89,7 +89,13 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public virtual Collection<WorkOrder> WorkOrders
+        public virtual Collection<WorkOrder> IncomingWorkOrders
+        {
+            get { return GetValue<Collection<WorkOrder>>(); }
+            set { SetValue(value); }
+        }
+
+        public virtual Collection<WorkOrder> OutgoingWorkOrders
         {
             get { return GetValue<Collection<WorkOrder>>(); }
             set { SetValue(value); }
