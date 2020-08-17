@@ -119,6 +119,8 @@ namespace SistemaMirno.UI.ViewModel.Reports
             {
                 Datetime = DateTime.Now.ToString(),
                 WorkAreas = new List<WorkAreaReport>(),
+                IncludePrice = _includePrice,
+                Total = 0,
             };
 
             var workAreas = await _workUnitRepository.GetWorkAreasThatReportInProcess();
@@ -129,6 +131,8 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 {
                     Name = workArea.Name,
                     WorkUnits = new List<WorkUnitReport>(),
+                    IncludePrice = _includePrice,
+                    Total = 0,
                 };
 
                 // Select all work units in the current work area
@@ -166,6 +170,8 @@ namespace SistemaMirno.UI.ViewModel.Reports
                                 Product = workUnit.Product.Name,
                                 Material = workUnit.Material.Name,
                                 Color = workUnit.Color.Name,
+                                Price = workUnit.Product.ProductionPrice,
+                                IncludePrice = _includePrice,
                             });
                         }
                     }
@@ -177,9 +183,17 @@ namespace SistemaMirno.UI.ViewModel.Reports
                             Product = workUnit.Product.Name,
                             Material = workUnit.Material.Name,
                             Color = workUnit.Color.Name,
+                            Price = workUnit.Product.ProductionPrice,
+                            IncludePrice = _includePrice,
                         });
                     }
+
+                    // Add the production price of the work unit to the area total.
+                    workAreaReport.Total += workUnit.Product.ProductionPrice;
                 }
+
+                // Add the area total production to the report total.
+                inProcessReport.Total += workAreaReport.Total;
 
                 // Add the work area report to the main report
                 inProcessReport.WorkAreas.Add(workAreaReport);
