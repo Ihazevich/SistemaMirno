@@ -39,11 +39,11 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander IsExpanded="False" BorderThickness="1,1,1,5">
+                                        <Expander IsExpanded="True" BorderThickness="1,1,1,5">
                                             <Expander.Header>
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" Width="100"/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
                                                 </StackPanel>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -58,14 +58,28 @@
                 </GroupStyle>
                 <!-- Style for groups under the top level. -->
                 <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Background="LightGray">
-                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black"/>
-                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" Width="100"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Margin" Value="0,0,0,5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="False" BorderThickness="1,1,1,5" Background="LightGray">
+                                            <Expander.Header>
+                                                <StackPanel Orientation="Horizontal" Background="LightGray">
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
+                                                </StackPanel>
+                                            </Expander.Header>
+                                            <Expander.Content>
+                                                <ItemsPresenter />
+                                            </Expander.Content>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
                 </GroupStyle>
             </DataGrid.GroupStyle>
         </DataGrid>

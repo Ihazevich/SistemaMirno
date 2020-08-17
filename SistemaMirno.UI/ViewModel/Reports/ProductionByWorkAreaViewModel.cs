@@ -20,7 +20,6 @@ namespace SistemaMirno.UI.ViewModel.Reports
         private IEventAggregator _eventAggregator;
         private IWorkAreaRepository _workAreaRepository;
 
-        private PropertyGroupDescription _workAreaName = new PropertyGroupDescription("WorkArea.Name");
         private PropertyGroupDescription _colorName = new PropertyGroupDescription("Color.Name");
         private PropertyGroupDescription _materialName = new PropertyGroupDescription("Material.Name");
         private PropertyGroupDescription _productName = new PropertyGroupDescription("Product.Name");
@@ -45,7 +44,6 @@ namespace SistemaMirno.UI.ViewModel.Reports
             PrintReportCommand = new DelegateCommand(OnPrintReportExecute);
 
             WorkUnitsCollection = CollectionViewSource.GetDefaultView(WorkUnits);
-            WorkUnitsCollection.GroupDescriptions.Add(_workAreaName);
             WorkUnitsCollection.GroupDescriptions.Add(_productName);
             WorkUnitsCollection.GroupDescriptions.Add(_materialName);
             WorkUnitsCollection.GroupDescriptions.Add(_colorName);
@@ -85,7 +83,10 @@ namespace SistemaMirno.UI.ViewModel.Reports
             {
                 _startDate = value;
                 OnPropertyChanged();
-                ValidateDates();
+                if (ValidateDates())
+                {
+                    SelectWorkUnits();
+                }
             }
         }
 
@@ -100,7 +101,10 @@ namespace SistemaMirno.UI.ViewModel.Reports
             {
                 _endDate = value;
                 OnPropertyChanged();
-                ValidateDates();
+                if (ValidateDates())
+                {
+                    SelectWorkUnits();
+                }
             }
         }
 
@@ -134,22 +138,25 @@ namespace SistemaMirno.UI.ViewModel.Reports
         private async void SelectWorkUnits()
         {
             WorkUnits.Clear();
-            if (SelectedWorkArea.IncomingWorkOrders != null)
+            if (SelectedWorkArea != null)
             {
-                foreach (WorkOrder workOrder in SelectedWorkArea.IncomingWorkOrders)
+                if (SelectedWorkArea.IncomingWorkOrders != null)
                 {
-                    if (workOrder.StartTime > StartDate && workOrder.StartTime < EndDate)
+                    foreach (WorkOrder workOrder in SelectedWorkArea.IncomingWorkOrders)
                     {
-                        foreach (WorkOrderUnit workOrderUnit in workOrder.WorkOrderUnits)
+                        if (workOrder.StartTime > StartDate && workOrder.StartTime < EndDate)
                         {
-                            WorkUnits.Add(new WorkUnitWrapper(workOrderUnit.WorkUnit));
+                            foreach (WorkOrderUnit workOrderUnit in workOrder.WorkOrderUnits)
+                            {
+                                WorkUnits.Add(new WorkUnitWrapper(workOrderUnit.WorkUnit));
+                            }
                         }
                     }
                 }
             }
         }
 
-        private void ValidateDates()
+        private bool ValidateDates()
         {
             bool areDatesValid = false;
 
@@ -165,6 +172,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
 
             AreaPickerEnabled = areDatesValid;
+            return areDatesValid;
         }
     }
 }
