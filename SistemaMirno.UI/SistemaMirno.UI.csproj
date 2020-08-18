@@ -213,12 +213,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\FileHelpers\ProductFileHelper.cs" />
+    <Compile Include="Data\Repositories\IClientRepository.cs" />
     <Compile Include="Data\Reports\InProcessReport.cs" />
     <Compile Include="Data\Reports\ProductionReport.cs" />
     <Compile Include="Data\Reports\WorkAreaReport.cs" />
     <Compile Include="Data\Reports\WorkOrderReport.cs" />
     <Compile Include="Data\Reports\WorkUnitReport.cs" />
     <Compile Include="Data\Repositories\AreaConnectionRepository.cs" />
+    <Compile Include="Data\Repositories\ClientRepository.cs" />
     <Compile Include="Data\Repositories\EmployeeRepository.cs" />
     <Compile Include="Data\Repositories\EmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\GenericRepository.cs" />
@@ -256,10 +258,12 @@
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="Utilities\DialogCloser.cs" />
     <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\ClientDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\EmployeeRoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IAreaConnectionDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IClientDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IEmployeeDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IEmployeeRoleDetailViewModel.cs" />
@@ -272,6 +276,7 @@
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\General\AreaConnectionViewModel.cs" />
+    <Compile Include="ViewModel\General\ClientViewModel.cs" />
     <Compile Include="ViewModel\General\ColorViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
@@ -282,6 +287,7 @@
     <Compile Include="ViewModel\General\EmployeeRoleViewModel.cs" />
     <Compile Include="ViewModel\General\EmployeeViewModel.cs" />
     <Compile Include="ViewModel\General\IAreaConnectionViewModel.cs" />
+    <Compile Include="ViewModel\General\IClientViewModel.cs" />
     <Compile Include="ViewModel\General\IColorViewModel.cs" />
     <Compile Include="ViewModel\General\IEmployeeRoleViewModel.cs" />
     <Compile Include="ViewModel\General\IEmployeeViewModel.cs" />
@@ -314,6 +320,12 @@
     </Compile>
     <Compile Include="View\AreaConnectionView.xaml.cs">
       <DependentUpon>AreaConnectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ClientDetailView.xaml.cs">
+      <DependentUpon>ClientDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ClientView.xaml.cs">
+      <DependentUpon>ClientView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ColorDetailView.xaml.cs">
       <DependentUpon>ColorDetailView.xaml</DependentUpon>
@@ -422,6 +434,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AreaConnectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ClientDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ClientView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

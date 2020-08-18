@@ -75,6 +75,8 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<StockViewModel>()
                 .Keyed<IViewModelBase>(nameof(StockViewModel));
 
+            builder.RegisterType<ClientViewModel>()
+                .Keyed<IViewModelBase>(nameof(ClientViewModel));
 
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
             builder.RegisterType<AreaConnectionDetailViewModel>().As<IAreaConnectionDetailViewModel>();
@@ -88,6 +90,8 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
 
+            builder.RegisterType<ClientDetailViewModel>().As<IClientDetailViewModel>();
+
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<AreaConnectionRepository>().As<IAreaConnectionRepository>();
             builder.RegisterType<WorkAreaRepository>().As<IWorkAreaRepository>();
@@ -99,6 +103,8 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<EmployeeRoleRepository>().As<IEmployeeRoleRepository>();
             builder.RegisterType<WorkUnitRepository>().As<IWorkUnitRepository>();
             builder.RegisterType<WorkOrderRepository>().As<IWorkOrderRepository>();
+
+            builder.RegisterType<ClientRepository>().As<IClientRepository>();
 
             return builder.Build();
         }

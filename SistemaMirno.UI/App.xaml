@@ -85,6 +85,12 @@
             <DataTemplate DataType="{x:Type detailviewmodel:UserDetailViewModel}">
                 <view:UserDetailView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:ClientViewModel}">
+                <view:ClientView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type detailviewmodel:ClientDetailViewModel}">
+                <view:ClientDetailView />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:StockViewModel}">
                 <view:StockView />
             </DataTemplate>
