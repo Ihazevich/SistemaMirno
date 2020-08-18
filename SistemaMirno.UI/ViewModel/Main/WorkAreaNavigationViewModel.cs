@@ -80,6 +80,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                     // If the work area name is Pedidos or Stock, then redirect to the specialized views of those areas.
                     if (_selectedWorkArea.Name == "Pedidos")
                     {
+                        _eventAggregator.GetEvent<ChangeViewEvent>()
+                            .Publish(new ChangeViewEventArgs { ViewModel = nameof(RequisitionViewModel) });
                     }
                     else if (_selectedWorkArea.Name == "Stock")
                     {

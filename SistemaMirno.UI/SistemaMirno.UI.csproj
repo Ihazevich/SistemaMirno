@@ -213,6 +213,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\FileHelpers\ProductFileHelper.cs" />
+    <Compile Include="Data\Repositories\IRequisitionRepository.cs" />
     <Compile Include="Data\Repositories\IClientRepository.cs" />
     <Compile Include="Data\Reports\InProcessReport.cs" />
     <Compile Include="Data\Reports\ProductionReport.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Data\Repositories\IWorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\PaymentMethodRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
+    <Compile Include="Data\Repositories\RequisitionRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\ColorRepository.cs" />
@@ -272,11 +274,13 @@
     <Compile Include="ViewModel\Detail\IPaymentMethodDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IRequisitionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IUserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IWorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\PaymentMethodDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\RequisitionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\General\AreaConnectionViewModel.cs" />
@@ -303,6 +307,7 @@
     <Compile Include="ViewModel\General\PaymentMethodViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IProductViewModel.cs" />
+    <Compile Include="ViewModel\General\RequisitionViewModel.cs" />
     <Compile Include="ViewModel\General\StockViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\General\WorkOrderViewModel.cs" />
@@ -380,6 +385,12 @@
     <Compile Include="View\Reports\ProductionByWorkAreaView.xaml.cs">
       <DependentUpon>ProductionByWorkAreaView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\RequisitionDetailView.xaml.cs">
+      <DependentUpon>RequisitionDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RequisitionView.xaml.cs">
+      <DependentUpon>RequisitionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StockView.xaml.cs">
       <DependentUpon>StockView.xaml</DependentUpon>
     </Compile>
@@ -421,6 +432,7 @@
     <Compile Include="Wrapper\ModelWrapper.cs" />
     <Compile Include="Wrapper\PaymentMethodWrapper.cs" />
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
+    <Compile Include="Wrapper\RequisitionWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\ProductWrapper.cs" />
@@ -518,6 +530,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Reports\ProductionByWorkAreaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RequisitionDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RequisitionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

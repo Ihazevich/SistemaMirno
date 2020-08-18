@@ -161,6 +161,10 @@
     <Compile Include="Migrations\202008181713309_PaymentMethod.designer.cs">
       <DependentUpon>202008181713309_PaymentMethod.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008181923246_nullable.cs" />
+    <Compile Include="Migrations\202008181923246_nullable.designer.cs">
+      <DependentUpon>202008181923246_nullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -240,6 +244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008181713309_PaymentMethod.resx">
       <DependentUpon>202008181713309_PaymentMethod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008181923246_nullable.resx">
+      <DependentUpon>202008181923246_nullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

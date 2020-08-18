@@ -67,7 +67,7 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the id of the requisition the work unit has been assigned to.
         /// </summary>
-        public int RequisitionId { get; set; }
+        public int? RequisitionId { get; set; }
 
         /// <summary>
         /// Gets or sets the work unit's requisition.
