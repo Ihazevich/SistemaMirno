@@ -65,6 +65,16 @@ namespace SistemaMirno.Model
         public virtual WorkArea WorkArea { get; set; }
 
         /// <summary>
+        /// Gets or sets the id of the requisition the work unit has been assigned to.
+        /// </summary>
+        public int RequisitionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the work unit's requisition.
+        /// </summary>
+        public virtual Requisition Requisition { get; set; }
+
+        /// <summary>
         /// Gets or sets the collection of Work Order units that point to this work unit.
         /// </summary>
         public virtual Collection<WorkOrderUnit> WorkOrderUnits { get; set; }
