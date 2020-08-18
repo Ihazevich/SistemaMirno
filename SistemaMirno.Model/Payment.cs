@@ -11,7 +11,7 @@ namespace SistemaMirno.Model
         public DateTime Date { get; set; }
         public int Ammount { get; set; }
         public int PaymentTypeId { get; set; }
-        public virtual PaymentType PaymentType { get; set; }
+        public virtual PaymentMethod PaymentMethod { get; set; }
         public int SaleId { get; set; }
         public virtual Sale Sale { get; set; }
     }

@@ -51,7 +51,7 @@
                 </MenuItem>
                 <MenuItem Header="Ventas">
                     <MenuItem Header="Clientes" Command="{Binding ChangeViewCommand}" CommandParameter="ClientViewModel"/>
-                    <MenuItem Header="Metodos de pago" Command="{Binding ChangeViewCommand}" CommandParameter="PaymentTypeViewModel"/>
+                    <MenuItem Header="Metodos de pago" Command="{Binding ChangeViewCommand}" CommandParameter="PaymentMethodViewModel"/>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Salir del sistema" Command="{Binding CloseApplicationCommand}" IsEnabled="{Binding NavigationStatus}"/>

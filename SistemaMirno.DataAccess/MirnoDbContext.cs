@@ -82,6 +82,8 @@ namespace SistemaMirno.DataAccess
 
         public DbSet<Payment> Payments { get; set; }
 
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
+
         public DbSet<Sale> Sales { get; set; }
 
         /// <inheritdoc/>

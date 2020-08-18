@@ -37,7 +37,6 @@ namespace SistemaMirno.UI.ViewModel.General
             _colorDetailViewModelCreator = colorDetailViewModelCreator;
             _colorRepository = colorRepository;
             _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<Color>>()
                 .Subscribe(AfterColorSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Color>>()

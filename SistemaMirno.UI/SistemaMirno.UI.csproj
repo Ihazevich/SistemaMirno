@@ -228,9 +228,11 @@
     <Compile Include="Data\Repositories\IEmployeeRepository.cs" />
     <Compile Include="Data\Repositories\IEmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\IGenericRepository.cs" />
+    <Compile Include="Data\Repositories\IPaymentMethodRepository.cs" />
     <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\IUserRepository.cs" />
     <Compile Include="Data\Repositories\IWorkOrderRepository.cs" />
+    <Compile Include="Data\Repositories\PaymentMethodRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
@@ -267,10 +269,12 @@
     <Compile Include="ViewModel\Detail\IColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IEmployeeDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IEmployeeRoleDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\IPaymentMethodDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IUserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IWorkOrderDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\PaymentMethodDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
@@ -296,6 +300,7 @@
     <Compile Include="ViewModel\General\IUserViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\IWorkOrderViewModel.cs" />
+    <Compile Include="ViewModel\General\PaymentMethodViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IProductViewModel.cs" />
     <Compile Include="ViewModel\General\StockViewModel.cs" />
@@ -354,6 +359,12 @@
     <Compile Include="View\MaterialView.xaml.cs">
       <DependentUpon>MaterialView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PaymentMethodDetailView.xaml.cs">
+      <DependentUpon>PaymentMethodDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PaymentMethodView.xaml.cs">
+      <DependentUpon>PaymentMethodView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ProductCategoryDetailView.xaml.cs">
       <DependentUpon>ProductCategoryDetailView.xaml</DependentUpon>
     </Compile>
@@ -408,6 +419,7 @@
     <Compile Include="Wrapper\EmployeeWrapper.cs" />
     <Compile Include="Wrapper\MaterialWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
+    <Compile Include="Wrapper\PaymentMethodWrapper.cs" />
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaWrapper.cs" />
@@ -478,6 +490,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MaterialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PaymentMethodDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PaymentMethodView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

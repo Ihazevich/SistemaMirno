@@ -157,6 +157,10 @@
     <Compile Include="Migrations\202008181332514_Requisitions-Sales-Clients.designer.cs">
       <DependentUpon>202008181332514_Requisitions-Sales-Clients.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008181713309_PaymentMethod.cs" />
+    <Compile Include="Migrations\202008181713309_PaymentMethod.designer.cs">
+      <DependentUpon>202008181713309_PaymentMethod.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -233,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008181332514_Requisitions-Sales-Clients.resx">
       <DependentUpon>202008181332514_Requisitions-Sales-Clients.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008181713309_PaymentMethod.resx">
+      <DependentUpon>202008181713309_PaymentMethod.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

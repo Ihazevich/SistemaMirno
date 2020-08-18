@@ -76,6 +76,8 @@ namespace SistemaMirno.UI
 
             builder.RegisterType<ClientViewModel>()
                 .Keyed<IViewModelBase>(nameof(ClientViewModel));
+            builder.RegisterType<PaymentMethodViewModel>()
+                .Keyed<IViewModelBase>(nameof(PaymentMethodViewModel));
 
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
             builder.RegisterType<AreaConnectionDetailViewModel>().As<IAreaConnectionDetailViewModel>();
@@ -90,6 +92,7 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
 
             builder.RegisterType<ClientDetailViewModel>().As<IClientDetailViewModel>();
+            builder.RegisterType<PaymentMethodDetailViewModel>().As<IPaymentMethodDetailViewModel>();
 
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<AreaConnectionRepository>().As<IAreaConnectionRepository>();
@@ -104,6 +107,7 @@ namespace SistemaMirno.UI
             builder.RegisterType<WorkOrderRepository>().As<IWorkOrderRepository>();
 
             builder.RegisterType<ClientRepository>().As<IClientRepository>();
+            builder.RegisterType<PaymentMethodRepository>().As<IPaymentMethodRepository>();
 
             return builder.Build();
         }

@@ -91,6 +91,12 @@
             <DataTemplate DataType="{x:Type detailviewmodel:ClientDetailViewModel}">
                 <view:ClientDetailView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:PaymentMethodViewModel}">
+                <view:PaymentMethodView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type detailviewmodel:PaymentMethodDetailViewModel}">
+                <view:PaymentMethodDetailView />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:StockViewModel}">
                 <view:StockView />
             </DataTemplate>

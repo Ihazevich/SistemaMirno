@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public class PaymentType : BaseModel
+    public class PaymentMethod : BaseModel
     {
         public string Name { get; set; }
+
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }
