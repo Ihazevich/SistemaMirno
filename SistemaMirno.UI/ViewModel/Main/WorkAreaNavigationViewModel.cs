@@ -77,8 +77,20 @@ namespace SistemaMirno.UI.ViewModel.Main
                 OnPropertyChanged();
                 if (_selectedWorkArea != null)
                 {
-                    _eventAggregator.GetEvent<ChangeViewEvent>()
-                        .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkUnitViewModel), Id = SelectedWorkArea.Id });
+                    // If the work area name is Pedidos or Stock, then redirect to the specialized views of those areas.
+                    if (_selectedWorkArea.Name == "Pedidos")
+                    {
+                    }
+                    else if (_selectedWorkArea.Name == "Stock")
+                    {
+                        _eventAggregator.GetEvent<ChangeViewEvent>()
+                            .Publish(new ChangeViewEventArgs { ViewModel = nameof(StockViewModel) });
+                    }
+                    else
+                    {
+                        _eventAggregator.GetEvent<ChangeViewEvent>()
+                            .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkUnitViewModel), Id = SelectedWorkArea.Id });
+                    }
                     _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                         .Publish(false);
                 }
