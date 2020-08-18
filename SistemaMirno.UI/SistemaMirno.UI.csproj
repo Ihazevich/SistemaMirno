@@ -231,11 +231,13 @@
     <Compile Include="Data\Repositories\IGenericRepository.cs" />
     <Compile Include="Data\Repositories\IPaymentMethodRepository.cs" />
     <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
+    <Compile Include="Data\Repositories\ISaleRepository.cs" />
     <Compile Include="Data\Repositories\IUserRepository.cs" />
     <Compile Include="Data\Repositories\IWorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\PaymentMethodRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\RequisitionRepository.cs" />
+    <Compile Include="Data\Repositories\SaleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\ColorRepository.cs" />
@@ -433,6 +435,7 @@
     <Compile Include="Wrapper\PaymentMethodWrapper.cs" />
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
     <Compile Include="Wrapper\RequisitionWrapper.cs" />
+    <Compile Include="Wrapper\SaleWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\ProductWrapper.cs" />
