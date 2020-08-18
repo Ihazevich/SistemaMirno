@@ -5,7 +5,6 @@
 using System;
 using System.Windows;
 using Autofac;
-using SistemaMirno.UI.Startup;
 
 namespace SistemaMirno.UI
 {

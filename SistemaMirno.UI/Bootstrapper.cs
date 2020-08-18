@@ -6,7 +6,6 @@ using Autofac;
 using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.UI.Data.Repositories;
-using SistemaMirno.UI.View;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
@@ -14,7 +13,7 @@ using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.ViewModel.Main;
 using SistemaMirno.UI.ViewModel.Reports;
 
-namespace SistemaMirno.UI.Startup
+namespace SistemaMirno.UI
 {
     /// <summary>
     /// A class represneting the Autofac boostrapper.

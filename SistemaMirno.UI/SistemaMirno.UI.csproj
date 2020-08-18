@@ -255,7 +255,7 @@
     <Compile Include="Event\NewWorkOrderEventArgs.cs" />
     <Compile Include="Event\UserChangedEvent.cs" />
     <Compile Include="Event\UserChangedEventArgs.cs" />
-    <Compile Include="Startup\Bootstrapper.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Utilities\DialogCloser.cs" />
     <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ClientDetailViewModel.cs" />
