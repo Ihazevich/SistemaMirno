@@ -390,6 +390,7 @@
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wrapper\AreaConnectionWrapper.cs" />
+    <Compile Include="Wrapper\ClientWrapper.cs" />
     <Compile Include="Wrapper\ColorWrapper.cs" />
     <Compile Include="Wrapper\EmployeeRoleWrapper.cs" />
     <Compile Include="Wrapper\EmployeeWrapper.cs" />

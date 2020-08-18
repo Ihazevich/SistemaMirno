@@ -153,6 +153,10 @@
     <Compile Include="Migrations\202008141735327_reportsbool.designer.cs">
       <DependentUpon>202008141735327_reportsbool.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008181332514_Requisitions-Sales-Clients.cs" />
+    <Compile Include="Migrations\202008181332514_Requisitions-Sales-Clients.designer.cs">
+      <DependentUpon>202008181332514_Requisitions-Sales-Clients.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -226,6 +230,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008141735327_reportsbool.resx">
       <DependentUpon>202008141735327_reportsbool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008181332514_Requisitions-Sales-Clients.resx">
+      <DependentUpon>202008181332514_Requisitions-Sales-Clients.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -76,6 +76,14 @@ namespace SistemaMirno.DataAccess
         /// </summary>
         public DbSet<WorkOrderUnit> WorkOrderUnits { get; set; }
 
+        public DbSet<Requisition> Requisitions { get; set; }
+
+        public DbSet<Client> Clients { get; set; }
+
+        public DbSet<Payment> Payments { get; set; }
+
+        public DbSet<Sale> Sales { get; set; }
+
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
