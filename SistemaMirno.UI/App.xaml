@@ -85,6 +85,9 @@
             <DataTemplate DataType="{x:Type detailviewmodel:UserDetailViewModel}">
                 <view:UserDetailView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:StockViewModel}">
+                <view:StockView />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type reportsviewmodel:InProcessByWorkAreasViewModel}">
                 <reportsview:InProcessByWorkAreasView />
             </DataTemplate>

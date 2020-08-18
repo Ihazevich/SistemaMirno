@@ -31,7 +31,7 @@
                 <MenuItem Header="Historial de logins" IsEnabled="False" />
             </MenuItem>
             <MenuItem Header="Stock" IsEnabled="{Binding NavigationStatus}">
-                <MenuItem Header="Disponibilidad" IsEnabled="False" />
+                <MenuItem Header="Disponibilidad" Command="{Binding ChangeViewCommand}" CommandParameter="StockViewModel"/>
                 <MenuItem Header="Historial de ingresos y egresos" IsEnabled="False" />                
             </MenuItem>
             <MenuItem Header="Utilidades" IsEnabled="{Binding NavigationStatus}">

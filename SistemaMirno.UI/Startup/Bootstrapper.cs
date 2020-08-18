@@ -72,6 +72,10 @@ namespace SistemaMirno.UI.Startup
             builder.RegisterType<ProductionByWorkAreaViewModel>()
                 .Keyed<IViewModelBase>(nameof(ProductionByWorkAreaViewModel));
 
+            builder.RegisterType<StockViewModel>()
+                .Keyed<IViewModelBase>(nameof(StockViewModel));
+
+
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
             builder.RegisterType<AreaConnectionDetailViewModel>().As<IAreaConnectionDetailViewModel>();
             builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>();

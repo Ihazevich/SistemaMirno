@@ -25,5 +25,7 @@ namespace SistemaMirno.UI.Data.Repositories
         Task<IEnumerable<WorkUnit>> GetWorkUnitsInProcessAsync();
 
         Task<IEnumerable<WorkArea>> GetWorkAreasThatReportInProcess();
+
+        Task<WorkArea> GetStockWorkAreaAsync();
     }
 }

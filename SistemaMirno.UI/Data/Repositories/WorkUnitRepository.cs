@@ -43,5 +43,11 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             return await Context.WorkAreas.Where(a => a.ReportsInProcess == true).ToListAsync();
         }
+
+        public async Task<WorkArea> GetStockWorkAreaAsync()
+        {
+            return await Context.WorkAreas.SingleAsync(a => a.Name == "Stock");
+        }
+
     }
 }
