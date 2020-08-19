@@ -24,10 +24,6 @@ namespace SistemaMirno.UI.Data.Repositories
             return await Context.Sales.Where(s =>
                 (s.Requisition.RequestedDate >= start && s.Requisition.RequestedDate <= end))
             .ToListAsync();
-
-            return await Context.Sales.Where(s =>
-                (DateTime.Compare(s.Requisition.RequestedDate, start) >= 0 && DateTime.Compare(s.Requisition.RequestedDate, end.AddDays(1)) < 0)
-            ).ToListAsync();
         }
     }
 }

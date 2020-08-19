@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaMirno.DataAccess", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaMirno.Model", "SistemaMirno.Model\SistemaMirno.Model.csproj", "{78A9511D-22BB-4AF6-BCDD-C1198D1EB2D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaMirno.UITests", "SistemaMirno.UITests\SistemaMirno.UITests.csproj", "{DA193C99-2D6D-49DF-B698-B7E3EBDCD3FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,14 +29,15 @@ Global
 		{78A9511D-22BB-4AF6-BCDD-C1198D1EB2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78A9511D-22BB-4AF6-BCDD-C1198D1EB2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78A9511D-22BB-4AF6-BCDD-C1198D1EB2D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA193C99-2D6D-49DF-B698-B7E3EBDCD3FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA193C99-2D6D-49DF-B698-B7E3EBDCD3FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA193C99-2D6D-49DF-B698-B7E3EBDCD3FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA193C99-2D6D-49DF-B698-B7E3EBDCD3FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3891BA12-BF63-4A3B-8A86-4BCF69D10598}
-	EndGlobalSection
-	GlobalSection(NDepend) = preSolution
-		Project = ".\SistemaMirno.ndproj"
 	EndGlobalSection
 EndGlobal
