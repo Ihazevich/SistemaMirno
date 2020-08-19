@@ -14,6 +14,7 @@ namespace SistemaMirno.DataAccess
         /// </summary>
         public MirnoDbContext() : base("DesktopMirnoDb")
         {
+            Database.SetInitializer<MirnoDbContext>(new DropCreateDatabaseIfModelChanges<MirnoDbContext>());
         }
 
         /// <summary>

@@ -73,6 +73,8 @@ namespace SistemaMirno.UI
 
             builder.RegisterType<StockViewModel>()
                 .Keyed<IViewModelBase>(nameof(StockViewModel));
+            builder.RegisterType<SaleViewModel>()
+                .Keyed<IViewModelBase>(nameof(SaleViewModel));
 
             builder.RegisterType<ClientViewModel>()
                 .Keyed<IViewModelBase>(nameof(ClientViewModel));
@@ -97,6 +99,8 @@ namespace SistemaMirno.UI
             builder.RegisterType<PaymentMethodDetailViewModel>().As<IPaymentMethodDetailViewModel>();
             builder.RegisterType<RequisitionDetailViewModel>().As<IRequisitionDetailViewModel>();
 
+            builder.RegisterType<SaleDetailViewModel>().As<ISaleDetailViewModel>();
+
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<AreaConnectionRepository>().As<IAreaConnectionRepository>();
             builder.RegisterType<WorkAreaRepository>().As<IWorkAreaRepository>();
@@ -112,6 +116,8 @@ namespace SistemaMirno.UI
             builder.RegisterType<ClientRepository>().As<IClientRepository>();
             builder.RegisterType<PaymentMethodRepository>().As<IPaymentMethodRepository>();
             builder.RegisterType<RequisitionRepository>().As<IRequisitionRepository>();
+
+            builder.RegisterType<SaleRepository>().As<ISaleRepository>();
 
             return builder.Build();
         }

@@ -7,7 +7,7 @@ namespace SistemaMirno.DataAccess.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(SistemaMirno.DataAccess.MirnoDbContext context)

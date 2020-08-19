@@ -31,19 +31,20 @@
                 <MenuItem Header="Historial de logins" IsEnabled="False" />
             </MenuItem>
             <MenuItem Header="Stock" IsEnabled="{Binding NavigationStatus}">
+                <MenuItem Header="Ventas" Command="{Binding ChangeViewCommand}" CommandParameter="SaleViewModel"/>
                 <MenuItem Header="Disponibilidad" Command="{Binding ChangeViewCommand}" CommandParameter="StockViewModel"/>
-                <MenuItem Header="Historial de ingresos y egresos" IsEnabled="False" />                
+                <MenuItem Header="Historial de ingresos y salidas" IsEnabled="False" />                
             </MenuItem>
             <MenuItem Header="Utilidades" IsEnabled="{Binding NavigationStatus}">
                 <MenuItem Header="Recursos Humanos">
                     <MenuItem Header="Empleados" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeViewModel" />
                     <MenuItem Header="Roles" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeRoleViewModel" />
                 </MenuItem>
-                <MenuItem Header="Administracion">
+                <MenuItem Header="Administración">
                     <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
                     <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
                 </MenuItem>
-                <MenuItem Header="Produccion">
+                <MenuItem Header="Producción">
                     <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="ProductViewModel" />
                     <MenuItem Header="Categorias" Command="{Binding ChangeViewCommand}" CommandParameter="ProductCategoryViewModel" />
                     <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="MaterialViewModel" />

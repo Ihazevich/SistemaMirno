@@ -103,6 +103,12 @@
             <DataTemplate DataType="{x:Type detailviewmodel:RequisitionDetailViewModel}">
                 <view:RequisitionDetailView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type generalviewmodel:SaleViewModel}">
+                <view:SalesView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type detailviewmodel:RequisitionDetailViewModel}">
+                <view:RequisitionDetailView />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:StockViewModel}">
                 <view:StockView />
             </DataTemplate>

@@ -85,93 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\202008010131479_Initial-EmployeeRework.cs" />
-    <Compile Include="Migrations\202008010131479_Initial-EmployeeRework.designer.cs">
-      <DependentUpon>202008010131479_Initial-EmployeeRework.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008010139247_WorkArea-nullables.cs" />
-    <Compile Include="Migrations\202008010139247_WorkArea-nullables.designer.cs">
-      <DependentUpon>202008010139247_WorkArea-nullables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008031316273_WorkOrders.cs" />
-    <Compile Include="Migrations\202008031316273_WorkOrders.designer.cs">
-      <DependentUpon>202008031316273_WorkOrders.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008031423024_AreaConnections.cs" />
-    <Compile Include="Migrations\202008031423024_AreaConnections.designer.cs">
-      <DependentUpon>202008031423024_AreaConnections.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008031859072_BaseModel.cs" />
-    <Compile Include="Migrations\202008031859072_BaseModel.designer.cs">
-      <DependentUpon>202008031859072_BaseModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008040120073_smol.cs" />
-    <Compile Include="Migrations\202008040120073_smol.designer.cs">
-      <DependentUpon>202008040120073_smol.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008041806287_nullableFinishDatetime.cs" />
-    <Compile Include="Migrations\202008041806287_nullableFinishDatetime.designer.cs">
-      <DependentUpon>202008041806287_nullableFinishDatetime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008041825284_FixedTypo.cs" />
-    <Compile Include="Migrations\202008041825284_FixedTypo.designer.cs">
-      <DependentUpon>202008041825284_FixedTypo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008041837001_anothertypo.cs" />
-    <Compile Include="Migrations\202008041837001_anothertypo.designer.cs">
-      <DependentUpon>202008041837001_anothertypo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008051751596_WorkOrderUnits.cs" />
-    <Compile Include="Migrations\202008051751596_WorkOrderUnits.designer.cs">
-      <DependentUpon>202008051751596_WorkOrderUnits.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008051800514_nullableLeavingWorkAreaId.cs" />
-    <Compile Include="Migrations\202008051800514_nullableLeavingWorkAreaId.designer.cs">
-      <DependentUpon>202008051800514_nullableLeavingWorkAreaId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008051852234_collectionInWorkUnit.cs" />
-    <Compile Include="Migrations\202008051852234_collectionInWorkUnit.designer.cs">
-      <DependentUpon>202008051852234_collectionInWorkUnit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008051908122_renamedWorkOrderAreas.cs" />
-    <Compile Include="Migrations\202008051908122_renamedWorkOrderAreas.designer.cs">
-      <DependentUpon>202008051908122_renamedWorkOrderAreas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008051944031_ConnectionsRefactor.cs" />
-    <Compile Include="Migrations\202008051944031_ConnectionsRefactor.designer.cs">
-      <DependentUpon>202008051944031_ConnectionsRefactor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008061121489_hmmm.cs" />
-    <Compile Include="Migrations\202008061121489_hmmm.designer.cs">
-      <DependentUpon>202008061121489_hmmm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008101742007_Workunit-changeworkorderkey.cs" />
-    <Compile Include="Migrations\202008101742007_Workunit-changeworkorderkey.designer.cs">
-      <DependentUpon>202008101742007_Workunit-changeworkorderkey.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008141735327_reportsbool.cs" />
-    <Compile Include="Migrations\202008141735327_reportsbool.designer.cs">
-      <DependentUpon>202008141735327_reportsbool.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008181332514_Requisitions-Sales-Clients.cs" />
-    <Compile Include="Migrations\202008181332514_Requisitions-Sales-Clients.designer.cs">
-      <DependentUpon>202008181332514_Requisitions-Sales-Clients.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008181713309_PaymentMethod.cs" />
-    <Compile Include="Migrations\202008181713309_PaymentMethod.designer.cs">
-      <DependentUpon>202008181713309_PaymentMethod.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008181923246_nullable.cs" />
-    <Compile Include="Migrations\202008181923246_nullable.designer.cs">
-      <DependentUpon>202008181923246_nullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008190042028_branches.cs" />
-    <Compile Include="Migrations\202008190042028_branches.designer.cs">
-      <DependentUpon>202008190042028_branches.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008190137423_saletype.cs" />
-    <Compile Include="Migrations\202008190137423_saletype.designer.cs">
-      <DependentUpon>202008190137423_saletype.cs</DependentUpon>
+    <Compile Include="Migrations\202008190240109_initial.cs" />
+    <Compile Include="Migrations\202008190240109_initial.designer.cs">
+      <DependentUpon>202008190240109_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
@@ -196,78 +112,15 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202008010131479_Initial-EmployeeRework.resx">
-      <DependentUpon>202008010131479_Initial-EmployeeRework.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008010139247_WorkArea-nullables.resx">
-      <DependentUpon>202008010139247_WorkArea-nullables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008031316273_WorkOrders.resx">
-      <DependentUpon>202008031316273_WorkOrders.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008031423024_AreaConnections.resx">
-      <DependentUpon>202008031423024_AreaConnections.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008031859072_BaseModel.resx">
-      <DependentUpon>202008031859072_BaseModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008040120073_smol.resx">
-      <DependentUpon>202008040120073_smol.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008041806287_nullableFinishDatetime.resx">
-      <DependentUpon>202008041806287_nullableFinishDatetime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008041825284_FixedTypo.resx">
-      <DependentUpon>202008041825284_FixedTypo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008041837001_anothertypo.resx">
-      <DependentUpon>202008041837001_anothertypo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008051751596_WorkOrderUnits.resx">
-      <DependentUpon>202008051751596_WorkOrderUnits.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008051800514_nullableLeavingWorkAreaId.resx">
-      <DependentUpon>202008051800514_nullableLeavingWorkAreaId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008051852234_collectionInWorkUnit.resx">
-      <DependentUpon>202008051852234_collectionInWorkUnit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008051908122_renamedWorkOrderAreas.resx">
-      <DependentUpon>202008051908122_renamedWorkOrderAreas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008051944031_ConnectionsRefactor.resx">
-      <DependentUpon>202008051944031_ConnectionsRefactor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008061121489_hmmm.resx">
-      <DependentUpon>202008061121489_hmmm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008101742007_Workunit-changeworkorderkey.resx">
-      <DependentUpon>202008101742007_Workunit-changeworkorderkey.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008141735327_reportsbool.resx">
-      <DependentUpon>202008141735327_reportsbool.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008181332514_Requisitions-Sales-Clients.resx">
-      <DependentUpon>202008181332514_Requisitions-Sales-Clients.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008181713309_PaymentMethod.resx">
-      <DependentUpon>202008181713309_PaymentMethod.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008181923246_nullable.resx">
-      <DependentUpon>202008181923246_nullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008190042028_branches.resx">
-      <DependentUpon>202008190042028_branches.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008190137423_saletype.resx">
-      <DependentUpon>202008190137423_saletype.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SistemaMirno.Model\SistemaMirno.Model.csproj">
       <Project>{78a9511d-22bb-4af6-bcdd-c1198d1eb2d3}</Project>
       <Name>SistemaMirno.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202008190240109_initial.resx">
+      <DependentUpon>202008190240109_initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

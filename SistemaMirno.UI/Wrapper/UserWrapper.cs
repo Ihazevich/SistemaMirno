@@ -67,9 +67,9 @@ namespace SistemaMirno.UI.Wrapper
                     break;
 
                 case nameof(Password):
-                    if (Password.Length < 8)
+                    if (Password.Length < 1)
                     {
-                        yield return "La contraseña debe tener almenos 8 caracteres.";
+                        yield return "Asi no.";
                     }
 
                     break;

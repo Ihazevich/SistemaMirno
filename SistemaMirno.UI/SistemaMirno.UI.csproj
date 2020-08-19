@@ -82,7 +82,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -277,12 +277,14 @@
     <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IRequisitionDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\ISaleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IUserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IWorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\PaymentMethodDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\RequisitionDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\SaleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\General\AreaConnectionViewModel.cs" />
@@ -310,6 +312,7 @@
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IProductViewModel.cs" />
     <Compile Include="ViewModel\General\RequisitionViewModel.cs" />
+    <Compile Include="ViewModel\General\SaleViewModel.cs" />
     <Compile Include="ViewModel\General\StockViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\General\WorkOrderViewModel.cs" />
