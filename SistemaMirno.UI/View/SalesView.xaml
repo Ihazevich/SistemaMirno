@@ -4,69 +4,78 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="200"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.ColumnSpan="3">
-            <Label Content="Ventas" FontSize="30" />
-            <Separator/>
-        </StackPanel>
-        <DataGrid Grid.Row="1" 
-                  ItemsSource="{Binding SalesCollection}" 
-                  AutoGenerateColumns="false" 
-                  SelectionMode="Extended"
-                  Margin="10,0,10,0">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Fecha" Binding="{Binding Requisition.RequestedDate}"/>
-                <DataGridTextColumn Header="Cliente" Binding="{Binding Client.FullName}"/>
-                <DataGridTextColumn Header="Sucursal" Binding="{Binding WorkUnit.Color.Name}"/>
-                <DataGridTextColumn Header="Monto" Binding="{Binding WorkUnit.Product.ProductionPrice}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <StackPanel Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Center">
-            <Button Content="Nueva Venta" Command="{Binding NewSaleCommand}" Margin="10"/>
-            <Label Content="Cliente"/>
-            <TextBlock Text="{Binding ClientSearch, Mode=TwoWay}"/>
-            <Label Content="Sucursal"/>
-            <ComboBox Grid.Row="5"
-                      ItemsSource="{Binding Branches, Mode=TwoWay}"
-                      DisplayMemberPath="Name"
-                      SelectedValue="{Binding SelectedBranch, Mode=TwoWay}"
-                      Margin="5" />
-            <Label Content="Desde"/>
-            <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}"/>
-            <Label Content="Hasta"/>
-            <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}"/>
-            <Button Content="Ver detalles" Command="{Binding OpenSaleDetailCommand}" Margin="10"/>
-            <Button Content="Imprimir Reporte" Command="{Binding PrintReportCommand}" Margin="10"/>
-            <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
-        </StackPanel>
-        <Label Grid.Row="2" Content="Graficos" FontSize="25"/>
-        <Label Grid.Row="3" Content="Mensual del presente año" FontSize="20"/>
-        <lvc:CartesianChart Grid.ColumnSpan="2" Grid.Row="4"
-                            Margin="10"
-                            Series="{Binding MonthlySeriesCollection}">
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis LabelsRotation="20" Labels="{Binding MonthlyLabels}" Position="LeftBottom" />
-            </lvc:CartesianChart.AxisX>
-        </lvc:CartesianChart>
-        <Label Grid.Row="5"  Content="Diario del presente mes" FontSize="20"/>
-        <lvc:CartesianChart Grid.ColumnSpan="2" Grid.Row="6"
-                            Margin="10"
-                            Series="{Binding DailySeriesCollection}" >
-        </lvc:CartesianChart>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.ColumnSpan="3">
+                <Label Content="Ventas" FontSize="30" />
+                <Separator/>
+            </StackPanel>
+            <DataGrid Grid.Row="1" 
+                      ItemsSource="{Binding SalesCollection}" 
+                      AutoGenerateColumns="false" 
+                      SelectionMode="Extended"
+                      Margin="10,0,10,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Fecha" Binding="{Binding Requisition.RequestedDate}"/>
+                    <DataGridTextColumn Header="Cliente" Binding="{Binding Client.FullName}"/>
+                    <DataGridTextColumn Header="Sucursal" Binding="{Binding WorkUnit.Color.Name}"/>
+                    <DataGridTextColumn Header="Monto" Binding="{Binding WorkUnit.Product.ProductionPrice}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Center">
+                <Button Content="Nueva Venta" Command="{Binding NewSaleCommand}" Margin="10"/>
+                <Label Content="Cliente"/>
+                <TextBlock Text="{Binding ClientSearch, Mode=TwoWay}"/>
+                <Label Content="Sucursal"/>
+                <ComboBox Grid.Row="5"
+                          ItemsSource="{Binding Branches, Mode=TwoWay}"
+                          DisplayMemberPath="Name"
+                          SelectedValue="{Binding SelectedBranch, Mode=TwoWay}"
+                          Margin="5" />
+                <Label Content="Desde"/>
+                <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}"/>
+                <Label Content="Hasta"/>
+                <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}"/>
+                <Button Content="Ver detalles" Command="{Binding OpenSaleDetailCommand}" Margin="10"/>
+                <Button Content="Imprimir Reporte" Command="{Binding PrintReportCommand}" Margin="10"/>
+                <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Graficos" FontSize="25"/>
+            <Label Grid.Row="1" Content="Mensual del presente año" FontSize="20"/>
+            <lvc:CartesianChart Grid.Row="2" Margin="10"
+                                Series="{Binding MonthlySeriesCollection}">
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis LabelsRotation="20" Labels="{Binding MonthlyLabels}" Position="LeftBottom" />
+                </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart>
+            <Label Grid.Row="3" Content="Diario del presente mes" FontSize="20"/>
+            <lvc:CartesianChart Grid.Row="4" Margin="10"
+                                Series="{Binding DailySeriesCollection}" >
+            </lvc:CartesianChart>
+        </Grid>
     </Grid>
 </UserControl>
