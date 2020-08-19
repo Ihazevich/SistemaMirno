@@ -14,8 +14,8 @@
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -25,7 +25,7 @@
                 <Label Content="Ventas" FontSize="30" />
                 <Separator/>
             </StackPanel>
-            <DataGrid Grid.Row="1" 
+            <DataGrid Grid.Column="1" Grid.Row="1" 
                       ItemsSource="{Binding SalesCollection}" 
                       AutoGenerateColumns="false" 
                       SelectionMode="Extended"
@@ -37,10 +37,11 @@
                     <DataGridTextColumn Header="Monto" Binding="{Binding WorkUnit.Product.ProductionPrice}"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Center">
+            <StackPanel Grid.Column="0" Grid.Row="1"  HorizontalAlignment="Center">
                 <Button Content="Nueva Venta" Command="{Binding NewSaleCommand}" Margin="10"/>
                 <Label Content="Cliente"/>
-                <TextBlock Text="{Binding ClientSearch, Mode=TwoWay}"/>
+                <TextBox Text="{Binding ClientSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Width="200"/>
                 <Label Content="Sucursal"/>
                 <ComboBox Grid.Row="5"
                           ItemsSource="{Binding Branches, Mode=TwoWay}"
@@ -51,8 +52,8 @@
                 <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}"/>
                 <Label Content="Hasta"/>
                 <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}"/>
-                <Button Content="Ver detalles" Command="{Binding OpenSaleDetailCommand}" Margin="10"/>
-                <Button Content="Imprimir Reporte" Command="{Binding PrintReportCommand}" Margin="10"/>
+                <Button Content="Ver detalles" Command="{Binding OpenSaleDetailCommand}" Margin="10" IsEnabled="{Binding SeeDetailsButtonEnabled}"/>
+                <Button Content="Imprimir Reporte" Command="{Binding PrintReportCommand}" Margin="10" IsEnabled="{Binding AreDatesValid}"/>
                 <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
             </StackPanel>
         </Grid>

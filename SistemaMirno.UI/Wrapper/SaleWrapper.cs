@@ -69,6 +69,12 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        public int Total
+        {
+            get { return GetValue<int>(); }
+            set { SetValue(value); }
+        }
+
         public string Type
         {
             get { return GetValue<string>(); }
