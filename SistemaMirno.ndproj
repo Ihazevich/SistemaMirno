@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <NDepend AppName="SistemaMirno" Platform="DotNet" FileWrittenByProductVersion="2020.1.2.9420">
   <OutputDir KeepXmlFiles="False">.\NDependOut</OutputDir>
   <IDEFiles>
@@ -96,7 +96,8 @@
       <High2Critical_SeverityThreshold>72000000000</High2Critical_SeverityThreshold>
       <Critical2Blocker_SeverityThreshold>360000000000</Critical2Blocker_SeverityThreshold>
     </DebtSettings>
-  </ProjectDebtSettings><Queries>
+  </ProjectDebtSettings>
+  <Queries>
     <Group Name="Quality Gates" Active="True" ShownInReport="False">
       <Query Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Quality Gates Evolution</Name>
 from qg in QualityGates
@@ -4621,7 +4622,7 @@ select new {
 //</HowToFix>]]></Query>
     </Group>
     <Group Name="API Breaking Changes" Active="True" ShownInReport="True">
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Types</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Types</Name>
 // <Id>ND1500:APIBreakingChangesTypes</Id>
 
 warnif count > 0 from t in codeBase.OlderVersion().Application.Types
@@ -4667,7 +4668,7 @@ select new {
 // because an API Breaking change can provoque significant
 // friction with consumers of the API.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Methods</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Methods</Name>
 // <Id>ND1501:APIBreakingChangesMethods</Id>
 
 warnif count > 0 from m in codeBase.OlderVersion().Application.Methods
@@ -12596,4 +12597,5 @@ select new {
 //</HowToFix>]]></Query>
       </Group>
     </Group>
-  </Queries></NDepend>
+  </Queries>
+</NDepend>
