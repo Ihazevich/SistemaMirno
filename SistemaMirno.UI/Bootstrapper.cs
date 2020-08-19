@@ -99,7 +99,8 @@ namespace SistemaMirno.UI
             builder.RegisterType<PaymentMethodDetailViewModel>().As<IPaymentMethodDetailViewModel>();
             builder.RegisterType<RequisitionDetailViewModel>().As<IRequisitionDetailViewModel>();
 
-            builder.RegisterType<SaleDetailViewModel>().As<ISaleDetailViewModel>();
+            builder.RegisterType<SaleDetailViewModel>().As<ISaleDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(SaleDetailViewModel));
 
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<AreaConnectionRepository>().As<IAreaConnectionRepository>();

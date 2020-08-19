@@ -38,7 +38,7 @@
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel Grid.Column="0" Grid.Row="1"  HorizontalAlignment="Center">
-                <Button Content="Nueva Venta" Command="{Binding NewSaleCommand}" Margin="10"/>
+                <Button Content="Nueva Venta" Command="{Binding CreateNewSaleCommand}" Margin="10"/>
                 <Label Content="Cliente"/>
                 <TextBox Text="{Binding ClientSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Width="200"/>

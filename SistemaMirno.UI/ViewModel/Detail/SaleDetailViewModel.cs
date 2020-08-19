@@ -7,6 +7,8 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
@@ -15,6 +17,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     {
         private ISaleRepository _saleRepository;
         private SaleWrapper _sale;
+        private bool _isNewSale;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientDetailViewModel"/> class.
@@ -27,6 +30,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             : base(eventAggregator)
         {
             _saleRepository = saleRepository;
+        }
+
+        public bool IsNewSale
+        {
+            get => _isNewSale;
+
+            set
+            {
+                _isNewSale = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -83,6 +97,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _saleRepository.Remove(Sale.Model);
             await _saleRepository.SaveAsync();
             RaiseDataModelDeletedEvent(Sale.Model);
+            _eventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs { ViewModel = nameof(SaleViewModel) });
         }
 
         private void Client_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

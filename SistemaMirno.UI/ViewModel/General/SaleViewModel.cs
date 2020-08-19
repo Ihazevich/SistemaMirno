@@ -1,9 +1,12 @@
-﻿using System;
+﻿// <copyright file="SaleViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -22,16 +25,16 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class SaleViewModel : ViewModelBase
     {
-        private ISaleRepository _saleRepository;
+        private bool _areDatesValid;
+        private string _clientSearch;
+        private DateTime _endDate;
         private IMessageDialogService _messageDialogService;
-        private SaleWrapper _selectedSale;
         private ISaleDetailViewModel _saleDetailViewModel;
         private Func<ISaleDetailViewModel> _saleDetailViewModelCreator;
-        private DateTime _startDate;
-        private DateTime _endDate;
-        private bool _areDatesValid;
+        private ISaleRepository _saleRepository;
         private bool _seeDetailsButtonEnabled;
-        private string _clientSearch;
+        private SaleWrapper _selectedSale;
+        private DateTime _startDate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SaleViewModel"/> class.
@@ -88,6 +91,17 @@ namespace SistemaMirno.UI.ViewModel.General
             SeeDetailsButtonEnabled = false;
         }
 
+        public bool AreDatesValid
+        {
+            get => _areDatesValid;
+
+            set
+            {
+                _areDatesValid = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string ClientSearch
         {
             get => _clientSearch;
@@ -100,66 +114,12 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private void FilterByClient(string clientSearch)
-        {
-            clientSearch = clientSearch.ToLower();
-            SalesCollection.Filter = o =>
-            {
-                Sale s = o as Sale;
-                return s.Requisition.Client.FirstName.ToLower().Contains(clientSearch)
-                       || s.Requisition.Client.LastName.ToLower().Contains(clientSearch);
-            };
-        }
-
-        public bool SeeDetailsButtonEnabled
-        {
-            get => _seeDetailsButtonEnabled;
-
-            set
-            {
-                _seeDetailsButtonEnabled = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool AreDatesValid
-        {
-            get => _areDatesValid;
-
-            set
-            {
-                _areDatesValid = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICollectionView SalesCollection { get; set; }
-
-        public SeriesCollection MonthlySeriesCollection { get; set; }
+        /// <summary>
+        /// Gets the CreateNewColor command.
+        /// </summary>
+        public ICommand CreateNewSaleCommand { get; }
 
         public SeriesCollection DailySeriesCollection { get; set; }
-
-        public ICommand PrintReportCommand { get; }
-
-        /// <summary>
-        /// Gets or sets the start date for the report.
-        /// </summary>
-        public DateTime StartDate
-        {
-            get => _startDate;
-
-            set
-            {
-                _startDate = value;
-                OnPropertyChanged();
-                if (ValidateDates())
-                {
-                    SelectSales();
-                }
-            }
-        }
-
-        public string[] MonthlyLabels { get; set; }
 
         /// <summary>
         /// Gets or sets the end date for the report.
@@ -179,36 +139,11 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
+        public string[] MonthlyLabels { get; set; }
 
-        private bool ValidateDates()
-        {
-            AreDatesValid = false;
+        public SeriesCollection MonthlySeriesCollection { get; set; }
 
-            if (StartDate != null && EndDate != null)
-            {
-                if (DateTime.Compare(StartDate, DateTime.Today) <= 0 && DateTime.Compare(EndDate, StartDate) >= 0)
-                {
-                    AreDatesValid = true;
-                }
-            }
-
-            return AreDatesValid;
-        }
-
-        private async void SelectSales()
-        {
-            Sales.Clear();
-
-            var sales = await _saleRepository.GetAllBetweenTwoDatesAsync(StartDate, EndDate);
-
-            foreach (var sale in sales)
-            {
-                Sales.Add(new SaleWrapper(sale));
-            }
-
-            CalculateMonthlySales();
-            CalculateDailySales();
-        }
+        public ICommand PrintReportCommand { get; }
 
         /// <summary>
         /// Gets the Client detail view model.
@@ -231,6 +166,19 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Gets or sets the collection of Clients.
         /// </summary>
         public ObservableCollection<SaleWrapper> Sales { get; set; }
+
+        public ICollectionView SalesCollection { get; set; }
+
+        public bool SeeDetailsButtonEnabled
+        {
+            get => _seeDetailsButtonEnabled;
+
+            set
+            {
+                _seeDetailsButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the selected Color.
@@ -258,9 +206,22 @@ namespace SistemaMirno.UI.ViewModel.General
         }
 
         /// <summary>
-        /// Gets the CreateNewColor command.
+        /// Gets or sets the start date for the report.
         /// </summary>
-        public ICommand CreateNewSaleCommand { get; }
+        public DateTime StartDate
+        {
+            get => _startDate;
+
+            set
+            {
+                _startDate = value;
+                OnPropertyChanged();
+                if (ValidateDates())
+                {
+                    SelectSales();
+                }
+            }
+        }
 
         /// <summary>
         /// Loads the view model asynchronously from the data service.
@@ -276,21 +237,16 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private async void UpdateDetailViewModel(int? id)
+        private void AfterSaleDeleted(AfterDataModelDeletedEventArgs<Sale> args)
         {
-            if (SaleDetailViewModel != null && SaleDetailViewModel.HasChanges)
+            var item = Sales.SingleOrDefault(s => s.Id == args.Model.Id);
+
+            if (item != null)
             {
-                var result = _messageDialogService.ShowOkCancelDialog(
-                    "Ha realizado cambios, si selecciona otro item estos cambios seran perdidos. ¿Esta seguro?",
-                    "Pregunta");
-                if (result == MessageDialogResult.Cancel)
-                {
-                    return;
-                }
+                Sales.Remove(item);
             }
 
-            SaleDetailViewModel = _saleDetailViewModelCreator();
-            await SaleDetailViewModel.LoadAsync(id);
+            SaleDetailViewModel = null;
         }
 
         /// <summary>
@@ -305,52 +261,6 @@ namespace SistemaMirno.UI.ViewModel.General
                 Sales.Add(new SaleWrapper(args.Model));
                 SaleDetailViewModel = null;
             }
-        }
-
-        private void AfterSaleDeleted(AfterDataModelDeletedEventArgs<Sale> args)
-        {
-            var item = Sales.SingleOrDefault(s => s.Id == args.Model.Id);
-
-            if (item != null)
-            {
-                Sales.Remove(item);
-            }
-
-            SaleDetailViewModel = null;
-        }
-
-        private void OnCreateNewSaleExecute()
-        {
-            UpdateDetailViewModel(null);
-        }
-
-        private void OnPrintReportExecute()
-        {
-
-        }
-
-        private void CalculateMonthlySales()
-        {
-            int[] monthlySales = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-            foreach (var sale in Sales)
-            {
-                if (sale.Requisition.RequestedDate.Year == DateTime.Today.Year)
-                {
-                    monthlySales[sale.Requisition.RequestedDate.Month - 1] += sale.Total;
-                }
-            }
-
-            LineSeries lineSeries = new LineSeries
-            {
-                Title = "Total Ventas",
-                Values = new ChartValues<int>(monthlySales),
-                DataLabels = true,
-                LabelPoint = point => string.Format("{0:n0}", point.Y) + " Gs.",
-            };
-
-            MonthlySeriesCollection.Clear();
-            MonthlySeriesCollection.Add(lineSeries);
         }
 
         private void CalculateDailySales()
@@ -392,6 +302,81 @@ namespace SistemaMirno.UI.ViewModel.General
             DailySeriesCollection.Clear();
             DailySeriesCollection.Add(lineSeriesDaily);
             DailySeriesCollection.Add(lineSeriesCummulative);
+        }
+
+        private void CalculateMonthlySales()
+        {
+            int[] monthlySales = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            foreach (var sale in Sales)
+            {
+                if (sale.Requisition.RequestedDate.Year == DateTime.Today.Year)
+                {
+                    monthlySales[sale.Requisition.RequestedDate.Month - 1] += sale.Total;
+                }
+            }
+
+            LineSeries lineSeries = new LineSeries
+            {
+                Title = "Total Ventas",
+                Values = new ChartValues<int>(monthlySales),
+                DataLabels = true,
+                LabelPoint = point => string.Format("{0:n0}", point.Y) + " Gs.",
+            };
+
+            MonthlySeriesCollection.Clear();
+            MonthlySeriesCollection.Add(lineSeries);
+        }
+
+        private void FilterByClient(string clientSearch)
+        {
+            clientSearch = clientSearch.ToLower();
+            SalesCollection.Filter = o =>
+            {
+                Sale s = o as Sale;
+                return s.Requisition.Client.FirstName.ToLower().Contains(clientSearch)
+                       || s.Requisition.Client.LastName.ToLower().Contains(clientSearch);
+            };
+        }
+
+        private void OnCreateNewSaleExecute()
+        {
+            _eventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs { ViewModel = nameof(SaleDetailViewModel) });
+        }
+
+        private void OnPrintReportExecute()
+        {
+        }
+
+        private async void SelectSales()
+        {
+            Sales.Clear();
+
+            var sales = await _saleRepository.GetAllBetweenTwoDatesAsync(StartDate, EndDate);
+
+            foreach (var sale in sales)
+            {
+                Sales.Add(new SaleWrapper(sale));
+            }
+
+            CalculateMonthlySales();
+            CalculateDailySales();
+        }
+
+        private bool ValidateDates()
+        {
+            AreDatesValid = false;
+
+            if (StartDate != null && EndDate != null)
+            {
+                if (DateTime.Compare(StartDate, DateTime.Today) <= 0 && DateTime.Compare(EndDate, StartDate) >= 0)
+                {
+                    AreDatesValid = true;
+                }
+            }
+
+            return AreDatesValid;
         }
     }
 }
