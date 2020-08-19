@@ -396,6 +396,12 @@
     <Compile Include="View\RequisitionView.xaml.cs">
       <DependentUpon>RequisitionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SaleDetailView.xaml.cs">
+      <DependentUpon>SaleDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesView.xaml.cs">
+      <DependentUpon>SalesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StockView.xaml.cs">
       <DependentUpon>StockView.xaml</DependentUpon>
     </Compile>
@@ -546,6 +552,14 @@
     <Page Include="View\RequisitionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SaleDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\StockView.xaml">
       <SubType>Designer</SubType>
