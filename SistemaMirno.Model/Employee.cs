@@ -52,6 +52,8 @@ namespace SistemaMirno.Model
         /// </summary>
         public int EmployeeRoleId { get; set; }
 
+        public int BranchId { get; set; }
+
         /// <summary>
         /// Gets or sets the collection of Work Orders that the employee is/was responsible for.
         /// </summary>

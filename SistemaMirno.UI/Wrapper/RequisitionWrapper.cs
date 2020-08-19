@@ -29,7 +29,7 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public DateTime RequestDate
+        public DateTime RequestedDate
         {
             get { return GetValue<DateTime>(); }
             set { SetValue(value); }

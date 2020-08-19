@@ -165,6 +165,14 @@
     <Compile Include="Migrations\202008181923246_nullable.designer.cs">
       <DependentUpon>202008181923246_nullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008190042028_branches.cs" />
+    <Compile Include="Migrations\202008190042028_branches.designer.cs">
+      <DependentUpon>202008190042028_branches.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008190137423_saletype.cs" />
+    <Compile Include="Migrations\202008190137423_saletype.designer.cs">
+      <DependentUpon>202008190137423_saletype.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -247,6 +255,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008181923246_nullable.resx">
       <DependentUpon>202008181923246_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008190042028_branches.resx">
+      <DependentUpon>202008190042028_branches.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008190137423_saletype.resx">
+      <DependentUpon>202008190137423_saletype.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

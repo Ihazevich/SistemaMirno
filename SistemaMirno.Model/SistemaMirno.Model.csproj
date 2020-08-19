@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="AreaConnection.cs" />
     <Compile Include="BaseModel.cs" />
+    <Compile Include="Branch.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="EmployeeRole.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="ProductCategory.cs" />
     <Compile Include="Requisition.cs" />
     <Compile Include="Sale.cs" />
+    <Compile Include="SaleType.cs" />
     <Compile Include="User.cs" />
     <Compile Include="WorkArea.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

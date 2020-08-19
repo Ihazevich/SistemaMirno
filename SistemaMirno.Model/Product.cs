@@ -12,6 +12,8 @@ namespace SistemaMirno.Model
     /// </summary>
     public class Product : BaseModel
     {
+        // TODO: Change prices names. Retail price, production value, wholesaler price.
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Product"/> class.
         /// </summary>

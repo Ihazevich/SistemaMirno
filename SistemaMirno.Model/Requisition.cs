@@ -11,7 +11,7 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the date the requisition was created.
         /// </summary>
-        public DateTime RequestDate { get; set; }
+        public DateTime RequestedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the date the requisition was fullfilled.

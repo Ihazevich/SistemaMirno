@@ -12,7 +12,7 @@ namespace SistemaMirno.DataAccess
         /// <summary>
         /// Initializes a new instance of the <see cref="MirnoDbContext"/> class.
         /// </summary>
-        public MirnoDbContext() : base("LaptopMirnoDb")
+        public MirnoDbContext() : base("DesktopMirnoDb")
         {
         }
 
@@ -85,6 +85,8 @@ namespace SistemaMirno.DataAccess
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
 
         public DbSet<Sale> Sales { get; set; }
+
+        public DbSet<Branch> Branches { get; set; }
 
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

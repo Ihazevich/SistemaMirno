@@ -94,5 +94,7 @@ namespace SistemaMirno.Model
         /// </summary>
         [Required]
         public bool ReportsInProcess { get; set; }
+
+        public int BranchId { get; set; }
     }
 }
