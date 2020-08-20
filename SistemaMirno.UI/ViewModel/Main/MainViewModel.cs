@@ -285,10 +285,12 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private void ChangeView(ChangeViewEventArgs args)
         {
+            NotifyStatusBar("Cambiando de vista", true);
             SelectedViewModel = _viewModelCreator[args.ViewModel];
             SelectedViewModel.LoadAsync(args.Id);
             _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Publish(false);
+            ClearStatusBar();
         }
 
         private void NewMoveWorkOrder(NewWorkOrderEventArgs args)

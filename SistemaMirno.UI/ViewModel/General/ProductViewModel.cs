@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -106,6 +107,16 @@ namespace SistemaMirno.UI.ViewModel.General
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
         public override async Task LoadAsync(int? id)
+        {
+            NotifyStatusBar("Cargando productos", true);
+
+            LoadProducts();
+
+            ViewVisibility = Visibility.Visible;
+            ClearStatusBar();
+        }
+
+        private async void LoadProducts()
         {
             Products.Clear();
             var products = await _productRepository.GetAllAsync();

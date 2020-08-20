@@ -6,41 +6,52 @@
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Label Content="Productos" FontSize="30" />
-        <Separator Grid.Row="1" Grid.ColumnSpan="2" />
-        <ListView Grid.Row="2"
-                  ItemsSource="{Binding Products}"
-                  SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
-                  Margin="20">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}" FontSize="15" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <StackPanel  Orientation="Horizontal">
+        <Separator Grid.Row="1"/>
+        <Grid Grid.Row="2" Visibility="{Binding ViewVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
                 <Button Content="Añadir nuevo producto"
-                        Width="180" Height="30" Margin="10"
-                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
-                        Command="{Binding CreateNewProductCommand}" />
+                        Command="{Binding CreateNewProductCommand}"
+                        Width="250" 
+                        Margin="10" />
                 <Button Content="Importar productos desde archivo"
-                        Width="230" Height="30" Margin="10"
-                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
-                        Command="{Binding ImportFromFileCommand}" />
-                <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
+                        Command="{Binding ImportFromFileCommand}"
+                        Width="250" 
+                        Margin="10" />
+                <Button Content="Salir" 
+                        Command="{Binding ExitView}"
+                        Width="250" 
+                        Margin="10" />
             </StackPanel>
-            <ContentControl Content="{Binding ProductDetailViewModel}" Margin="5" />
-        </StackPanel>
+            <DataGrid Grid.Column="1" 
+                      ItemsSource="{Binding Products, Mode=TwoWay}"
+                      SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      SelectionMode="Single"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Codigo" Binding="{Binding Code}"/>
+                    <DataGridTextColumn Header="Nombre" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Categoria" Binding="{Binding ProductCategory.Name}"/>
+                    <DataGridTextColumn Header="Valor de Produccion" Binding="{Binding ProductionValue}"/>
+                    <DataGridTextColumn Header="Precio Minorista" Binding="{Binding RetailPrice}"/>
+                    <DataGridTextColumn Header="Precio Mayorista" Binding="{Binding WholesalerPrice}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <ContentControl Grid.Row="3" Content="{Binding ProductDetailViewModel}" Margin="5" />
     </Grid>
 </UserControl>

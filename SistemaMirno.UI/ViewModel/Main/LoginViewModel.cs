@@ -41,6 +41,9 @@ namespace SistemaMirno.UI.ViewModel.Main
             // Trigger validation.
             User.Name = string.Empty;
             User.Password = string.Empty;
+
+            ViewVisibility = System.Windows.Visibility.Visible;
+            ClearStatusBar();
         }
 
         private void OnCancelExecute()
@@ -53,7 +56,9 @@ namespace SistemaMirno.UI.ViewModel.Main
         {
             NotifyStatusBar("Verificando usuario", true);
 
-            await Task.Run( () => CheckUser() );
+            await Task.Run(() => CheckUser());
+
+            ClearStatusBar();
         }
 
         private bool CanLoginExecute()
@@ -66,7 +71,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             if (User.Password == "konami")
             {
                 _eventAggregator.GetEvent<UserChangedEvent>()
-                    .Publish(new UserChangedEventArgs { Username = "Master Yoda", AccessLevel = 0 });
+                    .Publish(new UserChangedEventArgs { Username = User.Name, AccessLevel = 0 });
                 _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                     .Publish(true);
             }
@@ -88,8 +93,6 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             User.Name = string.Empty;
             User.Password = string.Empty;
-            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
-                .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
         }
 
         /// <summary>
@@ -112,6 +115,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public override Task LoadAsync(int? id)
         {
+            ViewVisibility = System.Windows.Visibility.Visible;
             return null;
         }
 

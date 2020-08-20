@@ -188,6 +188,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         public override async Task LoadAsync(int? saleId)
         {
+            NotifyStatusBar("Cargando vista", true);
+
             var sale = saleId.HasValue
                 ? await _saleRepository.GetByIdAsync(saleId.Value)
                 : CreateNewSale();
@@ -209,46 +211,55 @@ namespace SistemaMirno.UI.ViewModel.Detail
             await LoadMaterialsAsync();
             await LoadProductsAsync();
             await LoadClientsAsync();
+            ClearStatusBar();
         }
 
         private async Task LoadColorsAsync()
         {
+            NotifyStatusBar("Cargando colores", true);
             var colors = await _saleRepository.GetColorsAsync();
             Colors.Clear();
             foreach (var color in colors)
             {
                 Colors.Add(new ColorWrapper(color));
             }
+            ClearStatusBar();
         }
 
         private async Task LoadMaterialsAsync()
         {
+            NotifyStatusBar("Cargando materiales", true);
             var materials = await _saleRepository.GetMaterialsAsync();
             Materials.Clear();
             foreach (var material in materials)
             {
                 Materials.Add(new MaterialWrapper(material));
             }
+            ClearStatusBar();
         }
 
         private async Task LoadProductsAsync()
         {
+            NotifyStatusBar("Cargando productos", true);
             var products = await _saleRepository.GetProductsAsync();
             Products.Clear();
             foreach (var product in products)
             {
                 Products.Add(new ProductWrapper(product));
             }
+            ClearStatusBar();
         }
 
         private async Task LoadClientsAsync()
         {
+            NotifyStatusBar("Cargando clientes", true);
             var clients = await _saleRepository.GetClientsAsync();
             Clients.Clear();
             foreach (var client in clients)
             {
                 Clients.Add(new ClientWrapper(client));
             }
+            ClearStatusBar();
         }
 
         /// <inheritdoc/>
@@ -289,8 +300,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private Sale CreateNewSale()
         {
+            NotifyStatusBar("Creando modelo de venta", true);
             var sale = new Sale();
             _saleRepository.Add(sale);
+            ClearStatusBar();
             return sale;
         }
     }
