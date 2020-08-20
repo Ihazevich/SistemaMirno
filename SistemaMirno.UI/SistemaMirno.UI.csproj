@@ -259,6 +259,8 @@
     <Compile Include="Event\ExitApplicationEvent.cs" />
     <Compile Include="Event\NewWorkOrderEvent.cs" />
     <Compile Include="Event\NewWorkOrderEventArgs.cs" />
+    <Compile Include="Event\NotifyStatusBarEvent.cs" />
+    <Compile Include="Event\NotifyStatusBarEventArgs.cs" />
     <Compile Include="Event\UserChangedEvent.cs" />
     <Compile Include="Event\UserChangedEventArgs.cs" />
     <Compile Include="Bootstrapper.cs" />

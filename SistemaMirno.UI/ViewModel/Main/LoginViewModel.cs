@@ -51,7 +51,9 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private async void OnLoginExecute()
         {
-            await CheckUser();
+            NotifyStatusBar("Verificando usuario", true);
+
+            await Task.Run( () => CheckUser() );
         }
 
         private bool CanLoginExecute()
@@ -59,7 +61,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             return User != null && !User.HasErrors;
         }
 
-        private async Task CheckUser()
+        private async void CheckUser()
         {
             if (User.Password == "konami")
             {
@@ -79,11 +81,15 @@ namespace SistemaMirno.UI.ViewModel.Main
                         .Publish(new UserChangedEventArgs { Username = User.Name, AccessLevel = User.AccessLevel });
                     _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                         .Publish(true);
+                    _eventAggregator.GetEvent<NotifyStatusBarEvent>()
+                        .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
                 }
             }
 
             User.Name = string.Empty;
             User.Password = string.Empty;
+            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
+                .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
         }
 
         /// <summary>

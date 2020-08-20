@@ -43,5 +43,13 @@ namespace SistemaMirno.UI.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        protected async void NotifyStatusBar(string message, bool processing)
+        {
+            await Task.Run( () =>
+            {
+                _eventAggregator.GetEvent<NotifyStatusBarEvent>().Publish(new NotifyStatusBarEventArgs { Message = message, Processing = processing });
+            });
+        }
     }
 }

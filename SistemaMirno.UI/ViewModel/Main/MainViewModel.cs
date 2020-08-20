@@ -33,6 +33,10 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private bool _navigationStatus = true;
 
+        // Status bar fields
+        private string _statusMessage;
+        private bool _processing;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
@@ -57,11 +61,41 @@ namespace SistemaMirno.UI.ViewModel.Main
                 .Subscribe(ChangeNavigationStatus);
             _eventAggregator.GetEvent<ExitApplicationEvent>()
                 .Subscribe(ExitApplication);
+            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
+                .Subscribe(UpdateStatusBar, ThreadOption.UIThread);
 
             ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute, ChangeViewCanExecute);
             CloseApplicationCommand = new DelegateCommand(OnCloseApplicationExecute);
 
             ShowLoginView();
+        }
+
+        private void UpdateStatusBar(NotifyStatusBarEventArgs args)
+        {
+            StatusMessage = args.Message;
+            Processing = args.Processing;
+        }
+
+        public string StatusMessage
+        {
+            get => _statusMessage;
+
+            set
+            {
+                _statusMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool Processing
+        {
+            get => _processing;
+
+            set
+            {
+                _processing = value;
+                OnPropertyChanged();
+            }
         }
 
         private void ChangeNavigationStatus(bool arg)
