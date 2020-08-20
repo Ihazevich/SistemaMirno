@@ -62,8 +62,41 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <view:WorkAreaNavigationView DataContext="{Binding NavigationViewModel}" />
             <ContentPresenter Grid.Column="1" Content="{Binding SelectedViewModel}" />
+            <StatusBar Grid.Row="1" Grid.ColumnSpan="2" FontSize="15">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Usuario: "/>
+                        <TextBlock Text="{Binding CurrentUser.Name}"/>
+                    </StackPanel>
+                </StatusBarItem>
+                <Separator Grid.Column="1" />
+                <StatusBarItem Grid.Column="2" HorizontalContentAlignment="Center">
+                    <TextBlock Text="{Binding StatusMessage}" />
+                </StatusBarItem>
+                <Separator Grid.Column="3" />
+                <StatusBarItem Grid.Column="4">
+                    <mah:MetroProgressBar IsIndeterminate="{Binding Processing}" Width="100"/>
+                </StatusBarItem>
+            </StatusBar>
         </Grid>
     </DockPanel>
 </mah:MetroWindow>
