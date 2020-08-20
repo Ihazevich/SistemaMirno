@@ -12,5 +12,15 @@ namespace SistemaMirno.UI.Data.Repositories
     public interface ISaleRepository : IGenericRepository<Sale>
     {
         Task<IEnumerable<Sale>> GetAllBetweenTwoDatesAsync(DateTime start, DateTime end);
+
+        Task<IEnumerable<Product>> GetProductsAsync();
+
+        Task<IEnumerable<Color>> GetColorsAsync();
+
+        Task<IEnumerable<Material>> GetMaterialsAsync();
+
+        Task<IEnumerable<Client>> GetClientsAsync();
+
+        Task<int> GetRequisitionAreaIdAsync();
     }
 }

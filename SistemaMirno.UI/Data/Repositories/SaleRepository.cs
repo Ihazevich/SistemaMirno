@@ -25,5 +25,30 @@ namespace SistemaMirno.UI.Data.Repositories
                 (s.Requisition.RequestedDate >= start && s.Requisition.RequestedDate <= end))
             .ToListAsync();
         }
+
+        public async Task<IEnumerable<Product>> GetProductsAsync()
+        {
+            return await Context.Products.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Color>> GetColorsAsync()
+        {
+            return await Context.Colors.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Material>> GetMaterialsAsync()
+        {
+            return await Context.Materials.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Client>> GetClientsAsync()
+        {
+            return await Context.Clients.ToListAsync();
+        }
+
+        public async Task<int> GetRequisitionAreaIdAsync()
+        {
+            return (await Context.WorkAreas.SingleAsync(w => w.Name == "Pedidos")).Id;
+        }
     }
 }
