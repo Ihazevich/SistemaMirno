@@ -46,7 +46,7 @@ namespace SistemaMirno.UI.ViewModel.General
             ISaleRepository saleRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base(eventAggregator)
+            : base(eventAggregator, "Ventas")
         {
             _saleDetailViewModelCreator = saleDetailViewModelCreator;
             _saleRepository = saleRepository;

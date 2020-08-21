@@ -21,16 +21,20 @@ namespace SistemaMirno.UI.ViewModel
     {
         protected IEventAggregator _eventAggregator;
         private Visibility _viewVisibility;
+        private Visibility _progressVisibility;
+        private string _name;
 
-        public ViewModelBase(IEventAggregator eventAggregator)
+        public ViewModelBase(IEventAggregator eventAggregator, string name)
         {
             _eventAggregator = eventAggregator;
+            _name = name;
 
             ExitView = new DelegateCommand(OnExitViewExecute);
 
-            NotifyStatusBar("Generando vista", true);
+            NotifyStatusBar(string.Format("Generando vista ({0})", _name), true);
 
-            ViewVisibility = Visibility.Hidden;
+            ProgressVisibility = Visibility.Visible;
+            ViewVisibility = Visibility.Collapsed;
         }
 
         public Visibility ViewVisibility
@@ -40,6 +44,17 @@ namespace SistemaMirno.UI.ViewModel
             set
             {
                 _viewVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ProgressVisibility
+        {
+            get => _progressVisibility;
+
+            set
+            {
+                _progressVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -78,20 +93,14 @@ namespace SistemaMirno.UI.ViewModel
             }
         }
 
-        protected async void NotifyStatusBar(string message, bool processing)
+        protected async Task NotifyStatusBar(string message, bool processing)
         {
-            await Task.Run( () =>
-            {
-                _eventAggregator.GetEvent<NotifyStatusBarEvent>().Publish(new NotifyStatusBarEventArgs { Message = message, Processing = processing });
-            });
+            _eventAggregator.GetEvent<NotifyStatusBarEvent>().Publish(new NotifyStatusBarEventArgs { Message = message, Processing = processing });
         }
 
-        protected async void ClearStatusBar()
+        protected async Task ClearStatusBar()
         {
-            await Task.Run(() =>
-            {
-                _eventAggregator.GetEvent<NotifyStatusBarEvent>().Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
-            });
+            _eventAggregator.GetEvent<NotifyStatusBarEvent>().Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
         }
     }
 }

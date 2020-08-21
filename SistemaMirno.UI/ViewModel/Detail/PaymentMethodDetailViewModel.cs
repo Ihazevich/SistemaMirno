@@ -24,7 +24,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public PaymentMethodDetailViewModel(
             IPaymentMethodRepository paymentMethodRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Metodo de Pago")
         {
             _paymentMethodRepository = paymentMethodRepository;
         }

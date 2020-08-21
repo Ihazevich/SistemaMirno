@@ -36,7 +36,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IPaymentMethodRepository paymentMethodRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base(eventAggregator)
+            : base(eventAggregator, "Metodos de Pago")
         {
             _paymentMethodDetailViewModelCreator = paymentMethodDetailViewModelCreator;
             _paymentMethodRepository = paymentMethodRepository;
@@ -127,7 +127,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             PaymentMethodDetailViewModel = _paymentMethodDetailViewModelCreator();
-            await PaymentMethodDetailViewModel.LoadAsync(id);
+            PaymentMethodDetailViewModel.LoadAsync(id);
         }
 
         private async void AfterPaymentMethodSaved(AfterDataModelSavedEventArgs<PaymentMethod> args)

@@ -52,6 +52,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
+        <ProgressBar Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" IsIndeterminate="True" Width="250" Height="30"/>
         <ContentControl Grid.Row="3" Content="{Binding ProductDetailViewModel}" Margin="5" />
     </Grid>
 </UserControl>

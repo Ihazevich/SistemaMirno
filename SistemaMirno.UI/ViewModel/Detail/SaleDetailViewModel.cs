@@ -37,7 +37,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public SaleDetailViewModel(
             ISaleRepository saleRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Venta")
         {
             _saleRepository = saleRepository;
 

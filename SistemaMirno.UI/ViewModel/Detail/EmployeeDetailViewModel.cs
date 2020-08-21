@@ -26,7 +26,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             IEmployeeRepository employeeRepository,
             IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Empleado")
         {
             _employeeRepository = employeeRepository;
             _employeeRoleRepository = employeeRoleRepository;

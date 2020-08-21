@@ -24,7 +24,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public RequisitionDetailViewModel(
             IRequisitionRepository requisitionRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Pedido")
         {
             _requisitionRepository = requisitionRepository;
         }

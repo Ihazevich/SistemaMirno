@@ -28,7 +28,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         public LoginViewModel(
             IUserRepository userRepository,
             IEventAggregator eventAggregator)
-            : base (eventAggregator)
+            : base (eventAggregator, "Login")
         {
             _userRepository = userRepository;
 

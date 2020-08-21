@@ -30,7 +30,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             IWorkAreaRepository productionAreaRepository,
             IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Area de Trabajo")
         {
             _productionAreaRepository = productionAreaRepository;
             _employeeRoleRepository = employeeRoleRepository;

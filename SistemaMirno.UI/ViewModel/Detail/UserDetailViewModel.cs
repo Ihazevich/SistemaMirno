@@ -27,7 +27,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public UserDetailViewModel(
             IUserRepository userRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Usuario")
         {
             _userRepository = userRepository;
         }

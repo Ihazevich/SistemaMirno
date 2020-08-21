@@ -22,7 +22,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public MaterialDetailViewModel(
             IMaterialRepository materialRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Material")
         {
             _materialRepository = materialRepository;
         }

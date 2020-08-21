@@ -20,7 +20,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public ProductCategoryDetailViewModel(
             IProductCategoryRepository productCategoryRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Categoria de Producto")
         {
             _productCategoryRepository = productCategoryRepository;
         }

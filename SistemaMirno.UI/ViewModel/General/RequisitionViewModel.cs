@@ -32,7 +32,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IRequisitionRepository requisitionRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base(eventAggregator)
+            : base(eventAggregator, "Pedidos")
         {
             _requisitionDetailViewModelCreator = requisitionDetailViewModelCreator;
             _requisitionRepository = requisitionRepository;
@@ -113,7 +113,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             RequisitionDetailViewModel = _requisitionDetailViewModelCreator();
-            await RequisitionDetailViewModel.LoadAsync(id);
+            RequisitionDetailViewModel.LoadAsync(id);
         }
     }
 }

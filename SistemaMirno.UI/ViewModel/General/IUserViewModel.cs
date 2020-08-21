@@ -8,6 +8,5 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public interface IUserViewModel : IViewModelBase
     {
-        Task LoadAsync(int? id);
     }
 }

@@ -39,7 +39,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IUserRepository userRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base(eventAggregator)
+            : base(eventAggregator, "Usuarios")
         {
             _userDetailViewModelCreator = userDetailViewModelCreator;
             _userRepository = userRepository;
@@ -129,7 +129,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             UserDetailViewModel = _userDetailViewModelCreator();
-            await UserDetailViewModel.LoadAsync(id);
+            UserDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>

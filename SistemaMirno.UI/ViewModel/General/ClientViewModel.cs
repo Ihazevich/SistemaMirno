@@ -36,7 +36,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IClientRepository clientRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base(eventAggregator)
+            : base(eventAggregator, "Clientes")
         {
             _clientDetailViewModelCreator = clientDetailViewModelCreator;
             _clientRepository = clientRepository;
@@ -127,7 +127,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             ClientDetailViewModel = _clientDetailViewModelCreator();
-            await ClientDetailViewModel.LoadAsync(id);
+            ClientDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>

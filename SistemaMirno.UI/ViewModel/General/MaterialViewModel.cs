@@ -32,7 +32,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IMaterialRepository materialRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base (eventAggregator)
+            : base (eventAggregator, "Materiales")
         {
             _materialDetailViewModelCreator = materialDetailViewModelCreator;
             _materialRepository = materialRepository;
@@ -122,7 +122,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             MaterialDetailViewModel = _materialDetailViewModelCreator();
-            await MaterialDetailViewModel.LoadAsync(id);
+            MaterialDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>

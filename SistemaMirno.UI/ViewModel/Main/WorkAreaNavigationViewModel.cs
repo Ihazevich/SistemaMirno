@@ -29,7 +29,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         public WorkAreaNavigationViewModel(
             IWorkAreaRepository productionAreaRepository,
             IEventAggregator eventAggregator)
-            : base (eventAggregator)
+            : base (eventAggregator, "Navegacion")
         {
             _productionAreaRepository = productionAreaRepository;
             WorkAreas = new ObservableCollection<WorkAreaWrapper>();

@@ -35,7 +35,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public WorkUnitViewModel(IWorkUnitRepository workUnitRepository,
                     IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Unidades de Trabajo en Area")
         {
             _workUnitRepository = workUnitRepository;
 

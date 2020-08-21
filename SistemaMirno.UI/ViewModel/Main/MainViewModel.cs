@@ -47,7 +47,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             IIndex<string, IViewModelBase> viewModelCreator,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base (eventAggregator)
+            : base (eventAggregator, "Principal")
         {
             _viewModelCreator = viewModelCreator;
             _messageDialogService = messageDialogService;
@@ -254,7 +254,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public override async Task LoadAsync(int? id)
         {
-            await NavigationViewModel.LoadAsync(-1);
+            NavigationViewModel.LoadAsync(-1);
         }
 
         private void OnChangeViewExecute(string viewModel)

@@ -46,7 +46,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public WorkOrderDetailViewModel(
             IWorkOrderRepository workOrderRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Orden de Trabajo")
         {
             _workOrderRepository = workOrderRepository;
 

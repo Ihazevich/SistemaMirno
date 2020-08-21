@@ -24,7 +24,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public ClientDetailViewModel(
             IClientRepository clientRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Cliente")
         {
             _clientRepository = clientRepository;
         }

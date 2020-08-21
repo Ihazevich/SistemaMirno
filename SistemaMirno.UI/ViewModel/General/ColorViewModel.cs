@@ -32,7 +32,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IColorRepository colorRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base (eventAggregator)
+            : base (eventAggregator, "Lustres/Colores")
         {
             _colorDetailViewModelCreator = colorDetailViewModelCreator;
             _colorRepository = colorRepository;
@@ -122,7 +122,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             ColorDetailViewModel = _colorDetailViewModelCreator();
-            await ColorDetailViewModel.LoadAsync(id);
+            ColorDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>

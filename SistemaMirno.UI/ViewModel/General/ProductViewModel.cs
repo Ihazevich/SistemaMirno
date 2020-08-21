@@ -37,7 +37,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IProductRepository productRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base (eventAggregator)
+            : base (eventAggregator, "Productos")
         {
             _productDetailViewModelCreator = productDetailViewModelCreator;
             _productRepository = productRepository;
@@ -112,6 +112,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
             LoadProducts();
 
+            ProgressVisibility = Visibility.Collapsed;
             ViewVisibility = Visibility.Visible;
             ClearStatusBar();
         }
@@ -140,7 +141,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             ProductDetailViewModel = _productDetailViewModelCreator();
-            await ProductDetailViewModel.LoadAsync(id);
+            ProductDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>

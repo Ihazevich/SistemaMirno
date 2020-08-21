@@ -39,7 +39,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
         public InProcessByWorkAreasViewModel(
                     IWorkUnitRepository workUnitRepository,
                     IEventAggregator eventAggregator)
-            : base (eventAggregator)
+            : base (eventAggregator, "En Proceso por Areas de Trabajo")
         {
             _workUnitRepository = workUnitRepository;
 

@@ -32,7 +32,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IProductCategoryRepository productCategoryRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base(eventAggregator)
+            : base(eventAggregator, "Categorias de Productos")
         {
             _productCategoryDetailViewModelCreator = productCategoryDetailViewModelCreator;
             _productCategoryRepository = productCategoryRepository;
@@ -122,7 +122,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             ProductCategoryDetailViewModel = _productCategoryDetailViewModelCreator();
-            await ProductCategoryDetailViewModel.LoadAsync(id);
+            ProductCategoryDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>

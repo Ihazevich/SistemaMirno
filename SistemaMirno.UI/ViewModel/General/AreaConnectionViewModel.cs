@@ -29,7 +29,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IAreaConnectionRepository areaConnectionRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base (eventAggregator)
+            : base (eventAggregator, "Conexiones de Area")
         {
             _areaConnectionDetailViewModelCreator = areaConnectionDetailViewModelCreator;
             _areaConnectionRepository = areaConnectionRepository;
@@ -153,7 +153,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             AreaConnectionDetailViewModel = _areaConnectionDetailViewModelCreator();
-            await AreaConnectionDetailViewModel.LoadAsync(id);
+            AreaConnectionDetailViewModel.LoadAsync(id);
             AreaConnectionDetailViewModel.SetWorkAreaId(WorkArea.Id);
         }
 

@@ -31,7 +31,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public StockViewModel(IWorkUnitRepository workUnitRepository,
                     IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Unidades de Trabajo en Stock")
         {
             _workUnitRepository = workUnitRepository;
 

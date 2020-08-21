@@ -28,7 +28,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public AreaConnectionDetailViewModel(
             IAreaConnectionRepository areaConnectionRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Conexion de Area")
         {
             _areaConnectionRepository = areaConnectionRepository;
 

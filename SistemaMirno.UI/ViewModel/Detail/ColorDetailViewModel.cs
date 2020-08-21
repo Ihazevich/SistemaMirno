@@ -21,7 +21,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public ColorDetailViewModel(
             IColorRepository colorRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Lustre/Color")
         {
             _colorRepository = colorRepository;
         }

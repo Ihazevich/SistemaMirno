@@ -32,7 +32,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base (eventAggregator)
+            : base (eventAggregator, "Roles")
         {
             _employeeRoleDetailViewModelCreator = employeeRoleDetailViewModelCreator;
             _employeeRoleRepository = employeeRoleRepository;
@@ -123,7 +123,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             EmployeeRoleDetailViewModel = _employeeRoleDetailViewModelCreator();
-            await EmployeeRoleDetailViewModel.LoadAsync(id);
+            EmployeeRoleDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>

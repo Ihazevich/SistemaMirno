@@ -35,7 +35,7 @@ namespace SistemaMirno.UI.ViewModel.General
             IWorkAreaRepository workAreaRepository,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
-            : base(eventAggregator)
+            : base(eventAggregator, "Areas de Trabajo")
         {
             _workAreaDetailViewModelCreator = workAreaDetailViewModelCreator;
             _workAreaRepository = workAreaRepository;
@@ -125,7 +125,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             WorkAreaDetailViewModel = _workAreaDetailViewModelCreator();
-            await WorkAreaDetailViewModel.LoadAsync(id);
+            WorkAreaDetailViewModel.LoadAsync(id);
         }
 
         /// <summary>

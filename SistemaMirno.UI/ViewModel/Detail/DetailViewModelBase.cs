@@ -22,8 +22,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// Initializes a new instance of the <see cref="DetailViewModelBase"/> class.
         /// </summary>
         /// <param name="model">A model wrapper instance of type <see cref="T"/>.</param>
-        public DetailViewModelBase(IEventAggregator eventAggregator)
-            : base (eventAggregator)
+        public DetailViewModelBase(IEventAggregator eventAggregator, string name)
+            : base (eventAggregator, name)
         {
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute);

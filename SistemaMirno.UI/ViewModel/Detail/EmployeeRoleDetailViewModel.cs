@@ -22,7 +22,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public EmployeeRoleDetailViewModel(
             IEmployeeRoleRepository employeeRoleRepository,
             IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, "Detalles de Rol")
         {
             _employeeRoleRepository = employeeRoleRepository;
         }

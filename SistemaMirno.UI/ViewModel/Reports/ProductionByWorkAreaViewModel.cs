@@ -39,7 +39,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
         public ProductionByWorkAreaViewModel(
                     IWorkAreaRepository workAreaRepository,
                     IEventAggregator eventAggregator)
-            : base (eventAggregator)
+            : base (eventAggregator, "Produccion por Areas de Trabajo")
         {
             _workAreaRepository = workAreaRepository;
 
