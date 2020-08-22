@@ -49,6 +49,8 @@ namespace SistemaMirno.DataAccess
 
         public DbSet<Material> Materials { get; set; }
 
+        public DbSet<ProductPicture> ProductPictures { get; set; }
+
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
