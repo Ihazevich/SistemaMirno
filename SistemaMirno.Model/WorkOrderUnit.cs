@@ -7,7 +7,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a single unit in a work order.
     /// </summary>
-    public class WorkOrderUnit : BaseModel
+    public class WorkOrderUnit : ModelBase
     {
         /// <summary>
         /// Gets or sets the Id of the Work Order the unit belongs to.

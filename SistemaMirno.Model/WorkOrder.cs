@@ -11,7 +11,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// Class representing a Work Order.
     /// </summary>
-    public class WorkOrder : BaseModel
+    public class WorkOrder : ModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkOrder"/> class.

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public class Branch : BaseModel
+    public class Branch : ModelBase
     {
         public string Name { get; set; }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SistemaMirno.Model
 {
-    public class Sale : BaseModel
+    public class Sale : ModelBase
     {
         public int BranchId { get; set; }
 

@@ -12,7 +12,7 @@ namespace SistemaMirno.UI.Data.Repositories
     /// An interface for the generic data repository.
     /// </summary>
     public interface IGenericRepository<T>
-        where T : BaseModel
+        where T : ModelBase
     {
         /// <summary>
         /// Gets all the Production Areas from the database context.

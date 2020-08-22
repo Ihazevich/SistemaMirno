@@ -12,7 +12,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a single employee in the company.
     /// </summary>
-    public class Employee : BaseModel
+    public class Employee : ModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Employee"/> class.

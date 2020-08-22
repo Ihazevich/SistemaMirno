@@ -10,7 +10,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a product with a certain material and color.
     /// </summary>
-    public class WorkUnit : BaseModel
+    public class WorkUnit : ModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkUnit"/> class.

@@ -25,7 +25,7 @@ namespace SistemaMirno.UI.Data.Repositories
 
         public async Task<User> GetByNameAsync(string name)
         {
-            return await Context.Users.SingleOrDefaultAsync(u => u.Name == name);
+            return await Context.Users.SingleOrDefaultAsync(u => u.Username == name);
         }
     }
 }

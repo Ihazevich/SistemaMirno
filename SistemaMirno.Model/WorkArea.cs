@@ -11,7 +11,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a work area.
     /// </summary>
-    public class WorkArea : BaseModel
+    public class WorkArea : ModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkArea"/> class.

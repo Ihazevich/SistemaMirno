@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public class Client : BaseModel
+    public class Client : ModelBase
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

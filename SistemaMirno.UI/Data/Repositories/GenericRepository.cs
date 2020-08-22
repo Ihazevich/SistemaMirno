@@ -14,7 +14,7 @@ namespace SistemaMirno.UI.Data.Repositories
     /// A class representing a generic data repository.
     /// </summary>
     public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
-        where TEntity : BaseModel
+        where TEntity : ModelBase
         where TContext : DbContext
     {
         protected readonly TContext Context;

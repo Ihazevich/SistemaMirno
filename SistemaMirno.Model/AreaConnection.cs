@@ -10,7 +10,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a connection between two Work Areas.
     /// </summary>
-    public class AreaConnection : BaseModel
+    public class AreaConnection : ModelBase
     {
         /// <summary>
         /// Gets or sets the ID of the Work Area that acts as the origin of the connection.

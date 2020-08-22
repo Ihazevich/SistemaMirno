@@ -10,7 +10,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing the category of a product.
     /// </summary>
-    public class ProductCategory : BaseModel
+    public class ProductCategory : ModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductCategory"/> class.

@@ -10,7 +10,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a single product.
     /// </summary>
-    public class Product : BaseModel
+    public class Product : ModelBase
     {
         // TODO: Change prices names. Retail price, production value, wholesaler price.
 

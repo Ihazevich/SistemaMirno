@@ -11,7 +11,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a single employee role.
     /// </summary>
-    public class EmployeeRole : BaseModel
+    public class EmployeeRole : ModelBase
     {
         /// <summary>
         /// Gets or sets the name of the role.

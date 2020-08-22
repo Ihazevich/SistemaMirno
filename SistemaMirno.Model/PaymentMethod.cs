@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public class PaymentMethod : BaseModel
+    public class PaymentMethod : ModelBase
     {
         public string Name { get; set; }
 

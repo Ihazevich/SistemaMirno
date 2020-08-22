@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public class Payment : BaseModel
+    public class Payment : ModelBase
     {
         public DateTime Date { get; set; }
         public int Ammount { get; set; }

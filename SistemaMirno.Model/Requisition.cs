@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public class Requisition : BaseModel
+    public class Requisition : ModelBase
     {
         /// <summary>
         /// Gets or sets the date the requisition was created.

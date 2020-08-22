@@ -10,7 +10,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class that represents a product's color.
     /// </summary>
-    public class Color : BaseModel
+    public class Color : ModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Color"/> class.

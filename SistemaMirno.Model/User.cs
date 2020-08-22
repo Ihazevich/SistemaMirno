@@ -3,28 +3,37 @@
 // </copyright>
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
     /// <summary>
     /// A class representing a system user.
     /// </summary>
-    public class User : BaseModel
+    public class User : ModelBase
     {
         /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
         [Required]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Access Level of the user.
-        /// </summary>
-        public int AccessLevel { get; set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// Gets or sets the user password.
         /// </summary>
+        [Required]
         public string Password { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Employee Id.
+        /// </summary>
+        [Required]
+        public int EmployeeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Employee.
+        /// </summary>
+        [ForeignKey(nameof(EmployeeId))]
+        public virtual Employee Employee { get; set; }
     }
 }

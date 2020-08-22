@@ -147,7 +147,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
             else
             {
-                item.Name = args.Model.Name;
+                item.Name = args.Model.Username;
             }
         }
 

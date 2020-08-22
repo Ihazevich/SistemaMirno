@@ -10,7 +10,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a product's material.
     /// </summary>
-    public class Material : BaseModel
+    public class Material : ModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Material"/> class.
