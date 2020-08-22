@@ -50,9 +50,9 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public EmployeeRole WorkAreaResponsibleRole
+        public Role WorkAreaResponsibleRole
         {
-            get { return GetValue<EmployeeRole>(); }
+            get { return GetValue<Role>(); }
             set { SetValue(value); }
         }
 
@@ -65,9 +65,9 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public virtual EmployeeRole WorkAreaSupervisorRole
+        public virtual Role WorkAreaSupervisorRole
         {
-            get { return GetValue<EmployeeRole>(); }
+            get { return GetValue<Role>(); }
             set { SetValue(value); }
         }
 

@@ -82,7 +82,7 @@
     <Compile Include="Branch.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Color.cs" />
-    <Compile Include="EmployeeRole.cs" />
+    <Compile Include="Role.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="PaymentMethod.cs" />
     <Compile Include="Product.cs" />

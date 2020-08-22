@@ -31,9 +31,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             _employeeRepository = employeeRepository;
             _employeeRoleRepository = employeeRoleRepository;
 
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<EmployeeRole>>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Role>>()
                 .Subscribe(AfterEmployeeRoleSaved);
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<EmployeeRole>>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Role>>()
                 .Subscribe(AfterEmployeeRoleDeleted);
 
             EmployeeRoles = new ObservableCollection<EmployeeRoleWrapper>();
@@ -100,7 +100,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             RaiseDataModelSavedEvent(Employee.Model);
         }
 
-        private void AfterEmployeeRoleDeleted(AfterDataModelDeletedEventArgs<EmployeeRole> args)
+        private void AfterEmployeeRoleDeleted(AfterDataModelDeletedEventArgs<Role> args)
         {
             var item = EmployeeRoles.SingleOrDefault(r => r.Id == args.Model.Id);
 
@@ -110,7 +110,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private void AfterEmployeeRoleSaved(AfterDataModelSavedEventArgs<EmployeeRole> args)
+        private void AfterEmployeeRoleSaved(AfterDataModelSavedEventArgs<Role> args)
         {
             var item = EmployeeRoles.SingleOrDefault(r => r.Id == args.Model.Id);
 

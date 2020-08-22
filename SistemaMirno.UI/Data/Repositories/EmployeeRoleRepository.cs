@@ -10,7 +10,7 @@ namespace SistemaMirno.UI.Data.Repositories
     /// <summary>
     /// A class representing the data repository of the employee's role data.
     /// </summary>
-    public class EmployeeRoleRepository : GenericRepository<EmployeeRole,MirnoDbContext>, IEmployeeRoleRepository
+    public class EmployeeRoleRepository : GenericRepository<Role,MirnoDbContext>, IEmployeeRoleRepository
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeRoleRepository"/> class.

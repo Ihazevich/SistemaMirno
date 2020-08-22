@@ -96,9 +96,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private EmployeeRole CreateNewEmployeeRole()
+        private Role CreateNewEmployeeRole()
         {
-            var role = new EmployeeRole();
+            var role = new Role();
             _employeeRoleRepository.Add(role);
             return role;
         }

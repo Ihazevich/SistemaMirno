@@ -60,7 +60,7 @@ namespace SistemaMirno.DataAccess
         /// <summary>
         /// Gets or sets the database set representing the employees' roles.
         /// </summary>
-        public DbSet<EmployeeRole> EmployeeRoles { get; set; }
+        public DbSet<Role> EmployeeRoles { get; set; }
 
         /// <summary>
         /// Gets or sets the database set representing the work orders.

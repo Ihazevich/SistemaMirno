@@ -9,7 +9,7 @@ namespace SistemaMirno.UI.Data.Repositories
     /// <summary>
     /// An interface for the employees role data repository.
     /// </summary>
-    public interface IEmployeeRoleRepository : IGenericRepository<EmployeeRole>
+    public interface IEmployeeRoleRepository : IGenericRepository<Role>
     {
     }
 }

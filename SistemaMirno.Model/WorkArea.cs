@@ -48,7 +48,7 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the Role assigned to be the responsible's role of the work area.
         /// </summary>
-        public virtual EmployeeRole WorkAreaResponsibleRole { get; set; }
+        public virtual Role WorkAreaResponsibleRole { get; set; }
 
         /// <summary>
         /// Gets or sets the Id of the Role assigned to be the supervisor's role of the work area.
@@ -59,7 +59,7 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the Role assigned to be the supervisor's role of the work area.
         /// </summary>
-        public virtual EmployeeRole WorkAreaSupervisorRole { get; set; }
+        public virtual Role WorkAreaSupervisorRole { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of connections that originate from the work area.

@@ -4,13 +4,13 @@ using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
-    public class EmployeeRoleWrapper : ModelWrapper<EmployeeRole>
+    public class EmployeeRoleWrapper : ModelWrapper<Role>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeRoleWrapper"/> class.
         /// </summary>
-        /// <param name="model">Instance of <see cref="EmployeeRole"> to use as model.</param>
-        public EmployeeRoleWrapper(EmployeeRole model)
+        /// <param name="model">Instance of <see cref="Role"> to use as model.</param>
+        public EmployeeRoleWrapper(Role model)
             : base(model)
         {
         }

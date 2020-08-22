@@ -38,9 +38,9 @@ namespace SistemaMirno.UI.ViewModel.General
             _employeeRoleRepository = employeeRoleRepository;
             _messageDialogService = messageDialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<EmployeeRole>>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<Role>>()
                 .Subscribe(AfterEmployeeRoleSaved);
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<EmployeeRole>>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<Role>>()
                 .Subscribe(AfterEmployeeRoleDeleted);
 
             EmployeeRoles = new ObservableCollection<EmployeeRoleWrapper>();
@@ -130,7 +130,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterEmployeeRoleSaved(AfterDataModelSavedEventArgs<EmployeeRole> args)
+        private void AfterEmployeeRoleSaved(AfterDataModelSavedEventArgs<Role> args)
         {
             var item = EmployeeRoles.SingleOrDefault(r => r.Id == args.Model.Id);
 
@@ -145,7 +145,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private void AfterEmployeeRoleDeleted(AfterDataModelDeletedEventArgs<EmployeeRole> args)
+        private void AfterEmployeeRoleDeleted(AfterDataModelDeletedEventArgs<Role> args)
         {
             var item = EmployeeRoles.SingleOrDefault(r => r.Id == args.Model.Id);
 
