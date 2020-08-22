@@ -36,20 +36,20 @@ namespace SistemaMirno.UI.Wrapper
         }
 
         /// <summary>
-        /// Gets or sets the User Access Level.
+        /// Gets or sets the User password.
         /// </summary>
-        public int AccessLevel
+        public string Password
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<string>(); }
             set { SetValue(value); }
         }
 
         /// <summary>
         /// Gets or sets the User password.
         /// </summary>
-        public string Password
+        public int EmployeeId
         {
-            get { return GetValue<string>(); }
+            get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
@@ -61,15 +61,15 @@ namespace SistemaMirno.UI.Wrapper
                 case nameof(Name):
                     if (Name.Length < 4)
                     {
-                        yield return "El nombre es muy corto.";
+                        yield return "El nombre de usuario es muy corto.";
                     }
 
                     break;
 
                 case nameof(Password):
-                    if (Password.Length < 1)
+                    if (Password.Length < 4)
                     {
-                        yield return "Asi no.";
+                        yield return "La contraseña debe contener al menos 4 caracteres";
                     }
 
                     break;
