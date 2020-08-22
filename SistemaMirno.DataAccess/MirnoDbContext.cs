@@ -35,6 +35,19 @@ namespace SistemaMirno.DataAccess
 
         public DbSet<WorkArea> WorkAreas { get; set; }
 
+        public DbSet<WorkAreaConnection> WorkAreaConnections { get; set; }
+
+        public DbSet<WorkAreaMovement> WorkAreaMovements { get; set; }
+
+        public DbSet<WorkUnit> WorkUnits { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public DbSet<Color> Colors { get; set; }
+
+        public DbSet<Material> Materials { get; set; }
 
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
