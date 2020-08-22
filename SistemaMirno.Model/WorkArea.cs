@@ -2,6 +2,8 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -37,6 +39,10 @@ namespace SistemaMirno.Model
         [ForeignKey(nameof(SupervisorRoleId))]
         public Role SupervisorRole { get; set; }
 
+        [Required]
         public bool ReportsInProgress { get; set; }
+
+        [ForeignKey(nameof(WorkAreaMovement.WorkAreaId))]
+        public virtual ICollection<WorkAreaMovement> WorkAreaMovements { get; set; } = new HashSet<WorkAreaMovement>();
     }
 }
