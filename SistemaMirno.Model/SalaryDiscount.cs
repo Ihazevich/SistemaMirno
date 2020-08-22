@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public partial class SalaryDiscounts
+    public partial class SalaryDiscount
     {
         [Required]
         public DateTime Date { get; set; }

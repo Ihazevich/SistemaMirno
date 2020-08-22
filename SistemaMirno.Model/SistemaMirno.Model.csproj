@@ -90,7 +90,7 @@
     <Compile Include="Product.cs" />
     <Compile Include="ProductCategory.cs" />
     <Compile Include="Requisition.cs" />
-    <Compile Include="SalaryDiscounts.cs" />
+    <Compile Include="SalaryDiscount.cs" />
     <Compile Include="SalaryPayment.cs" />
     <Compile Include="Sale.cs" />
     <Compile Include="SaleType.cs" />

@@ -127,7 +127,7 @@ namespace SistemaMirno.Model
 
         public virtual ICollection<SalaryPayment> SalaryPayments { get; set; } = new HashSet<SalaryPayment>();
 
-        public virtual ICollection<SalaryDiscounts> SalaryDiscounts { get; set; } = new HashSet<SalaryDiscounts>();
+        public virtual ICollection<SalaryDiscount> SalaryDiscounts { get; set; } = new HashSet<SalaryDiscount>();
 
         public virtual ICollection<HistoricalSalary> HistoricalSalaries { get; set; } = new HashSet<HistoricalSalary>();
    }

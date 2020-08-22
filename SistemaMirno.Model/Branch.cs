@@ -22,6 +22,8 @@ namespace SistemaMirno.Model
 
         public string Department { get; set; }
 
-        public virtual ICollection<Role> Roles { get; set; }
+        public virtual ICollection<Role> Roles { get; set; } = new HashSet<Role>();
+
+        public virtual ICollection<WorkArea> WorkAreas { get; set; } = new HashSet<WorkArea>();
     }
 }

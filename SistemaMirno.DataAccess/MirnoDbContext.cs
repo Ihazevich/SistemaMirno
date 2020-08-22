@@ -17,82 +17,22 @@ namespace SistemaMirno.DataAccess
             Database.SetInitializer<MirnoDbContext>(new DropCreateDatabaseIfModelChanges<MirnoDbContext>());
         }
 
-        /// <summary>
-        /// Gets or sets the database set representing the users.
-        /// </summary>
         public DbSet<User> Users { get; set; }
 
-        /// <summary>
-        /// Gets or sets the database set representing the employees.
-        /// </summary>
         public DbSet<Employee> Employees { get; set; }
 
-        /// <summary>
-        /// Gets or sets the database set representing the employees' roles.
-        /// </summary>
         public DbSet<Role> Roles { get; set; }
 
         public DbSet<Assistance> Assistances { get; set; }
 
         public DbSet<SalaryPayment> SalaryPayments { get; set; }
 
-        /// <summary>
-        /// Gets or sets the database set representing the work areas' connections.
-        /// </summary>
-        public DbSet<AreaConnection> AreaConnections { get; set; }
+        public DbSet<SalaryDiscount> SalaryDiscounts { get; set; }
 
-        /// <summary>
-        /// Gets or sets the database set representing the product's colors.
-        /// </summary>
-        public DbSet<Color> Colors { get; set; }
-
-        /// <summary>
-        /// Gets or sets the database set representing the product's materials.
-        /// </summary>
-        public DbSet<Material> Materials { get; set; }
-
-        /// <summary>
-        /// Gets or sets the database set representing the products.
-        /// </summary>
-        public DbSet<Product> Products { get; set; }
-
-        /// <summary>
-        /// Gets or sets the database set representing the work areas.
-        /// </summary>
-        public DbSet<WorkArea> WorkAreas { get; set; }
-
-        /// <summary>
-        /// Gets or sets the database set representing the product categories.
-        /// </summary>
-        public DbSet<ProductCategory> ProductCategories { get; set; }
-
-
-        /// <summary>
-        /// Gets or sets the database set representing the work orders.
-        /// </summary>
-        public DbSet<WorkOrder> WorkOrders { get; set; }
-
-        /// <summary>
-        /// Gets or sets the database set representing the work units.
-        /// </summary>
-        public DbSet<WorkUnit> WorkUnits { get; set; }
-
-        /// <summary>
-        /// Gets or sets the database set representing the work order units.
-        /// </summary>
-        public DbSet<WorkOrderUnit> WorkOrderUnits { get; set; }
-
-        public DbSet<Requisition> Requisitions { get; set; }
-
-        public DbSet<Client> Clients { get; set; }
-
-        public DbSet<Payment> Payments { get; set; }
-
-        public DbSet<PaymentMethod> PaymentMethods { get; set; }
-
-        public DbSet<Sale> Sales { get; set; }
+        public DbSet<HistoricalSalary> HistoricalSalaries { get; set; }
 
         public DbSet<Branch> Branches { get; set; }
+
 
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
