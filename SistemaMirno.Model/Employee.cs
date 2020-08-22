@@ -108,7 +108,7 @@ namespace SistemaMirno.Model
         [Required]
         public DateTime ContractStartDate { get; set; }
 
-        public string ContractFile { get; set; }
+        public string? ContractFile { get; set; }
 
         public bool IsRegisteredInIps { get; set; }
 
@@ -118,17 +118,21 @@ namespace SistemaMirno.Model
 
         public DateTime? TerminationDate { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }
 
+        [ForeignKey(nameof(Assistance.EmployeeId))]
         public virtual ICollection<Assistance> Assistances { get; set; } = new HashSet<Assistance>();
 
+        [ForeignKey(nameof(SalaryPayment.EmployeeId))]
         public virtual ICollection<SalaryPayment> SalaryPayments { get; set; } = new HashSet<SalaryPayment>();
 
+        [ForeignKey(nameof(SalaryDiscount.EmployeeId))]
         public virtual ICollection<SalaryDiscount> SalaryDiscounts { get; set; } = new HashSet<SalaryDiscount>();
 
+        [ForeignKey(nameof(HistoricalSalary.EmployeeId))]
         public virtual ICollection<HistoricalSalary> HistoricalSalaries { get; set; } = new HashSet<HistoricalSalary>();
    }
 }

@@ -10,29 +10,30 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a connection between two Work Areas.
     /// </summary>
-    public class AreaConnection : ModelBase
+    public class WorkAreaConnection : ModelBase
     {
         /// <summary>
         /// Gets or sets the ID of the Work Area that acts as the origin of the connection.
         /// </summary>
         [Required]
-        public int WorkAreaId { get; set; }
+        public int OriginWorkAreaId { get; set; }
 
         /// <summary>
         /// Gets or sets the Work Area that acts as the origin of the connection.
         /// </summary>
-        public virtual WorkArea WorkArea { get; set; }
+        [ForeignKey(nameof(OriginWorkAreaId))]
+        public virtual WorkArea OriginWorkArea { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the Work Area that acts as the detination of the connection.
         /// </summary>
         [Required]
-        [ForeignKey("ConnectedWorkArea")]
-        public int ConnectedWorkAreaId { get; set; }
+        public int DestinationWorkAreaId { get; set; }
 
         /// <summary>
         /// Gets or sets the Work Area that acts as the origin of the connection.
         /// </summary>
-        public virtual WorkArea ConnectedWorkArea { get; set; }
+        [ForeignKey(nameof(DestinationWorkAreaId))]
+        public virtual WorkArea DestinationWorkArea { get; set; }
     }
 }

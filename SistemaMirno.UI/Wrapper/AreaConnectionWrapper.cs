@@ -7,13 +7,13 @@ namespace SistemaMirno.UI.Wrapper
     /// <summary>
     /// A class representing the wrapper for the AreaConnection class.
     /// </summary>
-    public class AreaConnectionWrapper : ModelWrapper<AreaConnection>
+    public class AreaConnectionWrapper : ModelWrapper<WorkAreaConnection>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AreaConnectionWrapper"/> class.
         /// </summary>
-        /// <param name="model">Instance of <see cref="AreaConnection"> to use as model.</param>
-        public AreaConnectionWrapper(AreaConnection model)
+        /// <param name="model">Instance of <see cref="WorkAreaConnection"> to use as model.</param>
+        public AreaConnectionWrapper(WorkAreaConnection model)
             : base(model)
         {
         }

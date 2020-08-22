@@ -33,6 +33,8 @@ namespace SistemaMirno.DataAccess
 
         public DbSet<Branch> Branches { get; set; }
 
+        public DbSet<WorkArea> WorkAreas { get; set; }
+
 
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

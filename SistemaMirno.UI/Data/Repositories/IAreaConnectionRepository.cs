@@ -11,9 +11,9 @@ namespace SistemaMirno.UI.Data.Repositories
     /// <summary>
     /// An interface for the area connection data repository.
     /// </summary>
-    public interface IAreaConnectionRepository : IGenericRepository<AreaConnection>
+    public interface IAreaConnectionRepository : IGenericRepository<WorkAreaConnection>
     {
-        Task<IEnumerable<AreaConnection>> GetByAreaIdAsync(int areaId);
+        Task<IEnumerable<WorkAreaConnection>> GetByAreaIdAsync(int areaId);
 
         Task<IEnumerable<WorkArea>> GetWorkAreasAsync();
 

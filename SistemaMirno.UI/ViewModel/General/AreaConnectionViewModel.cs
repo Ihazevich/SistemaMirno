@@ -34,9 +34,9 @@ namespace SistemaMirno.UI.ViewModel.General
             _areaConnectionDetailViewModelCreator = areaConnectionDetailViewModelCreator;
             _areaConnectionRepository = areaConnectionRepository;
             _messageDialogService = messageDialogService;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<AreaConnection>>()
+            _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkAreaConnection>>()
                 .Subscribe(AfterAreaConnectionSaved);
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<AreaConnection>>()
+            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkAreaConnection>>()
                 .Subscribe(AfterAreaConnectionDeleted);
 
             AreaConnections = new ObservableCollection<AreaConnectionWrapper>();
@@ -161,7 +161,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Reloads the view model based on the parameter string.
         /// </summary>
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterAreaConnectionSaved(AfterDataModelSavedEventArgs<AreaConnection> args)
+        private void AfterAreaConnectionSaved(AfterDataModelSavedEventArgs<WorkAreaConnection> args)
         {
             var item = AreaConnections.SingleOrDefault(c => c.Id == args.Model.Id);
 
@@ -176,7 +176,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private void AfterAreaConnectionDeleted(AfterDataModelDeletedEventArgs<AreaConnection> args)
+        private void AfterAreaConnectionDeleted(AfterDataModelDeletedEventArgs<WorkAreaConnection> args)
         {
             var item = AreaConnections.SingleOrDefault(m => m.Id == args.Model.Id);
 

@@ -138,9 +138,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private AreaConnection CreateNewAreaConnection()
+        private WorkAreaConnection CreateNewAreaConnection()
         {
-            var areaConnection = new AreaConnection();
+            var areaConnection = new WorkAreaConnection();
             _areaConnectionRepository.Add(areaConnection);
             return areaConnection;
         }

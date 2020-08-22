@@ -10,7 +10,7 @@ namespace SistemaMirno.UI.Data.Repositories
     /// <summary>
     /// A class representing the data repository of the work areas connection data.
     /// </summary>
-    public class AreaConnectionRepository : GenericRepository<AreaConnection, MirnoDbContext>, IAreaConnectionRepository
+    public class AreaConnectionRepository : GenericRepository<WorkAreaConnection, MirnoDbContext>, IAreaConnectionRepository
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AreaConnectionRepository"/> class.
@@ -26,7 +26,7 @@ namespace SistemaMirno.UI.Data.Repositories
         /// </summary>
         /// <param name="areaId">The work area id</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task<IEnumerable<AreaConnection>> GetByAreaIdAsync(int areaId)
+        public async Task<IEnumerable<WorkAreaConnection>> GetByAreaIdAsync(int areaId)
         {
             return await Context.AreaConnections.Where(c => c.WorkAreaId == areaId).ToListAsync();
         }
