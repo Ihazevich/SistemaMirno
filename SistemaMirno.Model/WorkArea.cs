@@ -44,5 +44,8 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(WorkAreaMovement.WorkAreaId))]
         public virtual ICollection<WorkAreaMovement> WorkAreaMovements { get; set; } = new HashSet<WorkAreaMovement>();
+
+        [ForeignKey(nameof(WorkUnit.CurrentWorkAreaId))]
+        public virtual ICollection<WorkUnit> WorkUnits { get; set; } = new HashSet<WorkUnit>();
     }
 }
