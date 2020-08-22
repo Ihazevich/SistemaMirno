@@ -77,6 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProductPart.cs" />
     <Compile Include="ProductPicture.cs" />
     <Compile Include="WorkAreaConnection.cs" />
     <Compile Include="Assistance.cs" />
