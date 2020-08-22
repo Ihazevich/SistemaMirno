@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaConnection.cs" />
+    <Compile Include="Assistance.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="Branch.cs" />
     <Compile Include="Client.cs" />

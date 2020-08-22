@@ -10,7 +10,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a system user.
     /// </summary>
-    public class User : ModelBase
+    public partial class User : ModelBase
     {
         /// <summary>
         /// Gets or sets the name of the user.

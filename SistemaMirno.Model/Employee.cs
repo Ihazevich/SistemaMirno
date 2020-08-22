@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +16,7 @@ namespace SistemaMirno.Model
     /// <summary>
     /// A class representing a single employee in the company.
     /// </summary>
-    public class Employee : ModelBase
+    public partial class Employee : ModelBase
     {
         /// <summary>
         /// Gets or sets the first name.
@@ -108,6 +109,9 @@ namespace SistemaMirno.Model
         public int UserId { get; set; }
         
         [ForeignKey(nameof(UserId))]
+
         public virtual User User { get; set; }
+
+        public virtual ICollection<Assistance> Assistances { get; set; } = new HashSet<Assistance>();
    }
 }
