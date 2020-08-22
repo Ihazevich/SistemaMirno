@@ -80,7 +80,13 @@ namespace SistemaMirno.Model
         
         [Required]
         public long SalaryWorkOrderBonus { get; set; }
-        
+
+        [Required]
+        public long SalaryNormalHoursBonus { get; set; }
+
+        [Required]
+        public long SalaryExtraHoursBonus { get; set; }
+
         [Required]
         public long TotalSalary { get; set; }
         
@@ -93,6 +99,12 @@ namespace SistemaMirno.Model
         [Required]
         public double SalesBonusRatio { get; set; }
         
+        [Required]
+        public long PricePerNormalHour { get; set; }
+
+        [Required]
+        public long PricePerExtraHour { get; set; }
+
         [Required]
         public DateTime ContractStartDate { get; set; }
 
@@ -113,6 +125,8 @@ namespace SistemaMirno.Model
 
         public virtual ICollection<Assistance> Assistances { get; set; } = new HashSet<Assistance>();
 
-        public virtual ICollection<SalaryPayment> SalaryPayments { get; set; } = new HashSet<SalaryPayment>(); 
+        public virtual ICollection<SalaryPayment> SalaryPayments { get; set; } = new HashSet<SalaryPayment>();
+
+        public virtual ICollection<HistoricalSalary> HistoricalSalaries { get; set; } = new HashSet<HistoricalSalary>();
    }
 }
