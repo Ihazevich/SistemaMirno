@@ -23,6 +23,20 @@ namespace SistemaMirno.DataAccess
         public DbSet<User> Users { get; set; }
 
         /// <summary>
+        /// Gets or sets the database set representing the employees.
+        /// </summary>
+        public DbSet<Employee> Employees { get; set; }
+
+        /// <summary>
+        /// Gets or sets the database set representing the employees' roles.
+        /// </summary>
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<Assistance> Assistances { get; set; }
+
+        public DbSet<SalaryPayment> SalaryPayments { get; set; }
+
+        /// <summary>
         /// Gets or sets the database set representing the work areas' connections.
         /// </summary>
         public DbSet<AreaConnection> AreaConnections { get; set; }
@@ -52,15 +66,6 @@ namespace SistemaMirno.DataAccess
         /// </summary>
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
-        /// <summary>
-        /// Gets or sets the database set representing the employees.
-        /// </summary>
-        public DbSet<Employee> Employees { get; set; }
-
-        /// <summary>
-        /// Gets or sets the database set representing the employees' roles.
-        /// </summary>
-        public DbSet<Role> EmployeeRoles { get; set; }
 
         /// <summary>
         /// Gets or sets the database set representing the work orders.

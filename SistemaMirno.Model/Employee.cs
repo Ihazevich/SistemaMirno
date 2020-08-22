@@ -109,9 +109,10 @@ namespace SistemaMirno.Model
         public int UserId { get; set; }
         
         [ForeignKey(nameof(UserId))]
-
         public virtual User User { get; set; }
 
         public virtual ICollection<Assistance> Assistances { get; set; } = new HashSet<Assistance>();
+
+        public virtual ICollection<SalaryPayment> SalaryPayments { get; set; } = new HashSet<SalaryPayment>(); 
    }
 }
