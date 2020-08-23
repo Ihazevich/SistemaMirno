@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="Supply.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
@@ -23,5 +23,8 @@ namespace SistemaMirno.Model
 
         [Required]
         public int SupplyCategoryId { get; set; }
+
+        [ForeignKey(nameof(SupplyCategoryId))]
+        public virtual SupplyCategory SupplyCategory { get; set; }
     }
 }
