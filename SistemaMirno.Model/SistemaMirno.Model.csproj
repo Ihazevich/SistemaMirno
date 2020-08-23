@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="BuyOrder.cs" />
     <Compile Include="BuyOrderSupplyUnit.cs" />
+    <Compile Include="ClientCommunication.cs" />
     <Compile Include="Hardware.cs" />
     <Compile Include="HardwareCategory.cs" />
     <Compile Include="HardwareMaintenanceOrder.cs" />
@@ -100,8 +101,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="Role.cs" />
-    <Compile Include="Payment.cs" />
-    <Compile Include="PaymentMethod.cs" />
+    <Compile Include="SaleCollection.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductCategory.cs" />
     <Compile Include="Requisition.cs" />

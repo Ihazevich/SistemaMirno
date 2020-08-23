@@ -81,9 +81,9 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public virtual ICollection<Payment> Payments
+        public virtual ICollection<SaleCollection> Payments
         {
-            get { return GetValue<ICollection<Payment>>(); }
+            get { return GetValue<ICollection<SaleCollection>>(); }
             set { SetValue(value); }
         }
 

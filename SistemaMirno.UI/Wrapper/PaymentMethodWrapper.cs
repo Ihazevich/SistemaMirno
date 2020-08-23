@@ -36,9 +36,9 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the collection of payments related to the payment method.
         /// </summary>
-        public virtual Collection<Payment> Payments
+        public virtual Collection<SaleCollection> Payments
         {
-            get { return GetValue<Collection<Payment>>(); }
+            get { return GetValue<Collection<SaleCollection>>(); }
             set { SetValue(value); }
         }
 

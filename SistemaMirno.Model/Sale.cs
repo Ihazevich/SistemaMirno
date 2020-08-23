@@ -1,36 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace SistemaMirno.Model
 {
-    public class Sale : ModelBase
+    public partial class Sale : ModelBase
     {
+        [Required]
+        public DateTime Date { get; set; }
+
+        [Required]
         public int BranchId { get; set; }
 
+        [ForeignKey(nameof(BranchId))]
         public virtual Branch Branch { get; set; }
+        
+        [Required]
+        public int ClientId { get; set; }
 
-        public int RequisitionId { get; set; }
+        [ForeignKey(nameof(ClientId))]
+        public virtual Client Client { get; set; }
 
-        public virtual Requisition Requisition { get; set; }
-
+        [Required]
         public int ResponsibleId { get; set; }
 
+        [ForeignKey(nameof(ResponsibleId))]
         public virtual Employee Responsible { get; set; }
 
-        public DateTime DeliveryDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
 
-        public DateTime EstimatedDeliveryDate { get; set; }
+        public DateTime? EstimatedDeliveryDate { get; set; }
 
-        public int Total { get; set; }
+        [Required]
+        public long Total { get; set; }
 
-        public int Discount { get; set; }
+        [Required]
+        public long Discount { get; set; }
 
-        public int IVA { get; set; }
+        [Required]
+        public long Tax { get; set; }
+        
+        [Required]
+        public long DeliveryFee { get; set; }
 
-        public int SaleTypeId { get; set; }
+        [ForeignKey(nameof(SaleCollection.SaleId))]
+        public virtual ICollection<SaleCollection> SaleCollections { get; set; }
 
-        public virtual SaleType SaleType { get; set; }
-
-        public virtual ICollection<Payment> Payments { get; set; }
+        [ForeignKey(nameof(Requisition.SaleId))]
+        public virtual Requisition SaleRequisition { get; set; }
     }
 }
