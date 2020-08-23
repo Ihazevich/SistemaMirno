@@ -108,12 +108,15 @@ namespace SistemaMirno.Model
         [Required]
         public DateTime ContractStartDate { get; set; }
 
-        public string? ContractFile { get; set; }
+        [Required]
+        public string ContractFile { get; set; }
 
+        [Required]
         public bool IsRegisteredInIps { get; set; }
 
         public DateTime? IpsStartDate { get; set; }
         
+        [Required]
         public bool Terminated { get; set; }
 
         public DateTime? TerminationDate { get; set; }

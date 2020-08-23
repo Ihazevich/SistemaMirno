@@ -35,6 +35,12 @@ namespace SistemaMirno.Model
         public virtual HardwareCategory HardwareCategory { get; set; }
 
         [Required]
+        public int BuyOrderId { get; set; }
+
+        [ForeignKey(nameof(BuyOrderId))]
+        public virtual BuyOrder BuyOrder { get; set; }
+
+        [Required]
         public long Price { get; set; }
     }
 }

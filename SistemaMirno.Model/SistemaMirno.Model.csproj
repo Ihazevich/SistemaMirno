@@ -77,12 +77,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuyOrder.cs" />
     <Compile Include="Hardware.cs" />
     <Compile Include="HardwareCategory.cs" />
     <Compile Include="HardwareMaintenanceOrder.cs" />
     <Compile Include="ProductSupply.cs" />
     <Compile Include="ProductPart.cs" />
     <Compile Include="ProductPicture.cs" />
+    <Compile Include="Provider.cs" />
     <Compile Include="Supply.cs" />
     <Compile Include="SupplyCategory.cs" />
     <Compile Include="SupplyMovement.cs" />
