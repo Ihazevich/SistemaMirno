@@ -43,7 +43,7 @@ namespace SistemaMirno.Model
         [ForeignKey(nameof(Hardware.BuyOrderId))]
         public virtual ICollection<Hardware> HardwareUnits { get; set; } = new HashSet<Hardware>();
 
-        [ForeignKey(nameof(BuyOrderSupplyUnits.BuyOrderId))]
-        public virtual ICollection<BuyOrderSupplyUnits> SupplyUnits { get; set; } = new HashSet<BuyOrderSupplyUnits>();
+        [ForeignKey(nameof(BuyOrderSupplyUnit.BuyOrderId))]
+        public virtual ICollection<BuyOrderSupplyUnit> SupplyUnits { get; set; } = new HashSet<BuyOrderSupplyUnit>();
     }
 }
