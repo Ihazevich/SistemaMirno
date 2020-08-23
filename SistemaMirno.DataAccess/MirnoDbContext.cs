@@ -41,16 +41,37 @@ namespace SistemaMirno.DataAccess
 
         public DbSet<WorkUnit> WorkUnits { get; set; }
 
-        public DbSet<Product> Products { get; set; }
-
-        public DbSet<ProductCategory> ProductCategories { get; set; }
-
         public DbSet<Color> Colors { get; set; }
 
         public DbSet<Material> Materials { get; set; }
 
-        public DbSet<ProductPicture> ProductPictures { get; set; }
+        public DbSet<Product> Products { get; set; }
 
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public DbSet<ProductPicture> ProductPictures { get; set; }
+        
+        public DbSet<ProductSupply> ProductSupplies { get; set; }
+
+        public DbSet<ProductPart> ProductParts { get; set; }
+
+        public DbSet<Supply> Supplies { get; set; }
+
+        public DbSet<SupplyCategory> SupplyCategories { get; set; }
+
+        public DbSet<SupplyMovement> SupplyMovements { get; set; }
+
+        public DbSet<SupplyWithdrawOrder> SupplyWithdrawOrders { get; set; }
+
+        public DbSet<SupplyWithdrawOrderUnit> SupplyWithdrawOrderUnits { get; set; }
+
+        public DbSet<Hardware> Hardwares { get; set; }
+
+        public DbSet<HardwareCategory> HardwareCategories { get; set; }
+
+        public DbSet<HardwareMaintenanceOrder> HardwareMaintenanceOrders { get; set; }
+
+        public DbSet<Technician> Technicians { get; set; }
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
