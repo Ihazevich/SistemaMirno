@@ -83,6 +83,8 @@
     <Compile Include="Supply.cs" />
     <Compile Include="SupplyCategory.cs" />
     <Compile Include="SupplyMovement.cs" />
+    <Compile Include="SupplyWithdrawOrder.cs" />
+    <Compile Include="SupplyWithdrawOrderUnit.cs" />
     <Compile Include="WorkAreaConnection.cs" />
     <Compile Include="Assistance.cs" />
     <Compile Include="HistoricalSalary.cs" />

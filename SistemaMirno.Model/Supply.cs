@@ -2,6 +2,8 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,5 +28,10 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(SupplyCategoryId))]
         public virtual SupplyCategory SupplyCategory { get; set; }
+
+        public bool RequiresOrderToWithdraw { get; set; }
+
+        [ForeignKey(nameof(SupplyMovement.SupplyId))]
+        public virtual ICollection<SupplyMovement> SupplyMovements { get; set; }
     }
 }
