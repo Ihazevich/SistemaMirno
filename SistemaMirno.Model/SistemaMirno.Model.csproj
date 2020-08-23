@@ -80,6 +80,7 @@
     <Compile Include="ProductSupply.cs" />
     <Compile Include="ProductPart.cs" />
     <Compile Include="ProductPicture.cs" />
+    <Compile Include="Supply.cs" />
     <Compile Include="WorkAreaConnection.cs" />
     <Compile Include="Assistance.cs" />
     <Compile Include="HistoricalSalary.cs" />

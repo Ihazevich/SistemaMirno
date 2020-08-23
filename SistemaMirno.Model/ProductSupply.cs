@@ -16,6 +16,9 @@ namespace SistemaMirno.Model
         [Required]
         public int SupplyId { get; set; }
 
+        [ForeignKey(nameof(SupplyId))]
+        public virtual Supply Supply { get; set; }
+
         [Required]
         public int ProductId { get; set; }
 
