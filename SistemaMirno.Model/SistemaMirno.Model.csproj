@@ -80,6 +80,9 @@
     <Compile Include="BuyOrder.cs" />
     <Compile Include="BuyOrderSupplyUnit.cs" />
     <Compile Include="ClientCommunication.cs" />
+    <Compile Include="Delivery.cs" />
+    <Compile Include="DeliveryOrder.cs" />
+    <Compile Include="DeliveryUnit.cs" />
     <Compile Include="Hardware.cs" />
     <Compile Include="HardwareCategory.cs" />
     <Compile Include="HardwareMaintenanceOrder.cs" />
