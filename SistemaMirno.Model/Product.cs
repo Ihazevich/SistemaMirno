@@ -79,5 +79,8 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(ProductPart.ProductId))]
         public virtual ICollection<ProductPart> ProductParts { get; set; } = new HashSet<ProductPart>();
+
+        [ForeignKey(nameof(ProductSupply.ProductId))]
+        public virtual ICollection<ProductSupply> ProductSupplies { get; set; } = new HashSet<ProductSupply>();
     }
 }
