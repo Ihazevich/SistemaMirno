@@ -96,6 +96,7 @@
     <Compile Include="SupplyWithdrawOrder.cs" />
     <Compile Include="SupplyWithdrawOrderUnit.cs" />
     <Compile Include="Technician.cs" />
+    <Compile Include="Vehicle.cs" />
     <Compile Include="WorkAreaConnection.cs" />
     <Compile Include="Assistance.cs" />
     <Compile Include="HistoricalSalary.cs" />
