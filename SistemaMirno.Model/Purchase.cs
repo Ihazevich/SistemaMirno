@@ -32,6 +32,11 @@ namespace SistemaMirno.Model
         [ForeignKey(nameof(ProviderId))]
         public virtual Provider Provider { get; set; }
 
+        public int? ProviderPaymentId { get; set; }
+
+        [ForeignKey(nameof(ProviderPaymentId))]
+        public ProviderPayment ProviderPayment { get; set; }
+
         [Required]
         public bool IsCredit { get; set; }
 

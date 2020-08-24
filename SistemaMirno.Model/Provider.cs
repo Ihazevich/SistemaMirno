@@ -22,7 +22,7 @@ namespace SistemaMirno.Model
 
 
         [ForeignKey(nameof(BuyOrder.ProviderId))]
-        public virtual ICollection<BuyOrder> BuyOrders { get; set; } = new HashSet<BuyOrder>();
+        public virtual ICollection<Purchase> Purchases { get; set; } = new HashSet<Purchase>();
 
 
         [ForeignKey(nameof(DatedCheck.ProviderId))]

@@ -34,5 +34,8 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(BuyOrderUnit.BuyOrderId))]
         public virtual ICollection<BuyOrderUnit> BuyOrderUnits { get; set; } = new HashSet<BuyOrderUnit>();
+
+        [Required]
+        public bool IsPaid { get; set; }
     }
 }

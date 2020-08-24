@@ -82,8 +82,10 @@
     <Compile Include="BankAccountMovement.cs" />
     <Compile Include="BuyOrder.cs" />
     <Compile Include="BuyOrderUnit.cs" />
+    <Compile Include="CashMovement.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CreditCardPayment.cs" />
+    <Compile Include="ProviderPayment.cs" />
     <Compile Include="Purchase.cs" />
     <Compile Include="ClientCommunication.cs" />
     <Compile Include="DatedCheck.cs" />

@@ -50,7 +50,7 @@ namespace SistemaMirno.DataAccess
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
         public DbSet<ProductPicture> ProductPictures { get; set; }
-        
+
         public DbSet<ProductSupply> ProductSupplies { get; set; }
 
         public DbSet<ProductPart> ProductParts { get; set; }
@@ -60,7 +60,7 @@ namespace SistemaMirno.DataAccess
         public DbSet<SupplyCategory> SupplyCategories { get; set; }
 
         public DbSet<SupplyMovement> SupplyMovements { get; set; }
-        
+
         public DbSet<Hardware> Hardwares { get; set; }
 
         public DbSet<HardwareCategory> HardwareCategories { get; set; }
@@ -72,7 +72,7 @@ namespace SistemaMirno.DataAccess
         public DbSet<Provider> Providers { get; set; }
 
         public DbSet<Purchase> Purchases { get; set; }
-        
+
         public DbSet<WorkOrder> WorkOrders { get; set; }
 
         public DbSet<WorkOrderUnit> WorkOrderUnits { get; set; }
@@ -86,7 +86,7 @@ namespace SistemaMirno.DataAccess
         public DbSet<Client> Clients { get; set; }
 
         public DbSet<ClientCommunication> ClientCommunications { get; set; }
-        
+
         public DbSet<DeliveryOrder> DeliveryOrders { get; set; }
 
         public DbSet<Delivery> Deliveries { get; set; }
@@ -122,6 +122,10 @@ namespace SistemaMirno.DataAccess
         public DbSet<BuyOrderUnit> BuyOrderUnits { get; set; }
 
         public DbSet<CreditCard> CreditCards { get; set; }
+
+        public DbSet<ProviderPayment> ProviderPayments { get; set; }
+
+        public DbSet<CashMovement> CashMovements { get; set; }
 
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -36,5 +36,8 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(InvoiceUnit.InvoiceId))]
         public virtual ICollection<InvoiceUnit> InvoiceUnits { get; set; } = new HashSet<InvoiceUnit>();
+
+        [Required]
+        public bool IsPaid { get; set; }
     }
 }
