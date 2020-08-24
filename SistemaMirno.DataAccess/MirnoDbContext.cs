@@ -111,6 +111,10 @@ namespace SistemaMirno.DataAccess
 
         public DbSet<IntermediateWorkUnitMovement> IntermediateWorkUnitMovements { get; set; }
 
+        public DbSet<Invoice> Invoices { get; set; }
+
+        public DbSet<InvoiceUnit> InvoiceUnits { get; set; }
+
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace SistemaMirno.Model
 {
@@ -44,6 +43,12 @@ namespace SistemaMirno.Model
         
         [Required]
         public long DeliveryFee { get; set; }
+
+        [Required]
+        public int InvoiceId { get; set; }
+
+        [ForeignKey(nameof(InvoiceId))]
+        public virtual Invoice Invoice { get; set; }
 
         [ForeignKey(nameof(SaleCollection.SaleId))]
         public virtual ICollection<SaleCollection> SaleCollections { get; set; }

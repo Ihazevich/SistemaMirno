@@ -90,6 +90,8 @@
     <Compile Include="IntermediateWorkOrder.cs" />
     <Compile Include="IntermediateWorkUnit.cs" />
     <Compile Include="IntermediateWorkUnitMovement.cs" />
+    <Compile Include="Invoice.cs" />
+    <Compile Include="InvoiceUnit.cs" />
     <Compile Include="ProductSupply.cs" />
     <Compile Include="ProductPart.cs" />
     <Compile Include="ProductPicture.cs" />
