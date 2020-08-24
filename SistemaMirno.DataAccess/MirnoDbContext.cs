@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Interception;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using SistemaMirno.Model;
 
@@ -9,11 +11,15 @@ namespace SistemaMirno.DataAccess
     /// </summary>
     public class MirnoDbContext : DbContext
     {
+        static readonly DatabaseLogger DatabaseLogger = new DatabaseLogger("LogFile.txt", true);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MirnoDbContext"/> class.
         /// </summary>
         public MirnoDbContext() : base("LaptopMirnoDb")
         {
+            DatabaseLogger.StartLogging();
+            DbInterception.Add(DatabaseLogger);
             Database.SetInitializer<MirnoDbContext>(new DropCreateDatabaseIfModelChanges<MirnoDbContext>());
         }
 
@@ -132,6 +138,13 @@ namespace SistemaMirno.DataAccess
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            DbInterception.Remove(DatabaseLogger);
+            DatabaseLogger.StopLogging();
+            base.Dispose(disposing);
         }
     }
 }
