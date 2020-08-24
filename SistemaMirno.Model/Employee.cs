@@ -123,7 +123,6 @@ namespace SistemaMirno.Model
 
         public int? UserId { get; set; }
         
-        [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }
 
         [ForeignKey(nameof(Assistance.EmployeeId))]

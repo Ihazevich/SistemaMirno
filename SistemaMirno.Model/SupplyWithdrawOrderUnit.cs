@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
-    public partial class SupplyWithdrawOrderUnit
+    public partial class SupplyWithdrawOrderUnit : ModelBase
     {
         [Required]
         public int Quantity { get; set; }

@@ -85,9 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\202008190240109_initial.cs" />
-    <Compile Include="Migrations\202008190240109_initial.designer.cs">
-      <DependentUpon>202008190240109_initial.cs</DependentUpon>
+    <Compile Include="Migrations\202008240323215_DbRework-Initial.cs" />
+    <Compile Include="Migrations\202008240323215_DbRework-Initial.designer.cs">
+      <DependentUpon>202008240323215_DbRework-Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MirnoDbContext.cs" />
@@ -118,8 +118,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202008190240109_initial.resx">
-      <DependentUpon>202008190240109_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202008240323215_DbRework-Initial.resx">
+      <DependentUpon>202008240323215_DbRework-Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

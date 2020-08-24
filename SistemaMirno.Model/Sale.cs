@@ -49,6 +49,6 @@ namespace SistemaMirno.Model
         public virtual ICollection<SaleCollection> SaleCollections { get; set; }
 
         [ForeignKey(nameof(Requisition.SaleId))]
-        public virtual Requisition SaleRequisition { get; set; }
+        public virtual ICollection<Requisition> Requisitions { get; set; }
     }
 }

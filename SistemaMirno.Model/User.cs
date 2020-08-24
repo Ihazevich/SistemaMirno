@@ -33,7 +33,7 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the Employee.
         /// </summary>
-        [ForeignKey(nameof(EmployeeId))]
+        [Required]
         public virtual Employee Employee { get; set; }
     }
 }

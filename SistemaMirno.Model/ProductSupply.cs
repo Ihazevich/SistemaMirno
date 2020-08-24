@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public partial class ProductSupply
+    public partial class ProductSupply : ModelBase
     {
         [Required]
         public int Quantity { get; set; }
