@@ -89,7 +89,7 @@
     <Compile Include="IntermediateProduct.cs" />
     <Compile Include="IntermediateWorkOrder.cs" />
     <Compile Include="IntermediateWorkUnit.cs" />
-    <Compile Include="IntermediateWorkUnitMovements.cs" />
+    <Compile Include="IntermediateWorkUnitMovement.cs" />
     <Compile Include="ProductSupply.cs" />
     <Compile Include="ProductPart.cs" />
     <Compile Include="ProductPicture.cs" />

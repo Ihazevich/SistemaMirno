@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public partial class IntermediateWorkUnitMovements : ModelBase
+    public partial class IntermediateWorkUnitMovement : ModelBase
     {
         [Required]
         public int IntermediateProductId { get; set; }

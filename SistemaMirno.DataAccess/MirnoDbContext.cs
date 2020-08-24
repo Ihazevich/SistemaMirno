@@ -72,6 +72,45 @@ namespace SistemaMirno.DataAccess
         public DbSet<HardwareMaintenanceOrder> HardwareMaintenanceOrders { get; set; }
 
         public DbSet<Technician> Technicians { get; set; }
+
+        public DbSet<Provider> Providers { get; set; }
+
+        public DbSet<BuyOrder> BuyOrders { get; set; }
+
+        public DbSet<BuyOrderSupplyUnit> BuyOrderSupplyUnits { get; set; }
+
+        public DbSet<WorkOrder> WorkOrders { get; set; }
+
+        public DbSet<WorkOrderUnit> WorkOrderUnits { get; set; }
+
+        public DbSet<Requisition> Requisitions { get; set; }
+
+        public DbSet<Sale> Sales { get; set; }
+
+        public DbSet<SaleCollection> SaleCollections { get; set; }
+
+        public DbSet<Client> Clients { get; set; }
+
+        public DbSet<ClientCommunication> ClientCommunications { get; set; }
+        
+        public DbSet<DeliveryOrder> DeliveryOrders { get; set; }
+
+        public DbSet<Delivery> Deliveries { get; set; }
+
+        public DbSet<DeliveryUnit> DeliveryUnits { get; set; }
+
+        public DbSet<Vehicle> Vehicles { get; set; }
+
+        public DbSet<VehicleMaintenanceOrder> VehicleMaintenanceOrders { get; set; }
+
+        public DbSet<IntermediateProduct> IntermediateProducts { get; set; }
+
+        public DbSet<IntermediateWorkUnit> IntermediateWorkUnits { get; set; }
+
+        public DbSet<IntermediateWorkOrder> IntermediateWorkOrders { get; set; }
+
+        public DbSet<IntermediateWorkUnitMovement> IntermediateWorkUnitMovements { get; set; }
+
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
