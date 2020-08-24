@@ -28,5 +28,8 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(WorkArea.BranchId))]
         public virtual ICollection<WorkArea> WorkAreas { get; set; } = new HashSet<WorkArea>();
+
+        [Required]
+        public long Cash { get; set; }
     }
 }

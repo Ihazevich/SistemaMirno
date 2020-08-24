@@ -11,24 +11,10 @@ namespace SistemaMirno.Model
     public partial class BuyOrder : ModelBase
     {
         [Required]
-        public DateTime CreationDate { get; set; }
+        public DateTime Date { get; set; }
 
         [Required]
-        public int ResponsibleId { get; set; }
-
-        [ForeignKey(nameof(ResponsibleId))]
-        public virtual Employee Responsible { get; set; }
-
-        [Required]
-        public long Total { get; set; }
-
-        [Required]
-        public int CreatedByUserId { get; set; }
-
-        [ForeignKey(nameof(CreatedByUserId))]
-        public virtual User User { get; set; }
-
-        [Required]
+        [StringLength(100)]
         public string OrderNumber { get; set; }
 
         [Required]
@@ -38,12 +24,15 @@ namespace SistemaMirno.Model
         public virtual Provider Provider { get; set; }
 
         [Required]
-        public bool IsPaid { get; set; }
+        public long Total { get; set; }
 
-        [ForeignKey(nameof(Hardware.BuyOrderId))]
-        public virtual ICollection<Hardware> HardwareUnits { get; set; } = new HashSet<Hardware>();
+        [Required]
+        public int EmployeeId { get; set; }
 
-        [ForeignKey(nameof(BuyOrderSupplyUnit.BuyOrderId))]
-        public virtual ICollection<BuyOrderSupplyUnit> SupplyUnits { get; set; } = new HashSet<BuyOrderSupplyUnit>();
+        [ForeignKey(nameof(EmployeeId))]
+        public virtual Employee Employee { get; set; }
+
+        [ForeignKey(nameof(BuyOrderUnit.BuyOrderId))]
+        public virtual ICollection<BuyOrderUnit> BuyOrderUnits { get; set; } = new HashSet<BuyOrderUnit>();
     }
 }

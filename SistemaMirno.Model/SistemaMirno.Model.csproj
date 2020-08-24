@@ -77,9 +77,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bank.cs" />
+    <Compile Include="BankAccount.cs" />
+    <Compile Include="BankAccountMovement.cs" />
     <Compile Include="BuyOrder.cs" />
-    <Compile Include="BuyOrderSupplyUnit.cs" />
+    <Compile Include="BuyOrderUnit.cs" />
+    <Compile Include="CreditCard.cs" />
+    <Compile Include="CreditCardPayment.cs" />
+    <Compile Include="Purchase.cs" />
     <Compile Include="ClientCommunication.cs" />
+    <Compile Include="DatedCheck.cs" />
     <Compile Include="Delivery.cs" />
     <Compile Include="DeliveryOrder.cs" />
     <Compile Include="DeliveryUnit.cs" />
@@ -99,8 +106,6 @@
     <Compile Include="Supply.cs" />
     <Compile Include="SupplyCategory.cs" />
     <Compile Include="SupplyMovement.cs" />
-    <Compile Include="SupplyWithdrawOrder.cs" />
-    <Compile Include="SupplyWithdrawOrderUnit.cs" />
     <Compile Include="Technician.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="VehicleMaintenanceOrder.cs" />

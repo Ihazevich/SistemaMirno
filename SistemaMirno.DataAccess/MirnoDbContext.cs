@@ -60,11 +60,7 @@ namespace SistemaMirno.DataAccess
         public DbSet<SupplyCategory> SupplyCategories { get; set; }
 
         public DbSet<SupplyMovement> SupplyMovements { get; set; }
-
-        public DbSet<SupplyWithdrawOrder> SupplyWithdrawOrders { get; set; }
-
-        public DbSet<SupplyWithdrawOrderUnit> SupplyWithdrawOrderUnits { get; set; }
-
+        
         public DbSet<Hardware> Hardwares { get; set; }
 
         public DbSet<HardwareCategory> HardwareCategories { get; set; }
@@ -75,10 +71,8 @@ namespace SistemaMirno.DataAccess
 
         public DbSet<Provider> Providers { get; set; }
 
-        public DbSet<BuyOrder> BuyOrders { get; set; }
-
-        public DbSet<BuyOrderSupplyUnit> BuyOrderSupplyUnits { get; set; }
-
+        public DbSet<Purchase> Purchases { get; set; }
+        
         public DbSet<WorkOrder> WorkOrders { get; set; }
 
         public DbSet<WorkOrderUnit> WorkOrderUnits { get; set; }
@@ -114,6 +108,20 @@ namespace SistemaMirno.DataAccess
         public DbSet<Invoice> Invoices { get; set; }
 
         public DbSet<InvoiceUnit> InvoiceUnits { get; set; }
+
+        public DbSet<Bank> Banks { get; set; }
+
+        public DbSet<BankAccount> BankAccounts { get; set; }
+
+        public DbSet<BankAccountMovement> BankAccountMovements { get; set; }
+
+        public DbSet<DatedCheck> DatedChecks { get; set; }
+
+        public DbSet<BuyOrder> BuyOrders { get; set; }
+
+        public DbSet<BuyOrderUnit> BuyOrderUnits { get; set; }
+
+        public DbSet<CreditCard> CreditCards { get; set; }
 
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

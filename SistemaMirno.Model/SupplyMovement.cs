@@ -20,6 +20,10 @@ namespace SistemaMirno.Model
         public virtual Supply Supply { get; set; }
 
         [Required]
+        [StringLength(200)]
+        public string Description { get; set; }
+
+        [Required]
         public int InQuantity { get; set; }
 
         [Required]

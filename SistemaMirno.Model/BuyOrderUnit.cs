@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
-    public partial class BuyOrderSupplyUnit : ModelBase
+    public partial class BuyOrderUnit : ModelBase
     {
         [Required]
         public int BuyOrderId { get; set; }
@@ -20,15 +20,22 @@ namespace SistemaMirno.Model
         public int Quantity { get; set; }
 
         [Required]
-        public int SupplyId { get; set; }
+        public int Description { get; set; }
+
+        [Required]
+        public long Price { get; set; }
+
+        [Required]
+        public long Total { get; set; }
+
+        public int? SupplyId { get; set; }
 
         [ForeignKey(nameof(SupplyId))]
         public virtual Supply Supply { get; set; }
 
-        [Required]
-        public long IndividualPrice { get; set; }
+        public int? HardwareId { get; set; }
 
-        [Required]
-        public long Total { get; set; }
+        [ForeignKey(nameof(HardwareId))]
+        public virtual Hardware Hardware { get; set; }
     }
 }
