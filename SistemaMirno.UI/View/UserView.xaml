@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid >
@@ -50,7 +51,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <ProgressBar Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" IsIndeterminate="True" Width="250" Height="30"/>
+        <mah:ProgressRing Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" Width="250" Height="30"/>
         <ContentControl Grid.Row="3" Content="{Binding UserDetailViewModel}" Margin="5" />
     </Grid>
 </UserControl>

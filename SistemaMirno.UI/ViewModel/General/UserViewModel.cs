@@ -47,6 +47,14 @@ namespace SistemaMirno.UI.ViewModel.General
 
             Users = new ObservableCollection<UserWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
+
+            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
+                .Subscribe(CloseDetailView);
+        }
+
+        private void CloseDetailView()
+        {
+            UserDetailViewModel = null;
         }
 
         /// <summary>
@@ -146,7 +154,8 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             UserDetailViewModel = _userDetailViewModelCreator();
-            UserDetailViewModel.CreateNew();
+            UserDetailViewModel.IsNew = true;
+            UserDetailViewModel.LoadAsync();
         }
     }
 }

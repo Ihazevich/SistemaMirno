@@ -60,11 +60,7 @@ namespace SistemaMirno.Model
         [StringLength(30)]
         public string Profession { get; set; }
 
-        [Required]
-        public int RoleId { get; set; }
-
-        [ForeignKey(nameof(RoleId))]
-        public virtual Role Role { get; set; }
+        public virtual ICollection<Role> Roles { get; set; } = new HashSet<Role>();
 
         [Required]
         public long BaseSalary { get; set; }

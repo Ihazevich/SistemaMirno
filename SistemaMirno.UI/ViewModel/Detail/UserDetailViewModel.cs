@@ -8,6 +8,7 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
@@ -64,7 +65,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             User.Password = User.GetPasswordHash(User.Password);
             _userRepository.SaveAsync(User.Model);
             HasChanges = false;
-            RaiseDataModelSavedEvent(User.Model);
+            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
+                .Publish();
         }
 
         /// <inheritdoc/>
@@ -77,7 +79,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override async void OnDeleteExecute()
         {
             await _userRepository.DeleteAsync(User.Model);
-            RaiseDataModelDeletedEvent(User.Model);
+            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
+                .Publish();
+        }
+
+        protected override void OnCancelExecute()
+        {
+            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
+                .Publish();
         }
 
         private void User_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -96,8 +105,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public override Task LoadAsync()
         {
             User = new UserWrapper();
+            User.PropertyChanged += User_PropertyChanged;
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+            User.Username = string.Empty;
+            User.Password = string.Empty;
+            User.PasswordVerification = string.Empty;
             return null;
         }
-
     }
 }

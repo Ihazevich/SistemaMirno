@@ -33,9 +33,7 @@ namespace SistemaMirno.UI.ViewModel
 
             _dialogCoordinator = dialogCoordinator;
             ExitView = new DelegateCommand(OnExitViewExecute);
-
-            NotifyStatusBar(string.Format("Generando vista ({0})", _name), true);
-
+            
             ProgressVisibility = Visibility.Visible;
             ViewVisibility = Visibility.Collapsed;
         }

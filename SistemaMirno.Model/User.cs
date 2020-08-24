@@ -15,14 +15,17 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Nombre de usuario requerido")]
         public string Username { get; set; }
 
         /// <summary>
         /// Gets or sets the user password.
         /// </summary>
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Contraseña requerida")]
         public string Password { get; set; }
+
+        [NotMapped]
+        public string PasswordVerification { get; set; }
 
         /// <summary>
         /// Gets or sets the Employee Id.

@@ -15,6 +15,8 @@ namespace SistemaMirno.UI.Wrapper
     /// </summary>
     public class UserWrapper : ModelWrapper<User>
     {
+        private string _passwordVerification;
+
         public UserWrapper()
             : base(new User())
         {
@@ -53,6 +55,12 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        public string PasswordVerification
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
         /// <summary>
         /// Gets or sets the User password.
         /// </summary>
@@ -78,7 +86,23 @@ namespace SistemaMirno.UI.Wrapper
                 case nameof(Password):
                     if (Password.Length < 4)
                     {
-                        yield return "La contraseña debe contener al menos 4 caracteres";
+                        yield return "La contraseña debe contener al menos 8 caracteres";
+                    }
+
+                    break;
+
+                case nameof(PasswordVerification):
+                    if (PasswordVerification != Password)
+                    {
+                        yield return "Las contraseñas no coinciden";
+                    }
+
+                    break;
+
+                case nameof(EmployeeId):
+                    if (EmployeeId < 1)
+                    {
+                        yield return "Debe seleccionar un empleado";
                     }
 
                     break;

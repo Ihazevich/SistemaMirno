@@ -9,8 +9,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// </summary>
         bool HasChanges { get; }
 
-        Task LoadDetailAsync(int id);
+        bool IsNew { get; set; }
 
-        void CreateNew();
+        Task LoadDetailAsync(int id);
     }
 }

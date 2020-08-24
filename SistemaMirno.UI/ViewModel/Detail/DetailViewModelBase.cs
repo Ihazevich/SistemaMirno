@@ -29,7 +29,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _isNew = false;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
-            DeleteCommand = new DelegateCommand(OnDeleteExecute);
+            DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
+            CancelCommand = new DelegateCommand(OnCancelExecute);
+        }
+
+        private bool OnDeleteCanExecute()
+        {
+            return !IsNew;
         }
 
         /// <summary>
@@ -41,6 +47,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// Gets or sets the save command for the view model.
         /// </summary>
         public ICommand DeleteCommand { get; set; }
+
+        public ICommand CancelCommand { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the database context has changes.
@@ -69,18 +77,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
             set
             {
                 _isNew = value;
-                IsNewChanged();
+                ((DelegateCommand)CancelCommand).RaiseCanExecuteChanged();
             }
         }
 
         public virtual Task LoadDetailAsync(int id)
         {
             throw new NotImplementedException();
-        }
-
-        public void CreateNew()
-        {
-            _isNew = true;
         }
 
         protected virtual void RaiseDataModelSavedEvent<T>(T model)
@@ -117,7 +120,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             throw new NotImplementedException();
         }
 
-        protected virtual void IsNewChanged()
+        protected virtual void OnCancelExecute()
         {
             throw new NotImplementedException();
         }

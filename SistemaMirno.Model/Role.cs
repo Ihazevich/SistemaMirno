@@ -44,7 +44,6 @@ namespace SistemaMirno.Model
         [Required]
         public bool IsSystemAdmin { get; set; }
 
-        [ForeignKey(nameof(Employee.RoleId))]
         public virtual ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 
         [ForeignKey(nameof(WorkArea.ResponsibleRoleId))]
