@@ -23,7 +23,7 @@ namespace SistemaMirno.Model
         [Required]
         public long Debt { get; set; }
 
-        [ForeignKey(nameof(CreditCardPayments))]
+        [ForeignKey(nameof(CreditCardPayment.CreditCardId))]
         public virtual ICollection<CreditCardPayment> CreditCardPayments { get; set; } = new HashSet<CreditCardPayment>();
 
         [ForeignKey(nameof(Purchase.CreditCardId))]
