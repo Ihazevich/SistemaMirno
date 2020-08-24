@@ -45,22 +45,23 @@ namespace SistemaMirno.UI.ViewModel.Main
             : base (eventAggregator, "Principal", dialogCoordinator)
         {
             _viewModelCreator = viewModelCreator;
-            _eventAggregator.GetEvent<ChangeViewEvent>()
+            EventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(ChangeView);
-            _eventAggregator.GetEvent<NewWorkOrderEvent>()
+            EventAggregator.GetEvent<NewWorkOrderEvent>()
                 .Subscribe(NewMoveWorkOrder);
-            _eventAggregator.GetEvent<UserChangedEvent>()
+            EventAggregator.GetEvent<UserChangedEvent>()
                 .Subscribe(UserChanged);
-            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Subscribe(ChangeNavigationStatus);
-            _eventAggregator.GetEvent<ExitApplicationEvent>()
+            EventAggregator.GetEvent<ExitApplicationEvent>()
                 .Subscribe(ExitApplication);
-            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
+            EventAggregator.GetEvent<NotifyStatusBarEvent>()
                 .Subscribe(UpdateStatusBar, ThreadOption.UIThread);
-            _eventAggregator.GetEvent<ShowDialogEvent>()
+            EventAggregator.GetEvent<ShowDialogEvent>()
                 .Subscribe(ShowDialog, ThreadOption.UIThread);
 
             ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute);
+            CloseUserSessionCommand = new DelegateCommand(OnCloseUserSessionExecute);
             CloseApplicationCommand = new DelegateCommand(OnCloseApplicationExecute);
 
             ShowLoginView();
@@ -126,7 +127,6 @@ namespace SistemaMirno.UI.ViewModel.Main
             UserLoggedIn = true;
             NavigationStatus = true;
             Username = args.Username;
-            UserAccessLevel = args.AccessLevel;
 
             NavigationViewModel = _viewModelCreator[nameof(WorkAreaNavigationViewModel)];
             SelectedViewModel = null;
@@ -249,6 +249,8 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// </summary>
         public ICommand CloseApplicationCommand { get; set; }
 
+        public ICommand CloseUserSessionCommand { get; set; }
+
         public override async Task LoadAsync()
         {
             NavigationViewModel.LoadAsync();
@@ -264,7 +266,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             NotifyStatusBar("Cambiando de vista", true);
             SelectedViewModel = _viewModelCreator[args.ViewModel];
             SelectedViewModel.LoadAsync();
-            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Publish(false);
             ClearStatusBar();
         }
@@ -281,13 +283,22 @@ namespace SistemaMirno.UI.ViewModel.Main
         private void ShowLoginView()
         {
             SelectedViewModel = _viewModelCreator[nameof(LoginViewModel)];
-            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Publish(false);
         }
 
         public async void ShowDialog(ShowDialogEventArgs args)
         {
             await DialogCoordinator.ShowMessageAsync(this,args.Title, args.Message);
+        }
+
+        private void OnCloseUserSessionExecute()
+        {
+            UserLoggedIn = false;
+            Username = null;
+            SelectedViewModel = null;
+
+            ShowLoginView();
         }
     }
 }

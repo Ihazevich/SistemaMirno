@@ -20,9 +20,8 @@ namespace SistemaMirno.UI.ViewModel.Main
     public class LoginViewModel : ViewModelBase, ILoginViewModel
     {
         private IUserRepository _userRepository;
-        private IUserRepository _userRepositoryCreator;
         private UserWrapper _user;
-        private bool _hasChanges;
+        private bool _notBusy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
@@ -45,19 +44,33 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             // Trigger validation.
             User.Username = string.Empty;
+            NotBusy = true;
 
             ViewVisibility = System.Windows.Visibility.Visible;
             ClearStatusBar();
         }
 
+        public bool NotBusy
+        {
+            get => _notBusy;
+
+            set
+            {
+                _notBusy = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void OnCancelExecute()
         {
-            _eventAggregator.GetEvent<ExitApplicationEvent>()
+            EventAggregator.GetEvent<ExitApplicationEvent>()
                 .Publish();
         }
 
         private async void OnLoginExecute(object o)
         {
+            NotBusy = false;
+
             NotifyStatusBar("Verificando usuario", true);
 
             var passwordBox = (o as System.Windows.Controls.PasswordBox);
@@ -67,6 +80,8 @@ namespace SistemaMirno.UI.ViewModel.Main
             await Task.Run(CheckUser);
 
             ClearStatusBar();
+
+            NotBusy = true;
         }
 
         private bool CanLoginExecute(object o)
@@ -78,9 +93,9 @@ namespace SistemaMirno.UI.ViewModel.Main
         {
             if (User.Password == "konami")
             {
-                _eventAggregator.GetEvent<UserChangedEvent>()
+                EventAggregator.GetEvent<UserChangedEvent>()
                     .Publish(new UserChangedEventArgs { Username = User.Username, AccessLevel = 0 });
-                _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                     .Publish(true);
 
                 return;
@@ -92,17 +107,17 @@ namespace SistemaMirno.UI.ViewModel.Main
             {
                 if (user.Password == User.GetPasswordHash(User.Password))
                 {
-                    _eventAggregator.GetEvent<UserChangedEvent>()
+                    EventAggregator.GetEvent<UserChangedEvent>()
                         .Publish(new UserChangedEventArgs { Username = User.Username });
-                    _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                    EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                         .Publish(true);
-                    _eventAggregator.GetEvent<NotifyStatusBarEvent>()
+                    EventAggregator.GetEvent<NotifyStatusBarEvent>()
                         .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
                 }
             }
             else
             {
-                _eventAggregator.GetEvent<ShowDialogEvent>()
+                EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
                     {
                         Message = "Usuario no existe",

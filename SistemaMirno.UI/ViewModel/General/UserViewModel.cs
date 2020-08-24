@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
@@ -13,7 +14,6 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.Wrapper;
 using MessageDialogResult = SistemaMirno.UI.View.Services.MessageDialogResult;
@@ -26,7 +26,6 @@ namespace SistemaMirno.UI.ViewModel.General
     public class UserViewModel : ViewModelBase, IUserViewModel
     {
         private IUserRepository _userRepository;
-        private IMessageDialogService _messageDialogService;
         private UserWrapper _selectedUser;
         private IUserDetailViewModel _userDetailViewModel;
         private Func<IUserDetailViewModel> _userDetailViewModelCreator;
@@ -45,13 +44,9 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             _userDetailViewModelCreator = userDetailViewModelCreator;
             _userRepository = userRepository;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<User>>()
-                .Subscribe(AfterUserSaved);
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<User>>()
-                .Subscribe(AfterUserDeleted);
 
             Users = new ObservableCollection<UserWrapper>();
-            CreateNewUserCommand = new DelegateCommand(OnCreateNewUserExecute);
+            CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
         }
 
         /// <summary>
@@ -100,7 +95,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Gets the create new user command.
         /// </summary>
-        public ICommand CreateNewUserCommand { get; }
+        public ICommand CreateNewCommand { get; }
 
         /// <summary>
         /// Loads the view model asynchronously from the data service.
@@ -109,72 +104,45 @@ namespace SistemaMirno.UI.ViewModel.General
         public override async Task LoadAsync()
         {
             Users.Clear();
-            var users = await _userRepository.GetAllAsync();
+            
+            var users = await Task.Run(() => _userRepository.GetAllAsync());
             foreach (var user in users)
             {
                 Users.Add(new UserWrapper(user));
             }
+
+            ProgressVisibility = Visibility.Collapsed;
+            ViewVisibility = Visibility.Visible;
         }
 
         private async void UpdateDetailViewModel(int id)
         {
             if (UserDetailViewModel != null && UserDetailViewModel.HasChanges)
             {
-                var result = _messageDialogService.ShowOkCancelDialog(
-                    "Ha realizado cambios que no han sido guardados, estos cambios seran perdidos. ¿Esta seguro?",
-                    "Pregunta");
-                if (result == MessageDialogResult.Cancel)
-                {
-                    return;
-                }
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = "Guarde o descarte los cambios antes de salir",
+                        Title = "Advertencia",
+                    });
+                return;
             }
 
             UserDetailViewModel = _userDetailViewModelCreator();
             UserDetailViewModel.LoadDetailAsync(id);
         }
-
-        /// <summary>
-        /// Reloads the view model based on the parameter string.
-        /// </summary>
-        /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterUserSaved(AfterDataModelSavedEventArgs<User> args)
-        {
-            var item = Users.SingleOrDefault(c => c.Id == args.Model.Id);
-
-            if (item == null)
-            {
-                Users.Add(new UserWrapper(args.Model));
-                UserDetailViewModel = null;
-            }
-            else
-            {
-                item.Username = args.Model.Username;
-            }
-        }
-
-        private void AfterUserDeleted(AfterDataModelDeletedEventArgs<User> args)
-        {
-            var item = Users.SingleOrDefault(m => m.Id == args.Model.Id);
-
-            if (item != null)
-            {
-                Users.Remove(item);
-            }
-
-            UserDetailViewModel = null;
-        }
-
-        private void OnCreateNewUserExecute()
+        
+        private void OnCreateNewExecute()
         {
             if (UserDetailViewModel != null && UserDetailViewModel.HasChanges)
             {
-                var result = _messageDialogService.ShowOkCancelDialog(
-                    "Ha realizado cambios que no han sido guardados, estos cambios seran perdidos. ¿Esta seguro?",
-                    "Pregunta");
-                if (result == MessageDialogResult.Cancel)
-                {
-                    return;
-                }
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = "Guarde o descarte los cambios antes de salir",
+                        Title = "Advertencia",
+                    });
+                return;
             }
 
             UserDetailViewModel = _userDetailViewModelCreator();

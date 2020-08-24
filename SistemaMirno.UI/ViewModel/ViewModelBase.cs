@@ -20,7 +20,7 @@ namespace SistemaMirno.UI.ViewModel
     /// </summary>
     public abstract class ViewModelBase : IViewModelBase, INotifyPropertyChanged
     {
-        protected IEventAggregator _eventAggregator;
+        private readonly IEventAggregator _eventAggregator;
         private Visibility _viewVisibility;
         private Visibility _progressVisibility;
         private string _name;
@@ -41,6 +41,7 @@ namespace SistemaMirno.UI.ViewModel
         }
 
         protected IDialogCoordinator DialogCoordinator => _dialogCoordinator;
+        protected IEventAggregator EventAggregator => _eventAggregator;
 
         public Visibility ViewVisibility
         {

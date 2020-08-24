@@ -85,13 +85,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected virtual void RaiseDataModelSavedEvent<T>(T model)
         {
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<T>>()
+            EventAggregator.GetEvent<AfterDataModelSavedEvent<T>>()
                 .Publish(new AfterDataModelSavedEventArgs<T> { Model = model });
         }
 
         protected virtual void RaiseDataModelDeletedEvent<T>(T model)
         {
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<T>>()
+            EventAggregator.GetEvent<AfterDataModelDeletedEvent<T>>()
                 .Publish(new AfterDataModelDeletedEventArgs<T> { Model = model });
         }
 

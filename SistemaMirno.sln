@@ -40,4 +40,7 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3891BA12-BF63-4A3B-8A86-4BCF69D10598}
 	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\SistemaMirno.ndproj"
+	EndGlobalSection
 EndGlobal

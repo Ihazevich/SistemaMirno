@@ -57,6 +57,7 @@
                     <MenuItem Header="Metodos de pago" Command="{Binding ChangeViewCommand}" CommandParameter="PaymentMethodViewModel"/>
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="Cerrar sesion de usuario" Command="{Binding CloseUserSessionCommand}" IsEnabled="{Binding NavigationStatus}"/>
             <MenuItem Header="Salir del sistema" Command="{Binding CloseApplicationCommand}" IsEnabled="{Binding NavigationStatus}"/>
         </Menu>
         <Grid>

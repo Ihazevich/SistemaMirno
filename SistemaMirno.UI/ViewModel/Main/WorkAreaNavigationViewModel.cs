@@ -29,11 +29,11 @@ namespace SistemaMirno.UI.ViewModel.Main
             IDialogCoordinator dialogCoordinator)
             : base (eventAggregator, "Navegacion", dialogCoordinator)
         {
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
+            EventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaSaved);
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
+            EventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaDeleted);
-            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Subscribe(ChangeNavigation);
         }
 

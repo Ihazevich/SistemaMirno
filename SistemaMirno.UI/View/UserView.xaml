@@ -6,37 +6,51 @@
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Label Content="Usuarios" FontSize="30" />
-        <Separator Grid.Row="1" Grid.ColumnSpan="2" />
-        <ListView Grid.Row="2"
-                  ItemsSource="{Binding Users}"
-                  SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-                  Margin="20">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}" FontSize="15" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <StackPanel  Orientation="Horizontal">
+        <Separator Grid.Row="1"/>
+        <Grid Grid.Row="2" Visibility="{Binding ViewVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
                 <Button Content="Añadir nuevo usuario"
-                        Width="180" Height="30" Margin="10"
-                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
-                        Command="{Binding CreateNewUserCommand}" />
-                <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
+                        Command="{Binding CreateNewCommand}"
+                        Width="250" 
+                        Margin="10" />
+                <Button Content="Salir" 
+                        Command="{Binding ExitView}"
+                        Width="250" 
+                        Margin="10" />
             </StackPanel>
-            <ContentControl Content="{Binding UserDetailViewModel}" Margin="5" />
-        </StackPanel>
+            <DataGrid Grid.Column="1" 
+                      ItemsSource="{Binding Users, Mode=TwoWay}"
+                      SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      SelectionMode="Single"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Usuario" Binding="{Binding Username}"/>
+                    <DataGridTextColumn Header="Empleado" Binding="{Binding Employee.FullName}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Ventas" Binding="{Binding Employee.Role.HasAccessToSales}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Produccion" Binding="{Binding Employee.Role.HasAccessToProduction}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Recursos Humanos" Binding="{Binding Employee.Role.HasAccessToHumanResources}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Contabilidad" Binding="{Binding Employee.Role.HasAccessToAccounting}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Logistica" Binding="{Binding Employee.Role.HasAccessToLogistics}"/>
+                    <DataGridCheckBoxColumn Header="Es Administrador de Sistema" Binding="{Binding Employee.Role.IsSystemAdmin}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <ProgressBar Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" IsIndeterminate="True" Width="250" Height="30"/>
+        <ContentControl Grid.Row="3" Content="{Binding UserDetailViewModel}" Margin="5" />
     </Grid>
 </UserControl>
