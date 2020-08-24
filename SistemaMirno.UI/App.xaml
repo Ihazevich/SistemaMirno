@@ -22,95 +22,11 @@
             <DataTemplate DataType="{x:Type mainviewmodel:LoginViewModel}">
                 <view:LoginView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:WorkAreaViewModel}">
-                <view:WorkAreaView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:WorkAreaDetailViewModel}">
-                <view:WorkAreaDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:MaterialViewModel}">
-                <view:MaterialView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:MaterialDetailViewModel}">
-                <view:MaterialDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:ColorViewModel}">
-                <view:ColorView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:ColorDetailViewModel}">
-                <view:ColorDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:ProductCategoryViewModel}">
-                <view:ProductCategoryView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:ProductCategoryDetailViewModel}">
-                <view:ProductCategoryDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:ProductViewModel}">
-                <view:ProductView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:ProductDetailViewModel}">
-                <view:ProductDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:EmployeeViewModel}">
-                <view:EmployeeView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:EmployeeDetailViewModel}">
-                <view:EmployeeDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:EmployeeRoleViewModel}">
-                <view:EmployeeRoleView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:EmployeeRoleDetailViewModel}">
-                <view:EmployeeRoleDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:WorkUnitViewModel}">
-                <view:WorkUnitView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:WorkOrderViewModel}">
-                <view:WorkOrderView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:WorkOrderDetailViewModel}">
-                <view:WorkOrderDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:AreaConnectionViewModel}">
-                <view:AreaConnectionView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:AreaConnectionDetailViewModel}">
-                <view:AreaConnectionDetailView />
-            </DataTemplate>
             <DataTemplate DataType="{x:Type generalviewmodel:UserViewModel}">
                 <view:UserView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type detailviewmodel:UserDetailViewModel}">
                 <view:UserDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:ClientViewModel}">
-                <view:ClientView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:ClientDetailViewModel}">
-                <view:ClientDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:PaymentMethodViewModel}">
-                <view:PaymentMethodView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:PaymentMethodDetailViewModel}">
-                <view:PaymentMethodDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:RequisitionViewModel}">
-                <view:RequisitionView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:RequisitionDetailViewModel}">
-                <view:RequisitionDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:SaleViewModel}">
-                <view:SalesView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type detailviewmodel:SaleDetailViewModel}">
-                <view:SaleDetailView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type generalviewmodel:StockViewModel}">
-                <view:StockView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type reportsviewmodel:InProcessByWorkAreasViewModel}">
                 <reportsview:InProcessByWorkAreasView />

@@ -1,31 +1,41 @@
-﻿// <copyright file="UserRepository.cs" company="HazeLabs">
-// Copyright (c) HazeLabs. All rights reserved.
-// </copyright>
-
+﻿using SistemaMirno.DataAccess;
+using SistemaMirno.Model;
+using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
-using SistemaMirno.DataAccess;
-using SistemaMirno.Model;
+using SistemaMirno.UI.View.Services;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
-    /// <summary>
-    /// A class representing the data repository of the user data.
-    /// </summary>
     public class UserRepository : GenericRepository<User, MirnoDbContext>, IUserRepository
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRepository"/> class.
-        /// </summary>
-        /// <param name="context">The database context.</param>
-        public UserRepository(MirnoDbContext context)
-            : base(context)
+        public UserRepository(MirnoDbContext context, IMessageDialogService dialogService) 
+            : base(context, dialogService)
         {
         }
 
-        public async Task<User> GetByNameAsync(string name)
+        public async Task<User> GetByUsernameAsync(string username)
         {
-            return await Context.Users.SingleOrDefaultAsync(u => u.Username == name);
+            try
+            {
+                return await Context.Users.SingleOrDefaultAsync(u => u.Username == username);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Throw if more than one user with the same username is found
+                DialogService.ShowOkDialog(
+                    "Mas de un usuario con el mismo nombre encontrado, contacte al Administrador del Sistema.",
+                    "Error");
+                throw;
+            }
+            catch (Exception e)
+            {
+                DialogService.ShowOkDialog(
+                    $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    "Error");
+                throw;
+            }
         }
+
     }
 }

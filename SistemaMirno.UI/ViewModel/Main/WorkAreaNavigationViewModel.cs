@@ -16,9 +16,6 @@ namespace SistemaMirno.UI.ViewModel.Main
     /// </summary>
     public class WorkAreaNavigationViewModel : ViewModelBase, IWorkAreaNavigationViewModel
     {
-        private IWorkAreaRepository _productionAreaRepository;
-        private WorkAreaWrapper _selectedWorkArea;
-
         private bool _navigationEnabled = true;
 
         /// <summary>
@@ -27,12 +24,9 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <param name="productionAreaRepository">A <see cref="IWorkAreaRepository"/> representing the model repository.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> representing the event aggregator.</param>
         public WorkAreaNavigationViewModel(
-            IWorkAreaRepository productionAreaRepository,
             IEventAggregator eventAggregator)
             : base (eventAggregator, "Navegacion")
         {
-            _productionAreaRepository = productionAreaRepository;
-            WorkAreas = new ObservableCollection<WorkAreaWrapper>();
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<WorkArea>>()
@@ -57,13 +51,14 @@ namespace SistemaMirno.UI.ViewModel.Main
             NavigationEnabled = arg;
             if (arg)
             {
-                SelectedWorkArea = null;
+                //SelectedWorkArea = null;
             }
         }
 
         /// <summary>
         /// Gets or sets the selected work area.
         /// </summary>
+        /*
         public WorkAreaWrapper SelectedWorkArea
         {
             get
@@ -99,20 +94,12 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
-        /// <summary>
-        /// Gets the production areas stored in the view model.
-        /// </summary>
-        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
+        */
+
 
         /// <inheritdoc/>
-        public override async Task LoadAsync(int? id)
+        public override async Task LoadAsync()
         {
-            var productionAreas = await _productionAreaRepository.GetAllAsync();
-            WorkAreas.Clear();
-            foreach (var area in productionAreas)
-            {
-                WorkAreas.Add(new WorkAreaWrapper(area));
-            }
         }
 
         /// <summary>
@@ -121,26 +108,28 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <param name="viewModel">Name of the view model to be reloaded.</param>
         private void AfterWorkAreaSaved(AfterDataModelSavedEventArgs<WorkArea> args)
         {
+            /*
             var item = WorkAreas.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item == null)
             {
-                WorkAreas.Add(new WorkAreaWrapper(args.Model));
+                //WorkAreas.Add(new WorkAreaWrapper(args.Model));
             }
             else
             {
                 item.Name = args.Model.Name;
-            }
+            }*/
         }
 
         private void AfterWorkAreaDeleted(AfterDataModelDeletedEventArgs<WorkArea> args)
         {
+            /*
             var item = WorkAreas.SingleOrDefault(p => p.Id == args.Model.Id);
 
             if (item != null)
             {
                 WorkAreas.Remove(item);
-            }
+            }*/
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
+using SistemaMirno.UI.View.Services;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
@@ -21,12 +22,16 @@ namespace SistemaMirno.UI.Data.Repositories
     {
         private readonly DbSet<TEntity> _table;
         private readonly TContext _db;
+        private readonly IMessageDialogService _dialogService;
 
-        protected GenericRepository(TContext context)
+        protected GenericRepository(TContext context, IMessageDialogService dialogService)
         {
             _db = context;
             _table = _db.Set<TEntity>();
+            _dialogService = dialogService;
         }
+
+        protected IMessageDialogService DialogService => _dialogService;
 
         protected TContext Context => _db;
 
@@ -43,23 +48,35 @@ namespace SistemaMirno.UI.Data.Repositories
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                throw;
+                _dialogService.ShowOkDialog(
+                    "Error de concurrencia al intentar guardar a la base de datos. Ya fue modificado por otro usuario.",
+                    "Error");
+                return -1;
             }
             catch (DbUpdateException ex)
             {
-                throw;
+                _dialogService.ShowOkDialog(
+                    "Error al intentar guardar a la base de datos. Contacte al Administrador de Sistema.",
+                    "Error");
+                return -1;
             }
             catch (CommitFailedException ex)
             {
-                throw;
+                _dialogService.ShowOkDialog(
+                    "Erroral ejecutar la transaccion con la base de datos. Contacte al Administrador de Sistema.",
+                    "Error");
+                return -1;
             }
             catch (Exception ex)
             {
-                throw;
+                _dialogService.ShowOkDialog(
+                    $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                    "Error");
+                return -1;
             }
         }
 
-        public async Task<TEntity> GetOneAsync(int? id) => await _table.FindAsync(id);
+        public async Task<TEntity> GetByIdAsync(int? id) => await _table.FindAsync(id);
 
         public virtual async Task<List<TEntity>> GetAllAsync() => await _table.ToListAsync();
 
@@ -91,6 +108,11 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             _db.Entry(entity).State = EntityState.Deleted;
             return await SaveChangesAsync();
+        }
+
+        public bool HasChanges()
+        {
+            return Context.ChangeTracker.HasChanges();
         }
     }
 }

@@ -64,7 +64,7 @@ namespace SistemaMirno.UI.ViewModel
 
         public ICommand ExitView { get; }
 
-        public abstract Task LoadAsync(int? id);
+        public abstract Task LoadAsync();
 
         private void OnExitViewExecute()
         {
@@ -95,12 +95,14 @@ namespace SistemaMirno.UI.ViewModel
 
         protected async Task NotifyStatusBar(string message, bool processing)
         {
-            _eventAggregator.GetEvent<NotifyStatusBarEvent>().Publish(new NotifyStatusBarEventArgs { Message = message, Processing = processing });
+            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
+                .Publish(new NotifyStatusBarEventArgs { Message = message, Processing = processing });
         }
 
         protected async Task ClearStatusBar()
         {
-            _eventAggregator.GetEvent<NotifyStatusBarEvent>().Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
+            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
+                .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
         }
     }
 }

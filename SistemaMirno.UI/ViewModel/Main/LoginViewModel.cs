@@ -34,15 +34,14 @@ namespace SistemaMirno.UI.ViewModel.Main
         {
             _userRepository = userRepository;
 
-            LoginCommand = new DelegateCommand(OnLoginExecute, CanLoginExecute);
+            LoginCommand = new DelegateCommand<object>(OnLoginExecute, CanLoginExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute);
 
             User = new UserWrapper(new User());
             User.PropertyChanged += User_PropertyChanged;
 
             // Trigger validation.
-            User.Name = string.Empty;
-            User.Password = string.Empty;
+            User.Username = string.Empty;
 
             ViewVisibility = System.Windows.Visibility.Visible;
             ClearStatusBar();
@@ -54,47 +53,56 @@ namespace SistemaMirno.UI.ViewModel.Main
                 .Publish();
         }
 
-        private async void OnLoginExecute()
+        private async void OnLoginExecute(object o)
         {
-            NotifyStatusBar("Verificando usuario", true);
+            await NotifyStatusBar("Verificando usuario", true);
 
-            await Task.Run(() => CheckUser());
+            var passwordBox = (o as System.Windows.Controls.PasswordBox);
+            User.Password = passwordBox.Password;
+            passwordBox.Clear();
 
-            ClearStatusBar();
+            await CheckUser();
+
+            await ClearStatusBar();
         }
 
-        private bool CanLoginExecute()
+        private bool CanLoginExecute(object o)
         {
-            return User != null && !User.HasErrors;
+            return User != null && User.Username.Length > 3;
         }
 
-        private async void CheckUser()
+        private async Task CheckUser()
         {
             if (User.Password == "konami")
             {
                 _eventAggregator.GetEvent<UserChangedEvent>()
-                    .Publish(new UserChangedEventArgs { Username = User.Name, AccessLevel = 0 });
+                    .Publish(new UserChangedEventArgs { Username = User.Username, AccessLevel = 0 });
                 _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                     .Publish(true);
+
+                return;
             }
 
-            var user = new UserWrapper(await _userRepository.GetByNameAsync(User.Name));
+            var user = new UserWrapper(await _userRepository.GetByUsernameAsync(User.Username));
 
             if (user.Model != null)
             {
                 if (user.Password == User.GetPasswordHash(User.Password))
                 {
                     _eventAggregator.GetEvent<UserChangedEvent>()
-                        .Publish(new UserChangedEventArgs { Username = User.Name });
+                        .Publish(new UserChangedEventArgs { Username = User.Username });
                     _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                         .Publish(true);
                     _eventAggregator.GetEvent<NotifyStatusBarEvent>()
                         .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
                 }
             }
+            else
+            {
+                NotifyStatusBar("Usuario no encontrado", false);
+            }
 
-            User.Name = string.Empty;
-            User.Password = string.Empty;
+            User.Username = string.Empty;
         }
 
         /// <summary>
@@ -115,7 +123,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public ICommand CancelCommand { get; }
 
-        public override Task LoadAsync(int? id)
+        public override Task LoadAsync()
         {
             ViewVisibility = System.Windows.Visibility.Visible;
             return null;
@@ -125,9 +133,8 @@ namespace SistemaMirno.UI.ViewModel.Main
         {
             if (e.PropertyName == nameof(User.HasErrors))
             {
-                ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand<object>)LoginCommand).RaiseCanExecuteChanged();
             }
         }
-
     }
 }

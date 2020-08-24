@@ -105,7 +105,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Loads the view model asynchronously from the data service.
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
-        public override async Task LoadAsync(int? id)
+        public override async Task LoadAsync()
         {
             Users.Clear();
             var users = await _userRepository.GetAllAsync();
@@ -115,12 +115,12 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private async void UpdateDetailViewModel(int? id)
+        private async void UpdateDetailViewModel(int id)
         {
             if (UserDetailViewModel != null && UserDetailViewModel.HasChanges)
             {
                 var result = _messageDialogService.ShowOkCancelDialog(
-                    "Ha realizado cambios, si selecciona otro item estos cambios seran perdidos. ¿Esta seguro?",
+                    "Ha realizado cambios que no han sido guardados, estos cambios seran perdidos. ¿Esta seguro?",
                     "Pregunta");
                 if (result == MessageDialogResult.Cancel)
                 {
@@ -129,7 +129,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             UserDetailViewModel = _userDetailViewModelCreator();
-            UserDetailViewModel.LoadAsync(id);
+            UserDetailViewModel.LoadDetailAsync(id);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
             else
             {
-                item.Name = args.Model.Username;
+                item.Username = args.Model.Username;
             }
         }
 
@@ -165,7 +165,19 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void OnCreateNewUserExecute()
         {
-            UpdateDetailViewModel(null);
+            if (UserDetailViewModel != null && UserDetailViewModel.HasChanges)
+            {
+                var result = _messageDialogService.ShowOkCancelDialog(
+                    "Ha realizado cambios que no han sido guardados, estos cambios seran perdidos. ¿Esta seguro?",
+                    "Pregunta");
+                if (result == MessageDialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            UserDetailViewModel = _userDetailViewModelCreator();
+            UserDetailViewModel.CreateNew();
         }
     }
 }

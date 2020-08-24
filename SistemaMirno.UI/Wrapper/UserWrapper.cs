@@ -15,6 +15,12 @@ namespace SistemaMirno.UI.Wrapper
     /// </summary>
     public class UserWrapper : ModelWrapper<User>
     {
+        public UserWrapper()
+            : base(new User())
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UserWrapper"/> class.
         /// </summary>
@@ -32,7 +38,7 @@ namespace SistemaMirno.UI.Wrapper
         /// <summary>
         /// Gets or sets the User name.
         /// </summary>
-        public string Name
+        public string Username
         {
             get { return GetValue<string>(); }
             set { SetValue(value); }
@@ -61,8 +67,8 @@ namespace SistemaMirno.UI.Wrapper
         {
             switch (propertyName)
             {
-                case nameof(Name):
-                    if (Name.Length < 4)
+                case nameof(Username):
+                    if (Username.Length < 4)
                     {
                         yield return "El nombre de usuario es muy corto.";
                     }
@@ -78,6 +84,7 @@ namespace SistemaMirno.UI.Wrapper
                     break;
             }
         }
+
         public string GetPasswordHash(string password)
         {
             using (var sha1 = new SHA1Managed())

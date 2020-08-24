@@ -24,8 +24,10 @@ namespace SistemaMirno.UI.Data.Repositories
 
         Task<int> DeleteAsync(T entity);
 
-        Task<T> GetOneAsync(int? id);
+        Task<T> GetByIdAsync(int? id);
 
         Task<List<T>> GetAllAsync();
+
+        bool HasChanges();
     }
 }

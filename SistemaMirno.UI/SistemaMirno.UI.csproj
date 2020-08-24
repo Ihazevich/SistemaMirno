@@ -213,42 +213,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\FileHelpers\ProductFileHelper.cs" />
-    <Compile Include="Data\Repositories\IRequisitionRepository.cs" />
-    <Compile Include="Data\Repositories\IClientRepository.cs" />
     <Compile Include="Data\Reports\InProcessReport.cs" />
     <Compile Include="Data\Reports\ProductionReport.cs" />
     <Compile Include="Data\Reports\WorkAreaReport.cs" />
     <Compile Include="Data\Reports\WorkOrderReport.cs" />
     <Compile Include="Data\Reports\WorkUnitReport.cs" />
-    <Compile Include="Data\Repositories\AreaConnectionRepository.cs" />
-    <Compile Include="Data\Repositories\ClientRepository.cs" />
-    <Compile Include="Data\Repositories\EmployeeRepository.cs" />
-    <Compile Include="Data\Repositories\EmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\GenericRepository.cs" />
-    <Compile Include="Data\Repositories\IAreaConnectionRepository.cs" />
-    <Compile Include="Data\Repositories\IEmployeeRepository.cs" />
-    <Compile Include="Data\Repositories\IEmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\IGenericRepository.cs" />
-    <Compile Include="Data\Repositories\IPaymentMethodRepository.cs" />
-    <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
-    <Compile Include="Data\Repositories\ISaleRepository.cs" />
     <Compile Include="Data\Repositories\IUserRepository.cs" />
-    <Compile Include="Data\Repositories\IWorkOrderRepository.cs" />
-    <Compile Include="Data\Repositories\PaymentMethodRepository.cs" />
-    <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
-    <Compile Include="Data\Repositories\RequisitionRepository.cs" />
-    <Compile Include="Data\Repositories\SaleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
-    <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
-    <Compile Include="Data\Repositories\ColorRepository.cs" />
-    <Compile Include="Data\Repositories\IColorRepository.cs" />
-    <Compile Include="Data\Repositories\IMaterialRepository.cs" />
-    <Compile Include="Data\Repositories\IProductRepository.cs" />
-    <Compile Include="Data\Repositories\IWorkUnitRepository.cs" />
-    <Compile Include="Data\Repositories\MaterialRepository.cs" />
-    <Compile Include="Data\Repositories\ProductRepository.cs" />
-    <Compile Include="Data\Repositories\WorkOrderRepository.cs" />
-    <Compile Include="Data\Repositories\WorkUnitRepository.cs" />
     <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
     <Compile Include="Event\AfterDataModelDeletedEventArgs.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
@@ -265,73 +238,21 @@
     <Compile Include="Event\UserChangedEventArgs.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Utilities\DialogCloser.cs" />
-    <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\ClientDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\EmployeeRoleDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IAreaConnectionDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IClientDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IColorDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IEmployeeDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IEmployeeRoleDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IPaymentMethodDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IRequisitionDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\ISaleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\IUserDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IWorkOrderDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\PaymentMethodDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\RequisitionDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\SaleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
-    <Compile Include="ViewModel\General\AreaConnectionViewModel.cs" />
-    <Compile Include="ViewModel\General\ClientViewModel.cs" />
-    <Compile Include="ViewModel\General\ColorViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
-    <Compile Include="ViewModel\Detail\IMaterialDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IWorkAreaDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\WorkAreaDetailViewModel.cs" />
-    <Compile Include="ViewModel\General\EmployeeRoleViewModel.cs" />
-    <Compile Include="ViewModel\General\EmployeeViewModel.cs" />
-    <Compile Include="ViewModel\General\IAreaConnectionViewModel.cs" />
-    <Compile Include="ViewModel\General\IClientViewModel.cs" />
-    <Compile Include="ViewModel\General\IColorViewModel.cs" />
-    <Compile Include="ViewModel\General\IEmployeeRoleViewModel.cs" />
-    <Compile Include="ViewModel\General\IEmployeeViewModel.cs" />
-    <Compile Include="ViewModel\General\IMaterialViewModel.cs" />
-    <Compile Include="ViewModel\General\IProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\IUserViewModel.cs" />
-    <Compile Include="ViewModel\General\IWorkAreaViewModel.cs" />
-    <Compile Include="ViewModel\General\IWorkOrderViewModel.cs" />
-    <Compile Include="ViewModel\General\PaymentMethodViewModel.cs" />
-    <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
-    <Compile Include="ViewModel\General\IProductViewModel.cs" />
-    <Compile Include="ViewModel\General\RequisitionViewModel.cs" />
-    <Compile Include="ViewModel\General\SaleViewModel.cs" />
-    <Compile Include="ViewModel\General\StockViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
-    <Compile Include="ViewModel\General\WorkOrderViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
-    <Compile Include="ViewModel\General\MaterialViewModel.cs" />
-    <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
-    <Compile Include="ViewModel\General\ProductViewModel.cs" />
     <Compile Include="ViewModel\Main\ILoginViewModel.cs" />
     <Compile Include="ViewModel\Main\LoginViewModel.cs" />
     <Compile Include="ViewModel\Reports\InProcessByWorkAreasViewModel.cs" />
     <Compile Include="ViewModel\Reports\ProductionByWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\Main\IWorkAreaNavigationViewModel.cs" />
-    <Compile Include="ViewModel\General\IWorkUnitViewModel.cs" />
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
     <Compile Include="ViewModel\Main\WorkAreaNavigationViewModel.cs" />
-    <Compile Include="ViewModel\General\WorkUnitViewModel.cs" />
     <Compile Include="View\AreaConnectionDetailView.xaml.cs">
       <DependentUpon>AreaConnectionDetailView.xaml</DependentUpon>
     </Compile>
@@ -436,23 +357,8 @@
     <Compile Include="View\WorkUnitView.xaml.cs">
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Wrapper\AreaConnectionWrapper.cs" />
-    <Compile Include="Wrapper\ClientWrapper.cs" />
-    <Compile Include="Wrapper\ColorWrapper.cs" />
-    <Compile Include="Wrapper\EmployeeRoleWrapper.cs" />
-    <Compile Include="Wrapper\EmployeeWrapper.cs" />
-    <Compile Include="Wrapper\MaterialWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
-    <Compile Include="Wrapper\PaymentMethodWrapper.cs" />
-    <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
-    <Compile Include="Wrapper\RequisitionWrapper.cs" />
-    <Compile Include="Wrapper\SaleWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
-    <Compile Include="Wrapper\WorkAreaWrapper.cs" />
-    <Compile Include="Wrapper\ProductWrapper.cs" />
-    <Compile Include="Wrapper\WorkOrderUnitWrapper.cs" />
-    <Compile Include="Wrapper\WorkOrderWrapper.cs" />
-    <Compile Include="Wrapper\WorkUnitWrapper.cs" />
     <Compile Include="Wrapper\WrapperBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -462,7 +368,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\Repositories\IWorkAreaRepository.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

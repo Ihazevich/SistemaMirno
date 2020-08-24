@@ -37,10 +37,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// </summary>
         public UserWrapper User
         {
-            get
-            {
-                return _user;
-            }
+            get => _user;
 
             set
             {
@@ -50,28 +47,20 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         /// <inheritdoc/>
-        public override async Task LoadAsync(int? userId)
+        public override async Task LoadDetailAsync(int userId)
         {
-            var user = userId.HasValue
-                ? await _userRepository.GetByIdAsync(userId.Value)
-                : CreateNewUser();
+            var user = await _userRepository.GetByIdAsync(userId);
 
             User = new UserWrapper(user);
             User.PropertyChanged += User_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-            if (user.Id == 0)
-            {
-                // This triggers the validation.
-                User.Name = string.Empty;
-            }
+            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
         }
 
         /// <inheritdoc/>
         protected override void OnSaveExecute()
         {
             User.Password = User.GetPasswordHash(User.Password);
-            _userRepository.SaveAsync();
+            _userRepository.SaveAsync(User.Model);
             HasChanges = false;
             RaiseDataModelSavedEvent(User.Model);
         }
@@ -85,8 +74,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnDeleteExecute()
         {
-            _userRepository.Remove(User.Model);
-            await _userRepository.SaveAsync();
+            await _userRepository.DeleteAsync(User.Model);
             RaiseDataModelDeletedEvent(User.Model);
         }
 
@@ -103,11 +91,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private User CreateNewUser()
+        public override Task LoadAsync()
         {
-            var user = new User();
-            _userRepository.Add(user);
-            return user;
+            User = new UserWrapper();
+            return null;
         }
+
     }
 }

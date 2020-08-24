@@ -24,8 +24,6 @@ namespace SistemaMirno.UI.ViewModel.Reports
 {
     public class InProcessByWorkAreasViewModel : ViewModelBase
     {
-        private IWorkUnitRepository _workUnitRepository;
-
         private PropertyGroupDescription _workAreaName = new PropertyGroupDescription("WorkArea.Name");
         private PropertyGroupDescription _colorName = new PropertyGroupDescription("Color.Name");
         private PropertyGroupDescription _materialName = new PropertyGroupDescription("Material.Name");
@@ -37,17 +35,12 @@ namespace SistemaMirno.UI.ViewModel.Reports
         private bool _includeClient = false;
 
         public InProcessByWorkAreasViewModel(
-                    IWorkUnitRepository workUnitRepository,
                     IEventAggregator eventAggregator)
             : base (eventAggregator, "En Proceso por Areas de Trabajo")
         {
-            _workUnitRepository = workUnitRepository;
-
-            WorkUnits = new ObservableCollection<WorkUnitWrapper>();
-
             PrintReportCommand = new DelegateCommand(OnPrintReportExecute);
 
-            WorkUnitsCollection = CollectionViewSource.GetDefaultView(WorkUnits);
+            //WorkUnitsCollection = CollectionViewSource.GetDefaultView(WorkUnits);
             WorkUnitsCollection.GroupDescriptions.Add(_workAreaName);
             WorkUnitsCollection.GroupDescriptions.Add(_productName);
             WorkUnitsCollection.GroupDescriptions.Add(_materialName);
@@ -100,23 +93,16 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
         }
 
-        public ObservableCollection<WorkUnitWrapper> WorkUnits { get; set; }
 
         public ICollectionView WorkUnitsCollection { get; set; }
 
-        public override async Task LoadAsync(int? workAreaId)
+        public override async Task LoadAsync()
         {
-            WorkUnits.Clear();
-            var workUnits = await _workUnitRepository.GetWorkUnitsInProcessAsync();
-
-            foreach (var workUnit in workUnits)
-            {
-                WorkUnits.Add(new WorkUnitWrapper(workUnit));
-            }
         }
 
         private async void OnPrintReportExecute()
         {
+            /*
             // Create a new report class to store the report data.
             var inProcessReport = new InProcessReport
             {
@@ -221,6 +207,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
             info.FileName = filename;
 
             Process.Start(info);
+            */
         }
     }
 }

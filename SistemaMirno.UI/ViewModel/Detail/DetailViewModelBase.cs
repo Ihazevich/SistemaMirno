@@ -17,6 +17,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public abstract class DetailViewModelBase : ViewModelBase, IDetailViewModelBase
     {
         private bool _hasChanges;
+        private bool _isNew;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailViewModelBase"/> class.
@@ -25,6 +26,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public DetailViewModelBase(IEventAggregator eventAggregator, string name)
             : base (eventAggregator, name)
         {
+            _isNew = false;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute);
         }
@@ -44,20 +46,40 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// </summary>
         public bool HasChanges
         {
-            get
-            {
-                return _hasChanges;
-            }
+            get => _hasChanges;
 
             set
             {
-                if (_hasChanges != value)
+                if (_hasChanges == value)
                 {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    return;
                 }
+
+                _hasChanges = value;
+                OnPropertyChanged();
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
+        }
+
+        public bool IsNew
+        {
+            get => _isNew;
+
+            set
+            {
+                _isNew = value;
+                IsNewChanged();
+            }
+        }
+
+        public virtual Task LoadDetailAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateNew()
+        {
+            _isNew = true;
         }
 
         protected virtual void RaiseDataModelSavedEvent<T>(T model)
@@ -90,6 +112,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         protected virtual void OnDeleteExecute()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void IsNewChanged()
         {
             throw new NotImplementedException();
         }

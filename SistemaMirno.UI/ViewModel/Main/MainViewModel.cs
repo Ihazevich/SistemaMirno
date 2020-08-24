@@ -64,7 +64,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             _eventAggregator.GetEvent<NotifyStatusBarEvent>()
                 .Subscribe(UpdateStatusBar, ThreadOption.UIThread);
 
-            ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute, ChangeViewCanExecute);
+            ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute);
             CloseApplicationCommand = new DelegateCommand(OnCloseApplicationExecute);
 
             ShowLoginView();
@@ -134,7 +134,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             NavigationViewModel = _viewModelCreator[nameof(WorkAreaNavigationViewModel)];
             SelectedViewModel = null;
 
-            LoadAsync(null);
+            LoadAsync();
         }
 
         /// <summary>
@@ -252,9 +252,9 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// </summary>
         public ICommand CloseApplicationCommand { get; set; }
 
-        public override async Task LoadAsync(int? id)
+        public override async Task LoadAsync()
         {
-            NavigationViewModel.LoadAsync(-1);
+            NavigationViewModel.LoadAsync();
         }
 
         private void OnChangeViewExecute(string viewModel)
@@ -262,32 +262,11 @@ namespace SistemaMirno.UI.ViewModel.Main
             ChangeView(new ChangeViewEventArgs { ViewModel = viewModel, Id = -1 });
         }
 
-        private bool ChangeViewCanExecute(string viewModel = null)
-        {
-            switch (viewModel)
-            {
-                case "Colors":
-                    return !nameof(SelectedViewModel).Equals(nameof(ColorViewModel));
-
-                case "Materials":
-                    return !nameof(SelectedViewModel).Equals(nameof(MaterialViewModel));
-
-                case "ProductionAreas":
-                    return !nameof(SelectedViewModel).Equals(nameof(WorkAreaViewModel));
-
-                case "ProductCategories":
-                    return !nameof(SelectedViewModel).Equals(nameof(ProductCategoryViewModel));
-
-                default:
-                    return true;
-            }
-        }
-
         private void ChangeView(ChangeViewEventArgs args)
         {
             NotifyStatusBar("Cambiando de vista", true);
             SelectedViewModel = _viewModelCreator[args.ViewModel];
-            SelectedViewModel.LoadAsync(args.Id);
+            SelectedViewModel.LoadAsync();
             _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Publish(false);
             ClearStatusBar();
@@ -295,10 +274,11 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private void NewMoveWorkOrder(NewWorkOrderEventArgs args)
         {
+            /*
             ChangeView(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderDetailViewModel), Id = args.DestinationWorkAreaId });
             ((WorkOrderDetailViewModel)SelectedViewModel).CreateNewWorkOrder(args.DestinationWorkAreaId, args.OriginWorkAreaId, args.WorkUnits);
             _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
-                .Publish(false);
+                .Publish(false);*/
         }
 
         private void ShowLoginView()

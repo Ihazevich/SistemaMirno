@@ -8,5 +8,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// Gets a value indicating whether the model has changes.
         /// </summary>
         bool HasChanges { get; }
+
+        Task LoadDetailAsync(int id);
+
+        void CreateNew();
     }
 }
