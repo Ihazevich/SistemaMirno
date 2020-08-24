@@ -2,8 +2,10 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
@@ -13,50 +15,82 @@ namespace SistemaMirno.UI.Data.Repositories
     /// <summary>
     /// A class representing a generic data repository.
     /// </summary>
-    public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
-        where TEntity : ModelBase
+    public class GenericRepository<TEntity, TContext> : IDisposable, IGenericRepository<TEntity>
+        where TEntity : ModelBase, new()
         where TContext : DbContext
     {
-        protected readonly TContext Context;
+        private readonly DbSet<TEntity> _table;
+        private readonly TContext _db;
 
         protected GenericRepository(TContext context)
         {
-            Context = context;
+            _db = context;
+            _table = _db.Set<TEntity>();
         }
 
-        public void Add(TEntity model)
+        protected TContext Context => _db;
+
+        public void Dispose()
         {
-            Context.Set<TEntity>().Add(model);
+            _db?.Dispose();
         }
 
-        public async Task<List<TEntity>> GetAllAsync()
+        internal async Task<int> SaveChangesAsync()
         {
-            return await Context.Set<TEntity>().ToListAsync();
+            try
+            {
+                return await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw;
+            }
+            catch (CommitFailedException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> GetOneAsync(int? id) => await _table.FindAsync(id);
+
+        public virtual async Task<List<TEntity>> GetAllAsync() => await _table.ToListAsync();
+
+        public async Task<int> AddAsync(TEntity entity)
         {
-            return await Context.Set<TEntity>().FindAsync(id);
+            _table.Add(entity);
+            return await SaveChangesAsync();
         }
 
-        public bool HasChanges()
+        public async Task<int> AddRangeAsync(IList<TEntity> entities)
         {
-            return Context.ChangeTracker.HasChanges();
+            _table.AddRange(entities);
+            return await SaveChangesAsync();
         }
 
-        public void Remove(TEntity model)
+        public async Task<int> SaveAsync(TEntity entity)
         {
-            Context.Set<TEntity>().Remove(model);
+            _db.Entry(entity).State = EntityState.Modified;
+            return await SaveChangesAsync();
         }
 
-        public async Task SaveAsync()
+        public async Task<int> DeleteAsync(int id, byte[] timeStamp)
         {
-            await Context.SaveChangesAsync();
+            _db.Entry(new TEntity() {Id = id, Timestamp = timeStamp}).State = EntityState.Deleted;
+            return await SaveChangesAsync();
         }
 
-        public void Save()
+        public async Task<int> DeleteAsync(TEntity entity)
         {
-            Context.SaveChanges();
+            _db.Entry(entity).State = EntityState.Deleted;
+            return await SaveChangesAsync();
         }
     }
 }
