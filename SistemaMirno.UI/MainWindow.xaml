@@ -7,6 +7,8 @@
                  xmlns:local="clr-namespace:SistemaMirno.UI"
                  xmlns:utilities="clr-namespace:SistemaMirno.UI.Utilities"
                  xmlns:view="clr-namespace:SistemaMirno.UI.View"
+                 xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                 Dialog:DialogParticipation.Register="{Binding }"
                  mc:Ignorable="d"
                  Title="{Binding WindowTitle}"
                  Height="450"

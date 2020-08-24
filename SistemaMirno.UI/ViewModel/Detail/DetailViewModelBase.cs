@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
@@ -23,8 +24,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// Initializes a new instance of the <see cref="DetailViewModelBase"/> class.
         /// </summary>
         /// <param name="model">A model wrapper instance of type <see cref="T"/>.</param>
-        public DetailViewModelBase(IEventAggregator eventAggregator, string name)
-            : base (eventAggregator, name)
+        public DetailViewModelBase(IEventAggregator eventAggregator, string name, IDialogCoordinator dialogCoordinator)
+            : base (eventAggregator, name, dialogCoordinator)
         {
             _isNew = false;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);

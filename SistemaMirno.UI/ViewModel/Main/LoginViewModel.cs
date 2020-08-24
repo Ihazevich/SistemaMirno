@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
@@ -19,6 +20,7 @@ namespace SistemaMirno.UI.ViewModel.Main
     public class LoginViewModel : ViewModelBase, ILoginViewModel
     {
         private IUserRepository _userRepository;
+        private IUserRepository _userRepositoryCreator;
         private UserWrapper _user;
         private bool _hasChanges;
 
@@ -29,8 +31,9 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <param name="eventAggregator">The event aggregator.</param>
         public LoginViewModel(
             IUserRepository userRepository,
-            IEventAggregator eventAggregator)
-            : base (eventAggregator, "Login")
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base (eventAggregator, "Login", dialogCoordinator)
         {
             _userRepository = userRepository;
 
@@ -55,15 +58,15 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private async void OnLoginExecute(object o)
         {
-            await NotifyStatusBar("Verificando usuario", true);
+            NotifyStatusBar("Verificando usuario", true);
 
             var passwordBox = (o as System.Windows.Controls.PasswordBox);
             User.Password = passwordBox.Password;
             passwordBox.Clear();
 
-            await CheckUser();
+            await Task.Run(CheckUser);
 
-            await ClearStatusBar();
+            ClearStatusBar();
         }
 
         private bool CanLoginExecute(object o)
@@ -99,7 +102,12 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
             else
             {
-                NotifyStatusBar("Usuario no encontrado", false);
+                _eventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = "Usuario no existe",
+                        Title = "Error",
+                    });
             }
 
             User.Username = string.Empty;

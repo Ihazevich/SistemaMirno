@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using jsreport.Client;
+using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
@@ -35,8 +36,9 @@ namespace SistemaMirno.UI.ViewModel.Reports
         private bool _includeClient = false;
 
         public InProcessByWorkAreasViewModel(
-                    IEventAggregator eventAggregator)
-            : base (eventAggregator, "En Proceso por Areas de Trabajo")
+                    IEventAggregator eventAggregator,
+                    IDialogCoordinator dialogCoordinator)
+            : base (eventAggregator, "En Proceso por Areas de Trabajo", dialogCoordinator)
         {
             PrintReportCommand = new DelegateCommand(OnPrintReportExecute);
 

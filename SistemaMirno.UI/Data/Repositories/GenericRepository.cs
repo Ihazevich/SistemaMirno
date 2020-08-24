@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
+using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.View.Services;
 
@@ -23,15 +24,18 @@ namespace SistemaMirno.UI.Data.Repositories
         private readonly DbSet<TEntity> _table;
         private readonly TContext _db;
         private readonly IMessageDialogService _dialogService;
+        private readonly IEventAggregator _eventAggregator;
 
-        protected GenericRepository(TContext context, IMessageDialogService dialogService)
+        protected GenericRepository(TContext context, IMessageDialogService dialogService, IEventAggregator eventAggregator)
         {
             _db = context;
             _table = _db.Set<TEntity>();
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
         }
 
         protected IMessageDialogService DialogService => _dialogService;
+        protected IEventAggregator EventAggregator => _eventAggregator;
 
         protected TContext Context => _db;
 

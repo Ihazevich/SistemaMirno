@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Event;
@@ -23,12 +24,14 @@ namespace SistemaMirno.UI.ViewModel
         private Visibility _viewVisibility;
         private Visibility _progressVisibility;
         private string _name;
+        private readonly IDialogCoordinator _dialogCoordinator;
 
-        public ViewModelBase(IEventAggregator eventAggregator, string name)
+        public ViewModelBase(IEventAggregator eventAggregator, string name, IDialogCoordinator dialogCoordinator)
         {
             _eventAggregator = eventAggregator;
             _name = name;
 
+            _dialogCoordinator = dialogCoordinator;
             ExitView = new DelegateCommand(OnExitViewExecute);
 
             NotifyStatusBar(string.Format("Generando vista ({0})", _name), true);
@@ -36,6 +39,8 @@ namespace SistemaMirno.UI.ViewModel
             ProgressVisibility = Visibility.Visible;
             ViewVisibility = Visibility.Collapsed;
         }
+
+        protected IDialogCoordinator DialogCoordinator => _dialogCoordinator;
 
         public Visibility ViewVisibility
         {
@@ -93,13 +98,13 @@ namespace SistemaMirno.UI.ViewModel
             }
         }
 
-        protected async Task NotifyStatusBar(string message, bool processing)
+        protected void NotifyStatusBar(string message, bool processing)
         {
             _eventAggregator.GetEvent<NotifyStatusBarEvent>()
                 .Publish(new NotifyStatusBarEventArgs { Message = message, Processing = processing });
         }
 
-        protected async Task ClearStatusBar()
+        protected void ClearStatusBar()
         {
             _eventAggregator.GetEvent<NotifyStatusBarEvent>()
                 .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });

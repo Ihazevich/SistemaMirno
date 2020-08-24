@@ -1,16 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Autofac.Features.Indexed;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.Model;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
-using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.General;
-using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Main
 {
@@ -22,7 +18,6 @@ namespace SistemaMirno.UI.ViewModel.Main
         private IViewModelBase _selectedViewModel;
         private IViewModelBase _navigationViewModel;
         private IIndex<string, IViewModelBase> _viewModelCreator;
-        private IMessageDialogService _messageDialogService;
         private string _windowTitle = $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
         private bool? _dialogResult;
 
@@ -46,11 +41,10 @@ namespace SistemaMirno.UI.ViewModel.Main
         public MainViewModel(
             IIndex<string, IViewModelBase> viewModelCreator,
             IEventAggregator eventAggregator,
-            IMessageDialogService messageDialogService)
-            : base (eventAggregator, "Principal")
+            IDialogCoordinator dialogCoordinator)
+            : base (eventAggregator, "Principal", dialogCoordinator)
         {
             _viewModelCreator = viewModelCreator;
-            _messageDialogService = messageDialogService;
             _eventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(ChangeView);
             _eventAggregator.GetEvent<NewWorkOrderEvent>()
@@ -63,12 +57,15 @@ namespace SistemaMirno.UI.ViewModel.Main
                 .Subscribe(ExitApplication);
             _eventAggregator.GetEvent<NotifyStatusBarEvent>()
                 .Subscribe(UpdateStatusBar, ThreadOption.UIThread);
+            _eventAggregator.GetEvent<ShowDialogEvent>()
+                .Subscribe(ShowDialog, ThreadOption.UIThread);
 
             ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute);
             CloseApplicationCommand = new DelegateCommand(OnCloseApplicationExecute);
 
             ShowLoginView();
         }
+
 
         private void UpdateStatusBar(NotifyStatusBarEventArgs args)
         {
@@ -286,6 +283,11 @@ namespace SistemaMirno.UI.ViewModel.Main
             SelectedViewModel = _viewModelCreator[nameof(LoginViewModel)];
             _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Publish(false);
+        }
+
+        public async void ShowDialog(ShowDialogEventArgs args)
+        {
+            await DialogCoordinator.ShowMessageAsync(this,args.Title, args.Message);
         }
     }
 }

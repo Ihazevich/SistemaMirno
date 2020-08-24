@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
@@ -24,8 +25,9 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <param name="productionAreaRepository">A <see cref="IWorkAreaRepository"/> representing the model repository.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> representing the event aggregator.</param>
         public WorkAreaNavigationViewModel(
-            IEventAggregator eventAggregator)
-            : base (eventAggregator, "Navegacion")
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base (eventAggregator, "Navegacion", dialogCoordinator)
         {
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<WorkArea>>()
                 .Subscribe(AfterWorkAreaSaved);

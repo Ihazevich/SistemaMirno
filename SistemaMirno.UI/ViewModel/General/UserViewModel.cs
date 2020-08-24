@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
@@ -15,6 +16,7 @@ using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.Wrapper;
+using MessageDialogResult = SistemaMirno.UI.View.Services.MessageDialogResult;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
@@ -38,12 +40,11 @@ namespace SistemaMirno.UI.ViewModel.General
             Func<IUserDetailViewModel> userDetailViewModelCreator,
             IUserRepository userRepository,
             IEventAggregator eventAggregator,
-            IMessageDialogService messageDialogService)
-            : base(eventAggregator, "Usuarios")
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Usuarios", dialogCoordinator)
         {
             _userDetailViewModelCreator = userDetailViewModelCreator;
             _userRepository = userRepository;
-            _messageDialogService = messageDialogService;
             _eventAggregator.GetEvent<AfterDataModelSavedEvent<User>>()
                 .Subscribe(AfterUserSaved);
             _eventAggregator.GetEvent<AfterDataModelDeletedEvent<User>>()

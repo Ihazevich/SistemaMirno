@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Threading.Tasks;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
@@ -26,8 +27,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <param name="eventAggregator">The event aggregator.</param>
         public UserDetailViewModel(
             IUserRepository userRepository,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator, "Detalles de Usuario")
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Detalles de Usuario", dialogCoordinator)
         {
             _userRepository = userRepository;
         }

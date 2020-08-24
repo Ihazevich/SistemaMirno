@@ -11,6 +11,7 @@ using System.Windows.Input;
 using jsreport.Client;
 using LiveCharts;
 using LiveCharts.Wpf;
+using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
@@ -33,8 +34,9 @@ namespace SistemaMirno.UI.ViewModel.Reports
         private bool _areaPickerEnabled = false;
 
         public ProductionByWorkAreaViewModel(
-                    IEventAggregator eventAggregator)
-            : base (eventAggregator, "Produccion por Areas de Trabajo")
+                    IEventAggregator eventAggregator,
+                    IDialogCoordinator dialogCoordinator)
+            : base (eventAggregator, "Produccion por Areas de Trabajo", dialogCoordinator)
         {
             PrintReportCommand = new DelegateCommand(OnPrintReportExecute);
 

@@ -3,6 +3,7 @@
 // </copyright>
 
 using Autofac;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
@@ -29,6 +30,7 @@ namespace SistemaMirno.UI
         {
             var builder = new ContainerBuilder();
 
+            builder.RegisterType<DialogCoordinator>().As<IDialogCoordinator>().SingleInstance();
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 
             builder.RegisterType<MirnoDbContext>().AsSelf().SingleInstance();
