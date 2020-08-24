@@ -86,6 +86,10 @@
     <Compile Include="Hardware.cs" />
     <Compile Include="HardwareCategory.cs" />
     <Compile Include="HardwareMaintenanceOrder.cs" />
+    <Compile Include="IntermediateProduct.cs" />
+    <Compile Include="IntermediateWorkOrder.cs" />
+    <Compile Include="IntermediateWorkUnit.cs" />
+    <Compile Include="IntermediateWorkUnitMovements.cs" />
     <Compile Include="ProductSupply.cs" />
     <Compile Include="ProductPart.cs" />
     <Compile Include="ProductPicture.cs" />
@@ -97,6 +101,7 @@
     <Compile Include="SupplyWithdrawOrderUnit.cs" />
     <Compile Include="Technician.cs" />
     <Compile Include="Vehicle.cs" />
+    <Compile Include="VehicleMaintenanceOrder.cs" />
     <Compile Include="WorkAreaConnection.cs" />
     <Compile Include="Assistance.cs" />
     <Compile Include="HistoricalSalary.cs" />
