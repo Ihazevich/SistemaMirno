@@ -3,6 +3,8 @@
 // </copyright>
 
 using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Commands;
@@ -80,10 +82,10 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             if (user.Model != null)
             {
-                if (user.Password == User.Password)
+                if (user.Password == User.GetPasswordHash(User.Password))
                 {
                     _eventAggregator.GetEvent<UserChangedEvent>()
-                        .Publish(new UserChangedEventArgs { Username = User.Name, AccessLevel = User.AccessLevel });
+                        .Publish(new UserChangedEventArgs { Username = User.Name });
                     _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                         .Publish(true);
                     _eventAggregator.GetEvent<NotifyStatusBarEvent>()
@@ -126,5 +128,6 @@ namespace SistemaMirno.UI.ViewModel.Main
                 ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
             }
         }
+
     }
 }

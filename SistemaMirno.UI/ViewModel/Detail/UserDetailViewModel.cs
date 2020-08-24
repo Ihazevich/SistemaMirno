@@ -70,6 +70,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override void OnSaveExecute()
         {
+            User.Password = User.GetPasswordHash(User.Password);
             _userRepository.SaveAsync();
             HasChanges = false;
             RaiseDataModelSavedEvent(User.Model);
