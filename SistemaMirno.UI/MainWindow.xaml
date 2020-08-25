@@ -105,14 +105,14 @@
                     <TextBlock Text="Usuario: "/>
                 </StatusBarItem>
                 <StatusBarItem Grid.Column="1">
-                    <TextBlock Text="{Binding CurrentUser.Username, Mode=TwoWay}"/>
+                    <TextBlock Text="{Binding SessionInfo.User.Username, Mode=TwoWay}"/>
                 </StatusBarItem>
                 <Separator Grid.Column="2" />
                 <StatusBarItem Grid.Column="3">
                     <TextBlock Text="Sucursal: "/>
                 </StatusBarItem>
                 <StatusBarItem Grid.Column="4">
-                    <TextBlock Text="{Binding CurrentBranch.Name, Mode=TwoWay}"/>
+                    <TextBlock Text="{Binding SessionInfo.Branch.Name, Mode=TwoWay}"/>
                 </StatusBarItem>
                 <Separator Grid.Column="5" />
                 <StatusBarItem Grid.Column="6" HorizontalContentAlignment="Center">

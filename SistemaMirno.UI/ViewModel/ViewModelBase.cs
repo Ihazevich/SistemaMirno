@@ -26,6 +26,7 @@ namespace SistemaMirno.UI.ViewModel
         private string _name;
         private readonly IDialogCoordinator _dialogCoordinator;
         private int _dataGridIndex;
+        private SessionInfo _sessionInfo;
 
         public ViewModelBase(IEventAggregator eventAggregator, string name, IDialogCoordinator dialogCoordinator)
         {
@@ -39,8 +40,21 @@ namespace SistemaMirno.UI.ViewModel
             ViewVisibility = Visibility.Collapsed;
             DataGridIndex = -1;
         }
+
         protected IDialogCoordinator DialogCoordinator => _dialogCoordinator;
+
         protected IEventAggregator EventAggregator => _eventAggregator;
+
+        public SessionInfo SessionInfo
+        {
+            get => _sessionInfo;
+
+            set
+            {
+                _sessionInfo = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Visibility ViewVisibility
         {

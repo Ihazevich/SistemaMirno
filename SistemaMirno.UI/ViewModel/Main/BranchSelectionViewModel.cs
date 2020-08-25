@@ -34,6 +34,14 @@ namespace SistemaMirno.UI.ViewModel.Main
             Branches = new ObservableCollection<BranchWrapper>();
             SelectBranchCommand = new DelegateCommand(OnSelectBranchExecute, OnSelectBranchCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute);
+
+            EventAggregator.GetEvent<BroadcastSessionInfoEvent>()
+                .Subscribe(GetSessionInfo);
+        }
+
+        private void GetSessionInfo(SessionInfo obj)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnCancelExecute()

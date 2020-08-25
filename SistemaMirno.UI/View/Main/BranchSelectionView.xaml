@@ -28,7 +28,7 @@
                      SelectionMode="Single">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" FontSize="20" Margin="10"></TextBlock>
+                        <TextBlock Text="{Binding Name}" FontSize="20" Margin="10"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
