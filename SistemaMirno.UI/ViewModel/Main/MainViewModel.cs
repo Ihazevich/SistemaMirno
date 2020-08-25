@@ -19,9 +19,6 @@ namespace SistemaMirno.UI.ViewModel.Main
     {
         #region Fields
 
-
-        private BranchWrapper _currentBranch;
-        private UserWrapper _currentUser;
         private bool? _dialogResult;
         private bool _navigationStatus = true;
         private IViewModelBase _navigationViewModel;
@@ -39,7 +36,6 @@ namespace SistemaMirno.UI.ViewModel.Main
         // Status bar fields
         private string _statusMessage;
 
-        private bool _userLoggedIn = false;
         private IIndex<string, IViewModelBase> _viewModelCreator;
 
         private string _windowTitle =
@@ -79,6 +75,9 @@ namespace SistemaMirno.UI.ViewModel.Main
             EventAggregator.GetEvent<ShowDialogEvent>()
                 .Subscribe(ShowDialog, ThreadOption.UIThread);
 
+            EventAggregator.GetEvent<AskSessionInfoEvent>()
+                .Subscribe(BroadcastSessionInfo);
+
             ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute);
             CloseUserSessionCommand = new DelegateCommand(OnCloseUserSessionExecute);
             CloseApplicationCommand = new DelegateCommand(OnCloseApplicationExecute);
@@ -91,6 +90,12 @@ namespace SistemaMirno.UI.ViewModel.Main
             ProductsVisibility = Visibility.Collapsed;
 
             ShowLoginView();
+        }
+
+        private void BroadcastSessionInfo()
+        {
+            EventAggregator.GetEvent<BroadcastSessionInfoEvent>()
+                .Publish(SessionInfo);
         }
 
         #endregion Constructors
@@ -118,29 +123,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         public ICommand CloseApplicationCommand { get; set; }
 
         public ICommand CloseUserSessionCommand { get; set; }
-
-        public BranchWrapper CurrentBranch
-        {
-            get => _currentBranch;
-
-            set
-            {
-                _currentBranch = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public UserWrapper CurrentUser
-        {
-            get => _currentUser;
-
-            set
-            {
-                _currentUser = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         /// <summary>
         /// Gets or sets the dialog result of the main view.
         /// </summary>
@@ -266,20 +249,6 @@ namespace SistemaMirno.UI.ViewModel.Main
         }
 
         /// <summary>
-        /// Gets or sets if a user is currently logged in.
-        /// </summary>
-        public bool UserLoggedIn
-        {
-            get => _userLoggedIn;
-
-            set
-            {
-                _userLoggedIn = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the main window title.
         /// </summary>
         public string WindowTitle
@@ -309,7 +278,8 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private async void BranchChanged(BranchChangedEventArgs args)
         {
-            CurrentBranch = new BranchWrapper
+            var sessionInfo = SessionInfo;
+            sessionInfo.Branch = new BranchWrapper
             {
                 Name = args.Name,
                 Model =
@@ -317,6 +287,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                     Id = args.BranchId,
                 },
             };
+
+            SessionInfo = sessionInfo;
 
             NavigationStatus = true;
 
@@ -374,8 +346,11 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private void OnCloseUserSessionExecute()
         {
-            UserLoggedIn = false;
-            CurrentUser = null;
+            var sessionInfo = SessionInfo;
+            sessionInfo.UserLoggedIn = false;
+            sessionInfo.User = null;
+            SessionInfo = sessionInfo;
+
             SelectedViewModel = null;
 
             ShowLoginView();
@@ -396,8 +371,9 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private void UserChanged(UserChangedEventArgs args)
         {
-            UserLoggedIn = true;
-            CurrentUser = new UserWrapper
+            var sessionInfo = SessionInfo;
+            sessionInfo.UserLoggedIn = true;
+            sessionInfo.User = new UserWrapper
             {
                 Model =
                 {
@@ -411,6 +387,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                     IsSystemAdmin = args.IsSystemAdmin,
                 },
             };
+
+            SessionInfo = sessionInfo;
 
             AccountingVisibility = args.HasAccessToAccounting ? Visibility.Visible : Visibility.Collapsed;
             ProductionVisibility = args.HasAccessToProduction ? Visibility.Visible : Visibility.Collapsed;

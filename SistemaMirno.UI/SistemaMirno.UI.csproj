@@ -230,8 +230,10 @@
     <Compile Include="Event\AfterDataModelDeletedEventArgs.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
     <Compile Include="Event\AfterDataModelSavedEventArgs.cs" />
+    <Compile Include="Event\AskSessionInfoEvent.cs" />
     <Compile Include="Event\BranchChangedEvent.cs" />
     <Compile Include="Event\BranchChangedEventArgs.cs" />
+    <Compile Include="Event\BroadcastSessionInfoEvent.cs" />
     <Compile Include="Event\ChangeNavigationStatusEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ChangeViewEventArgs.cs" />
@@ -241,6 +243,7 @@
     <Compile Include="Event\NewWorkOrderEventArgs.cs" />
     <Compile Include="Event\NotifyStatusBarEvent.cs" />
     <Compile Include="Event\NotifyStatusBarEventArgs.cs" />
+    <Compile Include="Event\SessionInfo.cs" />
     <Compile Include="Event\ShowDialogEvent.cs" />
     <Compile Include="Event\ShowDialogEventArgs.cs" />
     <Compile Include="Event\UserChangedEvent.cs" />
