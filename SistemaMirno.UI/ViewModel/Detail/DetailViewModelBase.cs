@@ -8,6 +8,7 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {

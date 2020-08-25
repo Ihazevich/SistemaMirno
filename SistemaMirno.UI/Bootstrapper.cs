@@ -2,6 +2,7 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using System.Security.Principal;
 using Autofac;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
@@ -11,6 +12,7 @@ using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
+using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.ViewModel.Main;
 using SistemaMirno.UI.ViewModel.Reports;
@@ -42,12 +44,16 @@ namespace SistemaMirno.UI
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<WorkAreaNavigationViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkAreaNavigationViewModel));
-
             builder.RegisterType<LoginViewModel>()
                 .Keyed<IViewModelBase>(nameof(LoginViewModel));
+            builder.RegisterType<BranchSelectionViewModel>()
+                .Keyed<IViewModelBase>(nameof(BranchSelectionViewModel));
+
 
             builder.RegisterType<UserViewModel>()
                 .Keyed<IViewModelBase>(nameof(UserViewModel));
+            builder.RegisterType<BranchViewModel>()
+                .Keyed<IViewModelBase>(nameof(BranchViewModel));
 
             builder.RegisterType<InProcessByWorkAreasViewModel>()
                 .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));
@@ -56,8 +62,12 @@ namespace SistemaMirno.UI
 
 
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
+            builder.RegisterType<BranchDetailViewModel>().As<IBranchDetailViewModel>();
 
+            builder.RegisterGeneric(typeof(GenericRepository<,>)).AsSelf();
             builder.RegisterType<UserRepository>().As<IUserRepository>();
+            builder.RegisterType<BranchRepository>().As<IBranchRepository>();
+
 
             return builder.Build();
         }

@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:SistemaMirno.UI.Resources"
+                    xmlns:detailviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.Detail"
+                    xmlns:detail="clr-namespace:SistemaMirno.UI.View.Detail">
+
+    <DataTemplate DataType="{x:Type detailviewmodel:UserDetailViewModel}">
+        <detail:UserDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:BranchDetailViewModel}">
+        <detail:BranchDetailView />
+    </DataTemplate>
+</ResourceDictionary>

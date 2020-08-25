@@ -4,7 +4,7 @@
 
 using System.Threading.Tasks;
 
-namespace SistemaMirno.UI.ViewModel.General
+namespace SistemaMirno.UI.ViewModel.General.Interfaces
 {
     public interface IUserViewModel : IViewModelBase
     {

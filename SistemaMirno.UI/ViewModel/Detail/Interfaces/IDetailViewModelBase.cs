@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SistemaMirno.UI.ViewModel.Detail
+namespace SistemaMirno.UI.ViewModel.Detail.Interfaces
 {
     public interface IDetailViewModelBase : IViewModelBase
     {

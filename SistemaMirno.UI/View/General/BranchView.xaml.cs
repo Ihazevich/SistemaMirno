@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.General
 {
     /// <summary>
-    /// Interaction logic for UserDetailView.xaml
+    /// Interaction logic for BranchView.xaml
     /// </summary>
-    public partial class UserDetailView : UserControl
+    public partial class BranchView : UserControl
     {
-        public UserDetailView()
+        public BranchView()
         {
             InitializeComponent();
         }

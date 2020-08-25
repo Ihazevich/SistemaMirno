@@ -218,7 +218,9 @@
     <Compile Include="Data\Reports\WorkAreaReport.cs" />
     <Compile Include="Data\Reports\WorkOrderReport.cs" />
     <Compile Include="Data\Reports\WorkUnitReport.cs" />
+    <Compile Include="Data\Repositories\BranchRepository.cs" />
     <Compile Include="Data\Repositories\GenericRepository.cs" />
+    <Compile Include="Data\Repositories\IBranchRepository.cs" />
     <Compile Include="Data\Repositories\IGenericRepository.cs" />
     <Compile Include="Data\Repositories\IUserRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
@@ -226,6 +228,8 @@
     <Compile Include="Event\AfterDataModelDeletedEventArgs.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
     <Compile Include="Event\AfterDataModelSavedEventArgs.cs" />
+    <Compile Include="Event\BranchChangedEvent.cs" />
+    <Compile Include="Event\BranchChangedEventArgs.cs" />
     <Compile Include="Event\ChangeNavigationStatusEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ChangeViewEventArgs.cs" />
@@ -241,13 +245,19 @@
     <Compile Include="Event\UserChangedEventArgs.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Utilities\DialogCloser.cs" />
-    <Compile Include="ViewModel\Detail\IUserDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\BranchDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IBranchDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IUserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
-    <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
-    <Compile Include="ViewModel\General\IUserViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IDetailViewModelBase.cs" />
+    <Compile Include="ViewModel\General\BranchViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IBranchViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IUserViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
+    <Compile Include="ViewModel\Main\BranchSelectionViewModel.cs" />
+    <Compile Include="ViewModel\Main\IBranchSelectionViewModel.cs" />
     <Compile Include="ViewModel\Main\ILoginViewModel.cs" />
     <Compile Include="ViewModel\Main\LoginViewModel.cs" />
     <Compile Include="ViewModel\Reports\InProcessByWorkAreasViewModel.cs" />
@@ -262,6 +272,9 @@
     <Compile Include="View\AreaConnectionView.xaml.cs">
       <DependentUpon>AreaConnectionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\BranchSelectionView.xaml.cs">
+      <DependentUpon>BranchSelectionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ClientDetailView.xaml.cs">
       <DependentUpon>ClientDetailView.xaml</DependentUpon>
     </Compile>
@@ -273,6 +286,9 @@
     </Compile>
     <Compile Include="View\ColorView.xaml.cs">
       <DependentUpon>ColorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Detail\BranchDetailView.xaml.cs">
+      <DependentUpon>BranchDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EmployeeDetailView.xaml.cs">
       <DependentUpon>EmployeeDetailView.xaml</DependentUpon>
@@ -286,7 +302,10 @@
     <Compile Include="View\EmployeeView.xaml.cs">
       <DependentUpon>EmployeeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LoginView.xaml.cs">
+    <Compile Include="View\General\BranchView.xaml.cs">
+      <DependentUpon>BranchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Main\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MaterialDetailView.xaml.cs">
@@ -331,16 +350,16 @@
     <Compile Include="View\StockView.xaml.cs">
       <DependentUpon>StockView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserDetailView.xaml.cs">
+    <Compile Include="View\Detail\UserDetailView.xaml.cs">
       <DependentUpon>UserDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserView.xaml.cs">
+    <Compile Include="View\General\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WorkAreaDetailView.xaml.cs">
       <DependentUpon>WorkAreaDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkAreaNavigationView.xaml.cs">
+    <Compile Include="View\Main\WorkAreaNavigationView.xaml.cs">
       <DependentUpon>WorkAreaNavigationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WorkAreaView.xaml.cs">
@@ -360,6 +379,7 @@
     <Compile Include="View\WorkUnitView.xaml.cs">
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wrapper\BranchWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\WrapperBase.cs" />
@@ -375,11 +395,31 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\DetailDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\GeneralDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\MainDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ReportDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AreaConnectionDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AreaConnectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BranchSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -399,6 +439,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Detail\BranchDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\EmployeeDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -415,7 +459,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LoginView.xaml">
+    <Page Include="View\General\BranchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Main\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -475,11 +523,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserDetailView.xaml">
+    <Page Include="View\Detail\UserDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserView.xaml">
+    <Page Include="View\General\UserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -487,7 +535,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkAreaNavigationView.xaml">
+    <Page Include="View\Main\WorkAreaNavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

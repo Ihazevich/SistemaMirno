@@ -4,7 +4,7 @@
 
 using System.Windows.Controls;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.Main
 {
     /// <summary>
     /// Interaction logic for ProductionAreasView.xaml

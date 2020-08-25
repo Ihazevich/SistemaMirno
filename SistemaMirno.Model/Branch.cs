@@ -10,17 +10,18 @@ namespace SistemaMirno.Model
 {
     public class Branch : ModelBase
     {
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Nombre requerido.")]
         [StringLength(100)]
         public string Name { get; set; }
-        
-        [Required]
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Dirección requerida.")]
         [StringLength(100)]
         public string Address { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Ciudad requerida.")]
         public string City { get; set; }
 
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Departamento requerido.")]
         public string Department { get; set; }
 
         [ForeignKey(nameof(Role.BranchId))]

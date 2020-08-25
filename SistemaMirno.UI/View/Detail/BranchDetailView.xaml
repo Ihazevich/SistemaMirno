@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="SistemaMirno.UI.View.Detail.BranchDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SistemaMirno.UI.View.Detail"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel Orientation="Vertical">
+        <Label Content="Detalles del usuario" FontSize="20" Margin="5" />
+        <Separator />
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Nombre" />
+            <TextBox Grid.Row="1"
+                 Text="{Binding Branch.Name, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="5" />
+            <Label Grid.Row="2" Content="Direccion" />
+            <TextBox Grid.Row="3"
+                     Text="{Binding Branch.Address, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="5" />
+            <Label Grid.Row="4" Content="Ciudad" />
+            <TextBox Grid.Row="5"
+                     Text="{Binding Branch.City, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="5" />
+            <Label Grid.Row="6" Content="Departamento" />
+            <TextBox Grid.Row="7"
+                     Text="{Binding Branch.Department, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="5" />
+            <StackPanel Grid.Row="8" Orientation="Horizontal">
+                <Button Content="Guardar" 
+                        Width="125" 
+                        Margin="10" 
+                        Background="GreenYellow"
+                        Command="{Binding SaveCommand}" />
+                <Button Content="Cancelar" 
+                        Width="125" 
+                        Margin="10" 
+                        Command="{Binding CancelCommand}" />
+                <Button Content="Eliminar"
+                        Width="125"
+                        Margin="10"
+                        Background="Red"
+                        Command="{Binding DeleteCommand}" />
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

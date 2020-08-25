@@ -8,6 +8,7 @@
                  xmlns:utilities="clr-namespace:SistemaMirno.UI.Utilities"
                  xmlns:view="clr-namespace:SistemaMirno.UI.View"
                  xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                 xmlns:main="clr-namespace:SistemaMirno.UI.View.Main"
                  Dialog:DialogParticipation.Register="{Binding }"
                  mc:Ignorable="d"
                  Title="{Binding WindowTitle}"
@@ -50,6 +51,7 @@
                     <MenuItem Header="Roles" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeRoleViewModel" />
                 </MenuItem>
                 <MenuItem Header="Sistema" Visibility="{Binding SysAdminVisibility}">
+                    <MenuItem Header="Sucursales" Command="{Binding ChangeViewCommand}" CommandParameter="BranchViewModel" />
                     <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
                     <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
                 </MenuItem>
@@ -64,6 +66,9 @@
                     <MenuItem Header="Metodos de pago" Command="{Binding ChangeViewCommand}" CommandParameter="PaymentMethodViewModel"/>
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="Cambiar de sucursal" Command="{Binding ChangeBranchCommand}" 
+                      IsEnabled="{Binding NavigationStatus}" 
+                      Visibility="{Binding SysAdminVIsibility}"/>
             <MenuItem Header="Cerrar sesion de usuario" Command="{Binding CloseUserSessionCommand}" IsEnabled="{Binding NavigationStatus}"/>
             <MenuItem Header="Salir del sistema" Command="{Binding CloseApplicationCommand}" IsEnabled="{Binding NavigationStatus}"/>
         </Menu>
@@ -76,14 +81,16 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <view:WorkAreaNavigationView DataContext="{Binding NavigationViewModel}" />
+            <main:WorkAreaNavigationView DataContext="{Binding NavigationViewModel}" />
             <ContentPresenter Grid.Column="1" Content="{Binding SelectedViewModel}" />
             <StatusBar Grid.Row="1" Grid.ColumnSpan="2" FontSize="15">
                 <StatusBar.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*"/>
@@ -97,14 +104,20 @@
                     <TextBlock Text="Usuario: "/>
                 </StatusBarItem>
                 <StatusBarItem Grid.Column="1">
-                    <TextBlock Text="{Binding Username, Mode=TwoWay}"/>
+                    <TextBlock Text="{Binding CurrentUser.Username, Mode=TwoWay}"/>
                 </StatusBarItem>
-                <Separator Grid.Column="2" />
-                <StatusBarItem Grid.Column="3" HorizontalContentAlignment="Center">
-                    <TextBlock Text="{Binding StatusMessage, Mode=TwoWay}" />
+                <StatusBarItem Grid.Column="2">
+                    <TextBlock Text="Sucursal: "/>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="3">
+                    <TextBlock Text="{Binding CurrentBranch.Name, Mode=TwoWay}"/>
                 </StatusBarItem>
                 <Separator Grid.Column="4" />
-                <StatusBarItem Grid.Column="5">
+                <StatusBarItem Grid.Column="5" HorizontalContentAlignment="Center">
+                    <TextBlock Text="{Binding StatusMessage, Mode=TwoWay}" />
+                </StatusBarItem>
+                <Separator Grid.Column="6" />
+                <StatusBarItem Grid.Column="7">
                     <mah:MetroProgressBar IsIndeterminate="{Binding Processing, Mode=TwoWay}" Width="100"/>
                 </StatusBarItem>
             </StatusBar>

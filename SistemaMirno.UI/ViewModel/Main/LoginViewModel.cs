@@ -104,8 +104,6 @@ namespace SistemaMirno.UI.ViewModel.Main
                         HasAccessToHumanResources = true,
                         IsSystemAdmin = true,
                     });
-                EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
-                    .Publish(true);
 
                 return;
             }

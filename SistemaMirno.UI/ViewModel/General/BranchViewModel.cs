@@ -1,14 +1,11 @@
-﻿// <copyright file="UserViewModel.cs" company="HazeLabs">
-// Copyright (c) HazeLabs. All rights reserved.
-// </copyright>
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
@@ -19,36 +16,32 @@ using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
-using MessageDialogResult = SistemaMirno.UI.View.Services.MessageDialogResult;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    /// <summary>
-    /// A class representing the view model of the users view.
-    /// </summary>
-    public class UserViewModel : ViewModelBase, IUserViewModel
+    public class BranchViewModel : ViewModelBase, IBranchViewModel
     {
-        private IUserRepository _userRepository;
-        private UserWrapper _selectedUser;
-        private IUserDetailViewModel _userDetailViewModel;
-        private Func<IUserDetailViewModel> _userDetailViewModelCreator;
+        private IBranchRepository _branchRepository;
+        private BranchWrapper _selectedBranch;
+        private IBranchDetailViewModel _branchDetailViewModel;
+        private Func<IBranchDetailViewModel> _branchDetailViewModelCreator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserViewModel"/> class.
         /// </summary>
         /// <param name="userDetailViewModelCreator">A function to create detailviewmodel instances.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
-        public UserViewModel(
-            Func<IUserDetailViewModel> userDetailViewModelCreator,
-            IUserRepository userRepository,
+        public BranchViewModel(
+            Func<IBranchDetailViewModel> branchDetailViewModelCreator,
+            IBranchRepository branchRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
-            : base(eventAggregator, "Usuarios", dialogCoordinator)
+            : base(eventAggregator, "Sucursales", dialogCoordinator)
         {
-            _userDetailViewModelCreator = userDetailViewModelCreator;
-            _userRepository = userRepository;
+            _branchDetailViewModelCreator = branchDetailViewModelCreator;
+            _branchRepository = branchRepository;
 
-            Users = new ObservableCollection<UserWrapper>();
+            Branches = new ObservableCollection<BranchWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
 
             EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
@@ -57,22 +50,22 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void CloseDetailView()
         {
-            UserDetailViewModel = null;
+            BranchDetailViewModel = null;
         }
 
         /// <summary>
-        /// Gets the User detail view model.
+        /// Gets the Branch detail view model.
         /// </summary>
-        public IUserDetailViewModel UserDetailViewModel
+        public IBranchDetailViewModel BranchDetailViewModel
         {
             get
             {
-                return _userDetailViewModel;
+                return _branchDetailViewModel;
             }
 
             private set
             {
-                _userDetailViewModel = value;
+                _branchDetailViewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -80,25 +73,25 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <summary>
         /// Gets or sets the collection of Users.
         /// </summary>
-        public ObservableCollection<UserWrapper> Users { get; set; }
+        public ObservableCollection<BranchWrapper> Branches { get; set; }
 
         /// <summary>
-        /// Gets or sets the selected User.
+        /// Gets or sets the selected Branch.
         /// </summary>
-        public UserWrapper SelectedUser
+        public BranchWrapper SelectedBranch
         {
             get
             {
-                return _selectedUser;
+                return _selectedBranch;
             }
 
             set
             {
                 OnPropertyChanged();
-                _selectedUser = value;
-                if (_selectedUser != null)
+                _selectedBranch = value;
+                if (_selectedBranch != null)
                 {
-                    UpdateDetailViewModel(_selectedUser.Id);
+                    UpdateDetailViewModel(_selectedBranch.Id);
                 }
             }
         }
@@ -114,22 +107,22 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
         public override async Task LoadAsync()
         {
-            Users.Clear();
-            
-            var users = await _userRepository.GetAllAsync();
+            Branches.Clear();
+
+            var branches = await _branchRepository.GetAllAsync();
 
             ProgressVisibility = Visibility.Collapsed;
             ViewVisibility = Visibility.Visible;
 
-            foreach (var user in users)
+            foreach (var branch in branches)
             {
-                Users.Add(new UserWrapper(user));
+                Branches.Add(new BranchWrapper(branch));
             }
         }
 
         private async void UpdateDetailViewModel(int id)
         {
-            if (UserDetailViewModel != null && UserDetailViewModel.HasChanges)
+            if (BranchDetailViewModel != null && BranchDetailViewModel.HasChanges)
             {
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
@@ -140,13 +133,13 @@ namespace SistemaMirno.UI.ViewModel.General
                 return;
             }
 
-            UserDetailViewModel = _userDetailViewModelCreator();
-            await UserDetailViewModel.LoadDetailAsync(id);
+            BranchDetailViewModel = _branchDetailViewModelCreator();
+            await BranchDetailViewModel.LoadDetailAsync(id);
         }
-        
+
         private void OnCreateNewExecute()
         {
-            if (UserDetailViewModel != null && UserDetailViewModel.HasChanges)
+            if (BranchDetailViewModel != null && BranchDetailViewModel.HasChanges)
             {
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
@@ -157,9 +150,9 @@ namespace SistemaMirno.UI.ViewModel.General
                 return;
             }
 
-            UserDetailViewModel = _userDetailViewModelCreator();
-            UserDetailViewModel.IsNew = true;
-            UserDetailViewModel.LoadAsync();
+            BranchDetailViewModel = _branchDetailViewModelCreator();
+            BranchDetailViewModel.IsNew = true;
+            BranchDetailViewModel.LoadAsync();
         }
     }
 }

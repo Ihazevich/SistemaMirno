@@ -15,8 +15,6 @@ namespace SistemaMirno.UI.Wrapper
     /// </summary>
     public class UserWrapper : ModelWrapper<User>
     {
-        private string _passwordVerification;
-
         public UserWrapper()
             : base(new User())
         {

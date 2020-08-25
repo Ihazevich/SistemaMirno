@@ -5,7 +5,7 @@
 using System.Windows.Controls;
 using SistemaMirno.UI.ViewModel.Main;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.Main
 {
     /// <summary>
     /// Interaction logic for LoginView.xaml.
