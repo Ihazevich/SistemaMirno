@@ -44,12 +44,14 @@ namespace SistemaMirno.UI.ViewModel.General
             Branches = new ObservableCollection<BranchWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
 
-            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
-                .Subscribe(CloseDetailView);
+            EventAggregator.GetEvent<CloseDetailViewEvent<BranchDetailViewModel>>()
+                .Subscribe(CloseDetailView, ThreadOption.UIThread);
         }
 
-        private void CloseDetailView()
+        protected override async void CloseDetailView()
         {
+            base.CloseDetailView();
+
             BranchDetailViewModel = null;
         }
 

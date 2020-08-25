@@ -35,7 +35,7 @@ namespace SistemaMirno.UI
             builder.RegisterType<DialogCoordinator>().As<IDialogCoordinator>().SingleInstance();
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 
-            builder.RegisterType<MirnoDbContext>().AsSelf().SingleInstance();
+            builder.RegisterType<MirnoDbContext>().AsSelf();
 
             builder.RegisterType<MainWindow>().AsSelf();
 

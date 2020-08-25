@@ -70,7 +70,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             HasChanges = false;
-            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
+            EventAggregator.GetEvent<CloseDetailViewEvent<BranchDetailViewModel>>()
                 .Publish();
         }
 
@@ -84,13 +84,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override async void OnDeleteExecute()
         {
             await _branchRepository.DeleteAsync(Branch.Model);
-            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
+            EventAggregator.GetEvent<CloseDetailViewEvent<BranchDetailViewModel>>()
                 .Publish();
         }
 
         protected override void OnCancelExecute()
         {
-            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
+            EventAggregator.GetEvent<CloseDetailViewEvent<BranchDetailViewModel>>()
                 .Publish();
         }
 

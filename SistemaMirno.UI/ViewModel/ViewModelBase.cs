@@ -25,6 +25,7 @@ namespace SistemaMirno.UI.ViewModel
         private Visibility _progressVisibility;
         private string _name;
         private readonly IDialogCoordinator _dialogCoordinator;
+        private int _dataGridIndex;
 
         public ViewModelBase(IEventAggregator eventAggregator, string name, IDialogCoordinator dialogCoordinator)
         {
@@ -62,11 +63,21 @@ namespace SistemaMirno.UI.ViewModel
                 OnPropertyChanged();
             }
         }
+        public int DataGridIndex
+        {
+            get => _dataGridIndex;
 
+            set
+            {
+                _dataGridIndex = value;
+                OnPropertyChanged();
+            }
+        }
         /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand ExitView { get; }
+
 
         public abstract Task LoadAsync();
 
@@ -107,6 +118,11 @@ namespace SistemaMirno.UI.ViewModel
         {
             _eventAggregator.GetEvent<NotifyStatusBarEvent>()
                 .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
+        }
+
+        protected virtual void CloseDetailView()
+        {
+            DataGridIndex = -1;
         }
     }
 }
