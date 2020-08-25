@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
 
-namespace SistemaMirno.UI.Data.Repositories
+namespace SistemaMirno.UI.Data.Repositories.Interfaces
 {
     /// <summary>
     /// An interface for the generic data repository.

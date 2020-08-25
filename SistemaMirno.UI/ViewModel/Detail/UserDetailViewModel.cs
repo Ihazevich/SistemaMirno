@@ -3,11 +3,13 @@
 // </copyright>
 
 using System.Threading.Tasks;
+using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.Wrapper;
@@ -58,22 +60,25 @@ namespace SistemaMirno.UI.ViewModel.Detail
             User = new UserWrapper(user);
             User.PropertyChanged += User_PropertyChanged;
             ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+
+            ProgressVisibility = Visibility.Collapsed;
         }
 
         /// <inheritdoc/>
-        protected override void OnSaveExecute()
+        protected override async void OnSaveExecute()
         {
+            ProgressVisibility = Visibility.Visible;
             User.Password = User.GetPasswordHash(User.Password);
 
             // TODO: Set user permissions
 
             if (IsNew)
             {
-                _userRepository.AddAsync(User.Model);
+                await _userRepository.AddAsync(User.Model);
             }
             else
             {
-                _userRepository.SaveAsync(User.Model);
+                await _userRepository.SaveAsync(User.Model);
             }
             HasChanges = false;
             EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()

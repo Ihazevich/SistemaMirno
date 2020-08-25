@@ -14,12 +14,12 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
-using MessageDialogResult = SistemaMirno.UI.View.Services.MessageDialogResult;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
@@ -29,6 +29,7 @@ namespace SistemaMirno.UI.ViewModel.General
     public class UserViewModel : ViewModelBase, IUserViewModel
     {
         private IUserRepository _userRepository;
+        private Func<IUserRepository> _userRepositoryCreator;
         private UserWrapper _selectedUser;
         private IUserDetailViewModel _userDetailViewModel;
         private Func<IUserDetailViewModel> _userDetailViewModelCreator;
@@ -40,13 +41,13 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
         public UserViewModel(
             Func<IUserDetailViewModel> userDetailViewModelCreator,
-            IUserRepository userRepository,
+            Func<IUserRepository> userRepositoryCreator,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Usuarios", dialogCoordinator)
         {
             _userDetailViewModelCreator = userDetailViewModelCreator;
-            _userRepository = userRepository;
+            _userRepositoryCreator = userRepositoryCreator;
 
             Users = new ObservableCollection<UserWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
@@ -57,6 +58,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void CloseDetailView()
         {
+            base.CloseDetailView();
             UserDetailViewModel = null;
         }
 
@@ -115,7 +117,7 @@ namespace SistemaMirno.UI.ViewModel.General
         public override async Task LoadAsync()
         {
             Users.Clear();
-            
+            _userRepository = _userRepositoryCreator();
             var users = await _userRepository.GetAllAsync();
 
             ProgressVisibility = Visibility.Collapsed;

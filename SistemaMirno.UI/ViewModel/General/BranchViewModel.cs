@@ -11,6 +11,7 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
@@ -22,6 +23,7 @@ namespace SistemaMirno.UI.ViewModel.General
     public class BranchViewModel : ViewModelBase, IBranchViewModel
     {
         private IBranchRepository _branchRepository;
+        private Func<IBranchRepository> _branchRepositoryCreator;
         private BranchWrapper _selectedBranch;
         private IBranchDetailViewModel _branchDetailViewModel;
         private Func<IBranchDetailViewModel> _branchDetailViewModelCreator;
@@ -33,13 +35,13 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
         public BranchViewModel(
             Func<IBranchDetailViewModel> branchDetailViewModelCreator,
-            IBranchRepository branchRepository,
+            Func<IBranchRepository> branchRepositoryCreator,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Sucursales", dialogCoordinator)
         {
             _branchDetailViewModelCreator = branchDetailViewModelCreator;
-            _branchRepository = branchRepository;
+            _branchRepositoryCreator = branchRepositoryCreator;
 
             Branches = new ObservableCollection<BranchWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
@@ -51,8 +53,9 @@ namespace SistemaMirno.UI.ViewModel.General
         protected override async void CloseDetailView()
         {
             base.CloseDetailView();
-
             BranchDetailViewModel = null;
+
+            await LoadAsync();
         }
 
         /// <summary>
@@ -110,6 +113,7 @@ namespace SistemaMirno.UI.ViewModel.General
         public override async Task LoadAsync()
         {
             Branches.Clear();
+            _branchRepository = _branchRepositoryCreator();
 
             var branches = await _branchRepository.GetAllAsync();
 

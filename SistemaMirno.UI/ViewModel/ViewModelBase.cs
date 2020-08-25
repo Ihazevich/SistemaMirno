@@ -37,8 +37,8 @@ namespace SistemaMirno.UI.ViewModel
             
             ProgressVisibility = Visibility.Visible;
             ViewVisibility = Visibility.Collapsed;
+            DataGridIndex = -1;
         }
-
         protected IDialogCoordinator DialogCoordinator => _dialogCoordinator;
         protected IEventAggregator EventAggregator => _eventAggregator;
 

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.Wrapper;
@@ -54,19 +56,22 @@ namespace SistemaMirno.UI.ViewModel.Detail
             Branch = new BranchWrapper(model);
             Branch.PropertyChanged += Model_PropertyChanged;
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+            ProgressVisibility = Visibility.Collapsed;
         }
 
         /// <inheritdoc/>
-        protected override void OnSaveExecute()
+        protected override async void OnSaveExecute()
         {
+            ProgressVisibility = Visibility.Visible;
             if (IsNew)
             {
                 Branch.Cash = 0;
-                _branchRepository.AddAsync(Branch.Model);
+                await _branchRepository.AddAsync(Branch.Model);
             }
             else
             {
-                _branchRepository.SaveAsync(Branch.Model);
+                await _branchRepository.SaveAsync(Branch.Model);
             }
 
             HasChanges = false;

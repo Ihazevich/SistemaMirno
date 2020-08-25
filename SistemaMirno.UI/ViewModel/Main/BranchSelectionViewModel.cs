@@ -12,6 +12,7 @@ using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
 

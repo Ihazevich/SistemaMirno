@@ -9,7 +9,7 @@ using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
-using SistemaMirno.UI.View.Services;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
@@ -22,13 +22,13 @@ namespace SistemaMirno.UI
     /// <summary>
     /// A class represneting the Autofac boostrapper.
     /// </summary>
-    public class Bootstrapper
+    public static class Bootstrapper
     {
         /// <summary>
         /// Initializes the Autofac builder and registers all the relevant classes.
         /// </summary>
         /// <returns>An <see cref="IContainer"/> used by Autofac to resolve the dependencies.</returns>
-        public IContainer Bootstrap()
+        public static IContainer Bootstrap()
         {
             var builder = new ContainerBuilder();
 
@@ -38,8 +38,6 @@ namespace SistemaMirno.UI
             builder.RegisterType<MirnoDbContext>().AsSelf();
 
             builder.RegisterType<MainWindow>().AsSelf();
-
-            builder.RegisterType<MessageDialogService>().As<IMessageDialogService>().SingleInstance();
 
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<WorkAreaNavigationViewModel>()

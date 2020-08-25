@@ -4,15 +4,15 @@ using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Prism.Events;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.View.Services;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
     public class UserRepository : GenericRepository<User, MirnoDbContext>, IUserRepository
     {
-        public UserRepository(MirnoDbContext context, IMessageDialogService dialogService, IEventAggregator eventAggregator)
-            : base(context, dialogService, eventAggregator)
+        public UserRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
+            : base(contextCreator, eventAggregator)
         {
         }
 

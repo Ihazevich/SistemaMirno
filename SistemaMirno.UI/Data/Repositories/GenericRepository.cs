@@ -8,9 +8,11 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
 using SistemaMirno.Model;
-using SistemaMirno.UI.View.Services;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
+using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
@@ -22,19 +24,18 @@ namespace SistemaMirno.UI.Data.Repositories
         where TContext : DbContext
     {
         private readonly DbSet<TEntity> _table;
-        private readonly TContext _db;
-        private readonly IMessageDialogService _dialogService;
+        private TContext _db;
+        private Func<TContext> _dbCreator;
         private readonly IEventAggregator _eventAggregator;
 
-        protected GenericRepository(TContext context, IMessageDialogService dialogService, IEventAggregator eventAggregator)
+        protected GenericRepository(Func<TContext> contextCreator, IEventAggregator eventAggregator)
         {
-            _db = context;
+            _dbCreator = contextCreator;
+            _db = _dbCreator();
             _table = _db.Set<TEntity>();
-            _dialogService = dialogService;
             _eventAggregator = eventAggregator;
         }
 
-        protected IMessageDialogService DialogService => _dialogService;
         protected IEventAggregator EventAggregator => _eventAggregator;
 
         protected TContext Context => _db;
@@ -52,30 +53,42 @@ namespace SistemaMirno.UI.Data.Repositories
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                _dialogService.ShowOkDialog(
-                    "Error de concurrencia al intentar guardar a la base de datos. Ya fue modificado por otro usuario.",
-                    "Error");
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = "Error de concurrencia al intentar guardar a la base de datos. Ya fue modificado por otro usuario.",
+                        Title = "Error",
+                    });
                 return -1;
             }
             catch (DbUpdateException ex)
             {
-                _dialogService.ShowOkDialog(
-                    "Error al intentar guardar a la base de datos. Contacte al Administrador de Sistema.",
-                    "Error");
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = "Error al intentar guardar a la base de datos. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
                 return -1;
             }
             catch (CommitFailedException ex)
             {
-                _dialogService.ShowOkDialog(
-                    "Error al ejecutar la transaccion con la base de datos. Contacte al Administrador de Sistema.",
-                    "Error");
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = "Error al ejecutar la transaccion con la base de datos. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
                 return -1;
             }
             catch (Exception ex)
             {
-                _dialogService.ShowOkDialog(
-                    $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
-                    "Error");
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
                 return -1;
             }
         }

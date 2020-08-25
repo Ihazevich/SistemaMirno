@@ -4621,7 +4621,7 @@ select new {
 // This is a *sample rule* there is nothing to fix *as is*. 
 //</HowToFix>]]></Query>
     </Group>
-    <Group Name="API Breaking Changes" Active="True" ShownInReport="True">
+    <Group Name="API Breaking Changes" Active="False" ShownInReport="True">
       <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Types</Name>
 // <Id>ND1500:APIBreakingChangesTypes</Id>
 
