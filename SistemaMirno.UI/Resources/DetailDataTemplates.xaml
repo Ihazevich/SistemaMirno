@@ -9,4 +9,7 @@
     <DataTemplate DataType="{x:Type detailviewmodel:BranchDetailViewModel}">
         <detail:BranchDetailView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:RoleDetailViewModel}">
+        <detail:RoleDetailView />
+    </DataTemplate>
 </ResourceDictionary>

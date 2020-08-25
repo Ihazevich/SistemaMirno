@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SistemaMirno.UI.View.BranchSelectionView"
+﻿<UserControl x:Class="SistemaMirno.UI.View.Main.BranchSelectionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -23,7 +23,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ListBox ItemsSource="{Binding Branches}"
+            <ListBox ItemsSource="{Binding Branches, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      SelectedItem="{Binding SelectedBranch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      SelectionMode="Single">
                 <ListBox.ItemTemplate>

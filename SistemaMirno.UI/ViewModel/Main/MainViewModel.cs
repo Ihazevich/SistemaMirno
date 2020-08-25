@@ -54,7 +54,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// </summary>
         /// <param name="viewModelCreator">The view model creator.</param>
         /// <param name="eventAggregator">The event aggregator.</param>
-        /// <param name="messageDialogService">The message dialog service.</param>
+        /// <param name="dialogCoordinator">The dialog service.</param>
         public MainViewModel(
             IIndex<string, IViewModelBase> viewModelCreator,
             IEventAggregator eventAggregator,

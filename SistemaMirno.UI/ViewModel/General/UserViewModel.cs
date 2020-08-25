@@ -118,15 +118,19 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             Users.Clear();
             _userRepository = _userRepositoryCreator();
-            var users = await _userRepository.GetAllAsync();
 
-            ProgressVisibility = Visibility.Collapsed;
-            ViewVisibility = Visibility.Visible;
+            var users = await _userRepository.GetAllAsync();
 
             foreach (var user in users)
             {
-                Users.Add(new UserWrapper(user));
+                Application.Current.Dispatcher.Invoke(() => Users.Add(new UserWrapper()));
             }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ProgressVisibility = Visibility.Collapsed;
+                ViewVisibility = Visibility.Visible;
+            });
         }
 
         private async void UpdateDetailViewModel(int id)

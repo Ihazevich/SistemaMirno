@@ -11,4 +11,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:BranchViewModel}">
         <general:BranchView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:RoleViewModel}">
+        <general:RoleView />
+    </DataTemplate>
 </ResourceDictionary>

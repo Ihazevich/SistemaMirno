@@ -32,19 +32,19 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Nombre" />
             <TextBox Grid.Row="1"
-                 Text="{Binding Branch.Name, UpdateSourceTrigger=PropertyChanged}"
+                 Text="{Binding Branch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Margin="5" />
             <Label Grid.Row="2" Content="Direccion" />
             <TextBox Grid.Row="3"
-                     Text="{Binding Branch.Address, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Branch.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Margin="5" />
             <Label Grid.Row="4" Content="Ciudad" />
             <TextBox Grid.Row="5"
-                     Text="{Binding Branch.City, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Branch.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Margin="5" />
             <Label Grid.Row="6" Content="Departamento" />
             <TextBox Grid.Row="7"
-                     Text="{Binding Branch.Department, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Branch.Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Margin="5" />
             <StackPanel Grid.Row="8" Orientation="Horizontal">
                 <Button Content="Guardar" 

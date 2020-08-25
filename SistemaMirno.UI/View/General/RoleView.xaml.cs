@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.General
 {
     /// <summary>
-    /// Interaction logic for BranchSelectionView.xaml
+    /// Interaction logic for RoleView.xaml
     /// </summary>
-    public partial class BranchSelectionView : UserControl
+    public partial class RoleView : UserControl
     {
-        public BranchSelectionView()
+        public RoleView()
         {
             InitializeComponent();
         }

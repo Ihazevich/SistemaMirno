@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Web.ModelBinding;
+using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
@@ -9,6 +11,7 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
@@ -20,6 +23,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     {
         private bool _hasChanges;
         private bool _isNew;
+        private bool _isEnabled;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailViewModelBase"/> class.
@@ -32,6 +36,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute);
+            IsEnabled = false;
         }
 
         private bool OnDeleteCanExecute()
@@ -82,9 +87,25 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
         public virtual Task LoadDetailAsync(int id)
         {
-            throw new NotImplementedException();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsEnabled = true;
+                ProgressVisibility = Visibility.Collapsed;
+            });
+            return Task.CompletedTask;
         }
 
         protected virtual void RaiseDataModelSavedEvent<T>(T model)
@@ -99,22 +120,26 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 .Publish(new AfterDataModelDeletedEventArgs<T> { Model = model });
         }
 
-        /// <summary>
-        /// Executes the save command.
-        /// </summary>
+
         protected virtual void OnSaveExecute()
         {
-            throw new NotImplementedException();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ProgressVisibility = Visibility.Visible;
+                IsEnabled = false;
+            });
         }
 
         /// <summary>
         /// Checks if the Save Command can be executed.
         /// </summary>
         /// <returns>True or false.</returns>
-        protected virtual bool OnSaveCanExecute()
+        protected bool OnSaveCanExecute(IModelWrapper wrapper)
         {
-            throw new NotImplementedException();
+            return wrapper != null && !wrapper.HasErrors && (HasChanges || IsNew);
         }
+
+        protected abstract bool OnSaveCanExecute();
 
         protected virtual void OnDeleteExecute()
         {

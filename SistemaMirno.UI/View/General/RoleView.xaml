@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="SistemaMirno.UI.View.General.BranchView"
+﻿<UserControl x:Class="SistemaMirno.UI.View.General.RoleView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SistemaMirno.UI.View.General"
+             xmlns:local="clr-namespace:SistemaMirno.UI.View"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -14,7 +14,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Content="Sucursales" FontSize="30" />
+        <Label Content="Roles" FontSize="30" />
         <Separator Grid.Row="1"/>
         <Grid Grid.Row="2" Visibility="{Binding ViewVisibility}">
             <Grid.ColumnDefinitions>
@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <Button Content="Añadir nueva sucursal"
+                <Button Content="Añadir nuevo rol"
                         Command="{Binding CreateNewCommand}"
                         Width="250" 
                         Margin="10" />
@@ -32,8 +32,8 @@
                         Margin="10" />
             </StackPanel>
             <DataGrid Grid.Column="1" 
-                      ItemsSource="{Binding Branches, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                      SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
+                      ItemsSource="{Binding Roles, Mode=TwoWay}"
+                      SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       SelectionMode="Single"
@@ -41,14 +41,20 @@
                       IsReadOnly="True"
                       SelectedIndex="{Binding DataGridIndex, Mode=TwoWay}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nombre" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Direccion" Binding="{Binding Address}"/>
-                    <DataGridTextColumn Header="Ciudad" Binding="{Binding City}"/>
-                    <DataGridTextColumn Header="Departamento" Binding="{Binding Department}"/>
+                    <DataGridTextColumn Header="Descripcion" Binding="{Binding Description}"/>
+                    <DataGridTextColumn Header="Sucursal" Binding="{Binding Branch.Name}"/>
+                    <DataGridCheckBoxColumn Header="Ventas" Binding="{Binding HasAccessToSales}" />
+                    <DataGridCheckBoxColumn Header="Produccion" Binding="{Binding HasAccessToProduction}" />
+                    <DataGridCheckBoxColumn Header="Recursos Humanos" Binding="{Binding HasAccessToHumanResources}" />
+                    <DataGridCheckBoxColumn Header="Contabilidad" Binding="{Binding HasAccessToAccounting}" />
+                    <DataGridCheckBoxColumn Header="Logistica" Binding="{Binding HasAccessToLogistics}" />
+                    <DataGridCheckBoxColumn Header="Administrador de Sistema" Binding="{Binding IsSystemAdmin}" />
+                    <DataGridCheckBoxColumn Header="Manual de procedimientos" Binding="{Binding HasProceduresManual}" />
+                    <DataGridTextColumn Header="Ubicacion" Binding="{Binding ProceduresManualPdfFile}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
         <mah:ProgressRing Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" Width="250" Height="30"/>
-        <ContentControl Grid.Row="3" Content="{Binding BranchDetailViewModel}" Margin="5" />
+        <ContentControl Grid.Row="3" Content="{Binding RoleDetailViewModel}" Margin="5" />
     </Grid>
 </UserControl>

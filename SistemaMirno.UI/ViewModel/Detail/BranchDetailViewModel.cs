@@ -53,17 +53,20 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             var model = await _branchRepository.GetByIdAsync(id);
 
-            Branch = new BranchWrapper(model);
-            Branch.PropertyChanged += Model_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Branch = new BranchWrapper(model);
+                Branch.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            });
 
-            ProgressVisibility = Visibility.Collapsed;
+            await base.LoadDetailAsync(id).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
         protected override async void OnSaveExecute()
         {
-            ProgressVisibility = Visibility.Visible;
+            base.OnSaveExecute();
             if (IsNew)
             {
                 Branch.Cash = 0;
@@ -82,7 +85,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return Branch != null && !Branch.HasErrors && HasChanges;
+            return OnSaveCanExecute(Branch);
         }
 
         /// <inheritdoc/>
@@ -114,15 +117,20 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public override Task LoadAsync()
         {
-            Branch = new BranchWrapper();
-            Branch.PropertyChanged += Model_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Branch = new BranchWrapper();
+                Branch.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
 
-            Branch.Name = string.Empty;
-            Branch.Address = string.Empty;
-            Branch.City = string.Empty;
-            Branch.Department = string.Empty;
-            return null;
+                Branch.Name = string.Empty;
+                Branch.Address = string.Empty;
+                Branch.City = string.Empty;
+                Branch.Department = string.Empty;
+
+                ProgressVisibility = Visibility.Collapsed;
+            });
+            return Task.CompletedTask;
         }
     }
 }

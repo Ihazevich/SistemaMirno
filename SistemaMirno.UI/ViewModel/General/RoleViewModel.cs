@@ -9,8 +9,6 @@ using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
@@ -20,69 +18,69 @@ using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class BranchViewModel : ViewModelBase, IBranchViewModel
+    public class RoleViewModel : ViewModelBase, IRoleViewModel
     {
-        private IBranchRepository _branchRepository;
-        private Func<IBranchRepository> _branchRepositoryCreator;
-        private BranchWrapper _selectedBranch;
-        private IBranchDetailViewModel _branchDetailViewModel;
-        private Func<IBranchDetailViewModel> _branchDetailViewModelCreator;
+        private IRoleRepository _roleRepository;
+        private Func<IRoleRepository> _roleRepositoryCreator;
+        private RoleWrapper _selectedRole;
+        private IRoleDetailViewModel _roleDetailViewModel;
+        private Func<IRoleDetailViewModel> _roleDetailViewModelCreator;
 
-        public BranchViewModel(
-            Func<IBranchDetailViewModel> branchDetailViewModelCreator,
-            Func<IBranchRepository> branchRepositoryCreator,
+        public RoleViewModel(
+            Func<IRoleDetailViewModel> roleDetailViewModelCreator,
+            Func<IRoleRepository> branchRepositoryCreator,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
-            : base(eventAggregator, "Sucursales", dialogCoordinator)
+            : base(eventAggregator, "Roles", dialogCoordinator)
         {
-            _branchDetailViewModelCreator = branchDetailViewModelCreator;
-            _branchRepositoryCreator = branchRepositoryCreator;
+            _roleDetailViewModelCreator = roleDetailViewModelCreator;
+            _roleRepositoryCreator = branchRepositoryCreator;
 
-            Branches = new ObservableCollection<BranchWrapper>();
+            Roles = new ObservableCollection<RoleWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
 
-            EventAggregator.GetEvent<CloseDetailViewEvent<BranchDetailViewModel>>()
+            EventAggregator.GetEvent<CloseDetailViewEvent<RoleDetailViewModel>>()
                 .Subscribe(CloseDetailView, ThreadOption.UIThread);
         }
 
         protected override async void CloseDetailView()
         {
             base.CloseDetailView();
-            BranchDetailViewModel = null;
+            RoleDetailViewModel = null;
 
             await LoadAsync();
         }
 
-        public IBranchDetailViewModel BranchDetailViewModel
+        public IRoleDetailViewModel RoleDetailViewModel
         {
             get
             {
-                return _branchDetailViewModel;
+                return _roleDetailViewModel;
             }
 
             private set
             {
-                _branchDetailViewModel = value;
+                _roleDetailViewModel = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<BranchWrapper> Branches { get; set; }
+        public ObservableCollection<RoleWrapper> Roles { get; set; }
 
-        public BranchWrapper SelectedBranch
+        public RoleWrapper SelectedRole
         {
             get
             {
-                return _selectedBranch;
+                return _selectedRole;
             }
 
             set
             {
                 OnPropertyChanged();
-                _selectedBranch = value;
-                if (_selectedBranch != null)
+                _selectedRole = value;
+                if (_selectedRole != null)
                 {
-                    UpdateDetailViewModel(_selectedBranch.Id);
+                    UpdateDetailViewModel(_selectedRole.Id);
                 }
             }
         }
@@ -91,14 +89,14 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public override async Task LoadAsync()
         {
-            Branches.Clear();
-            _branchRepository = _branchRepositoryCreator();
+            Roles.Clear();
+            _roleRepository = _roleRepositoryCreator();
 
-            var branches = await _branchRepository.GetAllAsync();
+            var roles = await _roleRepository.GetAllAsync();
 
-            foreach (var branch in branches)
+            foreach (var role in roles)
             {
-                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
+                Application.Current.Dispatcher.Invoke(() => Roles.Add(new RoleWrapper(role)));
             }
 
             Application.Current.Dispatcher.Invoke(() =>
@@ -110,7 +108,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private async Task UpdateDetailViewModel(int id)
         {
-            if (BranchDetailViewModel != null && BranchDetailViewModel.HasChanges)
+            if (RoleDetailViewModel != null && RoleDetailViewModel.HasChanges)
             {
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
@@ -121,13 +119,13 @@ namespace SistemaMirno.UI.ViewModel.General
                 return;
             }
 
-            BranchDetailViewModel = _branchDetailViewModelCreator();
-            await BranchDetailViewModel.LoadDetailAsync(id).ConfigureAwait(false);
+            RoleDetailViewModel = _roleDetailViewModelCreator();
+            await RoleDetailViewModel.LoadDetailAsync(id).ConfigureAwait(false);
         }
 
         private void OnCreateNewExecute()
         {
-            if (BranchDetailViewModel != null && BranchDetailViewModel.HasChanges)
+            if (RoleDetailViewModel != null && RoleDetailViewModel.HasChanges)
             {
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
@@ -138,9 +136,9 @@ namespace SistemaMirno.UI.ViewModel.General
                 return;
             }
 
-            BranchDetailViewModel = _branchDetailViewModelCreator();
-            BranchDetailViewModel.IsNew = true;
-            BranchDetailViewModel.LoadAsync();
+            RoleDetailViewModel = _roleDetailViewModelCreator();
+            RoleDetailViewModel.IsNew = true;
+            RoleDetailViewModel.LoadAsync();
         }
     }
 }

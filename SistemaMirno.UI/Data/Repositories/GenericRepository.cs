@@ -93,38 +93,38 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public async Task<TEntity> GetByIdAsync(int? id) => await _table.FindAsync(id);
+        public Task<TEntity> GetByIdAsync(int? id) => _table.FindAsync(id);
 
-        public virtual async Task<List<TEntity>> GetAllAsync() => await _table.ToListAsync();
+        public virtual Task<List<TEntity>> GetAllAsync() => _table.ToListAsync();
 
-        public async Task<int> AddAsync(TEntity entity)
+        public Task<int> AddAsync(TEntity entity)
         {
             _table.Add(entity);
-            return await SaveChangesAsync();
+            return SaveChangesAsync();
         }
 
-        public async Task<int> AddRangeAsync(IList<TEntity> entities)
+        public Task<int> AddRangeAsync(IList<TEntity> entities)
         {
             _table.AddRange(entities);
-            return await SaveChangesAsync();
+            return SaveChangesAsync();
         }
 
-        public async Task<int> SaveAsync(TEntity entity)
+        public Task<int> SaveAsync(TEntity entity)
         {
             _db.Entry(entity).State = EntityState.Modified;
-            return await SaveChangesAsync();
+            return SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(int id, byte[] timeStamp)
+        public Task<int> DeleteAsync(int id, byte[] timeStamp)
         {
             _db.Entry(new TEntity() {Id = id, Timestamp = timeStamp}).State = EntityState.Deleted;
-            return await SaveChangesAsync();
+            return SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(TEntity entity)
+        public Task<int> DeleteAsync(TEntity entity)
         {
             _db.Entry(entity).State = EntityState.Deleted;
-            return await SaveChangesAsync();
+            return SaveChangesAsync();
         }
 
         public bool HasChanges()

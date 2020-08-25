@@ -53,21 +53,24 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         /// <inheritdoc/>
-        public override async Task LoadDetailAsync(int userId)
+        public override async Task LoadDetailAsync(int id)
         {
-            var user = await _userRepository.GetByIdAsync(userId);
+            var user = await _userRepository.GetByIdAsync(id);
 
-            User = new UserWrapper(user);
-            User.PropertyChanged += User_PropertyChanged;
-            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                User = new UserWrapper(user);
+                User.PropertyChanged += User_PropertyChanged;
+                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+            });
 
-            ProgressVisibility = Visibility.Collapsed;
+            await base.LoadDetailAsync(id).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
         protected override async void OnSaveExecute()
         {
-            ProgressVisibility = Visibility.Visible;
+            base.OnSaveExecute();
             User.Password = User.GetPasswordHash(User.Password);
 
             // TODO: Set user permissions
@@ -88,7 +91,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return User != null && !User.HasErrors && HasChanges;
+            return OnSaveCanExecute(User);
         }
 
         /// <inheritdoc/>
@@ -120,14 +123,19 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public override Task LoadAsync()
         {
-            User = new UserWrapper();
-            User.PropertyChanged += User_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                User = new UserWrapper();
+                User.PropertyChanged += User_PropertyChanged;
+                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
 
-            User.Username = string.Empty;
-            User.Password = string.Empty;
-            User.PasswordVerification = string.Empty;
-            return null;
+                User.Username = string.Empty;
+                User.Password = string.Empty;
+                User.PasswordVerification = string.Empty;
+
+                ProgressVisibility = Visibility.Collapsed;
+            });
+            return Task.CompletedTask;
         }
     }
 }

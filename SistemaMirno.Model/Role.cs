@@ -16,15 +16,15 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the name of the role.
         /// </summary>
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Descripción requerida.")]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string Description { get; set; }
 
         [Required]
         public int BranchId { get; set; }
 
         [ForeignKey(nameof(BranchId))]
-        public Branch Branch { get; set; }
+        public virtual Branch Branch { get; set; }
 
         [Required]
         public bool HasAccessToSales { get; set; }
@@ -43,6 +43,11 @@ namespace SistemaMirno.Model
 
         [Required]
         public bool IsSystemAdmin { get; set; }
+
+        public string ProceduresManualPdfFile { get; set; }
+
+        [Required]
+        public bool HasProceduresManual { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 

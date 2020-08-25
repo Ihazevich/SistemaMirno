@@ -32,22 +32,22 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Nombre de Usuario" />
             <TextBox Grid.Row="1"
-                 Text="{Binding User.Username, UpdateSourceTrigger=PropertyChanged}"
+                 Text="{Binding User.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Margin="5" />
             <Label Grid.Row="2" Content="Contraseña nueva" />
             <TextBox Grid.Row="3"
-                     Text="{Binding User.Password, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Margin="5" />
             <Label Grid.Row="4" Content="Verificar contraseña nueva" />
             <TextBox Grid.Row="5"
-                     Text="{Binding User.PasswordVerification, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding User.PasswordVerification, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Margin="5" />
             <Label Grid.Row="6" Content="Empleado" />
             <ComboBox Grid.Row="7"
                       ItemsSource="{Binding Employees}"
                       DisplayMemberPath="FullName"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding User.EmployeeId, Mode=TwoWay}"
+                      SelectedValue="{Binding User.EmployeeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Margin="5" />
             <StackPanel Grid.Row="8" Orientation="Horizontal">
                 <Button Content="Guardar" 

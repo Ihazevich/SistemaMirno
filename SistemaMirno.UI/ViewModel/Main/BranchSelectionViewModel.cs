@@ -75,6 +75,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         }
 
         public ICommand SelectBranchCommand { get; }
+
         public ICommand CancelCommand { get; }
 
         public override async Task LoadAsync()
@@ -83,13 +84,20 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             var branches = await _branchRepository.GetAllAsync();
 
-            ProgressVisibility = Visibility.Collapsed;
-            ViewVisibility = Visibility.Visible;
-
             foreach (var branch in branches)
             {
-                Branches.Add(new BranchWrapper(branch));
+                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
             }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ProgressVisibility = Visibility.Collapsed;
+                ViewVisibility = Visibility.Visible;
+            });
+        }
+
+        public async Task LoadBranches()
+        {
 
         }
     }

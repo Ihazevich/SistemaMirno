@@ -223,6 +223,8 @@
     <Compile Include="Data\Repositories\Interfaces\IBranchRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IGenericRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IUserRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IRoleRepository.cs" />
+    <Compile Include="Data\Repositories\RoleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
     <Compile Include="Event\AfterDataModelDeletedEventArgs.cs" />
@@ -248,12 +250,16 @@
     <Compile Include="ViewModel\Detail\BranchDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IBranchDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IUserDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IRoleDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\RoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IDetailViewModelBase.cs" />
     <Compile Include="ViewModel\General\BranchViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IBranchViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IUserViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IRoleViewModel.cs" />
+    <Compile Include="ViewModel\General\RoleViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\Main\BranchSelectionViewModel.cs" />
@@ -272,7 +278,7 @@
     <Compile Include="View\AreaConnectionView.xaml.cs">
       <DependentUpon>AreaConnectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\BranchSelectionView.xaml.cs">
+    <Compile Include="View\Main\BranchSelectionView.xaml.cs">
       <DependentUpon>BranchSelectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ClientDetailView.xaml.cs">
@@ -290,14 +296,17 @@
     <Compile Include="View\Detail\BranchDetailView.xaml.cs">
       <DependentUpon>BranchDetailView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Detail\RoleDetailView.xaml.cs">
+      <DependentUpon>RoleDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EmployeeDetailView.xaml.cs">
       <DependentUpon>EmployeeDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EmployeeRoleDetailView.xaml.cs">
       <DependentUpon>EmployeeRoleDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EmployeeRoleView.xaml.cs">
-      <DependentUpon>EmployeeRoleView.xaml</DependentUpon>
+    <Compile Include="View\General\RoleView.xaml.cs">
+      <DependentUpon>RoleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EmployeeView.xaml.cs">
       <DependentUpon>EmployeeView.xaml</DependentUpon>
@@ -378,7 +387,9 @@
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wrapper\BranchWrapper.cs" />
+    <Compile Include="Wrapper\IModelWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
+    <Compile Include="Wrapper\RoleWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\WrapperBase.cs" />
     <Page Include="MainWindow.xaml">
@@ -417,7 +428,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BranchSelectionView.xaml">
+    <Page Include="View\Main\BranchSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -441,6 +452,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Detail\RoleDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\EmployeeDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -449,7 +464,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EmployeeRoleView.xaml">
+    <Page Include="View\General\RoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
