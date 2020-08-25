@@ -20,8 +20,6 @@
    PresentationCore.dll   v4.0.0.0
    WindowsBase.dll   v4.0.0.0
    PresentationFramework.dll   v4.0.0.0</Info>
-  <Warning>Versioning issue: Assembly {SistemaMirno.UI v0.2.448.7542} references {SistemaMirno.Model v1.1.84.7542} but NDepend has loaded {SistemaMirno.Model v1.1.85.7542}</Warning>
-  <Warning>Versioning issue: Assembly {SistemaMirno.UI v0.2.448.7542} references {SistemaMirno.DataAccess v1.1.112.7542} but NDepend has loaded {SistemaMirno.DataAccess v1.1.113.7542}</Warning>
   <Info>216 source files parsed ; all source files found ; all source files in-sync with PDB</Info>
   <Info>0 code rule has been extracted from code.</Info>
   <Info>No dependency cycle detected in assemblies referencement graph.</Info>
