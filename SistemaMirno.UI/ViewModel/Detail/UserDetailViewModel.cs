@@ -2,6 +2,7 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
@@ -36,6 +37,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             : base(eventAggregator, "Detalles de Usuario", dialogCoordinator)
         {
             _userRepository = userRepository;
+
+            Employees = new ObservableCollection<EmployeeWrapper>();
         }
 
         /// <summary>
@@ -51,6 +54,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<EmployeeWrapper> Employees { get; }
 
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
@@ -73,7 +78,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             base.OnSaveExecute();
             User.Password = User.GetPasswordHash(User.Password);
 
-            // TODO: Set user permissions
+            var roles = await _userRepository.GetAllRolesFromEmployeeAsync(User.EmployeeId);
+
+            foreach (var role in roles)
+            {
+                User.Model.HasAccessToAccounting = role.HasAccessToAccounting || User.Model.HasAccessToAccounting;
+                User.Model.HasAccessToHumanResources = role.HasAccessToHumanResources || User.Model.HasAccessToHumanResources;
+                User.Model.HasAccessToLogistics = role.HasAccessToLogistics || User.Model.HasAccessToLogistics;
+                User.Model.HasAccessToProduction = role.HasAccessToProduction || User.Model.HasAccessToProduction;
+                User.Model.HasAccessToSales = role.HasAccessToSales || User.Model.HasAccessToSales;
+                User.Model.IsSystemAdmin = role.IsSystemAdmin || User.Model.IsSystemAdmin;
+            }
 
             if (IsNew)
             {
@@ -123,10 +138,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public override async Task LoadAsync(int? id)
         {
+            await LoadEmployees();
+
             if (id.HasValue)
             {
                 await LoadDetailAsync(id.Value);
             }
+
+            IsNew = true;
 
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -140,6 +159,16 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
                 ProgressVisibility = Visibility.Collapsed;
             });
+        }
+
+        private async Task LoadEmployees()
+        {
+            var employees = await _userRepository.GetAllEmployeesAsync();
+
+            foreach (var employee in employees)
+            {
+                Application.Current.Dispatcher.Invoke(() => Employees.Add(new EmployeeWrapper(employee)));
+            }
         }
     }
 }

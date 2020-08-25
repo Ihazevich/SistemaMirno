@@ -133,7 +133,7 @@ namespace SistemaMirno.UI.ViewModel.General
             });
         }
 
-        private async void UpdateDetailViewModel(int id)
+        private void UpdateDetailViewModel(int id)
         {
             if (UserDetailViewModel != null && UserDetailViewModel.HasChanges)
             {
@@ -147,7 +147,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             UserDetailViewModel = _userDetailViewModelCreator();
-            await UserDetailViewModel.LoadDetailAsync(id);
+            UserDetailViewModel.LoadAsync(id);
         }
         
         private void OnCreateNewExecute()
@@ -164,7 +164,6 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             UserDetailViewModel = _userDetailViewModelCreator();
-            UserDetailViewModel.IsNew = true;
             UserDetailViewModel.LoadAsync();
         }
     }
