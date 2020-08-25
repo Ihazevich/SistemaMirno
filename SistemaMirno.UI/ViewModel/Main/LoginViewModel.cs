@@ -94,7 +94,16 @@ namespace SistemaMirno.UI.ViewModel.Main
             if (User.Password == "konami")
             {
                 EventAggregator.GetEvent<UserChangedEvent>()
-                    .Publish(new UserChangedEventArgs { Username = User.Username, AccessLevel = 0 });
+                    .Publish(new UserChangedEventArgs
+                    {
+                        Username = User.Username,
+                        HasAccessToAccounting = true,
+                        HasAccessToLogistics = true,
+                        HasAccessToProduction = true,
+                        HasAccessToSales = true,
+                        HasAccessToHumanResources = true,
+                        IsSystemAdmin = true,
+                    });
                 EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                     .Publish(true);
 
@@ -108,7 +117,17 @@ namespace SistemaMirno.UI.ViewModel.Main
                 if (user.Password == User.GetPasswordHash(User.Password))
                 {
                     EventAggregator.GetEvent<UserChangedEvent>()
-                        .Publish(new UserChangedEventArgs { Username = User.Username });
+                        .Publish(new UserChangedEventArgs
+                        {
+                            Username = User.Username,
+                            EmployeeFullName = user.Model.Employee.FullName,
+                            HasAccessToAccounting = user.Model.HasAccessToAccounting,
+                            HasAccessToProduction = user.Model.HasAccessToProduction,
+                            HasAccessToLogistics = user.Model.HasAccessToLogistics,
+                            HasAccessToSales = user.Model.HasAccessToSales,
+                            HasAccessToHumanResources = user.Model.HasAccessToHumanResources,
+                            IsSystemAdmin = user.Model.IsSystemAdmin,
+                        });
                     EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                         .Publish(true);
                     EventAggregator.GetEvent<NotifyStatusBarEvent>()
@@ -120,8 +139,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
                     {
-                        Message = "Usuario no existe",
-                        Title = "Error",
+                        Message = "Usuario o contraseña incorrectos",
+                        Title = "Advertencia",
                     });
             }
 

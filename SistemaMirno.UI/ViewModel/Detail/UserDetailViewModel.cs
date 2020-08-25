@@ -63,7 +63,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override void OnSaveExecute()
         {
             User.Password = User.GetPasswordHash(User.Password);
-            _userRepository.SaveAsync(User.Model);
+
+            // TODO: Set user permissions
+
+            if (IsNew)
+            {
+                _userRepository.AddAsync(User.Model);
+            }
+            else
+            {
+                _userRepository.SaveAsync(User.Model);
+            }
             HasChanges = false;
             EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
                 .Publish();

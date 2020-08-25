@@ -67,7 +67,7 @@ namespace SistemaMirno.UI.Data.Repositories
             catch (CommitFailedException ex)
             {
                 _dialogService.ShowOkDialog(
-                    "Erroral ejecutar la transaccion con la base de datos. Contacte al Administrador de Sistema.",
+                    "Error al ejecutar la transaccion con la base de datos. Contacte al Administrador de Sistema.",
                     "Error");
                 return -1;
             }

@@ -32,7 +32,6 @@ namespace SistemaMirno.Model
         [MaxLength(30)]
         public string LastName { get; set; }
 
-
         [NotMapped]
         public string FullName => FirstName + " " + LastName;
 

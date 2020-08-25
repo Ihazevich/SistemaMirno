@@ -19,40 +19,47 @@
                  utilities:DialogCloser.DialogResult="{Binding DialogResult}">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
-            <MenuItem Header="Listados" IsEnabled="{Binding NavigationStatus}">
-                <MenuItem Header="En proceso por areas" Command="{Binding ChangeViewCommand}" CommandParameter="InProcessByWorkAreasViewModel"/>
-                <MenuItem Header="Produccion por areas" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByWorkAreaViewModel"/>
+            <MenuItem Header="Reportes de Producción" 
+                      Visibility="{Binding ProductionVisibility}"
+                      IsEnabled="{Binding NavigationStatus}">
+                <MenuItem Header="Listados" IsEnabled="{Binding NavigationStatus}">
+                    <MenuItem Header="En proceso por areas" Command="{Binding ChangeViewCommand}" CommandParameter="InProcessByWorkAreasViewModel"/>
+                    <MenuItem Header="Produccion por areas" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByWorkAreaViewModel"/>
+                </MenuItem>
+                <MenuItem Header="Historiales" IsEnabled="{Binding NavigationStatus}">
+                    <MenuItem Header="Ordenes por dia" IsEnabled="False" />
+                    <MenuItem Header="Productos por dia" IsEnabled="False" />
+                    <MenuItem Header="Productos en proceso" IsEnabled="False" />
+                    <MenuItem Header="Productos por responsable" IsEnabled="False" />
+                    <MenuItem Header="Movimientos entre sucursales" IsEnabled="False" />
+                    <MenuItem Header="Historial de eventos" IsEnabled="False" />
+                    <MenuItem Header="Historial de logins" IsEnabled="False" />
+                </MenuItem>
             </MenuItem>
-            <MenuItem Header="Historiales" IsEnabled="{Binding NavigationStatus}">
-                <MenuItem Header="Ordenes por dia" IsEnabled="False" />
-                <MenuItem Header="Productos por dia" IsEnabled="False" />
-                <MenuItem Header="Productos en proceso" IsEnabled="False" />
-                <MenuItem Header="Productos por responsable" IsEnabled="False" />
-                <MenuItem Header="Movimientos entre sucursales" IsEnabled="False" />
-                <MenuItem Header="Historial de eventos" IsEnabled="False" />
-                <MenuItem Header="Historial de logins" IsEnabled="False" />
-            </MenuItem>
-            <MenuItem Header="Stock" IsEnabled="{Binding NavigationStatus}">
-                <MenuItem Header="Ventas" Command="{Binding ChangeViewCommand}" CommandParameter="SaleViewModel"/>
+            <MenuItem Header="Stock" IsEnabled="{Binding NavigationStatus}" Visibility="{Binding ProductsVisibility}">
                 <MenuItem Header="Disponibilidad" Command="{Binding ChangeViewCommand}" CommandParameter="StockViewModel"/>
-                <MenuItem Header="Historial de ingresos y salidas" IsEnabled="False" />                
+                <MenuItem Header="Historial de ingresos y salidas" IsEnabled="False" />
             </MenuItem>
+            <MenuItem Header="Ventas" 
+                      Visibility="{Binding SalesVisibility}"
+                      IsEnabled="{Binding NavigationStatus}"
+                      Command="{Binding ChangeViewCommand}" CommandParameter="SaleViewModel"/>
             <MenuItem Header="Utilidades" IsEnabled="{Binding NavigationStatus}">
-                <MenuItem Header="Recursos Humanos">
+                <MenuItem Header="Recursos Humanos" Visibility="{Binding HumanResourcesVisibility}">
                     <MenuItem Header="Empleados" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeViewModel" />
                     <MenuItem Header="Roles" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeRoleViewModel" />
                 </MenuItem>
-                <MenuItem Header="Administración">
+                <MenuItem Header="Sistema" Visibility="{Binding SysAdminVisibility}">
                     <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
                     <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
                 </MenuItem>
-                <MenuItem Header="Producción">
+                <MenuItem Header="Producción" Visibility="{Binding ProductsVisibility}">
                     <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="ProductViewModel" />
                     <MenuItem Header="Categorias" Command="{Binding ChangeViewCommand}" CommandParameter="ProductCategoryViewModel" />
                     <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="MaterialViewModel" />
                     <MenuItem Header="Lustres/Colores" Command="{Binding ChangeViewCommand}" CommandParameter="ColorViewModel" />
                 </MenuItem>
-                <MenuItem Header="Ventas">
+                <MenuItem Header="Ventas" Visibility="{Binding SalesVisibility}">
                     <MenuItem Header="Clientes" Command="{Binding ChangeViewCommand}" CommandParameter="ClientViewModel"/>
                     <MenuItem Header="Metodos de pago" Command="{Binding ChangeViewCommand}" CommandParameter="PaymentMethodViewModel"/>
                 </MenuItem>

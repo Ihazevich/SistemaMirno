@@ -38,5 +38,26 @@ namespace SistemaMirno.Model
         /// </summary>
         [Required]
         public virtual Employee Employee { get; set; }
+
+        [Required]
+        public bool HasAccessToAccounting { get; set; }
+
+        [Required]
+        public bool HasAccessToProduction { get; set; }
+
+        [Required]
+        public bool HasAccessToLogistics { get; set; }
+
+        [Required]
+        public bool HasAccessToSales { get; set; }
+
+        [Required]
+        public bool HasAccessToHumanResources { get; set; }
+
+        [Required]
+        public bool IsSystemAdmin { get; set; }
+
+        [Required]
+        public string EmployeeFullName { get; set; }
     }
 }

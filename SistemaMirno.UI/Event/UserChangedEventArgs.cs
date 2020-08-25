@@ -5,18 +5,18 @@
 namespace SistemaMirno.UI.Event
 {
     /// <summary>
-    /// A class representing the argument sent with the <see cref="UserChangedEvent"/> event.
+    /// A struct representing the argument sent with the <see cref="UserChangedEvent"/> event.
     /// </summary>
-    public class UserChangedEventArgs
+    public struct UserChangedEventArgs
     {
-        /// <summary>
-        /// Gets or sets the username of the user.
-        /// </summary>
+        public int UserId { get; set; }
         public string Username { get; set; }
-
-        /// <summary>
-        /// Gets or sets the access level of the user.
-        /// </summary>
-        public int AccessLevel { get; set; }
+        public string EmployeeFullName { get; set; }
+        public bool IsSystemAdmin { get; set; }
+        public bool HasAccessToSales { get; set; }
+        public bool HasAccessToAccounting { get; set; }
+        public bool HasAccessToProduction { get; set; }
+        public bool HasAccessToLogistics { get; set; }
+        public bool HasAccessToHumanResources { get; set; }
     }
 }

@@ -1,12 +1,15 @@
 ﻿using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Autofac.Features.Indexed;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.View.Services;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Main
 {
@@ -21,16 +24,22 @@ namespace SistemaMirno.UI.ViewModel.Main
         private string _windowTitle = $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
         private bool? _dialogResult;
 
-        // User data fields.
-        private bool _userLoggedIn = false;
-        private string _username;
-        private int _userAccessLevel;
-
         private bool _navigationStatus = true;
+        private bool _userLoggedIn = false;
+        private UserWrapper _currentUser;
+        private Branch _currentBranch;
 
         // Status bar fields
         private string _statusMessage;
         private bool _processing;
+
+        // Visibility fields
+        private Visibility _accountingVisibility;
+        private Visibility _productionVisibility;
+        private Visibility _salesVisibility;
+        private Visibility _productsVisibility;
+        private Visibility _humanResourcesVisibility;
+        private Visibility _sysAdminVisibility;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -64,14 +73,102 @@ namespace SistemaMirno.UI.ViewModel.Main
             CloseUserSessionCommand = new DelegateCommand(OnCloseUserSessionExecute);
             CloseApplicationCommand = new DelegateCommand(OnCloseApplicationExecute);
 
+            ProductionVisibility = Visibility.Collapsed;
+            SalesVisibility = Visibility.Collapsed;
+            HumanResourcesVisibility = Visibility.Collapsed;
+            AccountingVisibility = Visibility.Collapsed;
+            SysAdminVisibility = Visibility.Collapsed;
+            ProductsVisibility = Visibility.Collapsed;
+
             ShowLoginView();
         }
 
+        public Visibility ProductsVisibility
+        {
+            get => _productsVisibility;
+            set
+            {
+                _productsVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ProductionVisibility
+        {
+            get => _productionVisibility;
+            set
+            {
+                _productionVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility SalesVisibility
+        {
+            get => _salesVisibility;
+            set
+            {
+                _salesVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility HumanResourcesVisibility
+        {
+            get => _humanResourcesVisibility;
+            set
+            {
+                _humanResourcesVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility AccountingVisibility
+        {
+            get => _accountingVisibility;
+            set
+            {
+                _accountingVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility SysAdminVisibility
+        {
+            get => _sysAdminVisibility;
+            set
+            {
+                _sysAdminVisibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void UpdateStatusBar(NotifyStatusBarEventArgs args)
         {
             StatusMessage = args.Message;
             Processing = args.Processing;
+        }
+
+        public UserWrapper CurrentUser
+        {
+            get => _currentUser;
+
+            set
+            {
+                _currentUser = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Branch CurrentBranch
+        {
+            get => _currentBranch;
+
+            set
+            {
+                _currentBranch = value;
+                OnPropertyChanged();
+            }
         }
 
         public string StatusMessage
@@ -125,13 +222,38 @@ namespace SistemaMirno.UI.ViewModel.Main
         private void UserChanged(UserChangedEventArgs args)
         {
             UserLoggedIn = true;
+            CurrentUser = new UserWrapper
+            {
+                Model =
+                {
+                    Username = args.Username,
+                    EmployeeFullName = args.EmployeeFullName,
+                    HasAccessToProduction = args.HasAccessToProduction,
+                    HasAccessToLogistics = args.HasAccessToLogistics,
+                    HasAccessToSales = args.HasAccessToSales,
+                    HasAccessToAccounting = args.HasAccessToAccounting,
+                    HasAccessToHumanResources = args.HasAccessToHumanResources,
+                    IsSystemAdmin = args.IsSystemAdmin,
+                },
+            };
+
+            AccountingVisibility = args.HasAccessToAccounting ? Visibility.Visible : Visibility.Collapsed;
+            ProductionVisibility = args.HasAccessToProduction ? Visibility.Visible : Visibility.Collapsed;
+            SalesVisibility = args.HasAccessToSales ? Visibility.Visible : Visibility.Collapsed;
+            HumanResourcesVisibility = args.HasAccessToHumanResources ? Visibility.Visible : Visibility.Collapsed;
+            SysAdminVisibility = args.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
+            ProductsVisibility = args.HasAccessToSales || args.HasAccessToProduction
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
             NavigationStatus = true;
-            Username = args.Username;
 
             NavigationViewModel = _viewModelCreator[nameof(WorkAreaNavigationViewModel)];
             SelectedViewModel = null;
 
-            LoadAsync();
+            UpdateStatusBar(new NotifyStatusBarEventArgs{Message = "Cargando navegación", Processing = true});
+            Task.Run(LoadAsync);
+            ClearStatusBar();
         }
 
         /// <summary>
@@ -144,34 +266,6 @@ namespace SistemaMirno.UI.ViewModel.Main
             set
             {
                 _userLoggedIn = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the username of the current user.
-        /// </summary>
-        public string Username
-        {
-            get => _username;
-
-            set
-            {
-                _username = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the access level of the current user.
-        /// </summary>
-        public int UserAccessLevel
-        {
-            get => _userAccessLevel;
-
-            set
-            {
-                _userAccessLevel = value;
                 OnPropertyChanged();
             }
         }
@@ -253,7 +347,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public override async Task LoadAsync()
         {
-            NavigationViewModel.LoadAsync();
+            await NavigationViewModel.LoadAsync();
         }
 
         private void OnChangeViewExecute(string viewModel)
@@ -295,7 +389,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         private void OnCloseUserSessionExecute()
         {
             UserLoggedIn = false;
-            Username = null;
+            CurrentUser = null;
             SelectedViewModel = null;
 
             ShowLoginView();
