@@ -37,11 +37,12 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             EventAggregator.GetEvent<BroadcastSessionInfoEvent>()
                 .Subscribe(GetSessionInfo);
+            EventAggregator.GetEvent<AskSessionInfoEvent>().Publish();
         }
 
         private void GetSessionInfo(SessionInfo obj)
         {
-            throw new NotImplementedException();
+            SessionInfo = obj;
         }
 
         private void OnCancelExecute()
@@ -94,7 +95,10 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             foreach (var branch in branches)
             {
-                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
+                if (SessionInfo.User.Model.IsSystemAdmin || SessionInfo.Branch.Name == branch.Name)
+                {
+                    Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
+                }
             }
 
             Application.Current.Dispatcher.Invoke(() =>
@@ -102,11 +106,6 @@ namespace SistemaMirno.UI.ViewModel.Main
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
-        }
-
-        public async Task LoadBranches()
-        {
-
         }
     }
 }

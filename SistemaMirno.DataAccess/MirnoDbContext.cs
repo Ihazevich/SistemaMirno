@@ -16,7 +16,7 @@ namespace SistemaMirno.DataAccess
         /// <summary>
         /// Initializes a new instance of the <see cref="MirnoDbContext"/> class.
         /// </summary>
-        public MirnoDbContext() : base("DektopMirnoDb")
+        public MirnoDbContext() : base("LaptopMirnoDb")
         {
             DatabaseLogger.StartLogging();
             DbInterception.Add(DatabaseLogger);

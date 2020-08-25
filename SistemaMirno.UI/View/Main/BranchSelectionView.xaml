@@ -22,8 +22,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ListBox ItemsSource="{Binding Branches, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <Label Content="Seleccionar Sucursal" FontSize="25" HorizontalAlignment="Center"/>
+            <Separator Grid.Row="1"/>
+            <ListBox Grid.Row="2" ItemsSource="{Binding Branches, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      SelectedItem="{Binding SelectedBranch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      SelectionMode="Single">
                 <ListBox.ItemTemplate>
@@ -32,10 +36,10 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Content="Seleccionar"
                         Command="{Binding SelectBranchCommand}"
