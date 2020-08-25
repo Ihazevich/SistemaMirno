@@ -114,7 +114,7 @@ namespace SistemaMirno.UI.ViewModel.General
         /// Loads the view model asynchronously from the data service.
         /// </summary>
         /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
-        public override async Task LoadAsync()
+        public override async Task LoadAsync(int? id = null)
         {
             Users.Clear();
             _userRepository = _userRepositoryCreator();

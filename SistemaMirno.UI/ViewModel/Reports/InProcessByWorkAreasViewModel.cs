@@ -98,7 +98,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
         public ICollectionView WorkUnitsCollection { get; set; }
 
-        public override async Task LoadAsync()
+        public override async Task LoadAsync(int? id = null)
         {
         }
 

@@ -47,13 +47,14 @@ namespace SistemaMirno.UI
             builder.RegisterType<BranchSelectionViewModel>()
                 .Keyed<IViewModelBase>(nameof(BranchSelectionViewModel));
 
-
             builder.RegisterType<UserViewModel>()
                 .Keyed<IViewModelBase>(nameof(UserViewModel));
             builder.RegisterType<BranchViewModel>()
                 .Keyed<IViewModelBase>(nameof(BranchViewModel));
             builder.RegisterType<RoleViewModel>()
                 .Keyed<IViewModelBase>(nameof(RoleViewModel));
+            builder.RegisterType<EmployeeViewModel>()
+                .Keyed<IViewModelBase>(nameof(EmployeeViewModel));
 
             builder.RegisterType<InProcessByWorkAreasViewModel>()
                 .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));
@@ -64,10 +65,13 @@ namespace SistemaMirno.UI
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
             builder.RegisterType<BranchDetailViewModel>().As<IBranchDetailViewModel>();
             builder.RegisterType<RoleDetailViewModel>().As<IRoleDetailViewModel>();
+            builder.RegisterType<EmployeeDetailViewModel>().As<IEmployeeDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(EmployeeDetailViewModel));
 
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<BranchRepository>().As<IBranchRepository>();
             builder.RegisterType<RoleRepository>().As<IRoleRepository>();
+            builder.RegisterType<EmployeeRepository>().As<IEmployeeRepository>();
 
 
             return builder.Build();

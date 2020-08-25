@@ -87,7 +87,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public ICommand CancelCommand { get; }
 
-        public override async Task LoadAsync()
+        public override async Task LoadAsync(int? id = null)
         {
             Branches.Clear();
 

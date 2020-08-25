@@ -115,7 +115,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public override Task LoadAsync()
+        public override Task LoadAsync(int? id = null)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {

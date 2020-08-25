@@ -5,6 +5,6 @@ namespace SistemaMirno.UI.ViewModel
 {
     public interface IViewModelBase
     {
-        Task LoadAsync();
+        Task LoadAsync(int? id = null);
     }
 }

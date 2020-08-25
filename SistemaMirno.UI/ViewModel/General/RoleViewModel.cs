@@ -87,7 +87,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public ICommand CreateNewCommand { get; }
 
-        public override async Task LoadAsync()
+        public override async Task LoadAsync(int? id = null)
         {
             Roles.Clear();
             _roleRepository = _roleRepositoryCreator();

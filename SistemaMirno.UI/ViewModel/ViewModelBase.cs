@@ -77,6 +77,7 @@ namespace SistemaMirno.UI.ViewModel
                 OnPropertyChanged();
             }
         }
+
         public int DataGridIndex
         {
             get => _dataGridIndex;
@@ -87,13 +88,13 @@ namespace SistemaMirno.UI.ViewModel
                 OnPropertyChanged();
             }
         }
+
         /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand ExitView { get; }
 
-
-        public abstract Task LoadAsync();
+        public abstract Task LoadAsync(int? id = null);
 
         private void OnExitViewExecute()
         {

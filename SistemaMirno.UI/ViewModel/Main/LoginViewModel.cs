@@ -164,7 +164,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public ICommand CancelCommand { get; }
 
-        public override Task LoadAsync()
+        public override Task LoadAsync(int? id = null)
         {
             ViewVisibility = System.Windows.Visibility.Visible;
             return null;

@@ -219,7 +219,9 @@
     <Compile Include="Data\Reports\WorkOrderReport.cs" />
     <Compile Include="Data\Reports\WorkUnitReport.cs" />
     <Compile Include="Data\Repositories\BranchRepository.cs" />
+    <Compile Include="Data\Repositories\EmployeeRepository.cs" />
     <Compile Include="Data\Repositories\GenericRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IEmployeeRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IBranchRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IGenericRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IUserRepository.cs" />
@@ -251,6 +253,8 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Utilities\DialogCloser.cs" />
     <Compile Include="ViewModel\Detail\BranchDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IEmployeeDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IBranchDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IUserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IRoleDetailViewModel.cs" />
@@ -259,6 +263,8 @@
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IDetailViewModelBase.cs" />
     <Compile Include="ViewModel\General\BranchViewModel.cs" />
+    <Compile Include="ViewModel\General\EmployeeViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IEmployeeViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IBranchViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IUserViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IRoleViewModel.cs" />
@@ -302,16 +308,13 @@
     <Compile Include="View\Detail\RoleDetailView.xaml.cs">
       <DependentUpon>RoleDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EmployeeDetailView.xaml.cs">
+    <Compile Include="View\Detail\EmployeeDetailView.xaml.cs">
       <DependentUpon>EmployeeDetailView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\EmployeeRoleDetailView.xaml.cs">
-      <DependentUpon>EmployeeRoleDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\General\RoleView.xaml.cs">
       <DependentUpon>RoleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EmployeeView.xaml.cs">
+    <Compile Include="View\General\EmployeeView.xaml.cs">
       <DependentUpon>EmployeeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\General\BranchView.xaml.cs">
@@ -390,6 +393,7 @@
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wrapper\BranchWrapper.cs" />
+    <Compile Include="Wrapper\EmployeeWrapper.cs" />
     <Compile Include="Wrapper\IModelWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
     <Compile Include="Wrapper\RoleWrapper.cs" />
@@ -459,11 +463,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EmployeeDetailView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EmployeeRoleDetailView.xaml">
+    <Page Include="View\Detail\EmployeeDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -471,7 +471,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EmployeeView.xaml">
+    <Page Include="View\General\EmployeeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

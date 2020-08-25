@@ -98,7 +98,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public virtual Task LoadDetailAsync(int id)
+        public virtual Task LoadDetailAsync(int id = 0)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {

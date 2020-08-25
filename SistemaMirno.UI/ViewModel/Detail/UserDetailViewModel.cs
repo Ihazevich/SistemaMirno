@@ -121,8 +121,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public override Task LoadAsync()
+        public override async Task LoadAsync(int? id)
         {
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+            }
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 User = new UserWrapper();
@@ -135,7 +140,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
                 ProgressVisibility = Visibility.Collapsed;
             });
-            return Task.CompletedTask;
         }
     }
 }

@@ -21,14 +21,14 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         [MaxLength(30)]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the last name.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         [MaxLength(30)]
         public string LastName { get; set; }
 
@@ -38,33 +38,33 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the document number(CI) of the employee.
         /// </summary>
-        [Required]
-        public int DocumentNumber { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Requerido")]
+        public string DocumentNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public DateTime BirthDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public int Age { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Requerido")]
         [StringLength(200)]
         public string Address { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         [StringLength(20)]
         public string PhoneNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         [StringLength(30)]
         public string Profession { get; set; }
 
         public virtual ICollection<Role> Roles { get; set; } = new HashSet<Role>();
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public long BaseSalary { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Requerido")]
         public long SalaryOtherBonus { get; set; }
         
         [Required]
@@ -85,33 +85,32 @@ namespace SistemaMirno.Model
         [Required]
         public long TotalSalary { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public long ReportedIpsSalary { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Requerido")]
         public double ProductionBonusRatio { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Requerido")]
         public double SalesBonusRatio { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Requerido")]
         public long PricePerNormalHour { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public long PricePerExtraHour { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public DateTime ContractStartDate { get; set; }
 
-        [Required]
         public string ContractFile { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public bool IsRegisteredInIps { get; set; }
 
         public DateTime? IpsStartDate { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Requerido")]
         public bool Terminated { get; set; }
 
         public DateTime? TerminationDate { get; set; }

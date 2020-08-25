@@ -121,7 +121,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
         }
 
-        public override async Task LoadAsync()
+        public override async Task LoadAsync(int? id = null)
         {
             return;
         }

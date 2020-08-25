@@ -75,9 +75,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public override async Task LoadDetailAsync(int id)
         {
             var model = await _roleRepository.GetByIdAsync(id);
-
-            await LoadBranches();
-
+            
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Role = new RoleWrapper(model);
@@ -138,8 +136,15 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public override async Task LoadAsync()
+        public override async Task LoadAsync(int? id = null)
         {
+            await LoadBranches();
+
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+            }
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Role = new RoleWrapper();
@@ -159,8 +164,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
                 ProgressVisibility = Visibility.Collapsed;
             });
-
-            await LoadBranches();
         }
 
         private async Task LoadBranches()

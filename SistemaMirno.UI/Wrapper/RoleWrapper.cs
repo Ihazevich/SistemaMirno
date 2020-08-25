@@ -36,12 +36,6 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public Branch Branch
-        {
-            get { return GetValue<Branch>(); }
-            set { SetValue(value); }
-        }
-
         public bool HasAccessToSales
         {
             get { return GetValue<bool>(); }

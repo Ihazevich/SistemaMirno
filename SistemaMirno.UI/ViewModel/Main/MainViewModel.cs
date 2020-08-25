@@ -266,7 +266,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         #region Methods
 
-        public override async Task LoadAsync()
+        public override async Task LoadAsync(int? id = null)
         {
             await NavigationViewModel.LoadAsync();
         }
@@ -314,7 +314,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         {
             NotifyStatusBar("Cambiando de vista", true);
             SelectedViewModel = _viewModelCreator[args.ViewModel];
-            SelectedViewModel.LoadAsync();
+            SelectedViewModel.LoadAsync(args.Id);
             EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Publish(false);
             ClearStatusBar();
