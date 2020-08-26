@@ -6,15 +6,28 @@
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical">
-        <ProgressBar IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
-        <Label Content="Detalles del producto" FontSize="20" Margin="5" />
-        <Separator />
-        <Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ProgressBar Grid.Row="0" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
+        <Label Grid.Row="1" Content="Detalles del producto" FontSize="20" Margin="5" />
+        <Separator Grid.Row="2" />
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -74,10 +87,28 @@
                          IsEnabled="False"
                          Margin="5"/>
                 <Button Grid.Column="1" 
-                        Content="Seleccionar archivo" Command="{Binding SelectFileCommand}" Margin="5"/>
+                        Content="Seleccionar archivo" 
+                        Command="{Binding SelectFileCommand}"
+                        CommandParameter="Sketchup"
+                        Margin="5"/>
+            </Grid>
+            <Label Grid.Row="15" Content="Plantilla"/>
+            <Grid Grid.Row="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Text="{Binding Product.TemplateFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         IsEnabled="False"
+                         Margin="5"/>
+                <Button Grid.Column="1" 
+                        Content="Seleccionar archivo" 
+                        Command="{Binding SelectFileCommand}"
+                        CommandParameter="Template"
+                        Margin="5"/>
             </Grid>
         </Grid>
-        <StackPanel Grid.Row="10" Orientation="Horizontal">
+        <StackPanel Grid.Row="5" Orientation="Horizontal">
             <Button Content="Guardar" 
                     Width="125" 
                     Margin="10" 
@@ -93,5 +124,5 @@
                     Background="Red"
                     Command="{Binding DeleteCommand}" />
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </UserControl>

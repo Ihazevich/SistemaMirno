@@ -60,13 +60,11 @@ namespace SistemaMirno.Model
         [Required]
         public bool IsCustom { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string SketchupFile { get; set; }
 
-        [Required]
-        [StringLength(7000)]
-        public string TemplateDetails { get; set; }
+        [StringLength(100)]
+        public string TemplateFile { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of Work Units that have this product as base.

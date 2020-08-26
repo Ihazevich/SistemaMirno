@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Security.Principal;
+using System.Windows.Shell;
 using Autofac;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
@@ -57,12 +58,19 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(EmployeeViewModel));
             builder.RegisterType<WorkAreaViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkAreaViewModel));
+            builder.RegisterType<ProductViewModel>()
+                .Keyed<IViewModelBase>(nameof(ProductViewModel));
+            builder.RegisterType<MaterialViewModel>()
+                .Keyed<IViewModelBase>(nameof(MaterialViewModel));
+            builder.RegisterType<ColorViewModel>()
+                .Keyed<IViewModelBase>(nameof(ColorViewModel));
+            builder.RegisterType<ProductCategoryViewModel>()
+                .Keyed<IViewModelBase>(nameof(ProductCategoryViewModel));
 
             builder.RegisterType<InProcessByWorkAreasViewModel>()
                 .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));
             builder.RegisterType<ProductionByWorkAreaViewModel>()
                 .Keyed<IViewModelBase>(nameof(ProductionByWorkAreaViewModel));
-
 
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
             builder.RegisterType<BranchDetailViewModel>().As<IBranchDetailViewModel>();
@@ -71,13 +79,24 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(EmployeeDetailViewModel));
             builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkAreaDetailViewModel));
+            builder.RegisterType<ProductDetailViewModel>().As<IProductDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(ProductDetailViewModel));
+            builder.RegisterType<MaterialDetailViewModel>().As<IMaterialDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(MaterialDetailViewModel));
+            builder.RegisterType<ColorDetailViewModel>().As<IColorDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(ColorDetailViewModel));
+            builder.RegisterType<ProductCategoryDetailViewModel>().As<IProductCategoryDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(ProductCategoryDetailViewModel));
 
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<BranchRepository>().As<IBranchRepository>();
             builder.RegisterType<RoleRepository>().As<IRoleRepository>();
             builder.RegisterType<EmployeeRepository>().As<IEmployeeRepository>();
             builder.RegisterType<WorkAreaRepository>().As<IWorkAreaRepository>();
-
+            builder.RegisterType<ProductRepository>().As<IProductRepository>();
+            builder.RegisterType<MaterialRepository>().As<IMaterialRepository>();
+            builder.RegisterType<ColorRepository>().As<IColorRepository>();
+            builder.RegisterType<ProductCategoryRepository>().As<IProductCategoryRepository>();
 
             return builder.Build();
         }

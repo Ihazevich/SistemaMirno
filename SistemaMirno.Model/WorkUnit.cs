@@ -90,5 +90,7 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(LatestSupervisorId))]
         public virtual Employee LatestSupervisor { get; set; }
+
+        public string Details { get; set; }
     }
 }

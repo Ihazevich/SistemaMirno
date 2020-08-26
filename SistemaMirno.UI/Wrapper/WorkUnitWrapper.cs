@@ -75,6 +75,12 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        public string Details
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {

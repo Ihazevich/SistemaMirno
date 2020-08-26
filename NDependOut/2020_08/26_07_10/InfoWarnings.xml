@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<InfoWarnings>
+  <Info>Begin full analysis with NDepend v2020.1.2</Info>
+  <Warning>Evaluation 6 days left</Warning>
+  <Info>Visual Studio solution file resolved to absolute file path: from    {.\SistemaMirno.sln}    to    {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.sln}</Info>
+  <Info>Output directory resolved to absolute directory path: C:\Users\ihaze\source\repos\SistemaMirno\NDependOut</Info>
+  <Info>Compare with analysis result obtained on 2020 August - 18 Tuesday 09:49  (which is the analysis result with date closest to 30 days ago)</Info>
+  <Info>.NET Assemblies resolved from the Visual Studio solution file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.sln}
+   C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\bin\Debug\SistemaMirno.UI.exe
+   C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.DataAccess\bin\Debug\SistemaMirno.DataAccess.dll
+   C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.Model\bin\Debug\SistemaMirno.Model.dll</Info>
+  <Info>.NET Assembly filtered out from the Visual Studio solution file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.sln}
+   SistemaMirno.UITests</Info>
+  <Info>Concurrent mode</Info>
+  <Info>.NET Assemblies loaded from {C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319} 
+   System.Core.dll   v4.0.0.0
+   System.ComponentModel.DataAnnotations.dll   v4.0.0.0
+   System.Xaml.dll   v4.0.0.0
+   System.dll   v4.0.0.0
+   mscorlib.dll   v4.0.0.0</Info>
+  <Info>.NET Assemblies loaded from {C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\WPF} 
+   PresentationCore.dll   v4.0.0.0
+   WindowsBase.dll   v4.0.0.0
+   PresentationFramework.dll   v4.0.0.0</Info>
+  <Warning>Versioning issue: Assembly {SistemaMirno.UI v0.3.495.7542} references {SistemaMirno.Model v0.2.92.7542} but NDepend has loaded {SistemaMirno.Model v0.2.103.7543}</Warning>
+  <Warning>Versioning issue: Assembly {SistemaMirno.UI v0.3.495.7542} references {SistemaMirno.DataAccess v0.2.123.7542} but NDepend has loaded {SistemaMirno.DataAccess v0.2.136.7543}</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\obj\Debug\GeneratedInternalTypeHelper.g.cs} (last modified 26 Aug 2020 07:07:56) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Bootstrapper.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Wrapper\UserWrapper.cs} (last modified 26 Aug 2020 07:06:32) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Main\LoginViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Main\MainViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\General\BranchViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\General\EmployeeViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\General\UserViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\BranchDetailViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\UserDetailViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\DetailViewModelBase.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\Interfaces\IWorkAreaRepository.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\Interfaces\IWorkUnitRepository.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\Interfaces\IProductRepository.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\ProductRepository.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\WorkAreaRepository.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\WorkUnitRepository.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Event\ReloadNavigationViewEvent.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\Interfaces\IWorkAreaDetailViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\Interfaces\IWorkUnitDetailViewModels.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\WorkAreaDetailViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\WorkUnitDetailViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\General\Interfaces\IWorkAreaViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\General\Interfaces\IWorkUnitViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\General\WorkAreaViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\General\WorkUnitViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Main\INavigationViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Main\NavigationViewModel.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\Detail\ProductDetailView.xaml.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\Detail\WorkAreaDetailView.xaml.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\Main\NavigationView.xaml.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\General\WorkAreaView.xaml.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\General\WorkUnitView.xaml.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Wrapper\ProductWrapper.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Wrapper\WorkAreaConnectionWrapper.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Wrapper\WorkAreaWrapper.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Wrapper\WorkUnitWrapper.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Properties\AssemblyInfo.cs} (last modified 26 Aug 2020 07:07:36) and the PDB file of the assembly {SistemaMirno.UI} (last modified 25 Aug 2020 17:26:33) are not in-sync.</Warning>
+  <Info>234 source files parsed ; 13 source files not found ; 38 source files not in-sync with PDB</Info>
+  <Info>0 code rule has been extracted from code.</Info>
+  <Info>No dependency cycle detected in assemblies referencement graph.</Info>
+  <Info>Do merge code generated by compiler into application code.</Info>
+  <Info>No SuppressMessageAttribute found in the analyzed code base. Since NDepend v2018.2 SuppressMessageAttribute can be used to suppress NDepend issues. Don't forget to set in your projects the compilation symbol CODE_ANALYSIS to use this attribute to suppress NDepend issues.</Info>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\ProductDetailView.xaml.cs} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\ProductDetailView.xaml} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\WorkAreaDetailView.xaml.cs} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\WorkAreaDetailView.xaml} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\WorkAreaView.xaml.cs} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\WorkAreaView.xaml} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\WorkUnitView.xaml.cs} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\WorkUnitView.xaml} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\Main\WorkAreaNavigationView.xaml.cs} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\View\Main\WorkAreaNavigationView.xaml} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Main\WorkAreaNavigationViewModel.cs} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Event\AfterDataModelDeletedEventArgs.cs} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Event\AfterDataModelSavedEventArgs.cs} referenced by the PDB file of the assembly {SistemaMirno.UI} does not exist.</Warning>
+  <Info>Start log trend metrics values out-of-process.</Info>
+</InfoWarnings>

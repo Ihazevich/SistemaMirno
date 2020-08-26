@@ -4,7 +4,7 @@
 
 using System.Windows.Controls;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.General
 {
     /// <summary>
     /// Interaction logic for ProductView.xaml

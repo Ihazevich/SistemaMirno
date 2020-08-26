@@ -69,7 +69,7 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public string TemplateDetails
+        public string TemplateFile
         {
             get { return GetValue<string>(); }
             set { SetValue(value); }

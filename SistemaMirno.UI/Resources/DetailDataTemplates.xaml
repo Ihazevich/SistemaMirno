@@ -18,4 +18,16 @@
     <DataTemplate DataType="{x:Type detailviewmodel:WorkAreaDetailViewModel}">
         <detail:WorkAreaDetailView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:ProductDetailViewModel}">
+        <detail:ProductDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:MaterialDetailViewModel}">
+        <detail:MaterialDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:ColorDetailViewModel}">
+        <detail:ColorDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:ProductCategoryDetailViewModel}">
+        <detail:ProductCategoryDetailView />
+    </DataTemplate>
 </ResourceDictionary>

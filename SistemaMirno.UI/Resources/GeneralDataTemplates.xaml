@@ -20,4 +20,16 @@
     <DataTemplate DataType="{x:Type generalviewmodel:WorkAreaViewModel}">
         <general:WorkAreaView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:ProductViewModel}">
+        <general:ProductView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:MaterialViewModel}">
+        <general:MaterialView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:ColorViewModel}">
+        <general:ColorView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:ProductCategoryViewModel}">
+        <general:ProductCategoryView />
+    </DataTemplate>
 </ResourceDictionary>

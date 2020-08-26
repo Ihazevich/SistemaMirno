@@ -21,9 +21,6 @@ namespace SistemaMirno.UI.Wrapper
 
         public int Id { get { return GetValue<int>(); } }
 
-        /// <summary>
-        /// Gets or sets the User name.
-        /// </summary>
         public string Name
         {
             get { return GetValue<string>(); }
