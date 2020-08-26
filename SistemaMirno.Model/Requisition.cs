@@ -17,13 +17,15 @@ namespace SistemaMirno.Model
         [Required]
         public DateTime RequestedDate { get; set; }
 
+        public DateTime? TargetDate { get; set; }
+
+        [Required]
+        public bool Fulfilled { get; set; }
+
         /// <summary>
         /// Gets or sets the date the requisition was fullfilled.
         /// </summary>
-        public DateTime? FullfilledDate { get; set; }
-
-        [Required]
-        public bool IsForStock { get; set; }
+        public DateTime? FulfilledDate { get; set; }
 
         public int? ClientId { get; set; }
 

@@ -11,6 +11,7 @@ using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
+using SistemaMirno.UI.View;
 using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
@@ -70,6 +71,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(WorkUnitViewModel));
             builder.RegisterType<ClientViewModel>()
                 .Keyed<IViewModelBase>(nameof(ClientViewModel));
+            builder.RegisterType<RequisitionViewModel>()
+                .Keyed<IViewModelBase>(nameof(RequisitionViewModel));
 
             builder.RegisterType<InProcessByWorkAreasViewModel>()
                 .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));
@@ -95,6 +98,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
             builder.RegisterType<ClientDetailViewModel>().As<IClientDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(ClientDetailViewModel));
+            builder.RegisterType<RequisitionDetailViewModel>().As<IRequisitionDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(RequisitionDetailViewModel));
 
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<BranchRepository>().As<IBranchRepository>();
@@ -106,6 +111,7 @@ namespace SistemaMirno.UI
             builder.RegisterType<ColorRepository>().As<IColorRepository>();
             builder.RegisterType<ProductCategoryRepository>().As<IProductCategoryRepository>();
             builder.RegisterType<ClientRepository>().As<IClientRepository>();
+            builder.RegisterType<RequisitionRepository>().As<IRequisitionRepository>();
 
 
             builder.RegisterType<WorkUnitRepository>().As<IWorkUnitRepository>();

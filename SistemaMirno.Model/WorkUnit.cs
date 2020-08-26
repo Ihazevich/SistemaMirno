@@ -64,8 +64,7 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the id of the requisition the work unit has been assigned to.
         /// </summary>
-        [Required]
-        public int RequisitionId { get; set; }
+        public int? RequisitionId { get; set; }
 
         /// <summary>
         /// Gets or sets the work unit's requisition.
@@ -78,6 +77,9 @@ namespace SistemaMirno.Model
 
         [Required]
         public double TotalWorkTime { get; set; }
+
+        [Required]
+        public bool Delivered { get; set; }
 
         [Required]
         public int LatestResponsibleId { get; set; }

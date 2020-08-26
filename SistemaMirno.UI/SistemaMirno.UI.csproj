@@ -239,9 +239,11 @@
     <Compile Include="Data\Repositories\Interfaces\IProductRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IWorkOrderRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IRequisitionRepository.cs" />
     <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductRepository.cs" />
+    <Compile Include="Data\Repositories\RequisitionRepository.cs" />
     <Compile Include="Data\Repositories\RoleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
@@ -284,9 +286,11 @@
     <Compile Include="ViewModel\Detail\Interfaces\IProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IWorkOrderDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IRequisitionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\RequisitionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\RoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
@@ -308,10 +312,12 @@
     <Compile Include="ViewModel\General\Interfaces\IWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IWorkUnitViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IProductViewModel.cs" />
-    <Compile Include="ViewModel\General\IProductCategoryViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IProductCategoryViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IRequisitionViewModel.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
+    <Compile Include="ViewModel\General\RequisitionViewModel.cs" />
     <Compile Include="ViewModel\General\RoleViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
@@ -396,10 +402,10 @@
     <Compile Include="View\Reports\ProductionByWorkAreaView.xaml.cs">
       <DependentUpon>ProductionByWorkAreaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RequisitionDetailView.xaml.cs">
+    <Compile Include="View\Detail\RequisitionDetailView.xaml.cs">
       <DependentUpon>RequisitionDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RequisitionView.xaml.cs">
+    <Compile Include="View\General\RequisitionView.xaml.cs">
       <DependentUpon>RequisitionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SaleDetailView.xaml.cs">
@@ -447,6 +453,7 @@
     <Compile Include="Wrapper\ModelWrapper.cs" />
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
     <Compile Include="Wrapper\ProductWrapper.cs" />
+    <Compile Include="Wrapper\RequisitionWrapper.cs" />
     <Compile Include="Wrapper\RoleWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaConnectionWrapper.cs" />
@@ -573,11 +580,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RequisitionDetailView.xaml">
+    <Page Include="View\Detail\RequisitionDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RequisitionView.xaml">
+    <Page Include="View\General\RequisitionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

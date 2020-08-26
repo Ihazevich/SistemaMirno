@@ -38,4 +38,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:ClientViewModel}">
         <general:ClientView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:RequisitionViewModel}">
+        <general:RequisitionView />
+    </DataTemplate>
 </ResourceDictionary>

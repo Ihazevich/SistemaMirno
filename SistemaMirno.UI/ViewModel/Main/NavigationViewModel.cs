@@ -92,7 +92,11 @@ namespace SistemaMirno.UI.ViewModel.Main
                 // If the work area name is the first or last, then redirect to the specialized views of those areas instead.
                 if (_selectedWorkArea.IsFirst)
                 {
-                    // TODO: Open requisitions view
+                    EventAggregator.GetEvent<ChangeViewEvent>()
+                        .Publish(new ChangeViewEventArgs
+                        {
+                            ViewModel = nameof(RequisitionViewModel),
+                        });
                 }
                 else if (_selectedWorkArea.IsLast)
                 {

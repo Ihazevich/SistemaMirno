@@ -19,6 +19,8 @@ namespace SistemaMirno.UI.Wrapper
         {
         }
 
+        public bool IsNew { get; set; } = false;
+
         public int Id { get { return GetValue<int>(); } }
 
         public int ProductId

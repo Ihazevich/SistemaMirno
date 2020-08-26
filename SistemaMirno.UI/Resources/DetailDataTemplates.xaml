@@ -36,4 +36,7 @@
     <DataTemplate DataType="{x:Type detailviewmodel:ClientDetailViewModel}">
         <detail:ClientDetailView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:RequisitionDetailViewModel}">
+        <detail:RequisitionDetailView />
+    </DataTemplate>
 </ResourceDictionary>
