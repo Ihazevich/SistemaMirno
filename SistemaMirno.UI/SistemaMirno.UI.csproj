@@ -222,9 +222,11 @@
     <Compile Include="Data\Reports\WorkOrderReport.cs" />
     <Compile Include="Data\Reports\WorkUnitReport.cs" />
     <Compile Include="Data\Repositories\BranchRepository.cs" />
+    <Compile Include="Data\Repositories\ClientRepository.cs" />
     <Compile Include="Data\Repositories\ColorRepository.cs" />
     <Compile Include="Data\Repositories\EmployeeRepository.cs" />
     <Compile Include="Data\Repositories\GenericRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IClientRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IMaterialRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IColorRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IEmployeeRepository.cs" />
@@ -267,8 +269,10 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Utilities\DialogCloser.cs" />
     <Compile Include="ViewModel\Detail\BranchDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\ClientDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IClientDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IMaterialDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IEmployeeDetailViewModel.cs" />
@@ -291,8 +295,10 @@
     <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkUnitDetailViewModel.cs" />
     <Compile Include="ViewModel\General\BranchViewModel.cs" />
+    <Compile Include="ViewModel\General\ClientViewModel.cs" />
     <Compile Include="ViewModel\General\ColorViewModel.cs" />
     <Compile Include="ViewModel\General\EmployeeViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IClientViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IColorViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IMaterialViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IEmployeeViewModel.cs" />
@@ -330,10 +336,10 @@
     <Compile Include="View\Main\BranchSelectionView.xaml.cs">
       <DependentUpon>BranchSelectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ClientDetailView.xaml.cs">
+    <Compile Include="View\Detail\ClientDetailView.xaml.cs">
       <DependentUpon>ClientDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ClientView.xaml.cs">
+    <Compile Include="View\General\ClientView.xaml.cs">
       <DependentUpon>ClientView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Detail\ColorDetailView.xaml.cs">
@@ -433,6 +439,7 @@
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wrapper\BranchWrapper.cs" />
+    <Compile Include="Wrapper\ClientWrapper.cs" />
     <Compile Include="Wrapper\ColorWrapper.cs" />
     <Compile Include="Wrapper\EmployeeWrapper.cs" />
     <Compile Include="Wrapper\IModelWrapper.cs" />
@@ -486,11 +493,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ClientDetailView.xaml">
+    <Page Include="View\Detail\ClientDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ClientView.xaml">
+    <Page Include="View\General\ClientView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

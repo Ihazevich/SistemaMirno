@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +24,11 @@ namespace SistemaMirno.Model
 
         [Required]
         public bool IsForStock { get; set; }
+
+        public int? ClientId { get; set; }
+
+        [ForeignKey(nameof(ClientId))]
+        public virtual Client Client { get; set; }
 
         public int? SaleId { get; set; }
 

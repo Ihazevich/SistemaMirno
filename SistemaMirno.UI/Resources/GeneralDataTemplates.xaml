@@ -35,4 +35,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:WorkUnitViewModel}">
         <general:WorkUnitView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:ClientViewModel}">
+        <general:ClientView />
+    </DataTemplate>
 </ResourceDictionary>

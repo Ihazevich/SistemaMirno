@@ -12,11 +12,7 @@ namespace SistemaMirno.Model
     {
         [Required]
         [StringLength(100)]
-        public string FirstName { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        public string LastName { get; set; }
+        public string FullName { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -26,7 +22,6 @@ namespace SistemaMirno.Model
         [StringLength(20)]
         public string PhoneNumber { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string Address { get; set; }
 
@@ -34,11 +29,9 @@ namespace SistemaMirno.Model
         [StringLength(30)]
         public string City { get; set; }
 
-        [Required]
         [StringLength(20)]
         public string Department { get; set; }
 
-        [Required]
         [StringLength(30)]
         public string Email { get; set; }
 
@@ -53,5 +46,8 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(ClientCommunication.ClientId))]
         public virtual ICollection<ClientCommunication> ClientCommunications { get; set; } = new HashSet<ClientCommunication>();
+
+        [ForeignKey(nameof(Requisition.ClientId))]
+        public virtual ICollection<Requisition> Requisitions { get; set; } = new HashSet<Requisition>();
     }
 }
