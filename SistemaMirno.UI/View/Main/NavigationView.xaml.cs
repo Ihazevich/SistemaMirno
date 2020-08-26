@@ -9,12 +9,12 @@ namespace SistemaMirno.UI.View.Main
     /// <summary>
     /// Interaction logic for ProductionAreasView.xaml
     /// </summary>
-    public partial class WorkAreaNavigationView : UserControl
+    public partial class NavigationView : UserControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkAreaNavigationView"/> class.
         /// </summary>
-        public WorkAreaNavigationView()
+        public NavigationView()
         {
             InitializeComponent();
         }

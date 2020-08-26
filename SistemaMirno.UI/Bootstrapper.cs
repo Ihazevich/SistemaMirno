@@ -40,8 +40,8 @@ namespace SistemaMirno.UI
             builder.RegisterType<MainWindow>().AsSelf();
 
             builder.RegisterType<MainViewModel>().AsSelf();
-            builder.RegisterType<WorkAreaNavigationViewModel>()
-                .Keyed<IViewModelBase>(nameof(WorkAreaNavigationViewModel));
+            builder.RegisterType<NavigationViewModel>()
+                .Keyed<IViewModelBase>(nameof(NavigationViewModel));
             builder.RegisterType<LoginViewModel>()
                 .Keyed<IViewModelBase>(nameof(LoginViewModel));
             builder.RegisterType<BranchSelectionViewModel>()

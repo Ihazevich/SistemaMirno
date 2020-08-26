@@ -107,20 +107,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             });
             return Task.CompletedTask;
         }
-
-        protected virtual void RaiseDataModelSavedEvent<T>(T model)
-        {
-            EventAggregator.GetEvent<AfterDataModelSavedEvent<T>>()
-                .Publish(new AfterDataModelSavedEventArgs<T> { Model = model });
-        }
-
-        protected virtual void RaiseDataModelDeletedEvent<T>(T model)
-        {
-            EventAggregator.GetEvent<AfterDataModelDeletedEvent<T>>()
-                .Publish(new AfterDataModelDeletedEventArgs<T> { Model = model });
-        }
-
-
+        
         protected virtual void OnSaveExecute()
         {
             Application.Current.Dispatcher.Invoke(() =>

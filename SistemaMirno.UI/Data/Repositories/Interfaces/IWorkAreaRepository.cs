@@ -11,7 +11,7 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         Task<List<Branch>> GetAllBranchesAsync();
         Task<List<WorkArea>> GetAllWorkAreasFromBranchAsync(int id);
         Task<List<Role>> GetAllRolesFromBranchAsync(int id);
-        Task<bool> CheckIfLastExistsAsync();
-        Task<bool> CheckIfFirstExistsAsync();
+        Task<bool> CheckIfLastExistsAsync(int id);
+        Task<bool> CheckIfFirstExistsAsync(int id);
     }
 }

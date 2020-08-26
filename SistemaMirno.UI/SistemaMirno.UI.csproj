@@ -230,10 +230,7 @@
     <Compile Include="Data\Repositories\RoleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
-    <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
-    <Compile Include="Event\AfterDataModelDeletedEventArgs.cs" />
-    <Compile Include="Event\AfterDataModelSavedEvent.cs" />
-    <Compile Include="Event\AfterDataModelSavedEventArgs.cs" />
+    <Compile Include="Event\ReloadNavigationViewEvent.cs" />
     <Compile Include="Event\AskSessionInfoEvent.cs" />
     <Compile Include="Event\BranchChangedEvent.cs" />
     <Compile Include="Event\BranchChangedEventArgs.cs" />
@@ -284,9 +281,9 @@
     <Compile Include="ViewModel\Reports\InProcessByWorkAreasViewModel.cs" />
     <Compile Include="ViewModel\Reports\ProductionByWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="ViewModel\Main\IWorkAreaNavigationViewModel.cs" />
+    <Compile Include="ViewModel\Main\INavigationViewModel.cs" />
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
-    <Compile Include="ViewModel\Main\WorkAreaNavigationViewModel.cs" />
+    <Compile Include="ViewModel\Main\NavigationViewModel.cs" />
     <Compile Include="View\AreaConnectionDetailView.xaml.cs">
       <DependentUpon>AreaConnectionDetailView.xaml</DependentUpon>
     </Compile>
@@ -380,8 +377,8 @@
     <Compile Include="View\Detail\WorkAreaDetailView.xaml.cs">
       <DependentUpon>WorkAreaDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Main\WorkAreaNavigationView.xaml.cs">
-      <DependentUpon>WorkAreaNavigationView.xaml</DependentUpon>
+    <Compile Include="View\Main\NavigationView.xaml.cs">
+      <DependentUpon>NavigationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\General\WorkAreaView.xaml.cs">
       <DependentUpon>WorkAreaView.xaml</DependentUpon>
@@ -559,7 +556,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Main\WorkAreaNavigationView.xaml">
+    <Page Include="View\Main\NavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -66,6 +66,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                 .Subscribe(UserChanged);
             EventAggregator.GetEvent<BranchChangedEvent>()
                 .Subscribe(BranchChanged);
+            EventAggregator.GetEvent<ReloadNavigationViewEvent>()
+                .Subscribe(ReloadNavigationView);
             EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Subscribe(ChangeNavigationStatus);
             EventAggregator.GetEvent<ExitApplicationEvent>()
@@ -94,6 +96,12 @@ namespace SistemaMirno.UI.ViewModel.Main
                 Id = null,
                 ViewModel = nameof(LoginViewModel),
             });
+        }
+
+        private void ReloadNavigationView()
+        {
+            NavigationViewModel = _viewModelCreator[nameof(Main.NavigationViewModel)];
+            NavigationViewModel.LoadAsync(SessionInfo.Branch.Id);
         }
 
         private void BroadcastSessionInfo()
@@ -272,7 +280,6 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public override async Task LoadAsync(int? id = null)
         {
-            await NavigationViewModel.LoadAsync();
         }
 
         public async void ShowDialog(ShowDialogEventArgs args)
@@ -293,14 +300,11 @@ namespace SistemaMirno.UI.ViewModel.Main
             };
 
             SessionInfo = sessionInfo;
-
             NavigationStatus = true;
-
-            NavigationViewModel = _viewModelCreator[nameof(WorkAreaNavigationViewModel)];
             SelectedViewModel = null;
 
             UpdateStatusBar(new NotifyStatusBarEventArgs {Message = "Cargando navegación", Processing = true});
-            await LoadAsync();
+            ReloadNavigationView();
             ClearStatusBar();
         }
 

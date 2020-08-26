@@ -89,11 +89,11 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public async Task<bool> CheckIfFirstExistsAsync()
+        public async Task<bool> CheckIfFirstExistsAsync(int id)
         {
             try
             {
-                return await Context.WorkAreas.AnyAsync(w => w.IsFirst);
+                return await Context.WorkAreas.AnyAsync(w => w.IsFirst && w.BranchId == id);
             }
             catch (Exception e)
             {
@@ -106,11 +106,11 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public async Task<bool> CheckIfLastExistsAsync()
+        public async Task<bool> CheckIfLastExistsAsync(int id)
         {
             try
             {
-                return await Context.WorkAreas.AnyAsync(w => w.IsLast);
+                return await Context.WorkAreas.AnyAsync(w => w.IsLast && w.BranchId == id);
             }
             catch (Exception e)
             {

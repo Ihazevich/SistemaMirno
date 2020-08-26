@@ -155,7 +155,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnSaveExecute()
         {
-            if (WorkArea.IsFirst && await _workAreaRepository.CheckIfFirstExistsAsync())
+            if (WorkArea.IsFirst && await _workAreaRepository.CheckIfFirstExistsAsync(WorkArea.BranchId))
             {
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
@@ -166,7 +166,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 return;
             }
 
-            if (WorkArea.IsLast && await _workAreaRepository.CheckIfLastExistsAsync())
+            if (WorkArea.IsLast && await _workAreaRepository.CheckIfLastExistsAsync(WorkArea.BranchId))
             {
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
@@ -189,6 +189,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             HasChanges = false;
+            EventAggregator.GetEvent<ReloadNavigationViewEvent>()
+                .Publish();
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {
@@ -207,6 +209,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override async void OnDeleteExecute()
         {
             await _workAreaRepository.DeleteAsync(WorkArea.Model);
+            EventAggregator.GetEvent<ReloadNavigationViewEvent>()
+                .Publish();
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {

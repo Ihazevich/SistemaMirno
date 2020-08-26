@@ -83,7 +83,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <main:WorkAreaNavigationView DataContext="{Binding NavigationViewModel}" />
+            <main:NavigationView DataContext="{Binding NavigationViewModel}" />
             <ContentPresenter Grid.Column="1" Content="{Binding SelectedViewModel}" />
             <StatusBar Grid.Row="1" Grid.ColumnSpan="2" FontSize="15">
                 <StatusBar.ItemsPanel>
