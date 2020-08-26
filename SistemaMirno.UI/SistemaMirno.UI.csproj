@@ -228,6 +228,8 @@
     <Compile Include="Data\Repositories\Interfaces\IRoleRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IWorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IWorkUnitRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IProductRepository.cs" />
+    <Compile Include="Data\Repositories\ProductRepository.cs" />
     <Compile Include="Data\Repositories\RoleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
@@ -350,7 +352,7 @@
     <Compile Include="View\ProductCategoryView.xaml.cs">
       <DependentUpon>ProductCategoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProductDetailView.xaml.cs">
+    <Compile Include="View\Detail\ProductDetailView.xaml.cs">
       <DependentUpon>ProductDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Reports\InProcessByWorkAreasView.xaml.cs">
@@ -405,6 +407,7 @@
     <Compile Include="Wrapper\EmployeeWrapper.cs" />
     <Compile Include="Wrapper\IModelWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
+    <Compile Include="Wrapper\ProductWrapper.cs" />
     <Compile Include="Wrapper\RoleWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaConnectionWrapper.cs" />
@@ -519,7 +522,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProductDetailView.xaml">
+    <Page Include="View\Detail\ProductDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

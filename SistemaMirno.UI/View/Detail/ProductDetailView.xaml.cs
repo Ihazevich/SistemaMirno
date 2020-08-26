@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.Detail
 {
     /// <summary>
     /// Interaction logic for ProductDetailView.xaml
