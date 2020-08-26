@@ -32,4 +32,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:ProductCategoryViewModel}">
         <general:ProductCategoryView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:WorkUnitViewModel}">
+        <general:WorkUnitView />
+    </DataTemplate>
 </ResourceDictionary>

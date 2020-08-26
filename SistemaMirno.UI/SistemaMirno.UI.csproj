@@ -279,6 +279,7 @@
     <Compile Include="ViewModel\Detail\Interfaces\IWorkUnitDetailViewModels.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IProductCategoryDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IWorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
@@ -287,6 +288,7 @@
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IDetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\WorkAreaDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkUnitDetailViewModel.cs" />
     <Compile Include="ViewModel\General\BranchViewModel.cs" />
     <Compile Include="ViewModel\General\ColorViewModel.cs" />
@@ -424,7 +426,7 @@
     <Compile Include="View\Detail\WorkOrderDetailView.xaml.cs">
       <DependentUpon>WorkOrderDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkOrderView.xaml.cs">
+    <Compile Include="View\General\WorkOrderView.xaml.cs">
       <DependentUpon>WorkOrderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\General\WorkUnitView.xaml.cs">
@@ -612,7 +614,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkOrderView.xaml">
+    <Page Include="View\General\WorkOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

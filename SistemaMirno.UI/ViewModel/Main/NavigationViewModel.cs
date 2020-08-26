@@ -100,7 +100,12 @@ namespace SistemaMirno.UI.ViewModel.Main
                 }
                 else
                 {
-                    // TODO: Open WorkUnit view
+                    EventAggregator.GetEvent<ChangeViewEvent>()
+                        .Publish(new ChangeViewEventArgs
+                        {
+                            Id = _selectedWorkArea.Id,
+                            ViewModel = nameof(WorkUnitViewModel),
+                        });
                 }
 
                 EventAggregator.GetEvent<ChangeNavigationStatusEvent>()

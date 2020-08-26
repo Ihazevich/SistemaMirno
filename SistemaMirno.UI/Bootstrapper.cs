@@ -66,6 +66,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(ColorViewModel));
             builder.RegisterType<ProductCategoryViewModel>()
                 .Keyed<IViewModelBase>(nameof(ProductCategoryViewModel));
+            builder.RegisterType<WorkUnitViewModel>()
+                .Keyed<IViewModelBase>(nameof(WorkUnitViewModel));
 
             builder.RegisterType<InProcessByWorkAreasViewModel>()
                 .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));
@@ -87,6 +89,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(ColorDetailViewModel));
             builder.RegisterType<ProductCategoryDetailViewModel>().As<IProductCategoryDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(ProductCategoryDetailViewModel));
+            builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
 
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<BranchRepository>().As<IBranchRepository>();
@@ -97,6 +101,9 @@ namespace SistemaMirno.UI
             builder.RegisterType<MaterialRepository>().As<IMaterialRepository>();
             builder.RegisterType<ColorRepository>().As<IColorRepository>();
             builder.RegisterType<ProductCategoryRepository>().As<IProductCategoryRepository>();
+
+
+            builder.RegisterType<WorkUnitRepository>().As<IWorkUnitRepository>();
 
             return builder.Build();
         }

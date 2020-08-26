@@ -11,6 +11,7 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
@@ -33,13 +34,26 @@ namespace SistemaMirno.UI.ViewModel.General
             _workAreaRepositoryCreator = workUnitRepositoryCreator;
             WorkAreaWorkUnits = new ObservableCollection<WorkUnitWrapper>();
             WorkOrderWorkUnits = new ObservableCollection<WorkUnitWrapper>();
+
+            NewWorkOrderCommand = new DelegateCommand(OnNewWorkOrderExecute);
         }
-        
+
+        private void OnNewWorkOrderExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    ViewModel = nameof(WorkOrderDetailViewModel),
+                });
+        }
+
         public ObservableCollection<WorkUnitWrapper> WorkAreaWorkUnits { get; }
 
         public ObservableCollection<WorkUnitWrapper> WorkOrderWorkUnits { get; }
 
         public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; set; }
+
+        public ICommand NewWorkOrderCommand { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
