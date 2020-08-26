@@ -61,10 +61,10 @@ namespace SistemaMirno.Model
         [ForeignKey(nameof(CurrentWorkAreaId))]
         public virtual WorkArea CurrentWorkArea { get; set; }
 
-        [Required]
         /// <summary>
         /// Gets or sets the id of the requisition the work unit has been assigned to.
         /// </summary>
+        [Required]
         public int RequisitionId { get; set; }
 
         /// <summary>

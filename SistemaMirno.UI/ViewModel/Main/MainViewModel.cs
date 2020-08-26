@@ -320,6 +320,12 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private void ChangeView(ChangeViewEventArgs args)
         {
+            if (args.ViewModel == null)
+            {
+                SelectedViewModel = null;
+                return;
+            }
+
             NotifyStatusBar("Cambiando de vista", true);
             SelectedViewModel = _viewModelCreator[args.ViewModel];
             SelectedViewModel.LoadAsync(args.Id);
