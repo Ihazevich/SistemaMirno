@@ -122,7 +122,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             BranchDetailViewModel = _branchDetailViewModelCreator();
-            await BranchDetailViewModel.LoadDetailAsync(id).ConfigureAwait(false);
+            await BranchDetailViewModel.LoadAsync(id);
         }
 
         private void OnCreateNewExecute()
@@ -139,7 +139,6 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             BranchDetailViewModel = _branchDetailViewModelCreator();
-            BranchDetailViewModel.IsNew = true;
             BranchDetailViewModel.LoadAsync();
         }
     }

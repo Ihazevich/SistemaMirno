@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.Detail
 {
     /// <summary>
     /// Interaction logic for ProductionAreaDetailView.xaml
@@ -15,12 +15,6 @@ namespace SistemaMirno.UI.View
         public WorkAreaDetailView()
         {
             InitializeComponent();
-        }
-
-        private void TextboxNumberValidation(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

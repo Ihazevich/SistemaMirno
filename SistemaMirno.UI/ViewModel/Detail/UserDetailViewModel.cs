@@ -24,6 +24,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     {
         private IUserRepository _userRepository;
         private UserWrapper _user;
+        private EmployeeWrapper _selectedEmployee;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserDetailViewModel"/> class.
@@ -51,6 +52,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             set
             {
                 _user = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public EmployeeWrapper SelectedEmployee
+        {
+            get => _selectedEmployee;
+
+            set
+            {
+                _selectedEmployee = value;
                 OnPropertyChanged();
             }
         }
@@ -90,6 +102,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 User.Model.IsSystemAdmin = role.IsSystemAdmin || User.Model.IsSystemAdmin;
             }
 
+            User.Model.Employee = SelectedEmployee.Model;
+
             if (IsNew)
             {
                 await _userRepository.AddAsync(User.Model);
@@ -98,6 +112,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 await _userRepository.SaveAsync(User.Model);
             }
+
             HasChanges = false;
             EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
                 .Publish();

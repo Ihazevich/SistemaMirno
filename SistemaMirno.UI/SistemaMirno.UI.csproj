@@ -226,8 +226,10 @@
     <Compile Include="Data\Repositories\Interfaces\IGenericRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IUserRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IRoleRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IWorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\RoleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
+    <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
     <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
     <Compile Include="Event\AfterDataModelDeletedEventArgs.cs" />
     <Compile Include="Event\AfterDataModelSavedEvent.cs" />
@@ -258,18 +260,22 @@
     <Compile Include="ViewModel\Detail\Interfaces\IBranchDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IUserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IRoleDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IWorkAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\RoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IDetailViewModelBase.cs" />
+    <Compile Include="ViewModel\Detail\WorkAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\General\BranchViewModel.cs" />
     <Compile Include="ViewModel\General\EmployeeViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IEmployeeViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IBranchViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IUserViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IRoleViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\RoleViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
+    <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\Main\BranchSelectionViewModel.cs" />
     <Compile Include="ViewModel\Main\IBranchSelectionViewModel.cs" />
@@ -371,13 +377,13 @@
     <Compile Include="View\General\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkAreaDetailView.xaml.cs">
+    <Compile Include="View\Detail\WorkAreaDetailView.xaml.cs">
       <DependentUpon>WorkAreaDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Main\WorkAreaNavigationView.xaml.cs">
       <DependentUpon>WorkAreaNavigationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkAreaView.xaml.cs">
+    <Compile Include="View\General\WorkAreaView.xaml.cs">
       <DependentUpon>WorkAreaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProductView.xaml.cs">
@@ -398,6 +404,8 @@
     <Compile Include="Wrapper\ModelWrapper.cs" />
     <Compile Include="Wrapper\RoleWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
+    <Compile Include="Wrapper\WorkAreaConnectionWrapper.cs" />
+    <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\WrapperBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -547,7 +555,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkAreaDetailView.xaml">
+    <Page Include="View\Detail\WorkAreaDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -555,7 +563,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkAreaView.xaml">
+    <Page Include="View\General\WorkAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

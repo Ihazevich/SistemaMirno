@@ -45,6 +45,7 @@
             <Label Grid.Row="6" Content="Empleado" />
             <ComboBox Grid.Row="7"
                       ItemsSource="{Binding Employees}"
+                      SelectedItem="{Binding SelectedEmployee}"
                       DisplayMemberPath="FullName"
                       SelectedValuePath="Id"
                       SelectedValue="{Binding User.EmployeeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

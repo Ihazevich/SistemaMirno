@@ -17,4 +17,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:EmployeeViewModel}">
         <general:EmployeeView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:WorkAreaViewModel}">
+        <general:WorkAreaView />
+    </DataTemplate>
 </ResourceDictionary>

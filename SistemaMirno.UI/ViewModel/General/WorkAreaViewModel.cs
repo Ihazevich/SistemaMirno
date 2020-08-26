@@ -11,32 +11,28 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class EmployeeViewModel : ViewModelBase, IEmployeeViewModel
+    public class WorkAreaViewModel : ViewModelBase, IWorkAreaViewModel
     {
-        private IEmployeeRepository _employeeRepository;
-        private Func<IEmployeeRepository> _employeeRepositoryCreator;
-        private EmployeeWrapper _selectedEmployee;
-        private IEmployeeDetailViewModel _employeeDetailViewModel;
-        private Func<IEmployeeDetailViewModel> _employeeDetailViewModelCreator;
+        private readonly Func<IWorkAreaRepository> _workAreaRepositoryCreator;
+        private IWorkAreaRepository _workAreaRepository;
+        private WorkAreaWrapper _selectedWorkArea;
+        private IWorkAreaDetailViewModel _workAreaDetailViewModel;
 
-        public EmployeeViewModel(
-            Func<IEmployeeDetailViewModel> employeeDetailViewModelCreator,
-            Func<IEmployeeRepository> employeeRepositoryCreator,
+        public WorkAreaViewModel(
+            Func<IWorkAreaRepository> workAreaRepositoryCreator,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
-            : base(eventAggregator, "Empleados", dialogCoordinator)
+            : base(eventAggregator, "Areas de Trabajo", dialogCoordinator)
         {
-            _employeeDetailViewModelCreator = employeeDetailViewModelCreator;
-            _employeeRepositoryCreator = employeeRepositoryCreator;
+            _workAreaRepositoryCreator = workAreaRepositoryCreator;
 
-            Employees = new ObservableCollection<EmployeeWrapper>();
+            WorkAreas = new ObservableCollection<WorkAreaWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
@@ -46,14 +42,14 @@ namespace SistemaMirno.UI.ViewModel.General
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {
-                    Id = SelectedEmployee.Id,
-                    ViewModel = nameof(EmployeeDetailViewModel),
+                    Id = SelectedWorkArea.Id,
+                    ViewModel = nameof(WorkAreaDetailViewModel),
                 });
         }
 
         private bool OnOpenDetailCanExecute()
         {
-            return SelectedEmployee != null;
+            return SelectedWorkArea != null;
         }
 
         private void OnCreateNewExecute()
@@ -62,37 +58,34 @@ namespace SistemaMirno.UI.ViewModel.General
                 .Publish(new ChangeViewEventArgs
                 {
                     Id = null,
-                    ViewModel = nameof(EmployeeDetailViewModel),
+                    ViewModel = nameof(WorkAreaDetailViewModel),
                 });
         }
 
-        public IEmployeeDetailViewModel EmployeeDetailViewModel
+        public IWorkAreaDetailViewModel WorkAreaDetailViewModel
         {
             get
             {
-                return _employeeDetailViewModel;
+                return _workAreaDetailViewModel;
             }
 
             private set
             {
-                _employeeDetailViewModel = value;
+                _workAreaDetailViewModel = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<EmployeeWrapper> Employees { get; set; }
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; set; }
 
-        public EmployeeWrapper SelectedEmployee
+        public WorkAreaWrapper SelectedWorkArea
         {
-            get
-            {
-                return _selectedEmployee;
-            }
+            get =>_selectedWorkArea;
 
             set
             {
                 OnPropertyChanged();
-                _selectedEmployee = value;
+                _selectedWorkArea = value;
                 ((DelegateCommand)OpenDetailCommand).RaiseCanExecuteChanged();
             }
         }
@@ -103,14 +96,14 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public override async Task LoadAsync(int? id = null)
         {
-            Employees.Clear();
-            _employeeRepository = _employeeRepositoryCreator();
+            WorkAreas.Clear();
+            _workAreaRepository = _workAreaRepositoryCreator();
 
-            var employees = await _employeeRepository.GetAllAsync();
+            var workAreas = await _workAreaRepository.GetAllAsync();
 
-            foreach (var employee in employees)
+            foreach (var workArea in workAreas)
             {
-                Application.Current.Dispatcher.Invoke(() => Employees.Add(new EmployeeWrapper(employee)));
+                Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(new WorkAreaWrapper(workArea)));
             }
 
             Application.Current.Dispatcher.Invoke(() =>

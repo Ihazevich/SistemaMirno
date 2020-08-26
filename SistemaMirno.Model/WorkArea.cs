@@ -15,37 +15,49 @@ namespace SistemaMirno.Model
     /// </summary>
     public class WorkArea : ModelBase
     {
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Requerido")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public int BranchId { get; set; }
 
-        [Required]
-        public int Position { get; set; }
+        [Required(ErrorMessage = "Requerido")]
+        public string Position { get; set; }
 
         [ForeignKey(nameof(BranchId))]
         public virtual Branch Branch { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public int ResponsibleRoleId { get; set; }
 
         [ForeignKey(nameof(ResponsibleRoleId))]
         public Role ResponsibleRole { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public int SupervisorRoleId { get; set; }
 
         [ForeignKey(nameof(SupervisorRoleId))]
         public Role SupervisorRole { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Requerido")]
         public bool ReportsInProgress { get; set; }
+
+        [Required(ErrorMessage = "Requerido")]
+        public bool IsFirst { get; set; }
+
+        [Required(ErrorMessage = "Requerido")]
+        public bool IsLast { get; set; }
 
         [ForeignKey(nameof(WorkAreaMovement.WorkAreaId))]
         public virtual ICollection<WorkAreaMovement> WorkAreaMovements { get; set; } = new HashSet<WorkAreaMovement>();
 
         [ForeignKey(nameof(WorkUnit.CurrentWorkAreaId))]
         public virtual ICollection<WorkUnit> WorkUnits { get; set; } = new HashSet<WorkUnit>();
+
+        [ForeignKey(nameof(WorkAreaConnection.OriginWorkAreaId))]
+        public virtual ICollection<WorkAreaConnection> OutgoingConnections { get; set; } = new HashSet<WorkAreaConnection>();
+
+        [ForeignKey(nameof(WorkAreaConnection.DestinationWorkAreaId))]
+        public virtual ICollection<WorkAreaConnection> IncomingConnections { get; set; } = new HashSet<WorkAreaConnection>();
     }
 }

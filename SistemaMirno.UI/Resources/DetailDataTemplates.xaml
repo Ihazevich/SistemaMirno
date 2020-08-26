@@ -15,4 +15,7 @@
     <DataTemplate DataType="{x:Type detailviewmodel:EmployeeDetailViewModel}">
         <detail:EmployeeDetailView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:WorkAreaDetailViewModel}">
+        <detail:WorkAreaDetailView />
+    </DataTemplate>
 </ResourceDictionary>

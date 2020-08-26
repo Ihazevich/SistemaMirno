@@ -56,8 +56,5 @@ namespace SistemaMirno.Model
 
         [Required]
         public bool IsSystemAdmin { get; set; }
-
-        [Required]
-        public string EmployeeFullName { get; set; }
     }
 }

@@ -123,7 +123,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
             foreach (var user in users)
             {
-                Application.Current.Dispatcher.Invoke(() => Users.Add(new UserWrapper()));
+                Application.Current.Dispatcher.Invoke(() => Users.Add(new UserWrapper(user)));
             }
 
             Application.Current.Dispatcher.Invoke(() =>

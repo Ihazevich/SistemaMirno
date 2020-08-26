@@ -6,6 +6,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
@@ -92,6 +93,8 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private async Task CheckUser()
         {
+            Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Visible);
+
             if (User.Password == "konami")
             {
                 EventAggregator.GetEvent<UserChangedEvent>()
@@ -115,6 +118,8 @@ namespace SistemaMirno.UI.ViewModel.Main
             {
                 if (user.Password == User.GetPasswordHash(User.Password))
                 {
+                    EventAggregator.GetEvent<NotifyStatusBarEvent>()
+                        .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
                     EventAggregator.GetEvent<UserChangedEvent>()
                         .Publish(new UserChangedEventArgs
                         {
@@ -127,10 +132,6 @@ namespace SistemaMirno.UI.ViewModel.Main
                             HasAccessToHumanResources = user.Model.HasAccessToHumanResources,
                             IsSystemAdmin = user.Model.IsSystemAdmin,
                         });
-                    EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
-                        .Publish(true);
-                    EventAggregator.GetEvent<NotifyStatusBarEvent>()
-                        .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
                 }
             }
             else
@@ -144,6 +145,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
 
             User.Username = string.Empty;
+            Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Collapsed);
         }
 
         /// <summary>
@@ -166,8 +168,13 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public override Task LoadAsync(int? id = null)
         {
-            ViewVisibility = System.Windows.Visibility.Visible;
-            return null;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ViewVisibility = Visibility.Visible;
+                ProgressVisibility = Visibility.Collapsed;
+            });
+
+            return Task.CompletedTask;
         }
 
         private void User_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

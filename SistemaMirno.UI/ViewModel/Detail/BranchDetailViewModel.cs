@@ -115,10 +115,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public override Task LoadAsync(int? id = null)
+        public override async Task LoadAsync(int? id = null)
         {
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
             Application.Current.Dispatcher.Invoke(() =>
             {
+                IsNew = true;
+
                 Branch = new BranchWrapper();
                 Branch.PropertyChanged += Model_PropertyChanged;
                 ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
@@ -130,7 +138,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
                 ProgressVisibility = Visibility.Collapsed;
             });
-            return Task.CompletedTask;
         }
     }
 }

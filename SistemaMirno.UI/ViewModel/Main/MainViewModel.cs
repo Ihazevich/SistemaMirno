@@ -89,7 +89,11 @@ namespace SistemaMirno.UI.ViewModel.Main
             SysAdminVisibility = Visibility.Collapsed;
             ProductsVisibility = Visibility.Collapsed;
 
-            ShowLoginView();
+            ChangeView(new ChangeViewEventArgs
+            {
+                Id = null,
+                ViewModel = nameof(LoginViewModel),
+            });
         }
 
         private void BroadcastSessionInfo()
@@ -353,16 +357,13 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             SelectedViewModel = null;
 
-            ShowLoginView();
+            ChangeView(new ChangeViewEventArgs
+            {
+                Id = null,
+                ViewModel = nameof(LoginViewModel),
+            });
         }
-
-        private void ShowLoginView()
-        {
-            SelectedViewModel = _viewModelCreator[nameof(LoginViewModel)];
-            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
-                .Publish(false);
-        }
-
+        
         private void UpdateStatusBar(NotifyStatusBarEventArgs args)
         {
             StatusMessage = args.Message;
@@ -378,7 +379,6 @@ namespace SistemaMirno.UI.ViewModel.Main
                 Model =
                 {
                     Username = args.Username,
-                    EmployeeFullName = args.EmployeeFullName,
                     HasAccessToProduction = args.HasAccessToProduction,
                     HasAccessToLogistics = args.HasAccessToLogistics,
                     HasAccessToSales = args.HasAccessToSales,

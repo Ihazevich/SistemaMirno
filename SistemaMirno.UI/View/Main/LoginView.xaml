@@ -17,6 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Column="1" Grid.Row="1" IsEnabled="{Binding NotBusy}">
@@ -25,6 +26,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -51,5 +53,6 @@
                     Command="{Binding CancelCommand}"
                     Margin="10"/>
         </Grid>
+        <ProgressBar Grid.Column="1" Grid.Row="2" Visibility="{Binding ProgressVisibility}" IsIndeterminate="True"/>
     </Grid>
 </UserControl>
