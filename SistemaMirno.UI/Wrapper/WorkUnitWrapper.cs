@@ -64,16 +64,21 @@ namespace SistemaMirno.UI.Wrapper
             get { return GetValue<double>(); }
             set { SetValue(value); }
         }
-
-        public int LatestResponsibleId
+        public bool Delivered
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<bool>(); }
             set { SetValue(value); }
         }
 
-        public int LatestSupervisorId
+        public int? LatestResponsibleId
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<int?>(); }
+            set { SetValue(value); }
+        }
+
+        public int? LatestSupervisorId
+        {
+            get { return GetValue<int?>(); }
             set { SetValue(value); }
         }
 

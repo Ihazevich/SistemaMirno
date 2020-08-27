@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
-using System.Xml;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
@@ -24,11 +22,19 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private IRequisitionRepository _requisitionRepository;
         private RequisitionWrapper _requisition;
         private WorkUnitWrapper _newWorkUnit;
-        private bool _hasTargetDate;
+        private WorkUnitWrapper _selectedWorkUnit;
+        private ProductWrapper _selectedProduct;
+        private MaterialWrapper _selectedMaterial;
+        private ColorWrapper _selectedColor;
+
         private Visibility _newWorkUnitGridVisibility;
         private Visibility _existingWorkUnitGridVisibility;
         private string _quantity;
+        private string _existingWorkUnitSearchText;
         private bool _isForStock;
+        private bool _hasTargetDate;
+
+        private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
 
         public RequisitionDetailViewModel(
             IRequisitionRepository requisitionRepository,
@@ -42,25 +48,44 @@ namespace SistemaMirno.UI.ViewModel.Detail
             Products = new ObservableCollection<ProductWrapper>();
             Materials = new ObservableCollection<MaterialWrapper>();
             Colors = new ObservableCollection<ColorWrapper>();
+            WorkUnits = new ObservableCollection<WorkUnitWrapper>();
+            ExistingWorkUnits = new ObservableCollection<WorkUnitWrapper>();
+            Priorities = new ObservableCollection<string>();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Priorities.Add("Normal");
+                Priorities.Add("Urgente");
+            });
+
+            WorkUnitsCollectionView = CollectionViewSource.GetDefaultView(WorkUnits);
+            WorkUnitsCollectionView.GroupDescriptions.Add(_productName);
+            ExistingWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(ExistingWorkUnits);
+            ExistingWorkUnitsCollectionView.GroupDescriptions.Add(_productName);
 
             AddWorkUnitCommand = new DelegateCommand<object>(OnAddWorkUnitExecute);
-            AddNewWorkUnitCommand = new DelegateCommand<object>(OnAddNewWorkUnitExecute, OnAddNewWorkUnitCanExecute);
+            AddNewWorkUnitCommand = new DelegateCommand(OnAddNewWorkUnitExecute, OnAddNewWorkUnitCanExecute);
+            RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
         }
 
-        private bool OnAddNewWorkUnitCanExecute(object arg)
+        private bool OnRemoveWorkUnitCanExecute()
+        {
+            return SelectedWorkUnit != null;
+        }
+
+        private void OnRemoveWorkUnitExecute()
+        {
+            Requisition.Model.WorkUnits.Remove(SelectedWorkUnit.Model);
+            Application.Current.Dispatcher.Invoke(() => WorkUnits.Remove(SelectedWorkUnit));
+        }
+
+        private bool OnAddNewWorkUnitCanExecute()
         {
             return int.TryParse(Quantity, out _) && !NewWorkUnit.HasErrors;
         }
 
-        private async void OnAddNewWorkUnitExecute(object obj)
+        private void OnAddNewWorkUnitExecute()
         {
-            var firstWorkAreaId = await _requisitionRepository.GetFirstWorkAreaIdAsync();
-
-            if (!firstWorkAreaId.HasValue)
-            {
-                return;
-            }
-
             var quantity = int.Parse(Quantity);
 
             for (var i = 0; i < quantity; i++)
@@ -70,15 +95,23 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     ProductId = NewWorkUnit.ProductId,
                     MaterialId = NewWorkUnit.MaterialId,
                     ColorId = NewWorkUnit.ColorId,
-                    Delivered = false,
+                    Product = SelectedProduct.Model,
+                    Material = SelectedMaterial.Model,
+                    Color = SelectedColor.Model,
+                    Delivered = NewWorkUnit.Delivered,
                     CreationDate = DateTime.Now,
-                    TotalWorkTime = 0,
+                    TotalWorkTime = NewWorkUnit.TotalWorkTime,
                     Details = NewWorkUnit.Details,
+                    CurrentWorkArea = NewWorkUnit.Model.CurrentWorkArea,
+                    CurrentWorkAreaId = NewWorkUnit.CurrentWorkAreaId,
+                    LatestResponsibleId = NewWorkUnit.LatestResponsibleId,
+                    LatestSupervisorId = NewWorkUnit.LatestSupervisorId,
                 };
 
                 Requisition.Model.WorkUnits.Add(workUnit);
-                WorkUnits.Add(workUnit);
+                Application.Current.Dispatcher.Invoke(() => WorkUnits.Add(new WorkUnitWrapper(workUnit)));
             }
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
         public bool ClientsEnabled
@@ -107,10 +140,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _quantity = int.TryParse(value, out _) ? value : string.Empty;
                 OnPropertyChanged();
+                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
-        public ObservableCollection<WorkUnit> WorkUnits { get; set; }
+        public ObservableCollection<WorkUnitWrapper> WorkUnits { get; set; }
+        public ObservableCollection<WorkUnitWrapper> ExistingWorkUnits { get; set; }
 
         public ObservableCollection<ClientWrapper> Clients { get; }
 
@@ -119,6 +154,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public ObservableCollection<MaterialWrapper> Materials { get; }
 
         public ObservableCollection<ColorWrapper> Colors { get; }
+
+        public ObservableCollection<string> Priorities { get; }
+
+        public ICollectionView WorkUnitsCollectionView { get; }
+
+        public ICollectionView ExistingWorkUnitsCollectionView { get; }
 
         private void OnAddWorkUnitExecute(object obj)
         {
@@ -153,6 +194,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         public Visibility ExistingWorkUnitGridVisibility
+        {
+            get => _existingWorkUnitGridVisibility;
+
+            set
+            {
+                _existingWorkUnitGridVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ExistingWorkUnitsProgressVisibility
         {
             get => _existingWorkUnitGridVisibility;
 
@@ -202,6 +254,51 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public WorkUnitWrapper SelectedWorkUnit
+        {
+            get => _selectedWorkUnit;
+
+            set
+            {
+                _selectedWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public ProductWrapper SelectedProduct
+        {
+            get => _selectedProduct;
+
+            set
+            {
+                _selectedProduct = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public MaterialWrapper SelectedMaterial
+        {
+            get => _selectedMaterial;
+
+            set
+            {
+                _selectedMaterial = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ColorWrapper SelectedColor
+        {
+            get => _selectedColor;
+
+            set
+            {
+                _selectedColor = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool HasTargetDate
         {
             get => _hasTargetDate;
@@ -213,9 +310,39 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public string ExistingWorkUnitSearchText
+        {
+            get => _existingWorkUnitSearchText;
+
+            set
+            {
+                _existingWorkUnitSearchText = value;
+                OnPropertyChanged();
+                FilterExistingWorkUnitsCollectionView(value);
+            }
+        }
+
+        private void FilterExistingWorkUnitsCollectionView(string search)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ExistingWorkUnitsProgressVisibility = Visibility.Visible;
+                ExistingWorkUnitsCollectionView.Filter = item =>
+                {
+                    WorkUnitWrapper vitem = item as WorkUnitWrapper;
+                    return vitem != null && vitem.Model.Product.Name.ToLowerInvariant().Contains(search.ToLowerInvariant());
+                };
+                ExistingWorkUnitsProgressVisibility = Visibility.Hidden;
+            });
+        }
+
         public ICommand AddWorkUnitCommand { get; }
+
         public ICommand AddNewWorkUnitCommand { get; }
+
         public ICommand AddExistingWorkUnitCommand { get; }
+
+        public ICommand RemoveWorkUnitCommand { get; }
 
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
@@ -229,6 +356,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             });
 
+            foreach (var workUnit in Requisition.Model.WorkUnits)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkUnits.Add(new WorkUnitWrapper(workUnit)));
+            }
+
             await base.LoadDetailAsync(id).ConfigureAwait(false);
         }
 
@@ -236,6 +368,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override async void OnSaveExecute()
         {
             base.OnSaveExecute();
+
+            Requisition.RequestedDate = DateTime.Now;
+
+            if (IsForStock)
+            {
+                Requisition.ClientId = null;
+            }
+
+            if (!HasTargetDate)
+            {
+                Requisition.TargetDate = null;
+            }
 
             if (IsNew)
             {
@@ -258,7 +402,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return OnSaveCanExecute(Requisition);
+            return OnSaveCanExecute(Requisition) && WorkUnits.Count > 0;
         }
 
         /// <inheritdoc/>
@@ -296,18 +440,48 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        private void NewWorkUnit_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(NewWorkUnit.HasErrors))
+            {
+                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
         public override async Task LoadAsync(int? id = null)
         {
+            var firstWorkArea = await _requisitionRepository.GetFirstWorkAreaAsync();
+
+            if (firstWorkArea == null)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Title = "Advertencia",
+                        Message = "Area de Pedidos no existe, notifique al Administrador de Sistema.",
+                    });
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                NewWorkUnitGridVisibility = Visibility.Collapsed;
+                ExistingWorkUnitGridVisibility = Visibility.Collapsed;
+                ExistingWorkUnitsProgressVisibility = Visibility.Hidden;
+            });
+
+            await LoadClients();
+
             if (id.HasValue)
             {
                 await LoadDetailAsync(id.Value);
                 return;
             }
 
-            await LoadClients();
             await LoadMaterials();
             await LoadColors();
             await LoadProducts();
+            await LoadExistingWorkUnits();
 
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -317,21 +491,40 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
                 Requisition.RequestedDate = DateTime.Now;
                 Requisition.Fulfilled = false;
-
-                NewWorkUnitGridVisibility = Visibility.Collapsed;
-                ExistingWorkUnitGridVisibility = Visibility.Collapsed;
-
+                
                 IsNew = true;
                 IsForStock = false;
                 HasTargetDate = false;
+                Quantity = string.Empty;
 
                 NewWorkUnit = new WorkUnitWrapper();
+                NewWorkUnit.PropertyChanged += NewWorkUnit_PropertyChanged;
+                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
+
                 NewWorkUnit.ProductId = 0;
                 NewWorkUnit.MaterialId = 0;
                 NewWorkUnit.ColorId = 0;
+                NewWorkUnit.Delivered = false;
+                NewWorkUnit.CreationDate = DateTime.Now;
+                NewWorkUnit.TotalWorkTime = 0;
+                NewWorkUnit.LatestResponsibleId = null;
+                NewWorkUnit.LatestSupervisorId = null;
+                NewWorkUnit.CurrentWorkAreaId = firstWorkArea.Id;
+                NewWorkUnit.Model.CurrentWorkArea = firstWorkArea;
+                NewWorkUnit.Details = string.Empty;
             });
-
+            
             await base.LoadDetailAsync().ConfigureAwait(false);
+        }
+
+        private async Task LoadExistingWorkUnits()
+        {
+            var workUnits = await _requisitionRepository.GetAllUnassignedWorkUnitsAsync();
+            
+            foreach (var workUnit in workUnits)
+            {
+                Application.Current.Dispatcher.Invoke(() => ExistingWorkUnits.Add(new WorkUnitWrapper(workUnit)));
+            }
         }
 
         private async Task LoadProducts()

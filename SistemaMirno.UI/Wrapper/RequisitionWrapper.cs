@@ -30,6 +30,12 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        public string Priority
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
         public DateTime? TargetDate
         {
             get { return GetValue<DateTime?>(); }
@@ -72,9 +78,12 @@ namespace SistemaMirno.UI.Wrapper
             switch (propertyName)
             {
                 case nameof(TargetDate):
-                    if (TargetDate.Value.Date < DateTime.Today.Date)
+                    if (TargetDate.HasValue)
                     {
-                        yield return "El pedido no se puede entregar en el pasado. Todavia >:D";
+                        if (TargetDate.Value.Date < DateTime.Today.Date)
+                        {
+                            yield return "El pedido no se puede entregar en el pasado. Todavia >:D";
+                        }
                     }
 
                     break;

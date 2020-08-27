@@ -41,4 +41,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:RequisitionViewModel}">
         <general:RequisitionView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:StockViewModel}">
+        <general:StockView />
+    </DataTemplate>
 </ResourceDictionary>

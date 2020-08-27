@@ -73,6 +73,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(ClientViewModel));
             builder.RegisterType<RequisitionViewModel>()
                 .Keyed<IViewModelBase>(nameof(RequisitionViewModel));
+            builder.RegisterType<StockViewModel>()
+                .Keyed<IViewModelBase>(nameof(StockViewModel));
 
             builder.RegisterType<InProcessByWorkAreasViewModel>()
                 .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));

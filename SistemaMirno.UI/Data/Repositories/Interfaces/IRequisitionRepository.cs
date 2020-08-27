@@ -11,6 +11,7 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         Task<List<Product>> GetAllProductsAsync();
         Task<List<Material>> GetAllMaterialsAsync();
         Task<List<Color>> GetAllColorsAsync();
-        Task<int?> GetFirstWorkAreaIdAsync();
+        Task<WorkArea> GetFirstWorkAreaAsync();
+        Task<List<WorkUnit>> GetAllUnassignedWorkUnitsAsync();
     }
 }

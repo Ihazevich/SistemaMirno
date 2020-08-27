@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.Detail
 {
     /// <summary>
-    /// Interaction logic for PaymentMethodDetailView.xaml
+    /// Interaction logic for SaleDetailView.xaml
     /// </summary>
-    public partial class PaymentMethodDetailView : UserControl
+    public partial class SaleDetailView : UserControl
     {
-        public PaymentMethodDetailView()
+        public SaleDetailView()
         {
             InitializeComponent();
         }

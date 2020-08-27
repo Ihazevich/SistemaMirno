@@ -46,8 +46,11 @@
                       IsReadOnly="True"
                       SelectedIndex="{Binding DataGridIndex, Mode=TwoWay}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Fecha de pedido" Binding="{Binding RequestedDate}"/>
-                    <DataGridTextColumn Header="Cliente" Binding="{Binding Client.Name}"/>
+                    <DataGridTextColumn Header="Fecha de pedido" Binding="{Binding RequestedDate, StringFormat=d}"/>
+                    <DataGridCheckBoxColumn Header="Para Stock" Binding="{Binding IsForStock}"/>
+                    <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Client.FullName}"/>
+                    <DataGridTextColumn Header="Prioridad" Binding="{Binding Priority}"/>
+                    <DataGridTextColumn Header="Fecha objetivo" Binding="{Binding TargetDate, StringFormat=d}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

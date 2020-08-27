@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.General
 {
     /// <summary>
-    /// Interaction logic for SalesView.xaml
+    /// Interaction logic for StockView.xaml
     /// </summary>
-    public partial class SalesView : UserControl
+    public partial class StockView : UserControl
     {
-        public SalesView()
+        public StockView()
         {
             InitializeComponent();
         }

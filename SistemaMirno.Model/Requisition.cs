@@ -17,6 +17,9 @@ namespace SistemaMirno.Model
         [Required]
         public DateTime RequestedDate { get; set; }
 
+        [Required]
+        public string Priority { get; set; }
+
         public DateTime? TargetDate { get; set; }
 
         [Required]

@@ -44,11 +44,6 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
 
-        private void GetSessionInfo(SessionInfo obj)
-        {
-            SessionInfo = obj;
-        }
-
         public bool NavigationEnabled
         {
             get => _navigationEnabled;
@@ -72,7 +67,6 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets or sets the selected work area.
         /// </summary>
-        
         public WorkAreaWrapper SelectedWorkArea
         {
             get
@@ -100,7 +94,11 @@ namespace SistemaMirno.UI.ViewModel.Main
                 }
                 else if (_selectedWorkArea.IsLast)
                 {
-                    // TODO: Open stock view
+                    EventAggregator.GetEvent<ChangeViewEvent>()
+                        .Publish(new ChangeViewEventArgs
+                        {
+                            ViewModel = nameof(StockViewModel),
+                        });
                 }
                 else
                 {
@@ -124,11 +122,28 @@ namespace SistemaMirno.UI.ViewModel.Main
             {
                 var workAreas = await _workAreaRepository.GetAllWorkAreasFromBranchAsync(id.Value);
 
+                if (workAreas == null)
+                {
+                    return;
+                }
+
+                foreach (var workArea in workAreas)
+                {
+                    if (workArea.IsLast)
+                    {
+                        workArea.Position = 9999.ToString();
+                    }
+                    else if (workArea.IsFirst)
+                    {
+                        workArea.Position = 0.ToString();
+                    }
+                }
+
                 workAreas.Sort((a, b) => a.Position.CompareTo(b.Position));
 
                 foreach (var workArea in workAreas)
                 {
-                    Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(new WorkAreaWrapper(workArea)));
+                        Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(new WorkAreaWrapper(workArea)));
                 }
             }
         }

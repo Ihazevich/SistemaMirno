@@ -91,11 +91,30 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public async Task<int?> GetFirstWorkAreaIdAsync()
+        public async Task<WorkArea> GetFirstWorkAreaAsync()
         {
             try
             {
-                return (await Context.WorkAreas.SingleAsync(w=>w.IsFirst)).Id;
+                return await Context.WorkAreas.SingleAsync(w=>w.IsFirst);
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<List<WorkUnit>> GetAllUnassignedWorkUnitsAsync()
+        {
+            try
+            {
+                return await Context.WorkUnits.Where(w => w.Delivered == false && (w.RequisitionId == null || w.Requisition.ClientId == null))
+                    .ToListAsync();
             }
             catch (Exception ex)
             {

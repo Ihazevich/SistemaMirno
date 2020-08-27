@@ -314,11 +314,13 @@
     <Compile Include="ViewModel\General\Interfaces\IProductViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IRequisitionViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IStockViewModel.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
     <Compile Include="ViewModel\General\RequisitionViewModel.cs" />
     <Compile Include="ViewModel\General\RoleViewModel.cs" />
+    <Compile Include="ViewModel\General\StockViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\WorkUnitViewModel.cs" />
@@ -333,12 +335,6 @@
     <Compile Include="ViewModel\Main\INavigationViewModel.cs" />
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
     <Compile Include="ViewModel\Main\NavigationViewModel.cs" />
-    <Compile Include="View\AreaConnectionDetailView.xaml.cs">
-      <DependentUpon>AreaConnectionDetailView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\AreaConnectionView.xaml.cs">
-      <DependentUpon>AreaConnectionView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Main\BranchSelectionView.xaml.cs">
       <DependentUpon>BranchSelectionView.xaml</DependentUpon>
     </Compile>
@@ -381,12 +377,6 @@
     <Compile Include="View\General\MaterialView.xaml.cs">
       <DependentUpon>MaterialView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\PaymentMethodDetailView.xaml.cs">
-      <DependentUpon>PaymentMethodDetailView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\PaymentMethodView.xaml.cs">
-      <DependentUpon>PaymentMethodView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Detail\ProductCategoryDetailView.xaml.cs">
       <DependentUpon>ProductCategoryDetailView.xaml</DependentUpon>
     </Compile>
@@ -408,13 +398,13 @@
     <Compile Include="View\General\RequisitionView.xaml.cs">
       <DependentUpon>RequisitionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SaleDetailView.xaml.cs">
+    <Compile Include="View\Detail\SaleDetailView.xaml.cs">
       <DependentUpon>SaleDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SalesView.xaml.cs">
+    <Compile Include="View\General\SalesView.xaml.cs">
       <DependentUpon>SalesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\StockView.xaml.cs">
+    <Compile Include="View\General\StockView.xaml.cs">
       <DependentUpon>StockView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Detail\UserDetailView.xaml.cs">
@@ -488,14 +478,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\AreaConnectionDetailView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\AreaConnectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Main\BranchSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -552,14 +534,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\PaymentMethodDetailView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\PaymentMethodView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Detail\ProductCategoryDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -588,15 +562,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SaleDetailView.xaml">
+    <Page Include="View\Detail\SaleDetailView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\SalesView.xaml">
+    <Page Include="View\General\SalesView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\StockView.xaml">
+    <Page Include="View\General\StockView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -681,9 +655,7 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\Lookups\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
