@@ -27,6 +27,9 @@ namespace SistemaMirno.Model
         /// </summary>
         public DateTime? FulfilledDate { get; set; }
 
+        [Required]
+        public bool IsForStock { get; set; }
+
         public int? ClientId { get; set; }
 
         [ForeignKey(nameof(ClientId))]

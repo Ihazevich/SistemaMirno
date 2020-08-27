@@ -76,7 +76,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public bool IsNew
+        public virtual bool IsNew
         {
             get => _isNew;
 

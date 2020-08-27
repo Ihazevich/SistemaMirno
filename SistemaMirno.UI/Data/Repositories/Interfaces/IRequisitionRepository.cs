@@ -8,5 +8,9 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
     public interface IRequisitionRepository : IGenericRepository<Requisition>
     {
         Task<List<Client>> GetAllClientsAsync();
+        Task<List<Product>> GetAllProductsAsync();
+        Task<List<Material>> GetAllMaterialsAsync();
+        Task<List<Color>> GetAllColorsAsync();
+        Task<int?> GetFirstWorkAreaIdAsync();
     }
 }

@@ -36,5 +36,77 @@ namespace SistemaMirno.UI.Data.Repositories
                 return null;
             }
         }
+
+        public async Task<List<Product>> GetAllProductsAsync()
+        {
+            try
+            {
+                return await Context.Products.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<List<Color>> GetAllColorsAsync()
+        {
+            try
+            {
+                return await Context.Colors.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<List<Material>> GetAllMaterialsAsync()
+        {
+            try
+            {
+                return await Context.Materials.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<int?> GetFirstWorkAreaIdAsync()
+        {
+            try
+            {
+                return (await Context.WorkAreas.SingleAsync(w=>w.IsFirst)).Id;
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
     }
 }

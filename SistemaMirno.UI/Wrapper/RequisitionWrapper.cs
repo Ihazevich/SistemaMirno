@@ -48,6 +48,12 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
+        public bool IsForStock
+        {
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
+        }
+
         public int? ClientId
         {
             get { return GetValue<int?>(); }

@@ -81,14 +81,12 @@ namespace SistemaMirno.Model
         [Required]
         public bool Delivered { get; set; }
 
-        [Required]
-        public int LatestResponsibleId { get; set; }
+        public int? LatestResponsibleId { get; set; }
 
         [ForeignKey(nameof(LatestResponsibleId))]
         public virtual Employee LatestResponsible { get; set; }
 
-        [Required]
-        public int LatestSupervisorId { get; set; }
+        public int? LatestSupervisorId { get; set; }
 
         [ForeignKey(nameof(LatestSupervisorId))]
         public virtual Employee LatestSupervisor { get; set; }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
@@ -27,6 +28,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private Visibility _newWorkUnitGridVisibility;
         private Visibility _existingWorkUnitGridVisibility;
         private string _quantity;
+        private bool _isForStock;
 
         public RequisitionDetailViewModel(
             IRequisitionRepository requisitionRepository,
@@ -41,7 +43,60 @@ namespace SistemaMirno.UI.ViewModel.Detail
             Materials = new ObservableCollection<MaterialWrapper>();
             Colors = new ObservableCollection<ColorWrapper>();
 
-            AddWorkUnitCommand = new DelegateCommand<object>(OnAddWorkUnitExecute, OnAddWorkUnitCanExecute);
+            AddWorkUnitCommand = new DelegateCommand<object>(OnAddWorkUnitExecute);
+            AddNewWorkUnitCommand = new DelegateCommand<object>(OnAddNewWorkUnitExecute, OnAddNewWorkUnitCanExecute);
+        }
+
+        private bool OnAddNewWorkUnitCanExecute(object arg)
+        {
+            return int.TryParse(Quantity, out _) && !NewWorkUnit.HasErrors;
+        }
+
+        private async void OnAddNewWorkUnitExecute(object obj)
+        {
+            var firstWorkAreaId = await _requisitionRepository.GetFirstWorkAreaIdAsync();
+
+            if (!firstWorkAreaId.HasValue)
+            {
+                return;
+            }
+
+            var quantity = int.Parse(Quantity);
+
+            for (var i = 0; i < quantity; i++)
+            {
+                var workUnit = new WorkUnit
+                {
+                    ProductId = NewWorkUnit.ProductId,
+                    MaterialId = NewWorkUnit.MaterialId,
+                    ColorId = NewWorkUnit.ColorId,
+                    Delivered = false,
+                    CreationDate = DateTime.Now,
+                    TotalWorkTime = 0,
+                    Details = NewWorkUnit.Details,
+                };
+
+                Requisition.Model.WorkUnits.Add(workUnit);
+                WorkUnits.Add(workUnit);
+            }
+        }
+
+        public bool ClientsEnabled
+        {
+            get => !IsForStock;
+        }
+
+        public bool IsForStock
+        {
+            get => _isForStock;
+
+            set
+            {
+                _isForStock = value;
+                Requisition.IsForStock = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ClientsEnabled));
+            }
         }
 
         public string Quantity
@@ -50,10 +105,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             set
             {
-                _quantity = value;
+                _quantity = int.TryParse(value, out _) ? value : string.Empty;
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<WorkUnit> WorkUnits { get; set; }
 
         public ObservableCollection<ClientWrapper> Clients { get; }
 
@@ -63,33 +120,28 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public ObservableCollection<ColorWrapper> Colors { get; }
 
-        private bool OnAddWorkUnitCanExecute(object arg)
-        {
-            throw new NotImplementedException();
-        }
-
         private void OnAddWorkUnitExecute(object obj)
         {
-            if (obj.ToString() == "New")
+            switch (obj.ToString())
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    NewWorkUnitViewVisibility = Visibility.Visible;
-                    ExistingWorkUnitViewVisibility = Visibility.Collapsed;
-                });
-            }
-
-            if (obj.ToString() == "Exiting")
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    NewWorkUnitViewVisibility = Visibility.Collapsed;
-                    ExistingWorkUnitViewVisibility = Visibility.Visible;
-                });
+                case "New":
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        NewWorkUnitGridVisibility = Visibility.Visible;
+                        ExistingWorkUnitGridVisibility = Visibility.Collapsed;
+                    });
+                    break;
+                case "Existing":
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        NewWorkUnitGridVisibility = Visibility.Collapsed;
+                        ExistingWorkUnitGridVisibility = Visibility.Visible;
+                    });
+                    break;
             }
         }
 
-        public Visibility NewWorkUnitViewVisibility
+        public Visibility NewWorkUnitGridVisibility
         {
             get => _newWorkUnitGridVisibility;
 
@@ -100,7 +152,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public Visibility ExistingWorkUnitViewVisibility
+        public Visibility ExistingWorkUnitGridVisibility
         {
             get => _existingWorkUnitGridVisibility;
 
@@ -108,6 +160,23 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _existingWorkUnitGridVisibility = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public Visibility NewButtonsVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility DetailButtonsVisibility => IsNew ? Visibility.Collapsed : Visibility.Visible;
+
+        public override bool IsNew
+        {
+            get => base.IsNew;
+
+            set
+            {
+                base.IsNew = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(NewButtonsVisibility));
+                OnPropertyChanged(nameof(DetailButtonsVisibility));
             }
         }
 
@@ -145,6 +214,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         public ICommand AddWorkUnitCommand { get; }
+        public ICommand AddNewWorkUnitCommand { get; }
+        public ICommand AddExistingWorkUnitCommand { get; }
 
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
@@ -240,16 +311,24 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                IsNew = true;
-                HasTargetDate = false;
-                NewWorkUnit = new WorkUnitWrapper();
-
                 Requisition = new RequisitionWrapper();
                 Requisition.PropertyChanged += Model_PropertyChanged;
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
 
                 Requisition.RequestedDate = DateTime.Now;
                 Requisition.Fulfilled = false;
+
+                NewWorkUnitGridVisibility = Visibility.Collapsed;
+                ExistingWorkUnitGridVisibility = Visibility.Collapsed;
+
+                IsNew = true;
+                IsForStock = false;
+                HasTargetDate = false;
+
+                NewWorkUnit = new WorkUnitWrapper();
+                NewWorkUnit.ProductId = 0;
+                NewWorkUnit.MaterialId = 0;
+                NewWorkUnit.ColorId = 0;
             });
 
             await base.LoadDetailAsync().ConfigureAwait(false);
@@ -257,17 +336,32 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private async Task LoadProducts()
         {
-            throw new NotImplementedException();
+            var products = await _requisitionRepository.GetAllProductsAsync();
+
+            foreach (var product in products)
+            {
+                Application.Current.Dispatcher.Invoke(() => Products.Add(new ProductWrapper(product)));
+            }
         }
 
         private async Task LoadColors()
         {
-            throw new NotImplementedException();
+            var colors = await _requisitionRepository.GetAllColorsAsync();
+
+            foreach (var color in colors)
+            {
+                Application.Current.Dispatcher.Invoke(() => Colors.Add(new ColorWrapper(color)));
+            }
         }
 
         private async Task LoadMaterials()
         {
-            throw new NotImplementedException();
+            var materials = await _requisitionRepository.GetAllMaterialsAsync();
+
+            foreach (var material in materials)
+            {
+                Application.Current.Dispatcher.Invoke(() => Materials.Add(new MaterialWrapper(material)));
+            }
         }
 
         private async Task LoadClients()

@@ -19,7 +19,7 @@
         <ProgressBar Grid.Row="0" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
         <Label Grid.Row="1" Content="Detalles del pedido" FontSize="20" Margin="5" />
         <Separator Grid.Row="2" />
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="3" IsEnabled="{Binding IsNew}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -38,21 +38,31 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Content="Cliente" />
-                <ComboBox Grid.Row="1"
-                          ItemsSource="{Binding Clients}"
-                          SelectedValuePath="Id"
-                          DisplayMemberPath="FullName"
-                          SelectedValue="{Binding Requisition.ClientId, Mode=TwoWay}"
-                          Margin="5"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox ItemsSource="{Binding Clients}"
+                              SelectedValuePath="Id"
+                              DisplayMemberPath="FullName"
+                              SelectedValue="{Binding Requisition.ClientId, Mode=TwoWay}"
+                              IsEnabled="{Binding ClientsEnabled}"
+                              Margin="5"/>
+                    <CheckBox Grid.Column="1"
+                              Content="Es para stock"
+                              IsChecked="{Binding IsForStock}"
+                              Margin="5"/>
+                </Grid>
                 <CheckBox Grid.Row="2"
                           Content="Tiene fecha objetivo"
                           IsChecked="{Binding HasTargetDate, Mode=TwoWay}"
                           Margin="5"/>
                 <Label Grid.Row="3" Content="Fecha objetivo" />
-                <TextBox Grid.Row="4"
-                         Text="{Binding Requisition.TargetDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         IsEnabled="{Binding HasTargetDate}"
-                         Margin="5" />
+                <DatePicker Grid.Row="4"
+                            Text="{Binding Requisition.TargetDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="{Binding HasTargetDate}"
+                            Margin="5" />
                 <Grid Grid.Row="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -83,6 +93,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Label Content="Cantidad"/>
                             <Label Grid.Column="1" Content="Producto"/>
@@ -96,37 +107,46 @@
                                                            SelectedValuePath="Id"
                                                            SelectedValue="{Binding NewWorkUnit.ProductId, Mode=TwoWay}"
                                                            DisplayMemberPath="Name"
-                                                           TextSearch.TextPath="Name">
+                                                           TextSearch.TextPath="Name"
+                                                           Margin="5">
                                 <controls:AutoCompleteComboBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
                                     </ItemsPanelTemplate>
                                 </controls:AutoCompleteComboBox.ItemsPanel>
                             </controls:AutoCompleteComboBox>
-                            <controls:AutoCompleteComboBox Grid.Column="1" Grid.Row="1"
+                            <controls:AutoCompleteComboBox Grid.Column="2" Grid.Row="1"
                                                            ItemsSource="{Binding Materials}"
                                                            SelectedValuePath="Id"
                                                            SelectedValue="{Binding NewWorkUnit.MaterialId, Mode=TwoWay}"
                                                            DisplayMemberPath="Name"
-                                                           TextSearch.TextPath="Name">
+                                                           TextSearch.TextPath="Name"
+                                                           Margin="5">
                                 <controls:AutoCompleteComboBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
                                     </ItemsPanelTemplate>
                                 </controls:AutoCompleteComboBox.ItemsPanel>
                             </controls:AutoCompleteComboBox>
-                            <controls:AutoCompleteComboBox Grid.Column="1" Grid.Row="1"
+                            <controls:AutoCompleteComboBox Grid.Column="3" Grid.Row="1"
                                                            ItemsSource="{Binding Colors}"
                                                            SelectedValuePath="Id"
                                                            SelectedValue="{Binding NewWorkUnit.ColorId, Mode=TwoWay}"
                                                            DisplayMemberPath="Name"
-                                                           TextSearch.TextPath="Name">
+                                                           TextSearch.TextPath="Name"
+                                                           Margin="5">
                                 <controls:AutoCompleteComboBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
                                     </ItemsPanelTemplate>
                                 </controls:AutoCompleteComboBox.ItemsPanel>
                             </controls:AutoCompleteComboBox>
+                            <Button Grid.ColumnSpan="4" Grid.Row="2" 
+                                    Content="Agregar" 
+                                    Margin="10" 
+                                    Background="GreenYellow"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding AddNewWorkUnitCommand}"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -172,8 +192,28 @@
                 </Grid>
             </Grid>
             <!-- Column 2 -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Content="Unidades de trabajo"/>
+                <DataGrid Grid.Row="1"
+                          ItemsSource="{Binding WorkUnits, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SelectedWorkUnit}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          CanUserResizeRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Producto"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
-        <StackPanel Grid.Row="5" Orientation="Horizontal">
+        <StackPanel Grid.Row="5" Orientation="Horizontal"
+                    Visibility="{Binding NewButtonsVisibility}">
             <Button Content="Guardar" 
                     Width="125" 
                     Margin="10" 
@@ -188,6 +228,13 @@
                     Margin="10"
                     Background="Red"
                     Command="{Binding DeleteCommand}" />
+        </StackPanel>
+        <StackPanel Grid.Row="5" Orientation="Horizontal"
+                    Visibility="{Binding DetailButtonsVisibility}">
+            <Button Content="Atras" 
+                    Width="125" 
+                    Margin="10" 
+                    Command="{Binding CancelCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>
