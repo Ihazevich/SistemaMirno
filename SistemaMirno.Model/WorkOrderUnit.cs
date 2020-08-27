@@ -37,6 +37,9 @@ namespace SistemaMirno.Model
         [ForeignKey(nameof(WorkUnitId))]
         public virtual WorkUnit WorkUnit { get; set; }
 
+        [Required]
+        public bool Finished { get; set; }
+
         public DateTime? FinishedDateTime { get; set; }
     }
 }

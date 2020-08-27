@@ -59,5 +59,12 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(WorkAreaConnection.DestinationWorkAreaId))]
         public virtual ICollection<WorkAreaConnection> IncomingConnections { get; set; } = new HashSet<WorkAreaConnection>();
+
+        [ForeignKey(nameof(WorkOrder.OriginWorkAreaId))]
+        public virtual ICollection<WorkOrder> OutgoingWorkOrders { get; set; } = new HashSet<WorkOrder>();
+
+        [ForeignKey(nameof(WorkOrder.DestinationWorkAreaId))]
+        public virtual ICollection<WorkOrder> IncomingWorkOrders { get; set; } = new HashSet<WorkOrder>();
+
     }
 }

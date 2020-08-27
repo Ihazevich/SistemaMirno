@@ -18,108 +18,135 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Grid.ColumnSpan="3">
+        <Grid Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Label Content="{Binding WorkArea.Name}" FontSize="30" />
-            <ProgressBar IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
-            <Separator/>
-        </StackPanel>
-        <StackPanel Grid.Row="1"
-                    HorizontalAlignment="Center">
+            <ProgressBar Grid.Row="1" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
+            <Separator Grid.Row="2"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Label Content="Productos en area" FontSize="15"/>
-        </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Content="Producto"/>
+                <Label Grid.Column="1" Content="Material"/>
+                <Label Grid.Column="2" Content="Lustre/Color"/>
+                <Label Grid.Column="3" Content="Cliente"/>
+                <TextBox Grid.Column="0" Grid.Row="1" 
+                         Text="{Binding WorkAreaWorkUnitProductFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="5"/>
+                <TextBox Grid.Column="1" Grid.Row="1" 
+                         Text="{Binding WorkAreaWorkUnitMaterialFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="5"/>
+                <TextBox Grid.Column="2" Grid.Row="1" 
+                         Text="{Binding WorkAreaWorkUnitColorFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="5"/>
+                <TextBox Grid.Column="3" Grid.Row="1" 
+                         Text="{Binding WorkAreaWorkUnitClientFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="5"/>
+            </Grid>
+            <DataGrid Grid.Row="2" 
+                  ItemsSource="{Binding WorkAreaCollectionView}" 
+                  SelectedItem="{Binding SelectedAreaWorkUnit}"
+                  AutoGenerateColumns="false" 
+                  SelectionMode="Extended"
+                  Margin="10,0,10,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
+                    <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
+                    <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
+                    <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Requisition.Client.FullName}"/>
+                    <DataGridTextColumn Header="Responsable" Binding="{Binding Model.LastResponsible.Name}"/>
+                    <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.LastSupervisor.Name}"/>
+                </DataGrid.Columns>
+                <DataGrid.GroupStyle>
+                    <!-- Style for groups at top level. -->
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Margin" Value="0,0,0,5"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                            <Expander IsExpanded="False" BorderThickness="1,1,1,5">
+                                                <Expander.Header>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
+                                                    </StackPanel>
+                                                </Expander.Header>
+                                                <Expander.Content>
+                                                    <ItemsPresenter />
+                                                </Expander.Content>
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                    <!-- Style for groups under the top level. -->
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Background="LightGray">
+                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </DataGrid.GroupStyle>
+            </DataGrid>
+        </Grid>
         <StackPanel Grid.Column="2" Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center">
             <Label Content="Productos a trasladar a" FontSize="15"/>
             <Label Content="{Binding DestinationWorkArea.Name}" FontSize="15"/>
         </StackPanel>
-        <DataGrid Grid.Row="2" 
-                  ItemsSource="{Binding AreaCollection}" 
-                  SelectedItem="{Binding SelectedAreaWorkUnit}"
-                  AutoGenerateColumns="false" 
-                  SelectionMode="Extended"
-                  Margin="10,0,10,0">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Producto" Binding="{Binding Product.Name}"/>
-                <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
-                <DataGridTextColumn Header="Color" Binding="{Binding Color.Name}"/>
-            </DataGrid.Columns>
-            <DataGrid.GroupStyle>
-                <!-- Style for groups at top level. -->
-                <GroupStyle>
-                    <GroupStyle.ContainerStyle>
-                        <Style TargetType="{x:Type GroupItem}">
-                            <Setter Property="Margin" Value="0,0,0,5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander IsExpanded="False" BorderThickness="1,1,1,5">
-                                            <Expander.Header>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
-                                                </StackPanel>
-                                            </Expander.Header>
-                                            <Expander.Content>
-                                                <ItemsPresenter />
-                                            </Expander.Content>
-                                        </Expander>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
-                </GroupStyle>
-                <!-- Style for groups under the top level. -->
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <StackPanel Background="LightGray">
-                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black" />
-                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </DataGrid.GroupStyle>
-        </DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Center">
             <Button Content="Nueva Orden" Command="{Binding NewWorkOrderCommand}" Margin="10"/>
             <Button Content="Trasladar a Area" Command="{Binding MoveToWorkAreaCommand}" Margin="10"/>
-            <ComboBox ItemsSource="{Binding WorkArea.AreaConnections}"
-                      DisplayMemberPath="ConnectedWorkArea.Name"
-                      SelectedValuePath="ConnectedWorkArea"
-                      SelectedValue="{Binding DestinationWorkArea, Mode=TwoWay}"
+            <ComboBox ItemsSource="{Binding WorkArea.Model.OutgoingConnections}"
+                      DisplayMemberPath="DestinationWorkArea.Name"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding SelectedWorkAreaConnection, Mode=TwoWay}"
                       IsEnabled="{Binding ConnectionComboBoxEnabled}"/>
             <Button Content="Ver Ordenes" Command="{Binding OpenWorkOrderViewCommand}" Margin="10"/>
             <Button Content="⮞" FontSize="20" Width="30" Command="{Binding AddWorkUnitCommand}" Margin="10"/>
             <Button Content="⮜" FontSize="20" Width="30" Command="{Binding RemoveWorkUnitCommand}" Margin="10"/>
-            <Label Content="Filtrar por:"  FontSize="15"  Margin="10"/>
-            <CheckBox Content="Cliente"
-                      Command="{Binding FilterByClientCommand}" 
-                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
-            <CheckBox Content="Producto"
-                      Command="{Binding FilterByProductCommand}" 
-                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
-            <CheckBox Content="Material"
-                      Command="{Binding FilterByMaterialCommand}" 
-                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
-            <CheckBox Content="Color"
-                      Command="{Binding FilterByColorCommand}" 
-                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
             <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
         </StackPanel>
         <DataGrid Grid.Column="2" 
                   Grid.Row="2" 
-                  ItemsSource="{Binding OrderCollection}" 
+                  ItemsSource="{Binding WorkOrderCollectionView}" 
                   SelectedItem="{Binding SelectedOrderWorkUnit}"
                   AutoGenerateColumns="false" 
                   SelectionMode="Extended"
                   Margin="10,0,10,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Producto" Binding="{Binding Product.Name}"/>
-                <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
-                <DataGridTextColumn Header="Color" Binding="{Binding Color.Name}"/>
+                <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
+                <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
+                <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
             </DataGrid.Columns>
             <DataGrid.GroupStyle>
                 <!-- Style for groups at top level. -->

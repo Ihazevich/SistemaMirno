@@ -15,12 +15,13 @@ namespace SistemaMirno.Model
     /// </summary>
     public partial class WorkOrder : ModelBase
     {
-
         /// <summary>
         /// Gets or sets the date and time the Work Order started.
         /// </summary>
         [Required]
         public DateTime CreationDateTime { get; set; }
+
+        public DateTime? FinishedDateTime { get; set; }
 
         /// <summary>
         /// Gets or sets the Id of the Work Area where the Work Order originated from.

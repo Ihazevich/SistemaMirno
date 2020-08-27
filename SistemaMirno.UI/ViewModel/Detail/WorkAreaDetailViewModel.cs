@@ -48,6 +48,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             var connection = new WorkAreaConnection
             {
                 DestinationWorkAreaId = SelectedWorkArea.Id,
+                DestinationWorkArea = SelectedWorkArea.Model,
             };
 
             WorkArea.Model.OutgoingConnections.Add(connection);

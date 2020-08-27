@@ -34,5 +34,22 @@ namespace SistemaMirno.UI.Data.Repositories
                 return null;
             }
         }
+
+        public async Task<WorkArea> GetWorkAreaById(int id)
+        {
+            try
+            {
+                return await Context.WorkAreas.FindAsync(id);
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
     }
 }

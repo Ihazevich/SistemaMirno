@@ -448,6 +448,8 @@
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaConnectionWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaWrapper.cs" />
+    <Compile Include="Wrapper\WorkOrderUnitWrapper.cs" />
+    <Compile Include="Wrapper\WorkOrderWrapper.cs" />
     <Compile Include="Wrapper\WorkUnitWrapper.cs" />
     <Compile Include="Wrapper\WrapperBase.cs" />
     <Page Include="MainWindow.xaml">

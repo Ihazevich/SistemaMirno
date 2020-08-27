@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
+using SistemaMirno.UI.Event;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
@@ -15,6 +18,98 @@ namespace SistemaMirno.UI.Data.Repositories
         public WorkOrderRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator) 
             : base(contextCreator, eventAggregator)
         {
+        }
+
+        public async Task<WorkArea> GetWorkAreaAsync(int id)
+        {
+            try
+            {
+                return await Context.WorkAreas.FindAsync(id);
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
+
+
+        public async Task<List<Product>> GetAllProductsAsync()
+        {
+            try
+            {
+                return await Context.Products.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<List<Color>> GetAllColorsAsync()
+        {
+            try
+            {
+                return await Context.Colors.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<List<Material>> GetAllMaterialsAsync()
+        {
+            try
+            {
+                return await Context.Materials.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<List<WorkUnit>> GetExistingWorkUnits(ICollection<WorkAreaConnection> incomingConnections)
+        {
+            var workAreasIds = incomingConnections.Select(c => c.Id);
+
+            try
+            {
+                return await Context.WorkUnits.Where(w => workAreasIds.Contains(w.CurrentWorkAreaId)).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
         }
     }
 }

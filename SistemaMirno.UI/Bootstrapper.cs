@@ -102,6 +102,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(ClientDetailViewModel));
             builder.RegisterType<RequisitionDetailViewModel>().As<IRequisitionDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(RequisitionDetailViewModel));
+            builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
 
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<BranchRepository>().As<IBranchRepository>();
@@ -114,7 +116,7 @@ namespace SistemaMirno.UI
             builder.RegisterType<ProductCategoryRepository>().As<IProductCategoryRepository>();
             builder.RegisterType<ClientRepository>().As<IClientRepository>();
             builder.RegisterType<RequisitionRepository>().As<IRequisitionRepository>();
-
+            builder.RegisterType<WorkOrderRepository>().As<IWorkOrderRepository>();
 
             builder.RegisterType<WorkUnitRepository>().As<IWorkUnitRepository>();
 

@@ -8,5 +8,6 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
     public interface IWorkUnitRepository : IGenericRepository<WorkUnit>
     {
         Task<List<WorkUnit>> GetAllWorkUnitsCurrentlyInWorkArea(int id);
+        Task<WorkArea> GetWorkAreaById(int id);
     }
 }
