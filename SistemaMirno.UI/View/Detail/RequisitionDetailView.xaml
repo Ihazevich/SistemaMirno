@@ -60,17 +60,23 @@
                           SelectedValue="{Binding Requisition.ClientId, Mode=TwoWay}"
                           IsEnabled="{Binding ClientsEnabled}"
                           Margin="5"/>
-                <CheckBox Grid.Row="4"
-                          Content="Tiene fecha objetivo"
-                          IsChecked="{Binding HasTargetDate, Mode=TwoWay}"
-                          IsEnabled="{Binding IsNew}"
-                          Margin="5"/>
-                <Label Grid.Row="5" Content="Fecha objetivo" />
-                <DatePicker Grid.Row="6"
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Fecha objetivo" />
+                    <CheckBox Grid.Column="1"
+                              Content="Tiene fecha objetivo"
+                              IsChecked="{Binding HasTargetDate, Mode=TwoWay}"
+                              IsEnabled="{Binding IsNew}"
+                              Margin="5"/>
+                </Grid>
+                <DatePicker Grid.Row="5"
                             Text="{Binding Requisition.TargetDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             IsEnabled="{Binding HasTargetDate}"
                             Margin="5" />
-                <Grid Grid.Row="7" HorizontalAlignment="Right">
+                <Grid Grid.Row="6" HorizontalAlignment="Right">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -79,6 +85,7 @@
                             Command="{Binding AddWorkUnitCommand}"
                             CommandParameter="New"
                             IsEnabled="{Binding IsNew}"
+                            Visibility="{Binding AddNewWorkUnitVisibility}"
                             Margin="5"
                             HorizontalAlignment="Center"/>
                     <Button Grid.Column="1" 
@@ -86,10 +93,11 @@
                             Command="{Binding AddWorkUnitCommand}"
                             CommandParameter="Existing"
                             IsEnabled="{Binding IsNew}"
+                            Visibility="{Binding AddExistingWorkUnitVisibility}"
                             Margin="5"
                             HorizontalAlignment="Center"/>
                 </Grid>
-                <Grid Grid.Row="8"
+                <Grid Grid.Row="7"
                       Visibility="{Binding NewWorkUnitGridVisibility}"
                       IsEnabled="{Binding IsNew}">
                     <StackPanel>
@@ -171,7 +179,7 @@
                         </Grid>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Row="8"
+                <Grid Grid.Row="7"
                       Visibility="{Binding ExistingWorkUnitGridVisibility}"
                       IsEnabled="{Binding IsNew}">
                     <Grid>

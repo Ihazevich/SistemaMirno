@@ -23,12 +23,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private RequisitionWrapper _requisition;
         private WorkUnitWrapper _newWorkUnit;
         private WorkUnitWrapper _selectedWorkUnit;
+        private WorkUnitWrapper _selectedExistingWorkUnit;
         private ProductWrapper _selectedProduct;
         private MaterialWrapper _selectedMaterial;
         private ColorWrapper _selectedColor;
 
         private Visibility _newWorkUnitGridVisibility;
         private Visibility _existingWorkUnitGridVisibility;
+        private Visibility _addExistingWorkUnitVisibility;
         private string _quantity;
         private string _existingWorkUnitSearchText;
         private bool _isForStock;
@@ -65,7 +67,23 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             AddWorkUnitCommand = new DelegateCommand<object>(OnAddWorkUnitExecute);
             AddNewWorkUnitCommand = new DelegateCommand(OnAddNewWorkUnitExecute, OnAddNewWorkUnitCanExecute);
+            AddExistingWorkUnitCommand = new DelegateCommand(OnAddExistingWorkUnitExecute, OnAddExistingWorkUnitCanExecute);
             RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
+        }
+        
+        private bool OnAddExistingWorkUnitCanExecute()
+        {
+            return SelectedExistingWorkUnit != null;
+        }
+
+        private void OnAddExistingWorkUnitExecute()
+        {
+            Requisition.Model.WorkUnits.Add(SelectedExistingWorkUnit.Model);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                WorkUnits.Add(SelectedExistingWorkUnit);
+                ExistingWorkUnits.Remove(SelectedExistingWorkUnit);
+            });
         }
 
         private bool OnRemoveWorkUnitCanExecute()
@@ -77,6 +95,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             Requisition.Model.WorkUnits.Remove(SelectedWorkUnit.Model);
             Application.Current.Dispatcher.Invoke(() => WorkUnits.Remove(SelectedWorkUnit));
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
         private bool OnAddNewWorkUnitCanExecute()
@@ -111,13 +130,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 Requisition.Model.WorkUnits.Add(workUnit);
                 Application.Current.Dispatcher.Invoke(() => WorkUnits.Add(new WorkUnitWrapper(workUnit)));
             }
+
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
-        public bool ClientsEnabled
-        {
-            get => !IsForStock;
-        }
+        public bool ClientsEnabled => !IsForStock;
 
         public bool IsForStock
         {
@@ -129,6 +146,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 Requisition.IsForStock = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ClientsEnabled));
+                OnPropertyChanged(nameof(AddExistingWorkUnitVisibility));
+                OnPropertyChanged(nameof(AddNewWorkUnitVisibility));
             }
         }
 
@@ -144,8 +163,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public ObservableCollection<WorkUnitWrapper> WorkUnits { get; set; }
-        public ObservableCollection<WorkUnitWrapper> ExistingWorkUnits { get; set; }
+        public ObservableCollection<WorkUnitWrapper> WorkUnits { get; }
+
+        public ObservableCollection<WorkUnitWrapper> ExistingWorkUnits { get; }
 
         public ObservableCollection<ClientWrapper> Clients { get; }
 
@@ -218,6 +238,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public Visibility NewButtonsVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
 
         public Visibility DetailButtonsVisibility => IsNew ? Visibility.Collapsed : Visibility.Visible;
+        
+        public Visibility AddExistingWorkUnitVisibility => IsForStock || !IsNew ? Visibility.Collapsed : Visibility.Visible;
+
+        public Visibility AddNewWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
 
         public override bool IsNew
         {
@@ -229,6 +253,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(NewButtonsVisibility));
                 OnPropertyChanged(nameof(DetailButtonsVisibility));
+                OnPropertyChanged(nameof(AddExistingWorkUnitVisibility));
+                OnPropertyChanged(nameof(AddNewWorkUnitVisibility));
             }
         }
 
@@ -263,6 +289,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 _selectedWorkUnit = value;
                 OnPropertyChanged();
                 ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public WorkUnitWrapper SelectedExistingWorkUnit
+        {
+            get => _selectedExistingWorkUnit;
+
+            set
+            {
+                _selectedExistingWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)AddExistingWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -491,7 +529,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
                 Requisition.RequestedDate = DateTime.Now;
                 Requisition.Fulfilled = false;
-                
+
                 IsNew = true;
                 IsForStock = false;
                 HasTargetDate = false;
