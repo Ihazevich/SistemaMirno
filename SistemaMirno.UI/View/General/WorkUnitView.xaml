@@ -74,8 +74,8 @@
                     <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
                     <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
                     <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Requisition.Client.FullName}"/>
-                    <DataGridTextColumn Header="Responsable" Binding="{Binding Model.LastResponsible.Name}"/>
-                    <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.LastSupervisor.Name}"/>
+                    <DataGridTextColumn Header="Responsable" Binding="{Binding Model.LastResponsible.FullName}"/>
+                    <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.LastSupervisor.FullName}"/>
                 </DataGrid.Columns>
                 <DataGrid.GroupStyle>
                     <!-- Style for groups at top level. -->

@@ -71,7 +71,6 @@ namespace SistemaMirno.Model
         [ForeignKey(nameof(SupervisorEmployeeId))]
         public virtual Employee SupervisorEmployee { get; set; }
 
-        [Required]
         [StringLength(200)]
         public string Observations { get; set; }
 

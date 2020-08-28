@@ -19,7 +19,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class RequisitionDetailViewModel : DetailViewModelBase, IRequisitionDetailViewModel
     {
-        private IRequisitionRepository _requisitionRepository;
+        private readonly IRequisitionRepository _requisitionRepository;
+
         private RequisitionWrapper _requisition;
         private WorkUnitWrapper _newWorkUnit;
         private WorkUnitWrapper _selectedWorkUnit;
@@ -30,7 +31,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private Visibility _newWorkUnitGridVisibility;
         private Visibility _existingWorkUnitGridVisibility;
-        private Visibility _addExistingWorkUnitVisibility;
+        private Visibility _removeWorkUnitVisibility;
+
         private string _quantity;
         private string _existingWorkUnitSearchText;
         private bool _isForStock;
@@ -243,6 +245,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public Visibility AddNewWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
 
+        public Visibility RemoveWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
+
         public override bool IsNew
         {
             get => base.IsNew;
@@ -255,6 +259,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 OnPropertyChanged(nameof(DetailButtonsVisibility));
                 OnPropertyChanged(nameof(AddExistingWorkUnitVisibility));
                 OnPropertyChanged(nameof(AddNewWorkUnitVisibility));
+                OnPropertyChanged(nameof(RemoveWorkUnitVisibility));
             }
         }
 

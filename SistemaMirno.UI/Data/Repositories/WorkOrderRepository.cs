@@ -98,7 +98,44 @@ namespace SistemaMirno.UI.Data.Repositories
 
             try
             {
-                return await Context.WorkUnits.Where(w => workAreasIds.Contains(w.CurrentWorkAreaId)).ToListAsync();
+                return await Context.WorkUnits.Where(w => workAreasIds.Contains(w.CurrentWorkAreaId) && !w.CurrentWorkArea.IsFirst).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<List<WorkUnit>> GetRequisitionWorkUnits()
+        {
+            try
+            {
+                return await Context.WorkUnits.Where(w => w.CurrentWorkArea.IsFirst).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<List<Employee>> GetEmployeesWithRoleIdAsync(int roleId)
+        {
+            try
+            {
+                return await Context.Employees.Where(e => e.Roles.Select(r => r.Id).ToList().Contains(roleId))
+                    .ToListAsync();
             }
             catch (Exception ex)
             {

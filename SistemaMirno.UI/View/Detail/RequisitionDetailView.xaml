@@ -271,6 +271,7 @@
                 <Button Content="Eliminar"
                         Command="{Binding RemoveWorkUnitCommand}"
                         IsEnabled="{Binding IsNew}"
+                        Visibility="{Binding RemoveWorkUnitVisibility}"
                         Margin="5"/>
                 <DataGrid Grid.Row="2" 
                           ItemsSource="{Binding WorkUnitsCollectionView}" 

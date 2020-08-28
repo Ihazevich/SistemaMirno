@@ -52,6 +52,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             Employee.Model.Roles.Remove(SelectedRemoveRole.Model);
             EmployeeRoles.Remove(SelectedRemoveRole);
+            HasChanges = true;
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
         private bool OnRemoveRoleCanExecute()
@@ -63,6 +65,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             Employee.Model.Roles.Add(SelectedAddRole.Model);
             EmployeeRoles.Add(SelectedAddRole);
+            HasChanges = true;
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
         private bool OnAddRoleCanExecute()

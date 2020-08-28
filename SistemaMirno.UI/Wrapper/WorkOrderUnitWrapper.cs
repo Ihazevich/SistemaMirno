@@ -35,12 +35,18 @@ namespace SistemaMirno.UI.Wrapper
             get { return GetValue<int>(); }
             set { SetValue(value); }
         }
+        public bool Finished
+        {
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
+        }
 
-        public DateTime? FinisheDateTime
+        public DateTime? FinishedDateTime
         {
             get { return GetValue<DateTime?>(); }
             set { SetValue(value); }
         }
+
 
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
