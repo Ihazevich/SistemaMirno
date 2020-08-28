@@ -333,7 +333,7 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                <Expander IsExpanded="True" BorderThickness="1,1,1,5">
+                                                <Expander IsExpanded="False" BorderThickness="1,1,1,5">
                                                     <Expander.Header>
                                                         <StackPanel Orientation="Horizontal">
                                                             <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
@@ -349,17 +349,6 @@
                                     </Setter>
                                 </Style>
                             </GroupStyle.ContainerStyle>
-                        </GroupStyle>
-                        <!-- Style for groups under the top level. -->
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <StackPanel Background="LightGray">
-                                        <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black" />
-                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
                         </GroupStyle>
                     </DataGrid.GroupStyle>
                 </DataGrid>

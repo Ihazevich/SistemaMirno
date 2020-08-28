@@ -43,8 +43,9 @@
             </MenuItem>
             <MenuItem Header="Ventas" 
                       Visibility="{Binding SalesVisibility}"
-                      IsEnabled="{Binding NavigationStatus}"
-                      Command="{Binding ChangeViewCommand}" CommandParameter="SaleViewModel"/>
+                      IsEnabled="False"
+                      Command="{Binding ChangeViewCommand}" 
+                      CommandParameter="SaleViewModel"/>
             <MenuItem Header="Utilidades" IsEnabled="{Binding NavigationStatus}">
                 <MenuItem Header="Recursos Humanos" Visibility="{Binding HumanResourcesVisibility}">
                     <MenuItem Header="Empleados" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeViewModel" />
@@ -63,7 +64,7 @@
                 </MenuItem>
                 <MenuItem Header="Ventas" Visibility="{Binding SalesVisibility}">
                     <MenuItem Header="Clientes" Command="{Binding ChangeViewCommand}" CommandParameter="ClientViewModel"/>
-                    <MenuItem Header="Metodos de pago" Command="{Binding ChangeViewCommand}" CommandParameter="PaymentMethodViewModel"/>
+                    <MenuItem Header="Metodos de pago" Command="{Binding ChangeViewCommand}" CommandParameter="PaymentMethodViewModel" IsEnabled="False"/>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Cambiar de sucursal" 
