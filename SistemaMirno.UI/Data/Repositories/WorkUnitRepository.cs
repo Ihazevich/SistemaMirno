@@ -1,47 +1,108 @@
-﻿// <copyright file="WorkUnitRepository.cs" company="HazeLabs">
-// Copyright (c) HazeLabs. All rights reserved.
-// </copyright>
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
+using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
-    /// <summary>
-    /// A class representing the data repository of the work unit data.
-    /// </summary>
     public class WorkUnitRepository : GenericRepository<WorkUnit, MirnoDbContext>, IWorkUnitRepository
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkUnitRepository"/> class.
-        /// </summary>
-        /// <param name="context">A <see cref="MirnoDbContext"/> instance representing the database context.</param>
-        public WorkUnitRepository(MirnoDbContext context)
-            : base(context)
+        public WorkUnitRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
+            : base(contextCreator, eventAggregator)
         {
         }
 
-        public async Task<IEnumerable<WorkUnit>> GetByAreaIdAsync(int areaId)
+        public async Task<List<WorkUnit>> GetAllWorkUnitsCurrentlyInWorkArea(int id)
         {
-            return await Context.WorkUnits.Where(w => w.WorkAreaId == areaId).ToListAsync();
+            try
+            {
+                return await Context.WorkUnits.Where(w => w.CurrentWorkAreaId == id).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
         }
 
-        public async Task<WorkArea> GetWorkAreaByIdAsync(int areaId)
+        public async Task<WorkArea> GetWorkAreaById(int id)
         {
-            return await Context.WorkAreas.FindAsync(areaId);
+            try
+            {
+                return await Context.WorkAreas.FindAsync(id);
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
         }
 
-        public async Task<IEnumerable<WorkUnit>> GetWorkUnitsInProcessAsync()
+        public async Task<List<WorkUnit>> GetWorkUnitsInProcessAsync()
         {
-            return await Context.WorkUnits.Where(w => w.WorkArea.ReportsInProcess == true).ToListAsync();
+            try
+            {
+                return await Context.WorkUnits.Where(w => w.Delivered == false && w.CurrentWorkArea.ReportsInProcess)
+                    .ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
         }
 
-        public async Task<IEnumerable<WorkArea>> GetWorkAreasThatReportInProcess()
+        public async Task<List<WorkArea>> GetWorkAreasThatReportInProcess()
         {
-            return await Context.WorkAreas.Where(a => a.ReportsInProcess == true).ToListAsync();
+            try
+            {
+                return await Context.WorkAreas.Where(w => w.ReportsInProcess).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
+
+        public async Task<List<WorkAreaConnection>> GetWorkAreaOutgoingConnections(int workAreaId)
+        {
+            try
+            {
+                return await Context.WorkAreaConnections.Where(c => c.OriginWorkAreaId == workAreaId).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
         }
     }
 }

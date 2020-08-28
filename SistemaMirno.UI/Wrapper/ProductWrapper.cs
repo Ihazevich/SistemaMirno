@@ -1,91 +1,77 @@
-﻿using SistemaMirno.Model;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
-    /// <summary>
-    /// A class representing the wrapper for the Material class.
-    /// </summary>
     public class ProductWrapper : ModelWrapper<Product>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProductWrapper"/> class.
-        /// </summary>
-        /// <param name="model">Instance of <see cref="Product"> to use as model.</param>
+        public ProductWrapper()
+            : base(new Product())
+        {
+        }
+
         public ProductWrapper(Product model)
             : base(model)
         {
         }
 
-        /// <summary>
-        /// Gets the Product ID.
-        /// </summary>
         public int Id { get { return GetValue<int>(); } }
 
-        /// <summary>
-        /// Gets or sets the Product code.
-        /// </summary>
         public string Code
         {
             get { return GetValue<string>(); }
             set { SetValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the Product name.
-        /// </summary>
         public string Name
         {
             get { return GetValue<string>(); }
             set { SetValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the Product ProductCategoryId.
-        /// </summary>
         public int ProductCategoryId
         {
             get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
-        public ProductCategory ProductCategory
+        public long ProductionValue
         {
-            get { return GetValue<ProductCategory>(); }
+            get { return GetValue<long>(); }
             set { SetValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the Product Price.
-        /// </summary>
-        public int Price
+        public long RetailPrice
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<long>(); }
             set { SetValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the Product WholesalePrice.
-        /// </summary>
-        public int WholesalePrice
+        public long WholesalerPrice
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<long>(); }
             set { SetValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the Product ProductionPrice.
-        /// </summary>
-        public int ProductionPrice
+        public bool IsCustom
         {
-            get { return GetValue<int>(); }
+            get { return GetValue<bool>(); }
             set { SetValue(value); }
         }
 
-        public virtual Collection<WorkUnit> WorkUnits
+        public string SketchupFile
         {
-            get { return GetValue<Collection<WorkUnit>>(); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public string TemplateFile
+        {
+            get { return GetValue<string>(); }
             set { SetValue(value); }
         }
 
@@ -98,6 +84,22 @@ namespace SistemaMirno.UI.Wrapper
                     if (Name.Length < 4)
                     {
                         yield return "El nombre es muy corto.";
+                    }
+
+                    break;
+
+                case nameof(Code):
+                    if (Code.Length < 4)
+                    {
+                        yield return "Codigo debe tener al menos 4 caracteres.";
+                    }
+
+                    break;
+
+                case nameof(ProductCategoryId):
+                    if (ProductCategoryId < 1)
+                    {
+                        yield return "Debe seleccionar una categoria.";
                     }
 
                     break;

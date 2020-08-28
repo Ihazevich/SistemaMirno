@@ -1,110 +1,198 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
-    /// <summary>
-    /// A class representing the wrapper for the Employee model.
-    /// </summary>
     public class EmployeeWrapper : ModelWrapper<Employee>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmployeeWrapper"/> class.
-        /// </summary>
-        /// <param name="model">Instance of <see cref="Employee"> to use as model.</param>
+        public EmployeeWrapper()
+            : base(new Employee())
+        {
+        }
+
         public EmployeeWrapper(Employee model)
             : base(model)
         {
         }
 
-        /// <summary>
-        /// Gets the Employee ID.
-        /// </summary>
         public int Id { get { return GetValue<int>(); } }
 
-        /// <summary>
-        /// Gets or sets the Employee first name.
-        /// </summary>
         public string FirstName
         {
-            get => GetValue<string>();
-
-            set
-            {
-                SetValue(value);
-                OnPropertyChanged("FullName");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Employee last name.
-        /// </summary>
-        public string LastName
-        {
-            get => GetValue<string>();
-
-            set
-            {
-                SetValue(value);
-                OnPropertyChanged("FullName");
-            }
-        }
-
-        /// <summary>
-        /// Gets the employee full name.
-        /// </summary>
-        public string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Employee document number.
-        /// </summary>
-        public int DocumentNumber
-        {
-            get { return GetValue<int>(); }
+            get { return GetValue<string>(); }
             set { SetValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the date the employee started working.
-        /// </summary>
-        public DateTime HiredDate
+        public string LastName
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public string FullName
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public string DocumentNumber
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public DateTime BirthDate
         {
             get { return GetValue<DateTime>(); }
             set { SetValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the role id assigned to the employee.
-        /// </summary>
-        public int EmployeeRoleId
+        public int Age
         {
             get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the collection of work orders of which the employee is/was responsible.
-        /// </summary>
-        public Collection<WorkOrder> ResponsibleWorkOrders
+        public string Address
         {
-            get { return GetValue<Collection<WorkOrder>>(); }
+            get { return GetValue<string>(); }
             set { SetValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the collection of work orders the employee is/was supervising.
-        /// </summary>
-        public Collection<WorkOrder> SupervisorWorkOrders
+        public string PhoneNumber
         {
-            get { return GetValue<Collection<WorkOrder>>(); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public string Profession
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public long BaseSalary
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public long SalaryOtherBonus
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public long SalaryProductionBonus
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public long SalarySalesBonus
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public long SalaryWorkOrderBonus
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public long SalaryNormalHoursBonus
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public long SalaryExtraHoursBonus
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public long TotalSalary
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public long ReportedIpsSalary
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public double ProductionBonusRatio
+        {
+            get { return GetValue<double>(); }
+            set { SetValue(value); }
+        }
+
+        public double SalesBonusRatio
+        {
+            get { return GetValue<double>(); }
+            set { SetValue(value); }
+        }
+
+        public long PricePerNormalHour
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public long PricePerExtraHour
+        {
+            get { return GetValue<long>(); }
+            set { SetValue(value); }
+        }
+
+        public DateTime ContractStartDate
+        {
+            get { return GetValue<DateTime>(); }
+            set { SetValue(value); }
+        }
+
+        public string ContractFile
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public bool IsRegisteredInIps
+        {
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
+        }
+
+        public DateTime? IpsStartDate
+        {
+            get { return GetValue<DateTime?>(); }
+            set { SetValue(value); }
+        }
+
+        public bool Terminated
+        {
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
+        }
+
+        public DateTime? TerminationDate
+        {
+            get { return GetValue<DateTime?>(); }
+            set { SetValue(value); }
+        }
+
+        public int? UserId
+        {
+            get { return GetValue<int?>(); }
             set { SetValue(value); }
         }
 
@@ -122,9 +210,17 @@ namespace SistemaMirno.UI.Wrapper
                     break;
 
                 case nameof(LastName):
-                    if (FirstName.Length < 4)
+                    if (LastName.Length < 3)
                     {
-                        yield return "El apellido es muy corto.";
+                        yield return "Apellido muy corto.";
+                    }
+
+                    break;
+
+                case nameof(DocumentNumber):
+                    if (!int.TryParse(DocumentNumber,out int _))
+                    {
+                        yield return "Numero de documento invalido.";
                     }
 
                     break;

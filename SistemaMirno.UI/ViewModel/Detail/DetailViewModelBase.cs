@@ -2,11 +2,16 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Web.ModelBinding;
+using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
@@ -17,17 +22,26 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public abstract class DetailViewModelBase : ViewModelBase, IDetailViewModelBase
     {
         private bool _hasChanges;
-        protected readonly IEventAggregator EventAggregator;
+        private bool _isNew;
+        private bool _isEnabled;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailViewModelBase"/> class.
         /// </summary>
         /// <param name="model">A model wrapper instance of type <see cref="T"/>.</param>
-        public DetailViewModelBase(IEventAggregator eventAggregator)
+        public DetailViewModelBase(IEventAggregator eventAggregator, string name, IDialogCoordinator dialogCoordinator)
+            : base (eventAggregator, name, dialogCoordinator)
         {
-            EventAggregator = eventAggregator;
+            _isNew = false;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
-            DeleteCommand = new DelegateCommand(OnDeleteExecute);
+            DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
+            CancelCommand = new DelegateCommand(OnCancelExecute);
+            IsEnabled = false;
+        }
+
+        private bool OnDeleteCanExecute()
+        {
+            return !IsNew;
         }
 
         /// <summary>
@@ -40,57 +54,86 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// </summary>
         public ICommand DeleteCommand { get; set; }
 
+        public ICommand CancelCommand { get; }
+
         /// <summary>
         /// Gets or sets a value indicating whether the database context has changes.
         /// </summary>
         public bool HasChanges
         {
-            get
-            {
-                return _hasChanges;
-            }
+            get => _hasChanges;
 
             set
             {
-                if (_hasChanges != value)
+                if (_hasChanges == value)
                 {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    return;
                 }
+
+                _hasChanges = value;
+                OnPropertyChanged();
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
         }
 
-        protected virtual void RaiseDataModelSavedEvent<T>(T model)
+        public virtual bool IsNew
         {
-            EventAggregator.GetEvent<AfterDataModelSavedEvent<T>>()
-                .Publish(new AfterDataModelSavedEventArgs<T> { Model = model });
+            get => _isNew;
+
+            set
+            {
+                _isNew = value;
+                ((DelegateCommand)CancelCommand).RaiseCanExecuteChanged();
+            }
         }
 
-        protected virtual void RaiseDataModelDeletedEvent<T>(T model)
+        public bool IsEnabled
         {
-            EventAggregator.GetEvent<AfterDataModelDeletedEvent<T>>()
-                .Publish(new AfterDataModelDeletedEventArgs<T> { Model = model });
+            get => _isEnabled;
+
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged();
+            }
         }
 
-        /// <summary>
-        /// Executes the save command.
-        /// </summary>
+        public virtual Task LoadDetailAsync(int id = 0)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsEnabled = true;
+                ProgressVisibility = Visibility.Collapsed;
+            });
+            return Task.CompletedTask;
+        }
+        
         protected virtual void OnSaveExecute()
         {
-            throw new NotImplementedException();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ProgressVisibility = Visibility.Visible;
+                IsEnabled = false;
+            });
         }
 
         /// <summary>
         /// Checks if the Save Command can be executed.
         /// </summary>
         /// <returns>True or false.</returns>
-        protected virtual bool OnSaveCanExecute()
+        protected bool OnSaveCanExecute(IModelWrapper wrapper)
+        {
+            return wrapper != null && !wrapper.HasErrors && (HasChanges || IsNew);
+        }
+
+        protected abstract bool OnSaveCanExecute();
+
+        protected virtual void OnDeleteExecute()
         {
             throw new NotImplementedException();
         }
 
-        protected virtual void OnDeleteExecute()
+        protected virtual void OnCancelExecute()
         {
             throw new NotImplementedException();
         }

@@ -17,7 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>0.2.143.20230</AssemblyVersion>
+    <AssemblyVersion>0.2.175.20231</AssemblyVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
@@ -34,6 +34,19 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <ShouldCreateLogs>True</ShouldCreateLogs>
+    <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>True</UpdateAssemblyInfoVersion>
+    <AssemblyVersionSettings>None.NoneWithAutoReset.Increment.DeltaDayStamp</AssemblyVersionSettings>
+    <UpdatePackageVersion>False</UpdatePackageVersion>
+    <AssemblyInfoVersionType>SemVer1</AssemblyInfoVersionType>
+    <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+    <AssemblyFileVersionSettings>None.NoneWithAutoReset.Increment.DeltaDayStamp</AssemblyFileVersionSettings>
+    <AssemblyInfoVersionSettings>
+    </AssemblyInfoVersionSettings>
+    <AssemblyInfoVersionSemVerSettings>AssemblyVersion.IncrementWithAutoReset.None</AssemblyInfoVersionSemVerSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -69,7 +82,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -80,6 +93,9 @@
     </Reference>
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.3.1\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetKit.Wpf.AutoCompleteComboBox, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetKit.Wpf.AutoCompleteComboBox.1.3.3\lib\net45\DotNetKit.Wpf.AutoCompleteComboBox.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
@@ -205,135 +221,169 @@
     <Compile Include="Data\Reports\WorkAreaReport.cs" />
     <Compile Include="Data\Reports\WorkOrderReport.cs" />
     <Compile Include="Data\Reports\WorkUnitReport.cs" />
-    <Compile Include="Data\Repositories\AreaConnectionRepository.cs" />
+    <Compile Include="Data\Repositories\BranchRepository.cs" />
+    <Compile Include="Data\Repositories\ClientRepository.cs" />
+    <Compile Include="Data\Repositories\ColorRepository.cs" />
     <Compile Include="Data\Repositories\EmployeeRepository.cs" />
-    <Compile Include="Data\Repositories\EmployeeRoleRepository.cs" />
     <Compile Include="Data\Repositories\GenericRepository.cs" />
-    <Compile Include="Data\Repositories\IAreaConnectionRepository.cs" />
-    <Compile Include="Data\Repositories\IEmployeeRepository.cs" />
-    <Compile Include="Data\Repositories\IEmployeeRoleRepository.cs" />
-    <Compile Include="Data\Repositories\IGenericRepository.cs" />
-    <Compile Include="Data\Repositories\IProductCategoryRepository.cs" />
-    <Compile Include="Data\Repositories\IUserRepository.cs" />
-    <Compile Include="Data\Repositories\IWorkOrderRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IClientRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IMaterialRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IColorRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IEmployeeRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IBranchRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IGenericRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IUserRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IRoleRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IWorkAreaRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IWorkUnitRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IProductRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IProductCategoryRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IWorkOrderRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IRequisitionRepository.cs" />
+    <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
+    <Compile Include="Data\Repositories\ProductRepository.cs" />
+    <Compile Include="Data\Repositories\RequisitionRepository.cs" />
+    <Compile Include="Data\Repositories\RoleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
-    <Compile Include="Data\Repositories\ColorRepository.cs" />
-    <Compile Include="Data\Repositories\IColorRepository.cs" />
-    <Compile Include="Data\Repositories\IMaterialRepository.cs" />
-    <Compile Include="Data\Repositories\IProductRepository.cs" />
-    <Compile Include="Data\Repositories\IWorkUnitRepository.cs" />
-    <Compile Include="Data\Repositories\MaterialRepository.cs" />
-    <Compile Include="Data\Repositories\ProductRepository.cs" />
     <Compile Include="Data\Repositories\WorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\WorkUnitRepository.cs" />
-    <Compile Include="Event\AfterDataModelDeletedEvent.cs" />
-    <Compile Include="Event\AfterDataModelDeletedEventArgs.cs" />
-    <Compile Include="Event\AfterDataModelSavedEvent.cs" />
-    <Compile Include="Event\AfterDataModelSavedEventArgs.cs" />
+    <Compile Include="Event\ReloadNavigationViewEvent.cs" />
+    <Compile Include="Event\AskSessionInfoEvent.cs" />
+    <Compile Include="Event\BranchChangedEvent.cs" />
+    <Compile Include="Event\BranchChangedEventArgs.cs" />
+    <Compile Include="Event\BroadcastSessionInfoEvent.cs" />
+    <Compile Include="Event\ChangeNavigationStatusEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ChangeViewEventArgs.cs" />
+    <Compile Include="Event\CloseDetailViewEvent.cs" />
     <Compile Include="Event\ExitApplicationEvent.cs" />
     <Compile Include="Event\NewWorkOrderEvent.cs" />
     <Compile Include="Event\NewWorkOrderEventArgs.cs" />
+    <Compile Include="Event\NotifyStatusBarEvent.cs" />
+    <Compile Include="Event\NotifyStatusBarEventArgs.cs" />
+    <Compile Include="Event\SessionInfo.cs" />
+    <Compile Include="Event\ShowDialogEvent.cs" />
+    <Compile Include="Event\ShowDialogEventArgs.cs" />
     <Compile Include="Event\UserChangedEvent.cs" />
     <Compile Include="Event\UserChangedEventArgs.cs" />
-    <Compile Include="Startup\Bootstrapper.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Utilities\DialogCloser.cs" />
-    <Compile Include="ViewModel\Detail\AreaConnectionDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\BranchDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\ClientDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\EmployeeRoleDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IAreaConnectionDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IColorDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IEmployeeDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IEmployeeRoleDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IProductCategoryDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IProductDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IUserDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IWorkOrderDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IClientDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IMaterialDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IColorDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IEmployeeDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IBranchDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IUserDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IRoleDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IWorkAreaDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IWorkUnitDetailViewModels.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IProductCategoryDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IWorkOrderDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IRequisitionDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\RequisitionDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\RoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
-    <Compile Include="ViewModel\General\AreaConnectionViewModel.cs" />
-    <Compile Include="ViewModel\General\ColorViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
-    <Compile Include="ViewModel\Detail\IDetailViewModelBase.cs" />
-    <Compile Include="ViewModel\Detail\IMaterialDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\IWorkAreaDetailViewModel.cs" />
-    <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\IDetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\WorkAreaDetailViewModel.cs" />
-    <Compile Include="ViewModel\General\EmployeeRoleViewModel.cs" />
+    <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\WorkUnitDetailViewModel.cs" />
+    <Compile Include="ViewModel\General\BranchViewModel.cs" />
+    <Compile Include="ViewModel\General\ClientViewModel.cs" />
+    <Compile Include="ViewModel\General\ColorViewModel.cs" />
     <Compile Include="ViewModel\General\EmployeeViewModel.cs" />
-    <Compile Include="ViewModel\General\IAreaConnectionViewModel.cs" />
-    <Compile Include="ViewModel\General\IColorViewModel.cs" />
-    <Compile Include="ViewModel\General\IEmployeeRoleViewModel.cs" />
-    <Compile Include="ViewModel\General\IEmployeeViewModel.cs" />
-    <Compile Include="ViewModel\General\IMaterialViewModel.cs" />
-    <Compile Include="ViewModel\General\IProductCategoryViewModel.cs" />
-    <Compile Include="ViewModel\General\IUserViewModel.cs" />
-    <Compile Include="ViewModel\General\IWorkAreaViewModel.cs" />
-    <Compile Include="ViewModel\General\IWorkOrderViewModel.cs" />
-    <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
-    <Compile Include="ViewModel\General\IProductViewModel.cs" />
-    <Compile Include="ViewModel\General\UserViewModel.cs" />
-    <Compile Include="ViewModel\General\WorkOrderViewModel.cs" />
-    <Compile Include="ViewModel\IViewModelBase.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IClientViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IColorViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IMaterialViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IEmployeeViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IBranchViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IUserViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IRoleViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IWorkAreaViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IWorkUnitViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IProductViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IProductCategoryViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IRequisitionViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IStockViewModel.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
-    <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
+    <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
+    <Compile Include="ViewModel\General\RequisitionViewModel.cs" />
+    <Compile Include="ViewModel\General\RoleViewModel.cs" />
+    <Compile Include="ViewModel\General\StockViewModel.cs" />
+    <Compile Include="ViewModel\General\UserViewModel.cs" />
+    <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
+    <Compile Include="ViewModel\General\WorkUnitViewModel.cs" />
+    <Compile Include="ViewModel\IViewModelBase.cs" />
+    <Compile Include="ViewModel\Main\BranchSelectionViewModel.cs" />
+    <Compile Include="ViewModel\Main\IBranchSelectionViewModel.cs" />
     <Compile Include="ViewModel\Main\ILoginViewModel.cs" />
     <Compile Include="ViewModel\Main\LoginViewModel.cs" />
     <Compile Include="ViewModel\Reports\InProcessByWorkAreasViewModel.cs" />
     <Compile Include="ViewModel\Reports\ProductionByWorkAreaViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="ViewModel\Main\IWorkAreaNavigationViewModel.cs" />
-    <Compile Include="ViewModel\General\IWorkUnitViewModel.cs" />
+    <Compile Include="ViewModel\Main\INavigationViewModel.cs" />
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
-    <Compile Include="ViewModel\Main\WorkAreaNavigationViewModel.cs" />
-    <Compile Include="ViewModel\General\WorkUnitViewModel.cs" />
-    <Compile Include="View\AreaConnectionDetailView.xaml.cs">
-      <DependentUpon>AreaConnectionDetailView.xaml</DependentUpon>
+    <Compile Include="ViewModel\Main\NavigationViewModel.cs" />
+    <Compile Include="View\Main\BranchSelectionView.xaml.cs">
+      <DependentUpon>BranchSelectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\AreaConnectionView.xaml.cs">
-      <DependentUpon>AreaConnectionView.xaml</DependentUpon>
+    <Compile Include="View\Detail\ClientDetailView.xaml.cs">
+      <DependentUpon>ClientDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ColorDetailView.xaml.cs">
+    <Compile Include="View\General\ClientView.xaml.cs">
+      <DependentUpon>ClientView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Detail\ColorDetailView.xaml.cs">
       <DependentUpon>ColorDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ColorView.xaml.cs">
+    <Compile Include="View\General\ColorView.xaml.cs">
       <DependentUpon>ColorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EmployeeDetailView.xaml.cs">
+    <Compile Include="View\Detail\BranchDetailView.xaml.cs">
+      <DependentUpon>BranchDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Detail\RoleDetailView.xaml.cs">
+      <DependentUpon>RoleDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Detail\EmployeeDetailView.xaml.cs">
       <DependentUpon>EmployeeDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EmployeeRoleDetailView.xaml.cs">
-      <DependentUpon>EmployeeRoleDetailView.xaml</DependentUpon>
+    <Compile Include="View\General\RoleView.xaml.cs">
+      <DependentUpon>RoleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EmployeeRoleView.xaml.cs">
-      <DependentUpon>EmployeeRoleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\EmployeeView.xaml.cs">
+    <Compile Include="View\General\EmployeeView.xaml.cs">
       <DependentUpon>EmployeeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LoginView.xaml.cs">
+    <Compile Include="View\General\BranchView.xaml.cs">
+      <DependentUpon>BranchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Main\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MaterialDetailView.xaml.cs">
+    <Compile Include="View\Detail\MaterialDetailView.xaml.cs">
       <DependentUpon>MaterialDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MaterialView.xaml.cs">
+    <Compile Include="View\General\MaterialView.xaml.cs">
       <DependentUpon>MaterialView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProductCategoryDetailView.xaml.cs">
+    <Compile Include="View\Detail\ProductCategoryDetailView.xaml.cs">
       <DependentUpon>ProductCategoryDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProductCategoryView.xaml.cs">
+    <Compile Include="View\General\ProductCategoryView.xaml.cs">
       <DependentUpon>ProductCategoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProductDetailView.xaml.cs">
+    <Compile Include="View\Detail\ProductDetailView.xaml.cs">
       <DependentUpon>ProductDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Reports\InProcessByWorkAreasView.xaml.cs">
@@ -342,45 +392,62 @@
     <Compile Include="View\Reports\ProductionByWorkAreaView.xaml.cs">
       <DependentUpon>ProductionByWorkAreaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserDetailView.xaml.cs">
+    <Compile Include="View\Detail\RequisitionDetailView.xaml.cs">
+      <DependentUpon>RequisitionDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\General\RequisitionView.xaml.cs">
+      <DependentUpon>RequisitionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Detail\SaleDetailView.xaml.cs">
+      <DependentUpon>SaleDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\General\SalesView.xaml.cs">
+      <DependentUpon>SalesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\General\StockView.xaml.cs">
+      <DependentUpon>StockView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Detail\UserDetailView.xaml.cs">
       <DependentUpon>UserDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserView.xaml.cs">
+    <Compile Include="View\General\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkAreaDetailView.xaml.cs">
+    <Compile Include="View\Detail\WorkAreaDetailView.xaml.cs">
       <DependentUpon>WorkAreaDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkAreaNavigationView.xaml.cs">
-      <DependentUpon>WorkAreaNavigationView.xaml</DependentUpon>
+    <Compile Include="View\Main\NavigationView.xaml.cs">
+      <DependentUpon>NavigationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkAreaView.xaml.cs">
+    <Compile Include="View\General\WorkAreaView.xaml.cs">
       <DependentUpon>WorkAreaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProductView.xaml.cs">
+    <Compile Include="View\General\ProductView.xaml.cs">
       <DependentUpon>ProductView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Services\IMessageDialogService.cs" />
-    <Compile Include="View\Services\MessageDialogService.cs" />
-    <Compile Include="View\WorkOrderDetailView.xaml.cs">
+    <Compile Include="View\Detail\WorkOrderDetailView.xaml.cs">
       <DependentUpon>WorkOrderDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkOrderView.xaml.cs">
+    <Compile Include="View\General\WorkOrderView.xaml.cs">
       <DependentUpon>WorkOrderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkUnitView.xaml.cs">
+    <Compile Include="View\General\WorkUnitView.xaml.cs">
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Wrapper\AreaConnectionWrapper.cs" />
+    <Compile Include="Wrapper\BranchWrapper.cs" />
+    <Compile Include="Wrapper\ClientWrapper.cs" />
     <Compile Include="Wrapper\ColorWrapper.cs" />
-    <Compile Include="Wrapper\EmployeeRoleWrapper.cs" />
     <Compile Include="Wrapper\EmployeeWrapper.cs" />
+    <Compile Include="Wrapper\IModelWrapper.cs" />
     <Compile Include="Wrapper\MaterialWrapper.cs" />
     <Compile Include="Wrapper\ModelWrapper.cs" />
     <Compile Include="Wrapper\ProductCategoryWrapper.cs" />
-    <Compile Include="Wrapper\UserWrapper.cs" />
-    <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\ProductWrapper.cs" />
+    <Compile Include="Wrapper\RequisitionWrapper.cs" />
+    <Compile Include="Wrapper\RoleWrapper.cs" />
+    <Compile Include="Wrapper\UserWrapper.cs" />
+    <Compile Include="Wrapper\WorkAreaConnectionWrapper.cs" />
+    <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\WorkOrderUnitWrapper.cs" />
     <Compile Include="Wrapper\WorkOrderWrapper.cs" />
     <Compile Include="Wrapper\WorkUnitWrapper.cs" />
@@ -393,64 +460,91 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\Repositories\IWorkAreaRepository.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\AreaConnectionDetailView.xaml">
+    <Page Include="Resources\DetailDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\AreaConnectionView.xaml">
+    <Page Include="Resources\GeneralDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ColorDetailView.xaml">
+    <Page Include="Resources\MainDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ColorView.xaml">
+    <Page Include="Resources\ReportDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EmployeeDetailView.xaml">
+    <Page Include="View\Main\BranchSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EmployeeRoleDetailView.xaml">
+    <Page Include="View\Detail\ClientDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EmployeeRoleView.xaml">
+    <Page Include="View\General\ClientView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EmployeeView.xaml">
+    <Page Include="View\Detail\ColorDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LoginView.xaml">
+    <Page Include="View\General\ColorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MaterialDetailView.xaml">
+    <Page Include="View\Detail\BranchDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MaterialView.xaml">
+    <Page Include="View\Detail\RoleDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProductCategoryDetailView.xaml">
+    <Page Include="View\Detail\EmployeeDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProductCategoryView.xaml">
+    <Page Include="View\General\RoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProductDetailView.xaml">
+    <Page Include="View\General\EmployeeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\General\BranchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Main\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Detail\MaterialDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\General\MaterialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Detail\ProductCategoryDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\General\ProductCategoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Detail\ProductDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -462,39 +556,59 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserDetailView.xaml">
+    <Page Include="View\Detail\RequisitionDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserView.xaml">
+    <Page Include="View\General\RequisitionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkAreaDetailView.xaml">
+    <Page Include="View\Detail\SaleDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\General\SalesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\General\StockView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkAreaNavigationView.xaml">
+    <Page Include="View\Detail\UserDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkAreaView.xaml">
+    <Page Include="View\General\UserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProductView.xaml">
+    <Page Include="View\Detail\WorkAreaDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkOrderDetailView.xaml">
+    <Page Include="View\Main\NavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkOrderView.xaml">
+    <Page Include="View\General\WorkAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkUnitView.xaml">
+    <Page Include="View\General\ProductView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Detail\WorkOrderDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\General\WorkOrderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\General\WorkUnitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -543,9 +657,7 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\Lookups\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>

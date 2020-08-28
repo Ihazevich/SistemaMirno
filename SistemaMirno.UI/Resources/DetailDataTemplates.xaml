@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:detailviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.Detail"
+                    xmlns:detail="clr-namespace:SistemaMirno.UI.View.Detail">
+
+    <DataTemplate DataType="{x:Type detailviewmodel:UserDetailViewModel}">
+        <detail:UserDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:BranchDetailViewModel}">
+        <detail:BranchDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:RoleDetailViewModel}">
+        <detail:RoleDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:EmployeeDetailViewModel}">
+        <detail:EmployeeDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:WorkAreaDetailViewModel}">
+        <detail:WorkAreaDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:ProductDetailViewModel}">
+        <detail:ProductDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:MaterialDetailViewModel}">
+        <detail:MaterialDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:ColorDetailViewModel}">
+        <detail:ColorDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:ProductCategoryDetailViewModel}">
+        <detail:ProductCategoryDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:WorkOrderDetailViewModel}">
+        <detail:WorkOrderDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:ClientDetailViewModel}">
+        <detail:ClientDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:RequisitionDetailViewModel}">
+        <detail:RequisitionDetailView />
+    </DataTemplate>
+</ResourceDictionary>

@@ -5,7 +5,6 @@
 using System;
 using System.Windows;
 using Autofac;
-using SistemaMirno.UI.Startup;
 
 namespace SistemaMirno.UI
 {
@@ -16,8 +15,7 @@ namespace SistemaMirno.UI
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var bootstrapper = new Bootstrapper();
-            var container = bootstrapper.Bootstrap();
+            var container = Bootstrapper.Bootstrap();
 
             var mainWindow = container.Resolve<MainWindow>();
             mainWindow.ShowDialog();

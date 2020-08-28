@@ -8,7 +8,7 @@ namespace SistemaMirno.UI.Wrapper
     /// Generic model wrapper class.
     /// </summary>
     /// <typeparam name="T">The type of model for the wrapper.</typeparam>
-    public class ModelWrapper<T> : WrapperBase
+    public class ModelWrapper<T> : WrapperBase, IModelWrapper
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelWrapper{T}"/> class.

@@ -18,6 +18,6 @@ namespace SistemaMirno.UI.Event
         /// <summary>
         /// Gets or sets the id of the ViewModel.
         /// </summary>
-        public int Id { get; set; }
+        public int? Id { get; set; }
     }
 }

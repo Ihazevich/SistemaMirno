@@ -1,141 +1,335 @@
-﻿using Prism.Commands;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
+using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
-using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    /// <summary>
-    /// Class representing the detailed view model of a single Production Area.
-    /// </summary>
     public class WorkAreaDetailViewModel : DetailViewModelBase, IWorkAreaDetailViewModel
     {
-        private IEmployeeRoleRepository _employeeRoleRepository;
-        private WorkAreaWrapper _productionArea;
-        private IWorkAreaRepository _productionAreaRepository;
+        private IWorkAreaRepository _workAreaRepository;
+        private WorkAreaWrapper _workArea;
+        private WorkAreaWrapper _selectedWorkArea;
+        private WorkAreaConnectionWrapper _selectedWorkAreaConnection;
+        private BranchWrapper _selectedBranch;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkAreaDetailViewModel"/> class.
-        /// </summary>
-        /// <param name="productionAreaRepository">The data repository.</param>
-        /// <param name="eventAggregator">The event aggregator.</param>
         public WorkAreaDetailViewModel(
-            IWorkAreaRepository productionAreaRepository,
-            IEmployeeRoleRepository employeeRoleRepository,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            IWorkAreaRepository workAreaRepository,
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Detalles de Area de Trabajo", dialogCoordinator)
         {
-            _productionAreaRepository = productionAreaRepository;
-            _employeeRoleRepository = employeeRoleRepository;
+            _workAreaRepository = workAreaRepository;
 
-            EmployeeRoles = new ObservableCollection<EmployeeRoleWrapper>();
-            EditAreaConnectionsCommand = new DelegateCommand(OnOpenAreaConnectionViewExecute);
+            Roles = new ObservableCollection<RoleWrapper>();
+            Branches = new ObservableCollection<BranchWrapper>();
+            WorkAreas = new ObservableCollection<WorkAreaWrapper>();
+            WorkAreaConnections = new ObservableCollection<WorkAreaConnectionWrapper>();
+
+            AddConnectionCommand = new DelegateCommand(OnAddConnectionExecute, OnAddConnectionCanExecute);
+            RemoveConnectionCommand = new DelegateCommand(OnRemoveConnectionExecute, OnRemoveConnectionCanExecute);
         }
 
-        public ICommand EditAreaConnectionsCommand { get; }
+        private void OnAddConnectionExecute()
+        {
+            var connection = new WorkAreaConnection
+            {
+                DestinationWorkAreaId = SelectedWorkArea.Id,
+                DestinationWorkArea = SelectedWorkArea.Model,
+            };
 
-        public ObservableCollection<EmployeeRoleWrapper> EmployeeRoles { get; }
+            WorkArea.Model.OutgoingConnections.Add(connection);
+            WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection));
+            HasChanges = true;
+        }
+
+        private void OnRemoveConnectionExecute()
+        {
+            WorkArea.Model.OutgoingConnections.Remove(SelectedWorkAreaConnection.Model);
+            WorkAreaConnections.Remove(SelectedWorkAreaConnection);
+            HasChanges = true;
+        }
+
+        private bool OnAddConnectionCanExecute()
+        {
+            return SelectedWorkArea != null;
+        }
+
+        private bool OnRemoveConnectionCanExecute()
+        {
+            return SelectedWorkAreaConnection != null;
+        }
 
         /// <summary>
         /// Gets or sets the data model wrapper.
         /// </summary>
         public WorkAreaWrapper WorkArea
         {
-            get
-            {
-                return _productionArea;
-            }
+            get => _workArea;
 
             set
             {
-                _productionArea = value;
+                _workArea = value;
                 OnPropertyChanged();
             }
         }
 
-        /// <inheritdoc/>
-        public override async Task LoadAsync(int? productionAreaId)
+        public WorkAreaWrapper SelectedWorkArea
         {
-            var productionArea = productionAreaId.HasValue
-                ? await _productionAreaRepository.GetByIdAsync(productionAreaId.Value)
-                : CreateNewProductionArea();
+            get => _selectedWorkArea;
 
-            WorkArea = new WorkAreaWrapper(productionArea);
-            WorkArea.PropertyChanged += ProductionArea_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-            if (productionArea.Id == 0)
+            set
             {
-                // This triggers the validation.
-                WorkArea.Name = string.Empty;
+                _selectedWorkArea = value;
+                OnPropertyChanged();
+                ((DelegateCommand)AddConnectionCommand).RaiseCanExecuteChanged();
             }
-
-            await LoadEmployeeRolesAsync();
         }
 
-        protected override async void OnDeleteExecute()
+        public WorkAreaConnectionWrapper SelectedWorkAreaConnection
         {
-            _productionAreaRepository.Remove(WorkArea.Model);
-            await _productionAreaRepository.SaveAsync();
-            RaiseDataModelDeletedEvent(WorkArea.Model);
+            get => _selectedWorkAreaConnection;
+
+            set
+            {
+                _selectedWorkAreaConnection = value;
+                OnPropertyChanged();
+                ((DelegateCommand)RemoveConnectionCommand).RaiseCanExecuteChanged();
+            }
+        }
+        
+        public BranchWrapper SelectedBranch
+        {
+            get => _selectedBranch;
+
+            set
+            {
+                _selectedBranch = value;
+                OnPropertyChanged();
+                SelectedBranchChanged(_selectedBranch.Id);
+            }
+        }
+
+
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; set; }
+
+        public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; set; }
+
+        public ObservableCollection<BranchWrapper> Branches { get; set; }
+
+        public ObservableCollection<RoleWrapper> Roles { get; set; }
+
+        public ICommand AddConnectionCommand { get; set; }
+
+        public ICommand RemoveConnectionCommand { get; set; }
+
+        /// <inheritdoc/>
+        public override async Task LoadDetailAsync(int id)
+        {
+            var model = await _workAreaRepository.GetByIdAsync(id);
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                WorkArea = new WorkAreaWrapper(model);
+                WorkArea.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            });
+
+            await LoadWorkAreaConnections(id);
+
+            await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnSaveExecute()
+        {
+            if (WorkArea.IsFirst && await _workAreaRepository.CheckIfFirstExistsAsync(WorkArea.BranchId))
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = "Area Inicial ya existe",
+                        Title = "Advertencia",
+                    });
+                return;
+            }
+
+            if (WorkArea.IsLast && await _workAreaRepository.CheckIfLastExistsAsync(WorkArea.BranchId))
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = "Area Final ya existe",
+                        Title = "Advertencia",
+                    });
+                return;
+            }
+
+            base.OnSaveExecute();
+            if (IsNew)
+            {
+
+                await _workAreaRepository.AddAsync(WorkArea.Model);
+            }
+            else
+            {
+                await _workAreaRepository.SaveAsync(WorkArea.Model);
+            }
+
+            HasChanges = false;
+            EventAggregator.GetEvent<ReloadNavigationViewEvent>()
+                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(WorkAreaViewModel),
+                });
         }
 
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return WorkArea != null && !WorkArea.HasErrors && HasChanges;
+            return OnSaveCanExecute(WorkArea);
         }
 
         /// <inheritdoc/>
-        protected override void OnSaveExecute()
+        protected override async void OnDeleteExecute()
         {
-            _productionAreaRepository.SaveAsync();
-            HasChanges = false;
-            RaiseDataModelSavedEvent(WorkArea.Model);
+            await _workAreaRepository.DeleteAsync(WorkArea.Model);
+            EventAggregator.GetEvent<ReloadNavigationViewEvent>()
+                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(WorkAreaViewModel),
+                });
         }
 
-        private WorkArea CreateNewProductionArea()
-        {
-            var productionArea = new WorkArea();
-            _productionAreaRepository.Add(productionArea);
-            return productionArea;
-        }
-
-        private async Task LoadEmployeeRolesAsync()
-        {
-            var roles = await _employeeRoleRepository.GetAllAsync();
-            EmployeeRoles.Clear();
-            foreach (var role in roles)
-            {
-                EmployeeRoles.Add(new EmployeeRoleWrapper(role));
-            }
-        }
-
-        private void OnOpenAreaConnectionViewExecute()
+        protected override void OnCancelExecute()
         {
             EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs { ViewModel = nameof(AreaConnectionViewModel), Id = WorkArea.Id });
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(WorkAreaViewModel),
+                });
         }
 
-        private void ProductionArea_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Console.WriteLine(e.PropertyName);
             if (!HasChanges)
             {
-                HasChanges = _productionAreaRepository.HasChanges();
+                HasChanges = _workAreaRepository.HasChanges();
             }
 
             if (e.PropertyName == nameof(WorkArea.HasErrors))
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
+        }
+
+        public override async Task LoadAsync(int? id = null)
+        {
+            await LoadBranches();
+
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                WorkArea = new WorkAreaWrapper();
+                WorkArea.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                WorkArea.Name = string.Empty;
+                WorkArea.IsFirst = false;
+                WorkArea.IsLast = false;
+                WorkArea.Position = "0";
+                WorkArea.ReportsInProcess = false;
+                WorkArea.ResponsibleRoleId = 0;
+                WorkArea.SupervisorRoleId = 0;
+                WorkArea.BranchId = 0;
+
+                ProgressVisibility = Visibility.Collapsed;
+            });
+        }
+
+        private async Task LoadBranches()
+        {
+            var branches = await _workAreaRepository.GetAllBranchesAsync();
+
+            foreach (var branch in branches)
+            {
+                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
+            }
+        }
+
+        private async Task LoadRoles(int id)
+        {
+            var roles = await _workAreaRepository.GetAllRolesFromBranchAsync(id);
+
+            foreach (var role in roles)
+            {
+                Application.Current.Dispatcher.Invoke(() => Roles.Add(new RoleWrapper(role)));
+            }
+        }
+
+        private async Task LoadWorkAreas(int id)
+        {
+            var workAreas = await _workAreaRepository.GetAllWorkAreasFromBranchAsync(id);
+
+            foreach (var workArea in workAreas.Where(workArea => workArea.Name != WorkArea.Name || workArea.BranchId != WorkArea.BranchId))
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(new WorkAreaWrapper(workArea)));
+            }
+        }
+
+        private async Task LoadWorkAreaConnections(int id)
+        {
+            var connections = await _workAreaRepository.GetWorkAreaConnectionsFromWorkAreaBranchAsync(id);
+
+            foreach (var connection in connections)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection)));
+            }
+        }
+
+        private async Task SelectedBranchChanged(int id)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsEnabled = false;
+                ProgressVisibility = Visibility.Visible;
+            });
+
+            await LoadWorkAreas(id);
+            await LoadRoles(id);
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsEnabled = true;
+                ProgressVisibility = Visibility.Collapsed;
+            });
         }
     }
 }

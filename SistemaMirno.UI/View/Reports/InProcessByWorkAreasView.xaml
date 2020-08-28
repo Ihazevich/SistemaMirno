@@ -23,12 +23,15 @@
         <DataGrid Grid.Row="2" 
                   ItemsSource="{Binding WorkUnitsCollection}" 
                   AutoGenerateColumns="false" 
-                  SelectionMode="Extended"
-                  Margin="10,0,10,0">
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  Margin="5">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Producto" Binding="{Binding Product.Name}"/>
-                <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
-                <DataGridTextColumn Header="Color" Binding="{Binding Color.Name}"/>
+                <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
+                <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
+                <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
             </DataGrid.Columns>
             <DataGrid.GroupStyle>
                 <!-- Style for groups at top level. -->
@@ -42,8 +45,8 @@
                                         <Expander IsExpanded="False" BorderThickness="1,1,1,5">
                                             <Expander.Header>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" Width="100"/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
                                                 </StackPanel>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -56,21 +59,9 @@
                         </Style>
                     </GroupStyle.ContainerStyle>
                 </GroupStyle>
-                <!-- Style for groups under the top level. -->
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Background="LightGray">
-                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black"/>
-                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" Width="100"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
             </DataGrid.GroupStyle>
         </DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Center">
-            <Button Content="Imprimir Reporte" Command="{Binding PrintReportCommand}" Margin="10"/>
             <Label Content="Opciones:"  FontSize="15"  Margin="10"/>
             <CheckBox Content="Incluir precio"
                       IsChecked="{Binding IncludePrice, Mode=TwoWay}"/>
@@ -80,6 +71,8 @@
                       IsChecked="{Binding IncludeSupervisor, Mode=TwoWay}"/>
             <CheckBox Content="Incluir cliente"
                       IsChecked="{Binding IncludeClient, Mode=TwoWay}"/>
+            <Button Content="Imprimir Reporte" Command="{Binding PrintReportCommand}" Margin="10"/>
+            <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
         </StackPanel>
     </Grid>
 </UserControl>

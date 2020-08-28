@@ -3,7 +3,9 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
@@ -11,73 +13,71 @@ namespace SistemaMirno.Model
     /// <summary>
     /// Class representing a Work Order.
     /// </summary>
-    public class WorkOrder : BaseModel
+    public partial class WorkOrder : ModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkOrder"/> class.
-        /// </summary>
-        public WorkOrder()
-        {
-            WorkOrderUnits = new Collection<WorkOrderUnit>();
-        }
-
         /// <summary>
         /// Gets or sets the date and time the Work Order started.
         /// </summary>
-        public DateTime StartTime { get; set; }
+        [Required]
+        public DateTime CreationDateTime { get; set; }
 
-        /// <summary>
-        /// Gets or sets the date and time the Work Order was completed.
-        /// </summary>
-        public DateTime? FinishTime { get; set; }
+        public DateTime? FinishedDateTime { get; set; }
 
         /// <summary>
         /// Gets or sets the Id of the Work Area where the Work Order originated from.
         /// </summary>
-        [ForeignKey("OriginWorkArea")]
-        public int? OriginWorkAreaId { get; set; }
+        [Required]
+        public int OriginWorkAreaId { get; set; }
 
         /// <summary>
         /// Gets or sets the Work Area where the Work Order originated from.
         /// </summary>
+        [ForeignKey(nameof(OriginWorkAreaId))]
         public virtual WorkArea OriginWorkArea { get; set; }
 
         /// <summary>
         /// Gets or sets the Id of the Work Area which the Work Order is destined to.
         /// </summary>
-        [ForeignKey("DestinationWorkArea")]
+        [Required]
         public int DestinationWorkAreaId { get; set; }
 
         /// <summary>
         /// Gets or sets the Work Area which the Work Order is destined to.
         /// </summary>
+        [ForeignKey(nameof(DestinationWorkAreaId))]
         public virtual WorkArea DestinationWorkArea { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the Employee responsable for the Work Order.
         /// </summary>
-        [ForeignKey("ResponsibleEmployee")]
-        public int? ResponsibleEmployeeId { get; set; }
+        [Required]
+        public int ResponsibleEmployeeId { get; set; }
 
         /// <summary>
         /// Gets or sets the Employee responsable for the Work Order.
         /// </summary>
+        [ForeignKey(nameof(ResponsibleEmployeeId))]
         public virtual Employee ResponsibleEmployee { get; set; }
 
         /// <summary>
         /// Gets or sets the Id of the Employee in charge of supervising the Work Order.
         /// </summary>
-        [ForeignKey("SupervisorEmployee")]
-        public int? SupervisorEmployeeId { get; set; }
+        [Required]
+        public int SupervisorEmployeeId { get; set; }
 
         /// <summary>
         /// Gets or sets the Employee in charge of supervising the Work Order.
         /// </summary>
+        [ForeignKey(nameof(SupervisorEmployeeId))]
         public virtual Employee SupervisorEmployee { get; set; }
+
+        [StringLength(200)]
+        public string Observations { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of Work Order Units assigned to this Work Order.
         /// </summary>
-        public virtual Collection<WorkOrderUnit> WorkOrderUnits { get; set; }
+        [ForeignKey(nameof(WorkOrderUnit.WorkOrderId))]
+        public virtual ICollection<WorkOrderUnit> WorkOrderUnits { get; set; } = new HashSet<WorkOrderUnit>();
     }
 }

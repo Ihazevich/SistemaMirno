@@ -1,106 +1,347 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Navigation;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
+using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    /// <summary>
-    /// View model for Work Units.
-    /// </summary>
     public class WorkUnitViewModel : ViewModelBase, IWorkUnitViewModel
     {
-        private bool _connectionComboBoxEnabled = false;
-        private WorkAreaWrapper _workArea;
-        private WorkArea _destinationWorkArea;
-        private WorkUnitWrapper _selectedAreaWorkUnit;
-        private WorkUnitWrapper _selectedOrderWorkUnit;
-        private IEventAggregator _eventAggregator;
+        private readonly Func<IWorkUnitRepository> _workAreaRepositoryCreator;
         private IWorkUnitRepository _workUnitRepository;
+        private WorkUnitWrapper _selectedWorkAreaWorkUnit;
+        private WorkUnitWrapper _selectedWorkOrderWorkUnit;
+        private WorkAreaWrapper _workArea;
+        private WorkAreaConnection _selectedWorkAreaConnection;
 
-        private PropertyGroupDescription _clientName = new PropertyGroupDescription("Client.Name");
-        private PropertyGroupDescription _colorName = new PropertyGroupDescription("Color.Name");
-        private PropertyGroupDescription _materialName = new PropertyGroupDescription("Material.Name");
-        private PropertyGroupDescription _productName = new PropertyGroupDescription("Product.Name");
+        private string _workAreaWorkUnitProductFilter;
+        private string _workAreaWorkUnitMaterialFilter;
+        private string _workAreaWorkUnitColorFilter;
+        private string _workAreaWorkUnitClientFilter;
+        
+        private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
 
-        public WorkUnitViewModel(IWorkUnitRepository workUnitRepository,
-                    IEventAggregator eventAggregator)
+        public WorkUnitViewModel(
+            Func<IWorkUnitRepository> workUnitRepositoryCreator,
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Unidades de Trabajo en Area", dialogCoordinator)
         {
-            _workUnitRepository = workUnitRepository;
-            _eventAggregator = eventAggregator;
+            _workAreaRepositoryCreator = workUnitRepositoryCreator;
 
-            AreaWorkUnits = new ObservableCollection<WorkUnitWrapper>();
-            OrderWorkUnits = new ObservableCollection<WorkUnitWrapper>();
+            WorkAreaWorkUnits = new ObservableCollection<WorkUnitWrapper>();
+            WorkOrderWorkUnits = new ObservableCollection<WorkUnitWrapper>();
+            WorkAreaConnections = new ObservableCollection<WorkAreaConnectionWrapper>();
 
+            WorkAreaCollectionView = CollectionViewSource.GetDefaultView(WorkAreaWorkUnits);
+            WorkOrderCollectionView = CollectionViewSource.GetDefaultView(WorkOrderWorkUnits);
+            WorkAreaCollectionView.GroupDescriptions.Add(_productName);
+            WorkOrderCollectionView.GroupDescriptions.Add(_productName);
+
+            NewWorkOrderCommand = new DelegateCommand<object>(OnNewWorkOrderExecute, OnNewWorkOrderCanExecute);
             OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
-            NewWorkOrderCommand = new DelegateCommand(OnNewWorkOrderExecute);
-            MoveToWorkAreaCommand = new DelegateCommand(OnMoveToWorkAreaExecute, CanMoveToWorkAreaExecute);
-
-            AddWorkUnitCommand = new DelegateCommand(OnAddWorkUnitExecute, CanAddWorkUnitExecute);
-            RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, CanRemoveWorkUnitExecute);
-
-            FilterByClientCommand = new DelegateCommand<object>(OnFilterByClientExecute);
-            FilterByColorCommand = new DelegateCommand<object>(OnFilterByColorExecute);
-            FilterByMaterialCommand = new DelegateCommand<object>(OnFilterByMaterialExecute);
-            FilterByProductCommand = new DelegateCommand<object>(OnFilterByProductExecute);
-
-            AreaCollection = CollectionViewSource.GetDefaultView(AreaWorkUnits);
-            OrderCollection = CollectionViewSource.GetDefaultView(OrderWorkUnits);
+            AddWorkUnitCommand = new DelegateCommand(OnAddWorkUnitCommandExecute, OnAddWorkUnitCommandCanExecute);
+            RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
         }
 
-        /// <summary>
-        /// Gets or sets the production area name for the view.
-        /// </summary>
+        public string MoveOrderButtonText => SelectedWorkAreaConnection != null
+            ? $"Trasladar a {SelectedWorkAreaConnection.DestinationWorkArea.Name}"
+            : "Trasladar";
+
+        private bool OnRemoveWorkUnitCanExecute()
+        {
+            return SelectedWorkOrderWorkUnit != null;
+        }
+
+        private bool OnAddWorkUnitCommandCanExecute()
+        {
+            return SelectedWorkAreaWorkUnit != null;
+        }
+
+        private void OnRemoveWorkUnitExecute()
+        {
+            while (SelectedWorkOrderWorkUnit != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    WorkAreaWorkUnits.Add(SelectedWorkOrderWorkUnit);
+                    WorkOrderWorkUnits.Remove(SelectedWorkOrderWorkUnit);
+                });
+            }
+        }
+
+        private void OnAddWorkUnitCommandExecute()
+        {
+            while (SelectedWorkAreaWorkUnit != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    WorkOrderWorkUnits.Add(SelectedWorkAreaWorkUnit);
+                    WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit);
+                });
+            }
+        }
+
+        private void OnOpenWorkOrderViewExecute()
+        {
+            //Todo
+        }
+
+
+        private bool OnNewWorkOrderCanExecute(object args)
+        {
+            if (WorkArea != null)
+            {
+                switch (args.ToString())
+                {
+                    case "New":
+                        if (WorkArea.Model.IncomingConnections != null)
+                        {
+                            return WorkArea.Model.IncomingConnections.Count > 0;
+                        }
+
+                        return false;
+
+                    case "Move":
+                        if (WorkArea.Model.OutgoingConnections != null)
+                        {
+                            return WorkOrderWorkUnits.Count > 0 && SelectedWorkAreaConnection != null && WorkArea.Model.OutgoingConnections.Count > 0;
+                        }
+
+                        return false;
+
+                    default:
+                        return false;
+                }
+            }
+
+            return false;
+        }
+
+        private void OnNewWorkOrderExecute(object args)
+        {
+            switch (args.ToString())
+            {
+                case "New":
+                    EventAggregator.GetEvent<NewWorkOrderEvent>()
+                        .Publish(new NewWorkOrderEventArgs()
+                        {
+                            DestinationWorkAreaId = WorkArea.Id,
+                            OriginWorkAreaId = WorkArea.Id,
+                        });
+                    break;
+
+                case "Move":
+                    EventAggregator.GetEvent<NewWorkOrderEvent>()
+                        .Publish(new NewWorkOrderEventArgs()
+                        {
+                            DestinationWorkAreaId = SelectedWorkAreaConnection.DestinationWorkAreaId,
+                            OriginWorkAreaId = WorkArea.Id,
+                            WorkUnits = WorkOrderWorkUnits,
+                        });
+                    break;
+            }
+        }
+
+        public string WorkAreaWorkUnitProductFilter
+        {
+            get => _workAreaWorkUnitProductFilter;
+
+            set
+            {
+                _workAreaWorkUnitProductFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection(value, 0);
+            }
+        }
+
+        public string WorkAreaWorkUnitMaterialFilter
+        {
+            get => _workAreaWorkUnitMaterialFilter;
+
+            set
+            {
+                _workAreaWorkUnitMaterialFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection(value, 1);
+            }
+        }
+
+        public string WorkAreaWorkUnitColorFilter
+        {
+            get => _workAreaWorkUnitColorFilter;
+
+            set
+            {
+                _workAreaWorkUnitColorFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection(value, 2);
+            }
+        }
+
+        public string WorkAreaWorkUnitClientFilter
+        {
+            get => _workAreaWorkUnitClientFilter;
+
+            set
+            {
+                _workAreaWorkUnitClientFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection(value, 3);
+            }
+        }
+
         public WorkAreaWrapper WorkArea
         {
-            get
-            {
-                return _workArea;
-            }
+            get => _workArea;
 
             set
             {
                 _workArea = value;
                 OnPropertyChanged();
+                ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
             }
         }
 
-        public WorkArea DestinationWorkArea
+        public WorkAreaConnection SelectedWorkAreaConnection
         {
-            get => _destinationWorkArea;
+            get => _selectedWorkAreaConnection;
 
             set
             {
-                _destinationWorkArea = value;
+                _selectedWorkAreaConnection = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(MoveOrderButtonText));
+                ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
             }
         }
 
-        public bool ConnectionComboBoxEnabled
+        public WorkUnitWrapper SelectedWorkAreaWorkUnit
         {
-            get => _connectionComboBoxEnabled;
+            get => _selectedWorkAreaWorkUnit;
 
             set
             {
-                _connectionComboBoxEnabled = value;
+                _selectedWorkAreaWorkUnit = value;
                 OnPropertyChanged();
+                ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
+
+        public WorkUnitWrapper SelectedWorkOrderWorkUnit
+        {
+            get => _selectedWorkOrderWorkUnit;
+
+            set
+            {
+                _selectedWorkOrderWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        private void FilterWorkAreaCollection(string value, int columnId)
+        {
+            switch (columnId)
+            {
+                // Product
+                case 0:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ProgressVisibility = Visibility.Visible;
+                        WorkAreaCollectionView.Filter = item =>
+                        {
+                            WorkUnitWrapper vitem = item as WorkUnitWrapper;
+                            return vitem != null && vitem.Model.Product.Name.ToLowerInvariant().Contains(value.ToLowerInvariant());
+                        };
+                        ProgressVisibility = Visibility.Hidden;
+                    });
+                    break;
+
+                // Material
+                case 1:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ProgressVisibility = Visibility.Visible;
+                        WorkAreaCollectionView.Filter = item =>
+                        {
+                            WorkUnitWrapper vitem = item as WorkUnitWrapper;
+                            return vitem != null && vitem.Model.Material.Name.ToLowerInvariant().Contains(value.ToLowerInvariant());
+                        };
+                        ProgressVisibility = Visibility.Hidden;
+                    });
+                    break;
+
+                // Color
+                case 2:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ProgressVisibility = Visibility.Visible;
+                        WorkAreaCollectionView.Filter = item =>
+                        {
+                            WorkUnitWrapper vitem = item as WorkUnitWrapper;
+                            return vitem != null && vitem.Model.Color.Name.ToLowerInvariant().Contains(value.ToLowerInvariant());
+                        };
+                        ProgressVisibility = Visibility.Hidden;
+                    });
+                    break;
+
+                // Client
+                case 3:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ProgressVisibility = Visibility.Visible;
+                        WorkAreaCollectionView.Filter = item =>
+                        {
+                            if (!(item is WorkUnitWrapper vitem))
+                            {
+                                return false;
+                            }
+
+                            if (value == string.Empty)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return vitem.Model.Requisition.Client != null && vitem.Model.Requisition.Client
+                                    .FullName.ToLowerInvariant().Contains(value.ToLowerInvariant());
+                            }
+
+                        };
+                        ProgressVisibility = Visibility.Hidden;
+                    });
+                    break;
+            }
+        }
+
+        public ObservableCollection<WorkUnitWrapper> WorkAreaWorkUnits { get; }
+
+        public ObservableCollection<WorkUnitWrapper> WorkOrderWorkUnits { get; }
+
+        public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; set; }
+
+        public ICollectionView WorkAreaCollectionView { get; }
+
+        public ICollectionView WorkOrderCollectionView { get; }
 
         public ICommand NewWorkOrderCommand { get; }
-
-        public ICommand MoveToWorkAreaCommand { get; }
 
         public ICommand OpenWorkOrderViewCommand { get; }
 
@@ -108,182 +349,66 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public ICommand RemoveWorkUnitCommand { get; }
 
-        public ICommand FilterByClientCommand { get; }
-
-        public ICommand FilterByColorCommand { get; }
-
-        public ICommand FilterByMaterialCommand { get; }
-
-        public ICommand FilterByProductCommand { get; }
-
-        public ObservableCollection<WorkUnitWrapper> AreaWorkUnits { get; set; }
-
-        public ICollectionView AreaCollection { get; set; }
-
-        public ObservableCollection<WorkUnitWrapper> OrderWorkUnits { get; set; }
-
-        public ICollectionView OrderCollection { get; set; }
-
-        public WorkUnitWrapper SelectedAreaWorkUnit
+        public override async Task LoadAsync(int? id = null)
         {
-            get => _selectedAreaWorkUnit;
-
-            set
+            if (id.HasValue)
             {
-                _selectedAreaWorkUnit = value;
-                OnPropertyChanged();
-                ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
+                WorkAreaWorkUnits.Clear();
+                _workUnitRepository = _workAreaRepositoryCreator();
 
-        public WorkUnitWrapper SelectedOrderWorkUnit
-        {
-            get => _selectedOrderWorkUnit;
-
-            set
-            {
-                _selectedOrderWorkUnit = value;
-                OnPropertyChanged();
-                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public override async Task LoadAsync(int? workAreaId)
-        {
-            if (workAreaId.HasValue)
-            {
-                AreaWorkUnits.Clear();
-                WorkArea = new WorkAreaWrapper(await _workUnitRepository.GetWorkAreaByIdAsync(workAreaId.Value));
-                var workUnits = await _workUnitRepository.GetByAreaIdAsync(WorkArea.Id);
-
-                foreach (var workUnit in workUnits)
+                try
                 {
-                    AreaWorkUnits.Add(new WorkUnitWrapper(workUnit));
+                    await LoadWorkArea(id.Value);
                 }
-            }
-        }
+                catch (Exception ex)
+                {
+                    EventAggregator.GetEvent<ShowDialogEvent>()
+                        .Publish(new ShowDialogEventArgs
+                        {
+                            Message = ex.Message,
+                        });
+                }
 
-        private void OnOpenWorkOrderViewExecute()
-        {
-            _eventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderViewModel), Id = WorkArea.Id });
-        }
-
-        private void OnNewWorkOrderExecute()
-        {
-            _eventAggregator.GetEvent<NewWorkOrderEvent>()
-                .Publish(new NewWorkOrderEventArgs { OriginWorkAreaId = WorkArea.Id, DestinationWorkAreaId = WorkArea.Id });
-        }
-
-        private void OnAddWorkUnitExecute()
-        {
-            OrderWorkUnits.Add(SelectedAreaWorkUnit);
-            AreaWorkUnits.Remove(SelectedAreaWorkUnit);
-            ((DelegateCommand)MoveToWorkAreaCommand).RaiseCanExecuteChanged();
-        }
-
-        private void OnRemoveWorkUnitExecute()
-        {
-            AreaWorkUnits.Add(SelectedOrderWorkUnit);
-            OrderWorkUnits.Remove(SelectedOrderWorkUnit);
-            ((DelegateCommand)MoveToWorkAreaCommand).RaiseCanExecuteChanged();
-        }
-
-        private bool CanRemoveWorkUnitExecute()
-        {
-            return SelectedOrderWorkUnit != null;
-        }
-
-        private bool CanAddWorkUnitExecute()
-        {
-            return SelectedAreaWorkUnit != null;
-        }
-
-        private void OnMoveToWorkAreaExecute()
-        {
-            _eventAggregator.GetEvent<NewWorkOrderEvent>()
-                .Publish(new NewWorkOrderEventArgs { WorkUnits = OrderWorkUnits, OriginWorkAreaId = WorkArea.Id, DestinationWorkAreaId = DestinationWorkArea.Id });
-        }
-
-        private bool CanMoveToWorkAreaExecute()
-        {
-            if (OrderWorkUnits.Count > 0)
-            {
-                ConnectionComboBoxEnabled = true;
-                return true;
+                await LoadWorkUnits(id.Value);
+                await LoadConnections(id.Value);
+                    
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ProgressVisibility = Visibility.Collapsed;
+                    ViewVisibility = Visibility.Visible;
+                });
             }
             else
             {
-                ConnectionComboBoxEnabled = false;
-                return false;
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs());
             }
         }
 
-        private void OnFilterByClientExecute(object isChecked)
+        private async Task LoadWorkArea(int id)
         {
-            if (((bool?)isChecked).HasValue)
+            var workArea = await _workUnitRepository.GetWorkAreaById(id);
+
+            Application.Current.Dispatcher.Invoke(() => WorkArea = new WorkAreaWrapper(workArea));
+        }
+
+        private async Task LoadWorkUnits(int id)
+        {
+            var workUnits = await _workUnitRepository.GetAllWorkUnitsCurrentlyInWorkArea(id);
+
+            foreach (var workUnit in workUnits)
             {
-                if (((bool?)isChecked).Value)
-                {
-                    OrderCollection.GroupDescriptions.Add(_clientName);
-                    AreaCollection.GroupDescriptions.Add(_clientName);
-                }
-                else
-                {
-                    OrderCollection.GroupDescriptions.Remove(_clientName);
-                    AreaCollection.GroupDescriptions.Remove(_clientName);
-                }
+                Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Add(new WorkUnitWrapper(workUnit)));
             }
         }
 
-        private void OnFilterByColorExecute(object isChecked)
+        private async Task LoadConnections(int id)
         {
-            if (((bool?)isChecked).HasValue)
-            {
-                if (((bool?)isChecked).Value)
-                {
-                    OrderCollection.GroupDescriptions.Add(_colorName);
-                    AreaCollection.GroupDescriptions.Add(_colorName);
-                }
-                else
-                {
-                    OrderCollection.GroupDescriptions.Remove(_colorName);
-                    AreaCollection.GroupDescriptions.Remove(_colorName);
-                }
-            }
-        }
+            var connections = await _workUnitRepository.GetWorkAreaOutgoingConnections(id);
 
-        private void OnFilterByMaterialExecute(object isChecked)
-        {
-            if (((bool?)isChecked).HasValue)
+            foreach (var connection in connections)
             {
-                if (((bool?)isChecked).Value)
-                {
-                    OrderCollection.GroupDescriptions.Add(_materialName);
-                    AreaCollection.GroupDescriptions.Add(_materialName);
-                }
-                else
-                {
-                    OrderCollection.GroupDescriptions.Remove(_materialName);
-                    AreaCollection.GroupDescriptions.Remove(_materialName);
-                }
-            }
-        }
-
-        private void OnFilterByProductExecute(object isChecked)
-        {
-            if (((bool?)isChecked).HasValue)
-            {
-                if (((bool?)isChecked).Value)
-                {
-                    OrderCollection.GroupDescriptions.Add(_productName);
-                    AreaCollection.GroupDescriptions.Add(_productName);
-                }
-                else
-                {
-                    OrderCollection.GroupDescriptions.Remove(_productName);
-                    AreaCollection.GroupDescriptions.Remove(_productName);
-                }
+                Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection)));
             }
         }
     }

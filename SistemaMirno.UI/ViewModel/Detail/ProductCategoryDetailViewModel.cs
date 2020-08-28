@@ -1,39 +1,37 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
+using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class ProductCategoryDetailViewModel : DetailViewModelBase, IProductCategoryDetailViewModel
     {
-        private ProductCategoryWrapper _productCategory;
         private IProductCategoryRepository _productCategoryRepository;
+        private ProductCategoryWrapper _productCategory;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProductCategoryDetailViewModel"/> class.
-        /// </summary>
-        /// <param name="productCategoryRepository">The data repository.</param>
-        /// <param name="eventAggregator">The event aggregator.</param>
         public ProductCategoryDetailViewModel(
             IProductCategoryRepository productCategoryRepository,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Detalles de Categoria de Producto", dialogCoordinator)
         {
             _productCategoryRepository = productCategoryRepository;
         }
 
-        /// <summary>
-        /// Gets or sets the data model wrapper.
-        /// </summary>
         public ProductCategoryWrapper ProductCategory
         {
-            get
-            {
-                return _productCategory;
-            }
+            get => _productCategory;
 
             set
             {
@@ -43,51 +41,72 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         /// <inheritdoc/>
-        public override async Task LoadAsync(int? productCategoryId)
+        public override async Task LoadDetailAsync(int id)
         {
-            var productCategory = productCategoryId.HasValue
-                ? await _productCategoryRepository.GetByIdAsync(productCategoryId.Value)
-                : CreateNewProductCategory();
+            var model = await _productCategoryRepository.GetByIdAsync(id);
 
-            ProductCategory = new ProductCategoryWrapper(productCategory);
-            ProductCategory.PropertyChanged += ProductCategory_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-            if (productCategory.Id == 0)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                // This triggers the validation.
-                ProductCategory.Name = string.Empty;
-            }
+                ProductCategory = new ProductCategoryWrapper(model);
+                ProductCategory.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            });
+
+            await base.LoadDetailAsync(id).ConfigureAwait(false);
         }
 
-        protected override async void OnDeleteExecute()
+        /// <inheritdoc/>
+        protected override async void OnSaveExecute()
         {
-            _productCategoryRepository.Remove(ProductCategory.Model);
-            await _productCategoryRepository.SaveAsync();
-            RaiseDataModelDeletedEvent(ProductCategory.Model);
+            base.OnSaveExecute();
+
+            if (IsNew)
+            {
+                await _productCategoryRepository.AddAsync(ProductCategory.Model);
+            }
+            else
+            {
+                await _productCategoryRepository.SaveAsync(ProductCategory.Model);
+            }
+
+            HasChanges = false;
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductCategoryViewModel),
+                });
         }
 
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return ProductCategory != null && !ProductCategory.HasErrors && HasChanges;
+            return OnSaveCanExecute(ProductCategory);
         }
 
         /// <inheritdoc/>
-        protected override void OnSaveExecute()
+        protected override async void OnDeleteExecute()
         {
-            _productCategoryRepository.SaveAsync();
-            HasChanges = false;
-            RaiseDataModelSavedEvent(ProductCategory.Model);
-        }
-        private ProductCategory CreateNewProductCategory()
-        {
-            var productCategory = new ProductCategory();
-            _productCategoryRepository.Add(productCategory);
-            return productCategory;
+            await _productCategoryRepository.DeleteAsync(ProductCategory.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductCategoryViewModel),
+                });
         }
 
-        private void ProductCategory_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected override void OnCancelExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductCategoryViewModel),
+                });
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!HasChanges)
             {
@@ -98,6 +117,28 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
+        }
+
+        public override async Task LoadAsync(int? id = null)
+        {
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                ProductCategory = new ProductCategoryWrapper();
+                ProductCategory.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                ProductCategory.Name = string.Empty;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
         }
     }
 }

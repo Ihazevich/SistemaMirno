@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.Detail;
+using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
@@ -17,149 +20,85 @@ namespace SistemaMirno.UI.ViewModel.General
     public class ProductCategoryViewModel : ViewModelBase, IProductCategoryViewModel
     {
         private IProductCategoryRepository _productCategoryRepository;
-        private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
-        private ProductCategoryWrapper _selectedProductCategory;
-        private IProductCategoryDetailViewModel _productCategoryDetailViewModel;
-        private Func<IProductCategoryDetailViewModel> _productCategoryDetailViewModelCreator;
+        private Func<IProductCategoryRepository> _materialRepositoryCreator;
+        private ProductCategoryWrapper _selectecProductCategory;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProductCategoryViewModel"/> class.
-        /// </summary>
-        /// <param name="productionAreaDetailViewModelCreator">A function to create detailviewmodel instances.</param>
-        /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
         public ProductCategoryViewModel(
-            Func<IProductCategoryDetailViewModel> productCategoryDetailViewModelCreator,
-            IProductCategoryRepository productCategoryRepository,
+            Func<IProductCategoryRepository> productCategoryRepository,
             IEventAggregator eventAggregator,
-            IMessageDialogService messageDialogService)
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Categorias de Productos", dialogCoordinator)
         {
-            _productCategoryDetailViewModelCreator = productCategoryDetailViewModelCreator;
-            _productCategoryRepository = productCategoryRepository;
-            _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<ProductCategory>>()
-                .Subscribe(AfterProductCategorySaved);
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<ProductCategory>>()
-                .Subscribe(AfterProductCategoryDeleted);
+            _materialRepositoryCreator = productCategoryRepository;
 
             ProductCategories = new ObservableCollection<ProductCategoryWrapper>();
-            CreateNewProductCategoryCommand = new DelegateCommand(OnCreateNewProductCategoryExecute);
+            CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
+            OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        /// <summary>
-        /// Gets the ProductCategory detail view model.
-        /// </summary>
-        public IProductCategoryDetailViewModel ProductCategoryDetailViewModel
+        private void OnOpenDetailExecute()
         {
-            get
-            {
-                return _productCategoryDetailViewModel;
-            }
-
-            private set
-            {
-                _productCategoryDetailViewModel = value;
-                OnPropertyChanged();
-            }
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedProductCategory.Id,
+                    ViewModel = nameof(ProductCategoryDetailViewModel),
+                });
         }
 
-        /// <summary>
-        /// Gets or sets the collection of ProductCategories.
-        /// </summary>
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedProductCategory != null;
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductCategoryDetailViewModel),
+                });
+        }
+
         public ObservableCollection<ProductCategoryWrapper> ProductCategories { get; set; }
 
-        /// <summary>
-        /// Gets or sets the selected ProductCategory.
-        /// </summary>
         public ProductCategoryWrapper SelectedProductCategory
         {
             get
             {
-                return _selectedProductCategory;
+                return _selectecProductCategory;
             }
 
             set
             {
                 OnPropertyChanged();
-                _selectedProductCategory = value;
-                if (_selectedProductCategory != null)
-                {
-                    UpdateDetailViewModel(_selectedProductCategory.Id);
-                }
+                _selectecProductCategory = value;
+                ((DelegateCommand)OpenDetailCommand).RaiseCanExecuteChanged();
             }
         }
 
-        /// <summary>
-        /// Gets the CreateNewProductCategory command.
-        /// </summary>
-        public ICommand CreateNewProductCategoryCommand { get; }
+        public ICommand CreateNewCommand { get; }
 
-        /// <summary>
-        /// Loads the view model asynchronously from the data service.
-        /// </summary>
-        /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
-        public override async Task LoadAsync(int? id)
+        public ICommand OpenDetailCommand { get; }
+
+        public override async Task LoadAsync(int? id = null)
         {
             ProductCategories.Clear();
-            var productCategories = await _productCategoryRepository.GetAllAsync();
-            foreach (var productCategory in productCategories)
-            {
-                ProductCategories.Add(new ProductCategoryWrapper(productCategory));
-            }
-        }
+            _productCategoryRepository = _materialRepositoryCreator();
 
-        private async void UpdateDetailViewModel(int? id)
-        {
-            if (ProductCategoryDetailViewModel != null && ProductCategoryDetailViewModel.HasChanges)
+            var categories = await _productCategoryRepository.GetAllAsync();
+
+            foreach (var category in categories)
             {
-                var result = _messageDialogService.ShowOkCancelDialog(
-                    "Ha realizado cambios, si selecciona otro item estos cambios seran perdidos. ¿Esta seguro?",
-                    "Pregunta");
-                if (result == MessageDialogResult.Cancel)
-                {
-                    return;
-                }
+                Application.Current.Dispatcher.Invoke(() => ProductCategories.Add(new ProductCategoryWrapper(category)));
             }
 
-            ProductCategoryDetailViewModel = _productCategoryDetailViewModelCreator();
-            await ProductCategoryDetailViewModel.LoadAsync(id);
-        }
-
-        /// <summary>
-        /// Reloads the view model based on the parameter string.
-        /// </summary>
-        /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterProductCategorySaved(AfterDataModelSavedEventArgs<ProductCategory> args)
-        {
-            var item = ProductCategories.SingleOrDefault(c => c.Id == args.Model.Id);
-
-            if (item == null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                ProductCategories.Add(new ProductCategoryWrapper(args.Model));
-                ProductCategoryDetailViewModel = null;
-            }
-            else
-            {
-                item.Name = args.Model.Name;
-            }
-        }
-
-        private void AfterProductCategoryDeleted(AfterDataModelDeletedEventArgs<ProductCategory> args)
-        {
-            var item = ProductCategories.SingleOrDefault(c => c.Id == args.Model.Id);
-
-            if (item != null)
-            {
-                ProductCategories.Remove(item);
-            }
-
-            ProductCategoryDetailViewModel = null;
-        }
-
-        private void OnCreateNewProductCategoryExecute()
-        {
-            UpdateDetailViewModel(null);
+                ProgressVisibility = Visibility.Collapsed;
+                ViewVisibility = Visibility.Visible;
+            });
         }
     }
 }

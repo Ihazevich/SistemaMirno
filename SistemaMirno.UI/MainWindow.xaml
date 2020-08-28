@@ -7,6 +7,9 @@
                  xmlns:local="clr-namespace:SistemaMirno.UI"
                  xmlns:utilities="clr-namespace:SistemaMirno.UI.Utilities"
                  xmlns:view="clr-namespace:SistemaMirno.UI.View"
+                 xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                 xmlns:main="clr-namespace:SistemaMirno.UI.View.Main"
+                 Dialog:DialogParticipation.Register="{Binding }"
                  mc:Ignorable="d"
                  Title="{Binding WindowTitle}"
                  Height="450"
@@ -17,36 +20,112 @@
                  utilities:DialogCloser.DialogResult="{Binding DialogResult}">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
-            <MenuItem Header="Listados" IsEnabled="{Binding UserLoggedIn}">
-                <MenuItem Header="En proceso por areas" Command="{Binding ChangeViewCommand}" CommandParameter="InProcessByWorkAreasViewModel"/>
-                <MenuItem Header="Produccion por areas" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByWorkAreaViewModel"/>
+            <MenuItem Header="Reportes de Producción" 
+                      Visibility="{Binding ProductionVisibility}"
+                      IsEnabled="{Binding NavigationStatus}">
+                <MenuItem Header="Listados" IsEnabled="{Binding NavigationStatus}">
+                    <MenuItem Header="En proceso por areas" Command="{Binding ChangeViewCommand}" CommandParameter="InProcessByWorkAreasViewModel"/>
+                    <MenuItem Header="Produccion por areas" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByWorkAreaViewModel"/>
+                </MenuItem>
+                <MenuItem Header="Historiales" IsEnabled="{Binding NavigationStatus}">
+                    <MenuItem Header="Ordenes por dia" IsEnabled="False" />
+                    <MenuItem Header="Productos por dia" IsEnabled="False" />
+                    <MenuItem Header="Productos en proceso" IsEnabled="False" />
+                    <MenuItem Header="Productos por responsable" IsEnabled="False" />
+                    <MenuItem Header="Movimientos entre sucursales" IsEnabled="False" />
+                    <MenuItem Header="Historial de eventos" IsEnabled="False" />
+                    <MenuItem Header="Historial de logins" IsEnabled="False" />
+                </MenuItem>
             </MenuItem>
-            <MenuItem Header="Historiales" IsEnabled="{Binding UserLoggedIn}">
-                <MenuItem Header="Ordenes por dia" IsEnabled="False" />
-                <MenuItem Header="Productos por dia" IsEnabled="False" />
-                <MenuItem Header="Productos en proceso" IsEnabled="False" />
-                <MenuItem Header="Productos por responsable" IsEnabled="False" />
-                <MenuItem Header="Movimientos entre sucursales" IsEnabled="False" />
-                <MenuItem Header="Historial de eventos" IsEnabled="False" />
-                <MenuItem Header="Historial de logins" IsEnabled="False" />
+            <MenuItem Header="Stock" IsEnabled="{Binding NavigationStatus}" Visibility="{Binding ProductsVisibility}">
+                <MenuItem Header="Disponibilidad" Command="{Binding ChangeViewCommand}" CommandParameter="StockViewModel"/>
+                <MenuItem Header="Historial de ingresos y salidas" IsEnabled="False" />
             </MenuItem>
-            <MenuItem Header="Stock" IsEnabled="{Binding UserLoggedIn}">
-                <MenuItem Header="Disponibilidad" IsEnabled="False" />
-                <MenuItem Header="Historial de ingresos y egresos" IsEnabled="False" />                
+            <MenuItem Header="Ventas" 
+                      Visibility="{Binding SalesVisibility}"
+                      IsEnabled="False"
+                      Command="{Binding ChangeViewCommand}" 
+                      CommandParameter="SaleViewModel"/>
+            <MenuItem Header="Utilidades" IsEnabled="{Binding NavigationStatus}">
+                <MenuItem Header="Recursos Humanos" Visibility="{Binding HumanResourcesVisibility}">
+                    <MenuItem Header="Empleados" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeViewModel" />
+                    <MenuItem Header="Roles" Command="{Binding ChangeViewCommand}" CommandParameter="RoleViewModel" />
+                </MenuItem>
+                <MenuItem Header="Sistema" Visibility="{Binding SysAdminVisibility}">
+                    <MenuItem Header="Sucursales" Command="{Binding ChangeViewCommand}" CommandParameter="BranchViewModel" />
+                    <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
+                    <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
+                </MenuItem>
+                <MenuItem Header="Producción" Visibility="{Binding ProductsVisibility}">
+                    <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="ProductViewModel" />
+                    <MenuItem Header="Categorias" Command="{Binding ChangeViewCommand}" CommandParameter="ProductCategoryViewModel" />
+                    <MenuItem Header="Materiales" Command="{Binding ChangeViewCommand}" CommandParameter="MaterialViewModel" />
+                    <MenuItem Header="Lustres/Colores" Command="{Binding ChangeViewCommand}" CommandParameter="ColorViewModel" />
+                </MenuItem>
+                <MenuItem Header="Ventas" Visibility="{Binding SalesVisibility}">
+                    <MenuItem Header="Clientes" Command="{Binding ChangeViewCommand}" CommandParameter="ClientViewModel"/>
+                    <MenuItem Header="Metodos de pago" Command="{Binding ChangeViewCommand}" CommandParameter="PaymentMethodViewModel" IsEnabled="False"/>
+                </MenuItem>
             </MenuItem>
-            <MenuItem Header="Opciones">
-                <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
-                <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
-            </MenuItem>
-            <MenuItem Header="Salir del sistema" Command="{Binding CloseApplicationCommand}" IsEnabled="{Binding UserLoggedIn}"/>
+            <MenuItem Header="Cambiar de sucursal" 
+                      Command="{Binding ChangeViewCommand}"
+                      CommandParameter="BranchSelectionViewModel"
+                      IsEnabled="{Binding NavigationStatus}" 
+                      Visibility="{Binding SysAdminVIsibility}"/>
+            <MenuItem Header="Cerrar sesion de usuario" Command="{Binding CloseUserSessionCommand}" IsEnabled="{Binding NavigationStatus}"/>
+            <MenuItem Header="Salir del sistema" Command="{Binding CloseApplicationCommand}" IsEnabled="{Binding NavigationStatus}"/>
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <view:WorkAreaNavigationView DataContext="{Binding NavigationViewModel}" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <main:NavigationView DataContext="{Binding NavigationViewModel}" />
             <ContentPresenter Grid.Column="1" Content="{Binding SelectedViewModel}" />
+            <StatusBar Grid.Row="1" Grid.ColumnSpan="2" FontSize="15">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+                <StatusBarItem>
+                    <TextBlock Text="Usuario: "/>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="1">
+                    <TextBlock Text="{Binding SessionInfo.User.Username, Mode=TwoWay}"/>
+                </StatusBarItem>
+                <Separator Grid.Column="2" />
+                <StatusBarItem Grid.Column="3">
+                    <TextBlock Text="Sucursal: "/>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="4">
+                    <TextBlock Text="{Binding SessionInfo.Branch.Name, Mode=TwoWay}"/>
+                </StatusBarItem>
+                <Separator Grid.Column="5" />
+                <StatusBarItem Grid.Column="6" HorizontalContentAlignment="Center">
+                    <TextBlock Text="{Binding StatusMessage, Mode=TwoWay}" />
+                </StatusBarItem>
+                <Separator Grid.Column="7" />
+                <StatusBarItem Grid.Column="8">
+                    <mah:MetroProgressBar IsIndeterminate="{Binding Processing, Mode=TwoWay}" Width="100"/>
+                </StatusBarItem>
+            </StatusBar>
         </Grid>
     </DockPanel>
 </mah:MetroWindow>

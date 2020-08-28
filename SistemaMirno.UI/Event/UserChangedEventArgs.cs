@@ -2,21 +2,16 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using SistemaMirno.Model;
+using SistemaMirno.UI.Wrapper;
+
 namespace SistemaMirno.UI.Event
 {
     /// <summary>
-    /// A class representing the argument sent with the <see cref="UserChangedEvent"/> event.
+    /// A struct representing the argument sent with the <see cref="UserChangedEvent"/> event.
     /// </summary>
-    public class UserChangedEventArgs
+    public struct UserChangedEventArgs
     {
-        /// <summary>
-        /// Gets or sets the username of the user.
-        /// </summary>
-        public string Username { get; set; }
-
-        /// <summary>
-        /// Gets or sets the access level of the user.
-        /// </summary>
-        public int AccessLevel { get; set; }
+        public UserWrapper User { get; set; }
     }
 }

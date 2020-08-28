@@ -19,7 +19,20 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AssemblyVersion>1.1.20.20230</AssemblyVersion>
+    <AssemblyVersion>1.1.24.20231</AssemblyVersion>
+    <ShouldCreateLogs>True</ShouldCreateLogs>
+    <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>True</UpdateAssemblyInfoVersion>
+    <AssemblyVersionSettings>None.NoneWithAutoReset.Increment.DeltaDayStamp</AssemblyVersionSettings>
+    <UpdatePackageVersion>False</UpdatePackageVersion>
+    <AssemblyInfoVersionType>SemVer1</AssemblyInfoVersionType>
+    <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+    <AssemblyFileVersionSettings>None.NoneWithAutoReset.Increment.DeltaDayStamp</AssemblyFileVersionSettings>
+    <AssemblyInfoVersionSettings>
+    </AssemblyInfoVersionSettings>
+    <AssemblyInfoVersionSemVerSettings>AssemblyVersion.IncrementWithAutoReset.None</AssemblyInfoVersionSemVerSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,17 +77,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AreaConnection.cs" />
-    <Compile Include="BaseModel.cs" />
+    <Compile Include="Bank.cs" />
+    <Compile Include="BankAccount.cs" />
+    <Compile Include="BankAccountMovement.cs" />
+    <Compile Include="BuyOrder.cs" />
+    <Compile Include="BuyOrderUnit.cs" />
+    <Compile Include="CashMovement.cs" />
+    <Compile Include="CreditCard.cs" />
+    <Compile Include="CreditCardPayment.cs" />
+    <Compile Include="ProviderPayment.cs" />
+    <Compile Include="Purchase.cs" />
+    <Compile Include="ClientCommunication.cs" />
+    <Compile Include="DatedCheck.cs" />
+    <Compile Include="Delivery.cs" />
+    <Compile Include="DeliveryOrder.cs" />
+    <Compile Include="DeliveryUnit.cs" />
+    <Compile Include="Hardware.cs" />
+    <Compile Include="HardwareCategory.cs" />
+    <Compile Include="HardwareMaintenanceOrder.cs" />
+    <Compile Include="IntermediateProduct.cs" />
+    <Compile Include="IntermediateWorkOrder.cs" />
+    <Compile Include="IntermediateWorkUnit.cs" />
+    <Compile Include="IntermediateWorkUnitMovement.cs" />
+    <Compile Include="Invoice.cs" />
+    <Compile Include="InvoiceUnit.cs" />
+    <Compile Include="ProductSupply.cs" />
+    <Compile Include="ProductPart.cs" />
+    <Compile Include="ProductPicture.cs" />
+    <Compile Include="Provider.cs" />
+    <Compile Include="Supply.cs" />
+    <Compile Include="SupplyCategory.cs" />
+    <Compile Include="SupplyMovement.cs" />
+    <Compile Include="Technician.cs" />
+    <Compile Include="Vehicle.cs" />
+    <Compile Include="VehicleMaintenanceOrder.cs" />
+    <Compile Include="WorkAreaConnection.cs" />
+    <Compile Include="Assistance.cs" />
+    <Compile Include="HistoricalSalary.cs" />
+    <Compile Include="ModelBase.cs" />
+    <Compile Include="Branch.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="Color.cs" />
-    <Compile Include="EmployeeRole.cs" />
+    <Compile Include="Role.cs" />
+    <Compile Include="SaleCollection.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductCategory.cs" />
+    <Compile Include="Requisition.cs" />
+    <Compile Include="SalaryDiscount.cs" />
+    <Compile Include="SalaryPayment.cs" />
+    <Compile Include="Sale.cs" />
+    <Compile Include="SaleType.cs" />
     <Compile Include="User.cs" />
     <Compile Include="WorkArea.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="WorkAreaMovement.cs" />
     <Compile Include="WorkOrder.cs" />
     <Compile Include="WorkOrderUnit.cs" />
     <Compile Include="WorkUnit.cs" />

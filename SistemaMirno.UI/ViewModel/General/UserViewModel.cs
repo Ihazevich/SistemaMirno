@@ -6,14 +6,20 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.Detail;
+using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
@@ -24,11 +30,8 @@ namespace SistemaMirno.UI.ViewModel.General
     public class UserViewModel : ViewModelBase, IUserViewModel
     {
         private IUserRepository _userRepository;
-        private IMessageDialogService _messageDialogService;
-        private IEventAggregator _eventAggregator;
+        private Func<IUserRepository> _userRepositoryCreator;
         private UserWrapper _selectedUser;
-        private IUserDetailViewModel _userDetailViewModel;
-        private Func<IUserDetailViewModel> _userDetailViewModelCreator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserViewModel"/> class.
@@ -37,136 +40,79 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
         public UserViewModel(
             Func<IUserDetailViewModel> userDetailViewModelCreator,
-            IUserRepository userRepository,
+            Func<IUserRepository> userRepositoryCreator,
             IEventAggregator eventAggregator,
-            IMessageDialogService messageDialogService)
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Usuarios", dialogCoordinator)
         {
-            _userDetailViewModelCreator = userDetailViewModelCreator;
-            _userRepository = userRepository;
-            _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<AfterDataModelSavedEvent<User>>()
-                .Subscribe(AfterUserSaved);
-            _eventAggregator.GetEvent<AfterDataModelDeletedEvent<User>>()
-                .Subscribe(AfterUserDeleted);
+            _userRepositoryCreator = userRepositoryCreator;
 
             Users = new ObservableCollection<UserWrapper>();
-            CreateNewUserCommand = new DelegateCommand(OnCreateNewUserExecute);
+
+            CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
+            OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        /// <summary>
-        /// Gets the User detail view model.
-        /// </summary>
-        public IUserDetailViewModel UserDetailViewModel
+        private void OnOpenDetailExecute()
         {
-            get
-            {
-                return _userDetailViewModel;
-            }
-
-            private set
-            {
-                _userDetailViewModel = value;
-                OnPropertyChanged();
-            }
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedUser.Id,
+                    ViewModel = nameof(UserDetailViewModel),
+                });
         }
 
-        /// <summary>
-        /// Gets or sets the collection of Users.
-        /// </summary>
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedUser != null;
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(UserDetailViewModel),
+                });
+        }
+
         public ObservableCollection<UserWrapper> Users { get; set; }
 
-        /// <summary>
-        /// Gets or sets the selected User.
-        /// </summary>
         public UserWrapper SelectedUser
         {
-            get
-            {
-                return _selectedUser;
-            }
+            get => _selectedUser;
 
             set
             {
                 OnPropertyChanged();
                 _selectedUser = value;
-                if (_selectedUser != null)
-                {
-                    UpdateDetailViewModel(_selectedUser.Id);
-                }
+                ((DelegateCommand)OpenDetailCommand).RaiseCanExecuteChanged();
             }
         }
 
-        /// <summary>
-        /// Gets the create new user command.
-        /// </summary>
-        public ICommand CreateNewUserCommand { get; }
+        public ICommand CreateNewCommand { get; }
 
-        /// <summary>
-        /// Loads the view model asynchronously from the data service.
-        /// </summary>
-        /// <returns>An instance of the <see cref="Task"/> class where the loading happens.</returns>
-        public override async Task LoadAsync(int? id)
+        public ICommand OpenDetailCommand { get; }
+
+        public override async Task LoadAsync(int? id = null)
         {
             Users.Clear();
+            _userRepository = _userRepositoryCreator();
+
             var users = await _userRepository.GetAllAsync();
+
             foreach (var user in users)
             {
-                Users.Add(new UserWrapper(user));
+                Application.Current.Dispatcher.Invoke(() => Users.Add(new UserWrapper(user)));
             }
-        }
 
-        private async void UpdateDetailViewModel(int? id)
-        {
-            if (UserDetailViewModel != null && UserDetailViewModel.HasChanges)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                var result = _messageDialogService.ShowOkCancelDialog(
-                    "Ha realizado cambios, si selecciona otro item estos cambios seran perdidos. ¿Esta seguro?",
-                    "Pregunta");
-                if (result == MessageDialogResult.Cancel)
-                {
-                    return;
-                }
-            }
-
-            UserDetailViewModel = _userDetailViewModelCreator();
-            await UserDetailViewModel.LoadAsync(id);
-        }
-
-        /// <summary>
-        /// Reloads the view model based on the parameter string.
-        /// </summary>
-        /// <param name="viewModel">Name of the view model to be reloaded.</param>
-        private void AfterUserSaved(AfterDataModelSavedEventArgs<User> args)
-        {
-            var item = Users.SingleOrDefault(c => c.Id == args.Model.Id);
-
-            if (item == null)
-            {
-                Users.Add(new UserWrapper(args.Model));
-                UserDetailViewModel = null;
-            }
-            else
-            {
-                item.Name = args.Model.Name;
-            }
-        }
-
-        private void AfterUserDeleted(AfterDataModelDeletedEventArgs<User> args)
-        {
-            var item = Users.SingleOrDefault(m => m.Id == args.Model.Id);
-
-            if (item != null)
-            {
-                Users.Remove(item);
-            }
-
-            UserDetailViewModel = null;
-        }
-
-        private void OnCreateNewUserExecute()
-        {
-            UpdateDetailViewModel(null);
+                ProgressVisibility = Visibility.Collapsed;
+                ViewVisibility = Visibility.Visible;
+            });
         }
     }
 }

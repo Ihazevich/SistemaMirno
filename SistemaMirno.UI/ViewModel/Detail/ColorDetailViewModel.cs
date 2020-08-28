@@ -1,10 +1,20 @@
-﻿using Prism.Commands;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
+using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
@@ -13,28 +23,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private IColorRepository _colorRepository;
         private ColorWrapper _color;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorDetailViewModel"/> class.
-        /// </summary>
-        /// <param name="colorRepository">The data repository.</param>
-        /// <param name="eventAggregator">The event aggregator.</param>
         public ColorDetailViewModel(
             IColorRepository colorRepository,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Detalles de Lustre/Color", dialogCoordinator)
         {
             _colorRepository = colorRepository;
         }
 
-        /// <summary>
-        /// Gets or sets the data model wrapper.
-        /// </summary>
         public ColorWrapper Color
         {
-            get
-            {
-                return _color;
-            }
+            get => _color;
 
             set
             {
@@ -44,45 +44,72 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
         /// <inheritdoc/>
-        public override async Task LoadAsync(int? colorId)
+        public override async Task LoadDetailAsync(int id)
         {
-            var color = colorId.HasValue
-                ? await _colorRepository.GetByIdAsync(colorId.Value)
-                : CreateNewColor();
+            var model = await _colorRepository.GetByIdAsync(id);
 
-            Color = new ColorWrapper(color);
-            Color.PropertyChanged += Color_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-            if (color.Id == 0)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                // This triggers the validation.
-                Color.Name = string.Empty;
-            }
+                Color = new ColorWrapper(model);
+                Color.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            });
+
+            await base.LoadDetailAsync(id).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        protected override void OnSaveExecute()
+        protected override async void OnSaveExecute()
         {
-            _colorRepository.SaveAsync();
+            base.OnSaveExecute();
+
+            if (IsNew)
+            {
+                await _colorRepository.AddAsync(Color.Model);
+            }
+            else
+            {
+                await _colorRepository.SaveAsync(Color.Model);
+            }
+
             HasChanges = false;
-            RaiseDataModelSavedEvent(Color.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ColorViewModel),
+                });
         }
 
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return Color != null && !Color.HasErrors && HasChanges;
+            return OnSaveCanExecute(Color);
         }
 
+        /// <inheritdoc/>
         protected override async void OnDeleteExecute()
         {
-            _colorRepository.Remove(Color.Model);
-            await _colorRepository.SaveAsync();
-            RaiseDataModelDeletedEvent(Color.Model);
+            await _colorRepository.DeleteAsync(Color.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ColorViewModel),
+                });
         }
 
-        private void Color_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected override void OnCancelExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ColorViewModel),
+                });
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!HasChanges)
             {
@@ -95,11 +122,26 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private Color CreateNewColor()
+        public override async Task LoadAsync(int? id = null)
         {
-            var color = new Color();
-            _colorRepository.Add(color);
-            return color;
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                Color = new ColorWrapper();
+                Color.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                Color.Name = string.Empty;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
         }
     }
 }

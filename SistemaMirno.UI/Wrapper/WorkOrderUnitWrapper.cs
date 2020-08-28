@@ -1,28 +1,32 @@
-﻿using SistemaMirno.Model;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
     public class WorkOrderUnitWrapper : ModelWrapper<WorkOrderUnit>
     {
+        public WorkOrderUnitWrapper()
+            : base(new WorkOrderUnit())
+        {
+        }
+
         public WorkOrderUnitWrapper(WorkOrderUnit model)
             : base(model)
         {
         }
 
-        /// <summary>
-        /// Gets the Work Order ID.
-        /// </summary>
-        public int Id { get { return GetValue<int>(); } }
+        public int Id
+        {
+            get { return GetValue<int>(); }
+        }
 
         public int WorkOrderId
         {
             get { return GetValue<int>(); }
-            set { SetValue(value); }
-        }
-
-        public virtual WorkOrder WorkOrder
-        {
-            get { return GetValue<WorkOrder>(); }
             set { SetValue(value); }
         }
 
@@ -31,11 +35,23 @@ namespace SistemaMirno.UI.Wrapper
             get { return GetValue<int>(); }
             set { SetValue(value); }
         }
-
-        public virtual WorkUnit WorkUnit
+        public bool Finished
         {
-            get { return GetValue<WorkUnit>(); }
+            get { return GetValue<bool>(); }
             set { SetValue(value); }
+        }
+
+        public DateTime? FinishedDateTime
+        {
+            get { return GetValue<DateTime?>(); }
+            set { SetValue(value); }
+        }
+
+
+        /// <inheritdoc/>
+        protected override IEnumerable<string> ValidateProperty(string propertyName)
+        {
+            yield return null;
         }
     }
 }

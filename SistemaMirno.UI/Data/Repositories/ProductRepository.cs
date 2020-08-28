@@ -1,58 +1,40 @@
-﻿// <copyright file="ProductRepository.cs" company="HazeLabs">
-// Copyright (c) HazeLabs. All rights reserved.
-// </copyright>
-
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
+using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
-    /// <summary>
-    /// A class representing the data repository of the product data.
-    /// </summary>
     public class ProductRepository : GenericRepository<Product, MirnoDbContext>, IProductRepository
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProductRepository"/> class.
-        /// </summary>
-        /// <param name="context">A <see cref="MirnoDbContext"/> instance representing the database context.</param>
-        public ProductRepository(MirnoDbContext context)
-            : base(context)
+        public ProductRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
+            : base(contextCreator, eventAggregator)
         {
         }
 
-        /// <summary>
-        /// Returns the id of a product category matching with the provided name.
-        /// </summary>
-        /// <param name="categoryName">The category name.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task<int> GetProductCategoryIdAsync(string categoryName)
+        public Task<List<ProductCategory>> GetAllProductCategoriesAsync()
         {
-            var category = await Context.ProductCategories.SingleOrDefaultAsync(c => c.Name == categoryName);
-
-            if (category != null)
+            try
             {
-                return category.Id;
+                return Context.ProductCategories.ToListAsync();
             }
-            else
+            catch (Exception ex)
             {
-                return -1;
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
             }
-        }
-
-        /// <summary>
-        /// Checks if the database already has a model with the same name.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task<bool> CheckForDuplicatesAsync(string name)
-        {
-            var result = await Context.Products.Where(p => p.Name == name).ToListAsync();
-
-            return result.Count > 0;
         }
     }
 }

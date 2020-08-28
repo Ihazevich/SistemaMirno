@@ -1,40 +1,32 @@
-﻿using SistemaMirno.Model;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
-    /// <summary>
-    /// A class representing the wrapper for the ProductCategory class.
-    /// </summary>
     public class ProductCategoryWrapper : ModelWrapper<ProductCategory>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProductCategoryWrapper"/> class.
-        /// </summary>
-        /// <param name="model">Instance of <see cref="ProductCategory"> to use as model.</param>
+        public ProductCategoryWrapper()
+            : base(new ProductCategory())
+        {
+        }
+
         public ProductCategoryWrapper(ProductCategory model)
             : base(model)
         {
         }
 
-        /// <summary>
-        /// Gets the ProductCategory ID.
-        /// </summary>
-        public int Id { get { return GetValue<int>(); } }
+        public int Id
+        {
+            get { return GetValue<int>(); }
+        }
 
-        /// <summary>
-        /// Gets or sets the ProductCategory name.
-        /// </summary>
         public string Name
         {
             get { return GetValue<string>(); }
-            set { SetValue(value); }
-        }
-
-        public virtual Collection<Product> Products
-        {
-            get { return GetValue<Collection<Product>>(); }
             set { SetValue(value); }
         }
 

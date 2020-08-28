@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:generalviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.General"
+                    xmlns:general="clr-namespace:SistemaMirno.UI.View.General"
+                    xmlns:detailviewmodel="clr-namespace:SistemaMirno.UI.ViewModel.Detail"
+                    xmlns:detail="clr-namespace:SistemaMirno.UI.View.Detail">
+
+    <DataTemplate DataType="{x:Type generalviewmodel:UserViewModel}">
+        <general:UserView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:BranchViewModel}">
+        <general:BranchView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:RoleViewModel}">
+        <general:RoleView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:EmployeeViewModel}">
+        <general:EmployeeView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:WorkAreaViewModel}">
+        <general:WorkAreaView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:ProductViewModel}">
+        <general:ProductView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:MaterialViewModel}">
+        <general:MaterialView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:ColorViewModel}">
+        <general:ColorView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:ProductCategoryViewModel}">
+        <general:ProductCategoryView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:WorkUnitViewModel}">
+        <general:WorkUnitView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:ClientViewModel}">
+        <general:ClientView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:RequisitionViewModel}">
+        <general:RequisitionView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:StockViewModel}">
+        <general:StockView />
+    </DataTemplate>
+</ResourceDictionary>

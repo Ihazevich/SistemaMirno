@@ -1,54 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
-using SistemaMirno.UI.Data;
-using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class ProductDetailViewModel : DetailViewModelBase, IProductDetailViewModel
     {
-        private ProductWrapper _product;
-        private IProductCategoryRepository _productCategoryRepository;
         private IProductRepository _productRepository;
+        private ProductWrapper _product;
+        private ProductCategoryWrapper _newProductCategory;
+        private bool _createNewProductCategory;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProductDetailViewModel"/> class.
-        /// </summary>
-        /// <param name="productRepository">The data repository.</param>
-        /// <param name="eventAggregator">The event aggregator.</param>
         public ProductDetailViewModel(
             IProductRepository productRepository,
-            IProductCategoryRepository productCategoryRepository,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Detalles de Producto", dialogCoordinator)
         {
             _productRepository = productRepository;
-            _productCategoryRepository = productCategoryRepository;
-
-            EventAggregator.GetEvent<AfterDataModelSavedEvent<ProductCategory>>()
-                .Subscribe(AfterProductCategorySaved);
-            EventAggregator.GetEvent<AfterDataModelDeletedEvent<ProductCategory>>()
-                .Subscribe(AfterProductCategoryDeleted);
-
             ProductCategories = new ObservableCollection<ProductCategoryWrapper>();
-        }
 
-        /// <summary>
-        /// Gets or sets the data model wrapper.
-        /// </summary>
+            SelectFileCommand = new DelegateCommand<object>(OnSelectFileExecute);
+        }
+        
         public ProductWrapper Product
         {
-            get
-            {
-                return _product;
-            }
+            get => _product;
 
             set
             {
@@ -57,91 +49,78 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public ObservableCollection<ProductCategoryWrapper> ProductCategories { get; }
+        public ObservableCollection<ProductCategoryWrapper> ProductCategories { get; set; }
+
+        public ICommand SelectFileCommand { get; }
 
         /// <inheritdoc/>
-        public override async Task LoadAsync(int? productId)
+        public override async Task LoadDetailAsync(int id)
         {
-            var product = productId.HasValue
-                ? await _productRepository.GetByIdAsync(productId.Value)
-                : CreateNewProduct();
+            var model = await _productRepository.GetByIdAsync(id);
 
-            Product = new ProductWrapper(product);
-            Product.PropertyChanged += Product_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-            if (product.Id == 0)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                // This triggers the validation.
-                Product.Name = string.Empty;
-            }
-
-            await LoadProductCategoriesAsync();
+                Product = new ProductWrapper(model);
+                Product.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            });
+            
+            await base.LoadDetailAsync(id).ConfigureAwait(false);
         }
 
-        protected override async void OnDeleteExecute()
+        /// <inheritdoc/>
+        protected override async void OnSaveExecute()
         {
-            _productRepository.Remove(Product.Model);
-            await _productRepository.SaveAsync();
-            RaiseDataModelDeletedEvent(Product.Model);
+            base.OnSaveExecute();
+
+            if (IsNew)
+            {
+                await _productRepository.AddAsync(Product.Model);
+            }
+            else
+            {
+                await _productRepository.SaveAsync(Product.Model);
+            }
+
+            HasChanges = false;
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductViewModel),
+                });
         }
 
         /// <inheritdoc/>
         protected override bool OnSaveCanExecute()
         {
-            return Product != null && !Product.HasErrors && HasChanges;
+            return OnSaveCanExecute(Product);
         }
 
         /// <inheritdoc/>
-        protected override void OnSaveExecute()
+        protected override async void OnDeleteExecute()
         {
-            _productRepository.SaveAsync();
-            HasChanges = false;
-            RaiseDataModelSavedEvent(Product.Model);
+            await _productRepository.DeleteAsync(Product.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductViewModel),
+                });
         }
 
-        private void AfterProductCategoryDeleted(AfterDataModelDeletedEventArgs<ProductCategory> args)
+        protected override void OnCancelExecute()
         {
-            var item = ProductCategories.SingleOrDefault(c => c.Id == args.Model.Id);
-
-            if (item != null)
-            {
-                ProductCategories.Remove(item);
-            }
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductViewModel),
+                });
         }
 
-        private void AfterProductCategorySaved(AfterDataModelSavedEventArgs<ProductCategory> args)
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var item = ProductCategories.SingleOrDefault(p => p.Id == args.Model.Id);
-
-            if (item == null)
-            {
-                ProductCategories.Add(new ProductCategoryWrapper(args.Model));
-            }
-            else
-            {
-                item.Name = args.Model.Name;
-            }
-        }
-        private Product CreateNewProduct()
-        {
-            var product = new Product();
-            _productRepository.Add(product);
-            return product;
-        }
-
-        private async Task LoadProductCategoriesAsync()
-        {
-            var categories = await _productCategoryRepository.GetAllAsync();
-            ProductCategories.Clear();
-            foreach (var category in categories)
-            {
-                ProductCategories.Add(new ProductCategoryWrapper(category));
-            }
-        }
-        private void Product_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            Console.WriteLine(e.PropertyName);
             if (!HasChanges)
             {
                 HasChanges = _productRepository.HasChanges();
@@ -150,6 +129,70 @@ namespace SistemaMirno.UI.ViewModel.Detail
             if (e.PropertyName == nameof(Product.HasErrors))
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public override async Task LoadAsync(int? id = null)
+        {
+            await LoadProductCategories();
+
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                Product = new ProductWrapper();
+                Product.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                
+                Product.Code = string.Empty;
+                Product.Name = string.Empty;
+                Product.ProductCategoryId = 0;
+                Product.ProductionValue = 0;
+                Product.WholesalerPrice = 0;
+                Product.RetailPrice = 0;
+                Product.IsCustom = false;
+                Product.SketchupFile = string.Empty;
+                Product.TemplateFile = string.Empty;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
+        }
+
+        private async Task LoadProductCategories()
+        {
+            var categories = await _productRepository.GetAllProductCategoriesAsync();
+
+            foreach (var category in categories)
+            {
+                Application.Current.Dispatcher.Invoke(() => ProductCategories.Add(new ProductCategoryWrapper(category)));
+            }
+        }
+
+        private void OnSelectFileExecute(object obj)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.InitialDirectory = Directory.GetCurrentDirectory();
+            dlg.DefaultExt = ".pdf"; // Default file extension
+            dlg.Filter = "Archivos PDF(.pdf)|*.pdf"; // Filter files by extension
+
+            bool? result = dlg.ShowDialog();
+            // Process open file dialog box results
+            if (result == true)
+            {
+                if (obj.ToString() == "Sketchup")
+                {
+                    Application.Current.Dispatcher.Invoke(() => Product.SketchupFile = dlg.FileName);
+                }
+                else if (obj.ToString() == "Template")
+                {
+                    Application.Current.Dispatcher.Invoke(() => Product.TemplateFile = dlg.FileName);
+                }
             }
         }
     }

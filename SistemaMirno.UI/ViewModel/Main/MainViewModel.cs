@@ -1,15 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Autofac.Features.Indexed;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.View.Services;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Main
@@ -19,112 +18,125 @@ namespace SistemaMirno.UI.ViewModel.Main
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private IViewModelBase _selectedViewModel;
-        private IViewModelBase _navigationViewModel;
-        private IEventAggregator _eventAggregator;
-        private IIndex<string, IViewModelBase> _viewModelCreator;
-        private IMessageDialogService _messageDialogService;
-        private string _windowTitle = $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
-        private bool? _dialogResult;
+        #region Fields
 
-        // User data fields.
-        private bool _userLoggedIn = false;
-        private string _username;
-        private int _userAccessLevel;
+        private bool? _dialogResult;
+        private bool _navigationStatus = true;
+        private IViewModelBase _navigationViewModel;
+        private IViewModelBase _selectedViewModel;
+        private bool _processing;
+
+        // Visibility fields
+        private Visibility _accountingVisibility;
+        private Visibility _productionVisibility;
+        private Visibility _productsVisibility;
+        private Visibility _salesVisibility;
+        private Visibility _humanResourcesVisibility;
+        private Visibility _sysAdminVisibility;
+
+        // Status bar fields
+        private string _statusMessage;
+
+        private IIndex<string, IViewModelBase> _viewModelCreator;
+
+        private string _windowTitle =
+            $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
         /// <param name="viewModelCreator">The view model creator.</param>
         /// <param name="eventAggregator">The event aggregator.</param>
-        /// <param name="messageDialogService">The message dialog service.</param>
+        /// <param name="dialogCoordinator">The dialog service.</param>
         public MainViewModel(
             IIndex<string, IViewModelBase> viewModelCreator,
             IEventAggregator eventAggregator,
-            IMessageDialogService messageDialogService)
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Principal", dialogCoordinator)
         {
             _viewModelCreator = viewModelCreator;
-            _messageDialogService = messageDialogService;
-            _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ChangeViewEvent>()
+            EventAggregator.GetEvent<ChangeViewEvent>()
                 .Subscribe(ChangeView);
-            _eventAggregator.GetEvent<NewWorkOrderEvent>()
-                .Subscribe(NewMoveWorkOrder);
-            _eventAggregator.GetEvent<UserChangedEvent>()
+            EventAggregator.GetEvent<NewWorkOrderEvent>()
+                .Subscribe(NewWorkOrder);
+            EventAggregator.GetEvent<UserChangedEvent>()
                 .Subscribe(UserChanged);
-            _eventAggregator.GetEvent<ExitApplicationEvent>()
+            EventAggregator.GetEvent<BranchChangedEvent>()
+                .Subscribe(BranchChanged);
+            EventAggregator.GetEvent<ReloadNavigationViewEvent>()
+                .Subscribe(ReloadNavigationView);
+            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Subscribe(ChangeNavigationStatus);
+            EventAggregator.GetEvent<ExitApplicationEvent>()
                 .Subscribe(ExitApplication);
+            EventAggregator.GetEvent<NotifyStatusBarEvent>()
+                .Subscribe(UpdateStatusBar, ThreadOption.UIThread);
+            EventAggregator.GetEvent<ShowDialogEvent>()
+                .Subscribe(ShowDialog, ThreadOption.UIThread);
 
-            ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute, ChangeViewCanExecute);
+            EventAggregator.GetEvent<AskSessionInfoEvent>()
+                .Subscribe(BroadcastSessionInfo);
+
+            ChangeViewCommand = new DelegateCommand<string>(OnChangeViewExecute);
+            CloseUserSessionCommand = new DelegateCommand(OnCloseUserSessionExecute);
             CloseApplicationCommand = new DelegateCommand(OnCloseApplicationExecute);
 
-            ShowLoginView();
+            ProductionVisibility = Visibility.Collapsed;
+            SalesVisibility = Visibility.Collapsed;
+            HumanResourcesVisibility = Visibility.Collapsed;
+            AccountingVisibility = Visibility.Collapsed;
+            SysAdminVisibility = Visibility.Collapsed;
+            ProductsVisibility = Visibility.Collapsed;
+
+            ChangeView(new ChangeViewEventArgs
+            {
+                Id = null,
+                ViewModel = nameof(LoginViewModel),
+            });
         }
 
-        private void ExitApplication()
+        private void ReloadNavigationView()
         {
-            DialogResult = true;
+            NavigationViewModel = _viewModelCreator[nameof(Main.NavigationViewModel)];
+            NavigationViewModel.LoadAsync(SessionInfo.Branch.Id);
         }
 
-        private void UserChanged(UserChangedEventArgs args)
+        private void BroadcastSessionInfo()
         {
-            UserLoggedIn = true;
-            Username = args.Username;
-            UserAccessLevel = args.AccessLevel;
-
-            NavigationViewModel = _viewModelCreator[nameof(WorkAreaNavigationViewModel)];
-            SelectedViewModel = null;
-
-            LoadAsync(null);
+            EventAggregator.GetEvent<BroadcastSessionInfoEvent>()
+                .Publish(SessionInfo);
         }
 
-        /// <summary>
-        /// Gets or sets if a user is currently logged in.
-        /// </summary>
-        public bool UserLoggedIn
-        {
-            get => _userLoggedIn;
+        #endregion Constructors
 
+        #region Properties
+
+        public Visibility AccountingVisibility
+        {
+            get => _accountingVisibility;
             set
             {
-                _userLoggedIn = value;
+                _accountingVisibility = value;
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Gets or sets the username of the current user.
+        /// Gets or sets the change view command.
         /// </summary>
-        public string Username
-        {
-            get => _username;
-
-            set
-            {
-                _username = value;
-                OnPropertyChanged();
-            }
-        }
+        public ICommand ChangeViewCommand { get; set; }
 
         /// <summary>
-        /// Gets or sets the access level of the current user.
+        /// Gets or sets the close application command.
         /// </summary>
-        public int UserAccessLevel
-        {
-            get => _userAccessLevel;
+        public ICommand CloseApplicationCommand { get; set; }
 
-            set
-            {
-                _userAccessLevel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private void OnCloseApplicationExecute()
-        {
-            ExitApplication();
-        }
-
+        public ICommand CloseUserSessionCommand { get; set; }
+        
         /// <summary>
         /// Gets or sets the dialog result of the main view.
         /// </summary>
@@ -138,19 +150,23 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
-        /// <summary>
-        /// Gets or sets the main window title.
-        /// </summary>
-        public string WindowTitle
+        public Visibility HumanResourcesVisibility
         {
-            get
+            get => _humanResourcesVisibility;
+            set
             {
-                return _windowTitle;
+                _humanResourcesVisibility = value;
+                OnPropertyChanged();
             }
+        }
+
+        public bool NavigationStatus
+        {
+            get => _navigationStatus;
 
             set
             {
-                _windowTitle = value;
+                _navigationStatus = value;
                 OnPropertyChanged();
             }
         }
@@ -158,13 +174,54 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Gets the area navigation view model.
         /// </summary>
-        public IViewModelBase NavigationViewModel 
+        public IViewModelBase NavigationViewModel
         {
             get => _navigationViewModel;
 
             set
             {
                 _navigationViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool Processing
+        {
+            get => _processing;
+
+            set
+            {
+                _processing = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ProductionVisibility
+        {
+            get => _productionVisibility;
+            set
+            {
+                _productionVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ProductsVisibility
+        {
+            get => _productsVisibility;
+            set
+            {
+                _productsVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility SalesVisibility
+        {
+            get => _salesVisibility;
+            set
+            {
+                _salesVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -183,19 +240,114 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
-        /// <summary>
-        /// Gets or sets the change view command.
-        /// </summary>
-        public ICommand ChangeViewCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the close application command.
-        /// </summary>
-        public ICommand CloseApplicationCommand { get; set; }
-
-        public override async Task LoadAsync(int? id)
+        public string StatusMessage
         {
-            await NavigationViewModel.LoadAsync(-1);
+            get => _statusMessage;
+
+            set
+            {
+                _statusMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility SysAdminVisibility
+        {
+            get => _sysAdminVisibility;
+            set
+            {
+                _sysAdminVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the main window title.
+        /// </summary>
+        public string WindowTitle
+        {
+            get { return _windowTitle; }
+
+            set
+            {
+                _windowTitle = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        public override async Task LoadAsync(int? id = null)
+        {
+        }
+
+        public async void ShowDialog(ShowDialogEventArgs args)
+        {
+            await DialogCoordinator.ShowMessageAsync(this, args.Title, args.Message);
+        }
+
+        private async void BranchChanged(BranchChangedEventArgs args)
+        {
+            var sessionInfo = SessionInfo;
+            sessionInfo.Branch = new BranchWrapper
+            {
+                Name = args.Name,
+                Model =
+                {
+                    Id = args.BranchId,
+                },
+            };
+
+            SessionInfo = sessionInfo;
+            NavigationStatus = true;
+            SelectedViewModel = null;
+
+            UpdateStatusBar(new NotifyStatusBarEventArgs {Message = "Cargando navegación", Processing = true});
+            ReloadNavigationView();
+            ClearStatusBar();
+        }
+
+        private void ChangeNavigationStatus(bool arg)
+        {
+            if (NavigationStatus == false && arg)
+            {
+                SelectedViewModel = null;
+            }
+
+            NavigationStatus = arg;
+        }
+
+        private void ChangeView(ChangeViewEventArgs args)
+        {
+            if (args.ViewModel == null)
+            {
+                SelectedViewModel = null;
+                return;
+            }
+
+            NotifyStatusBar("Cambiando de vista", true);
+            SelectedViewModel = _viewModelCreator[args.ViewModel];
+            SelectedViewModel.LoadAsync(args.Id);
+            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Publish(false);
+            ClearStatusBar();
+        }
+
+        private void ExitApplication()
+        {
+            DialogResult = true;
+        }
+
+        private void NewWorkOrder(NewWorkOrderEventArgs args)
+        {
+            NotifyStatusBar("Cambiando de vista", true);
+            SelectedViewModel = _viewModelCreator[nameof(WorkOrderDetailViewModel)];
+            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Publish(false);
+
+            ((WorkOrderDetailViewModel)SelectedViewModel).CreateNewWorkOrder(args.DestinationWorkAreaId, args.OriginWorkAreaId, args.WorkUnits);
         }
 
         private void OnChangeViewExecute(string viewModel)
@@ -203,42 +355,56 @@ namespace SistemaMirno.UI.ViewModel.Main
             ChangeView(new ChangeViewEventArgs { ViewModel = viewModel, Id = -1 });
         }
 
-        private bool ChangeViewCanExecute(string viewModel = null)
+        private void OnCloseApplicationExecute()
         {
-            switch (viewModel)
+            ExitApplication();
+        }
+
+        private void OnCloseUserSessionExecute()
+        {
+            var sessionInfo = SessionInfo;
+            sessionInfo.UserLoggedIn = false;
+            sessionInfo.User = null;
+            SessionInfo = sessionInfo;
+
+            SelectedViewModel = null;
+
+            ChangeView(new ChangeViewEventArgs
             {
-                case "Colors":
-                    return !nameof(SelectedViewModel).Equals(nameof(ColorViewModel));
-
-                case "Materials":
-                    return !nameof(SelectedViewModel).Equals(nameof(MaterialViewModel));
-
-                case "ProductionAreas":
-                    return !nameof(SelectedViewModel).Equals(nameof(WorkAreaViewModel));
-
-                case "ProductCategories":
-                    return !nameof(SelectedViewModel).Equals(nameof(ProductCategoryViewModel));
-
-                default:
-                    return true;
-            }
+                Id = null,
+                ViewModel = nameof(LoginViewModel),
+            });
         }
-
-        private void ChangeView(ChangeViewEventArgs args)
+        
+        private void UpdateStatusBar(NotifyStatusBarEventArgs args)
         {
-            SelectedViewModel = _viewModelCreator[args.ViewModel];
-            SelectedViewModel.LoadAsync(args.Id);
+            StatusMessage = args.Message;
+            Processing = args.Processing;
         }
 
-        private void NewMoveWorkOrder(NewWorkOrderEventArgs args)
+        private void UserChanged(UserChangedEventArgs args)
         {
-            ChangeView(new ChangeViewEventArgs { ViewModel = nameof(WorkOrderDetailViewModel), Id = args.DestinationWorkAreaId });
-            ((WorkOrderDetailViewModel)SelectedViewModel).CreateNewWorkOrder(args.DestinationWorkAreaId, args.OriginWorkAreaId, args.WorkUnits);
+            var sessionInfo = SessionInfo;
+            sessionInfo.UserLoggedIn = true;
+            sessionInfo.User = args.User;
+
+            SessionInfo = sessionInfo;
+
+            AccountingVisibility = args.User.Model.HasAccessToAccounting ? Visibility.Visible : Visibility.Collapsed;
+            ProductionVisibility = args.User.Model.HasAccessToProduction ? Visibility.Visible : Visibility.Collapsed;
+            SalesVisibility = args.User.Model.HasAccessToSales ? Visibility.Visible : Visibility.Collapsed;
+            HumanResourcesVisibility = args.User.Model.HasAccessToHumanResources ? Visibility.Visible : Visibility.Collapsed;
+            SysAdminVisibility = args.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
+            ProductsVisibility = args.User.Model.HasAccessToSales || args.User.Model.HasAccessToProduction
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+            ChangeView(new ChangeViewEventArgs
+            {
+                ViewModel = nameof(BranchSelectionViewModel),
+            });
         }
 
-        private void ShowLoginView()
-        {
-            SelectedViewModel = _viewModelCreator[nameof(LoginViewModel)];
-        }
+        #endregion Methods
     }
 }

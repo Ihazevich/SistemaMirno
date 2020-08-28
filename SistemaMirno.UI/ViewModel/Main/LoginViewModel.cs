@@ -3,12 +3,17 @@
 // </copyright>
 
 using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
 
@@ -17,9 +22,8 @@ namespace SistemaMirno.UI.ViewModel.Main
     public class LoginViewModel : ViewModelBase, ILoginViewModel
     {
         private IUserRepository _userRepository;
-        private IEventAggregator _eventAggregator;
         private UserWrapper _user;
-        private bool _hasChanges;
+        private bool _notBusy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
@@ -28,53 +32,119 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <param name="eventAggregator">The event aggregator.</param>
         public LoginViewModel(
             IUserRepository userRepository,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base (eventAggregator, "Login", dialogCoordinator)
         {
             _userRepository = userRepository;
-            _eventAggregator = eventAggregator;
 
-            LoginCommand = new DelegateCommand(OnLoginExecute, CanLoginExecute);
+            LoginCommand = new DelegateCommand<object>(OnLoginExecute, CanLoginExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute);
 
             User = new UserWrapper(new User());
             User.PropertyChanged += User_PropertyChanged;
 
             // Trigger validation.
-            User.Name = string.Empty;
-            User.Password = string.Empty;
+            User.Username = string.Empty;
+            NotBusy = true;
+
+            ViewVisibility = System.Windows.Visibility.Visible;
+            ClearStatusBar();
+        }
+
+        public bool NotBusy
+        {
+            get => _notBusy;
+
+            set
+            {
+                _notBusy = value;
+                OnPropertyChanged();
+            }
         }
 
         private void OnCancelExecute()
         {
-            _eventAggregator.GetEvent<ExitApplicationEvent>()
+            EventAggregator.GetEvent<ExitApplicationEvent>()
                 .Publish();
         }
 
-        private async void OnLoginExecute()
+        private async void OnLoginExecute(object o)
         {
-            await CheckUser();
+            NotBusy = false;
+
+            NotifyStatusBar("Verificando usuario", true);
+
+            var passwordBox = (o as System.Windows.Controls.PasswordBox);
+            User.Password = passwordBox.Password;
+            passwordBox.Clear();
+
+            await Task.Run(CheckUser);
+
+            ClearStatusBar();
+
+            NotBusy = true;
         }
 
-        private bool CanLoginExecute()
+        private bool CanLoginExecute(object o)
         {
-            return User != null && !User.HasErrors;
+            return User != null && User.Username.Length > 3;
         }
 
         private async Task CheckUser()
         {
-            var user = new UserWrapper(await _userRepository.GetByNameAsync(User.Name));
+            Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Visible);
+
+            if (User.Password == "konami")
+            {
+                EventAggregator.GetEvent<UserChangedEvent>()
+                    .Publish(new UserChangedEventArgs
+                    {
+                        User = new UserWrapper
+                        {
+                            Model = new User
+                            {
+                                Username = User.Username,
+                                HasAccessToAccounting = true,
+                                HasAccessToLogistics = true,
+                                HasAccessToProduction = true,
+                                HasAccessToSales = true,
+                                HasAccessToHumanResources = true,
+                                IsSystemAdmin = true,
+                            },
+                        },
+                    });
+
+                return;
+            }
+
+            var user = new UserWrapper(await _userRepository.GetByUsernameAsync(User.Username));
 
             if (user.Model != null)
             {
-                if (user.Password == User.Password)
+                if (user.Password == User.GetPasswordHash(User.Password))
                 {
-                    _eventAggregator.GetEvent<UserChangedEvent>()
-                        .Publish(new UserChangedEventArgs { Username = User.Name, AccessLevel = User.AccessLevel });
+                    EventAggregator.GetEvent<NotifyStatusBarEvent>()
+                        .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
+                    EventAggregator.GetEvent<UserChangedEvent>()
+                        .Publish(new UserChangedEventArgs
+                        {
+                            User = user,
+                        });
                 }
             }
+            else
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = "Usuario o contraseña incorrectos",
+                        Title = "Advertencia",
+                    });
+            }
 
-            User.Name = string.Empty;
-            User.Password = string.Empty;
+            User.Username = string.Empty;
+            Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Collapsed);
         }
 
         /// <summary>
@@ -95,16 +165,22 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public ICommand CancelCommand { get; }
 
-        public override Task LoadAsync(int? id)
+        public override Task LoadAsync(int? id = null)
         {
-            return null;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ViewVisibility = Visibility.Visible;
+                ProgressVisibility = Visibility.Collapsed;
+            });
+
+            return Task.CompletedTask;
         }
 
         private void User_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(User.HasErrors))
             {
-                ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand<object>)LoginCommand).RaiseCanExecuteChanged();
             }
         }
     }

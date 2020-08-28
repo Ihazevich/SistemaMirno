@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SistemaMirno.DataAccess")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Haze Labs")]
 [assembly: AssemblyProduct("SistemaMirno.DataAccess")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
@@ -31,6 +31,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.27.20230")]
-[assembly: AssemblyFileVersion("1.1.27.20217")]
-[assembly: AssemblyInformationalVersion("1.1.27")]
+[assembly: AssemblyVersion("0.2.172.7545")]
+[assembly: AssemblyFileVersion("0.2.172.7545")]
+[assembly: AssemblyInformationalVersion("0.2.54")]

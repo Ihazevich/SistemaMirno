@@ -2,36 +2,29 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
     /// <summary>
     /// A class representing a single product.
     /// </summary>
-    public class Product : BaseModel
+    public partial class Product : ModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Product"/> class.
-        /// </summary>
-        public Product()
-        {
-            WorkUnits = new Collection<WorkUnit>();
-        }
-
         /// <summary>
         /// Gets or sets the code of the product.
         /// </summary>
         [Required]
-        [MaxLength(20)]
+        [StringLength(100)]
         public string Code { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the product.
         /// </summary>
         [Required]
-        [MaxLength(100)]
+        [StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
@@ -43,29 +36,49 @@ namespace SistemaMirno.Model
         /// <summary>
         /// Gets or sets the product's category.
         /// </summary>
+        [ForeignKey(nameof(ProductCategoryId))]
         public virtual ProductCategory ProductCategory { get; set; }
 
         /// <summary>
         /// Gets or sets the product's price for the general public.
         /// </summary>
         [Required]
-        public int Price { get; set; }
+        public long ProductionValue { get; set; }
 
         /// <summary>
         /// Gets or sets the product's price for wholesalers.
         /// </summary>
         [Required]
-        public int WholesalePrice { get; set; }
+        public long RetailPrice { get; set; }
 
         /// <summary>
         /// Gets or sets the product's price for production reports.
         /// </summary>
         [Required]
-        public int ProductionPrice { get; set; }
+        public long WholesalerPrice { get; set; }
+
+        [Required]
+        public bool IsCustom { get; set; }
+
+        [StringLength(100)]
+        public string SketchupFile { get; set; }
+
+        [StringLength(100)]
+        public string TemplateFile { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of Work Units that have this product as base.
         /// </summary>
-        public virtual Collection<WorkUnit> WorkUnits { get; set; }
+        [ForeignKey(nameof(WorkUnit.ProductId))]
+        public virtual ICollection<WorkUnit> WorkUnits { get; set; } = new HashSet<WorkUnit>();
+
+        [ForeignKey(nameof(ProductPicture.ProductId))]
+        public virtual ICollection<ProductPicture> ProductPictures { get; set; } = new HashSet<ProductPicture>();
+
+        [ForeignKey(nameof(ProductPart.ProductId))]
+        public virtual ICollection<ProductPart> ProductParts { get; set; } = new HashSet<ProductPart>();
+
+        [ForeignKey(nameof(ProductSupply.ProductId))]
+        public virtual ICollection<ProductSupply> ProductSupplies { get; set; } = new HashSet<ProductSupply>();
     }
 }

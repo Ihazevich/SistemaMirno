@@ -2,34 +2,29 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
     /// <summary>
     /// A class representing the category of a product.
     /// </summary>
-    public class ProductCategory : BaseModel
+    public partial class ProductCategory : ModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProductCategory"/> class.
-        /// </summary>
-        public ProductCategory()
-        {
-            Products = new Collection<Product>();
-        }
-
         /// <summary>
         /// Gets or sets the name of the category.
         /// </summary>
         [Required]
-        [MaxLength(20)]
+        [StringLength(100)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of products that are of this category.
         /// </summary>
-        public virtual Collection<Product> Products { get; set; }
+        [ForeignKey(nameof(Product.ProductCategoryId))]
+        public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
     }
 }
