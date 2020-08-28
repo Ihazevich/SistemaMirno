@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using jsreport.Client;
 using MahApps.Metro.Controls.Dialogs;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
+using SistemaMirno.UI.Data.Reports;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
@@ -35,6 +40,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private MaterialWrapper _selectedMaterial;
         private ColorWrapper _selectedColor;
 
+        private EmployeeWrapper _selectedResponsible;
+        private EmployeeWrapper _selectedSupervisor;
+
         private Visibility _newWorkUnitGridVisibility;
         private Visibility _existingWorkUnitGridVisibility;
         private Visibility _removeWorkUnitVisibility;
@@ -46,7 +54,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private bool _canGetWorkUnitsFromRequisition;
 
         private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
-        private PropertyGroupDescription _currentWorkAreaName = new PropertyGroupDescription("Model.CurrentWorkArea.Name");
+
+        private PropertyGroupDescription _currentWorkAreaName =
+            new PropertyGroupDescription("Model.CurrentWorkArea.Name");
 
         public WorkOrderDetailViewModel(
             IWorkOrderRepository workOrderRepository,
@@ -77,8 +87,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             AddWorkUnitCommand = new DelegateCommand<object>(OnAddWorkUnitExecute);
             AddNewWorkUnitCommand = new DelegateCommand(OnAddNewWorkUnitExecute, OnAddNewWorkUnitCanExecute);
-            AddExistingWorkUnitCommand = new DelegateCommand(OnAddExistingWorkUnitExecute, OnAddExistingWorkUnitCanExecute);
-            AddRequisitionWorkUnitCommand = new DelegateCommand(OnAddRequisitionWorkUnitExecute, OnAddRequisitionWorkUnitCanExecute);
+            AddExistingWorkUnitCommand =
+                new DelegateCommand(OnAddExistingWorkUnitExecute, OnAddExistingWorkUnitCanExecute);
+            AddRequisitionWorkUnitCommand =
+                new DelegateCommand(OnAddRequisitionWorkUnitExecute, OnAddRequisitionWorkUnitCanExecute);
             RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
         }
 
@@ -103,7 +115,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     ExistingWorkUnits.Remove(SelectedExistingWorkUnit);
                 });
             }
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
         }
 
         private bool OnAddRequisitionWorkUnitCanExecute()
@@ -127,7 +140,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     RequisitionWorkUnits.Remove(SelectedRequisitionWorkUnit);
                 });
             }
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
         }
 
         private bool OnRemoveWorkUnitCanExecute()
@@ -139,7 +153,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             WorkOrder.Model.WorkOrderUnits.Remove(SelectedWorkOrderUnit.Model);
             Application.Current.Dispatcher.Invoke(() => WorkOrderUnits.Remove(SelectedWorkOrderUnit));
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
         }
 
         private bool OnAddNewWorkUnitCanExecute()
@@ -177,12 +191,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 };
 
                 WorkOrder.Model.WorkOrderUnits.Add(workOrderUnit);
-                Application.Current.Dispatcher.Invoke(() => WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit)));
+                Application.Current.Dispatcher.Invoke(() =>
+                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit)));
             }
 
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
         }
-        
+
         public string Quantity
         {
             get => _quantity;
@@ -191,7 +206,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _quantity = int.TryParse(value, out _) ? value : string.Empty;
                 OnPropertyChanged();
-                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand) AddNewWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -321,9 +336,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public Visibility AddWorkAreaWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility AddNewWorkUnitVisibility => IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility AddNewWorkUnitVisibility =>
+            IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility AddRequisitionWorkUnitVisibility => IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility AddRequisitionWorkUnitVisibility =>
+            IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
 
         public Visibility RemoveWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
 
@@ -341,6 +358,28 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 OnPropertyChanged(nameof(AddRequisitionWorkUnitVisibility));
                 OnPropertyChanged(nameof(AddNewWorkUnitVisibility));
                 OnPropertyChanged(nameof(RemoveWorkUnitVisibility));
+            }
+        }
+
+        public EmployeeWrapper SelectedResponsible
+        {
+            get => _selectedResponsible;
+
+            set
+            {
+                _selectedResponsible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public EmployeeWrapper SelectedSupervisor
+        {
+            get => _selectedSupervisor;
+
+            set
+            {
+                _selectedSupervisor = value;
+                OnPropertyChanged();
             }
         }
 
@@ -385,7 +424,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _selectedWorkOrderUnit = value;
                 OnPropertyChanged();
-                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand) RemoveWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -397,7 +436,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _selectedExistingWorkUnit = value;
                 OnPropertyChanged();
-                ((DelegateCommand)AddExistingWorkUnitCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand) AddExistingWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -409,7 +448,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _selectedRequisitionWorkUnit = value;
                 OnPropertyChanged();
-                ((DelegateCommand)AddRequisitionWorkUnitCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand) AddRequisitionWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -478,7 +517,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 ExistingWorkUnitsCollectionView.Filter = item =>
                 {
                     WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                    return vitem != null && vitem.Model.Product.Name.ToLowerInvariant().Contains(search.ToLowerInvariant());
+                    return vitem != null &&
+                           vitem.Model.Product.Name.ToLowerInvariant().Contains(search.ToLowerInvariant());
                 };
                 ExistingWorkUnitsProgressVisibility = Visibility.Hidden;
             });
@@ -492,7 +532,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 RequisitionWorkUnitsCollectionView.Filter = item =>
                 {
                     WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                    return vitem != null && vitem.Model.Product.Name.ToLowerInvariant().Contains(search.ToLowerInvariant());
+                    return vitem != null &&
+                           vitem.Model.Product.Name.ToLowerInvariant().Contains(search.ToLowerInvariant());
                 };
                 RequisitionWorkUnitsProgressVisibility = Visibility.Hidden;
             });
@@ -517,12 +558,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 WorkOrder = new WorkOrderWrapper(model);
                 WorkOrder.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
             });
 
             foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
             {
-                Application.Current.Dispatcher.Invoke(() => WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit)));
+                Application.Current.Dispatcher.Invoke(() =>
+                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit)));
             }
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
@@ -531,9 +573,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnSaveExecute()
         {
+            if (!IsNew) return;
             base.OnSaveExecute();
 
             WorkOrder.CreationDateTime = DateTime.Now;
+            
+            // TODO: Record areamovements
 
             foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
             {
@@ -543,15 +588,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 workOrderUnit.WorkUnit.LatestSupervisorId = WorkOrder.SupervisorEmployeeId;
             }
 
-            if (IsNew)
-            {
-                await _workOrderRepository.AddAsync(WorkOrder.Model);
-            }
-            else
-            {
-                await _workOrderRepository.SaveAsync(WorkOrder.Model);
-            }
-
+            await _workOrderRepository.AddAsync(WorkOrder.Model);
+            await CreateWorkOrderReport();
             HasChanges = false;
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
@@ -572,8 +610,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {
-                    Id = null,
-                    ViewModel = nameof(RequisitionViewModel),
+                    Id = _originWorkAreaId,
+                    ViewModel = nameof(WorkUnitViewModel),
                 });
         }
 
@@ -768,6 +806,81 @@ namespace SistemaMirno.UI.ViewModel.Detail
             CanGetWorkUnitsFromRequisition = workArea.IncomingConnections.Any(c => c.OriginWorkArea.IsFirst);
 
             await LoadAsync().ConfigureAwait(false);
+        }
+
+        private async Task CreateWorkOrderReport()
+        {
+            // Create a new report class with the Work Order data.
+            var workOrderReport = new WorkOrderReport
+            {
+                Id = WorkOrder.Id,
+                CreationDateTime = WorkOrder.CreationDateTime.ToString(),
+                DestinationWorkArea = WorkArea.Name,
+                Responsible = SelectedResponsible.FullName,
+                Supervisor = SelectedSupervisor.FullName,
+            };
+
+            // Create the reports for each Work Unit in the Work Order.
+            foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
+            {
+                var workUnit = workOrderUnit.WorkUnit;
+
+                // If there is already a work unit in the report, check to group the similar ones
+                // else just add the Work Unit.
+                if (workOrderReport.WorkUnits.Count > 0)
+                {
+                    var found = false;
+                    foreach (var workUnitReport in workOrderReport.WorkUnits.Where(workUnitReport => workUnitReport.Product == workUnit.Product.Name
+                        && workUnitReport.Material == workUnit.Material.Name
+                        && workUnitReport.Color == workUnit.Color.Name))
+                    {
+                        workUnitReport.Quantity++;
+                        found = true;
+                        break;
+                    }
+
+                    // If there wasn't any work unit with the same properties, add the work unit to the report.
+                    if (!found)
+                    {
+                        workOrderReport.WorkUnits.Add(new WorkUnitReport
+                        {
+                            Quantity = 1,
+                            Product = workUnit.Product.Name,
+                            Material = workUnit.Material.Name,
+                            Color = workUnit.Color.Name,
+                        });
+                    }
+                }
+                else
+                {
+                    workOrderReport.WorkUnits.Add(new WorkUnitReport
+                    {
+                        Quantity = 1,
+                        Product = workUnit.Product.Name,
+                        Material = workUnit.Material.Name,
+                        Color = workUnit.Color.Name,
+                    });
+                }
+            }
+
+            var rs = new ReportingService("http://127.0.0.1:5488", "admin", "mirno");
+            workOrderReport.Id = WorkOrder.Id;
+            var jsonString = JsonConvert.SerializeObject(workOrderReport);
+            var report = rs.RenderByNameAsync("workorder-main", jsonString).Result;
+
+            Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}\\WorkOrders");
+
+            var filename = $"{Directory.GetCurrentDirectory()}\\WorkOrders\\WorkOrder{WorkOrder.Id}.pdf";
+            var stream = new FileStream(filename, FileMode.Create);
+
+            report.Content.CopyTo(stream);
+            stream.Close();
+
+            ProcessStartInfo info = new ProcessStartInfo();
+            info.Verb = "print";
+            info.FileName = filename;
+
+            Process.Start(info);
         }
     }
 }

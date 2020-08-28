@@ -265,7 +265,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 WorkArea.IsFirst = false;
                 WorkArea.IsLast = false;
                 WorkArea.Position = "0";
-                WorkArea.ReportsInProgress = false;
+                WorkArea.ReportsInProcess = false;
                 WorkArea.ResponsibleRoleId = 0;
                 WorkArea.SupervisorRoleId = 0;
                 WorkArea.BranchId = 0;

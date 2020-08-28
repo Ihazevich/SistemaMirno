@@ -86,6 +86,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 WorkUnits.Add(SelectedExistingWorkUnit);
                 ExistingWorkUnits.Remove(SelectedExistingWorkUnit);
             });
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
         private bool OnRemoveWorkUnitCanExecute()

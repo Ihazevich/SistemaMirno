@@ -12,7 +12,7 @@ namespace SistemaMirno.UI.Data.Reports
         public string FromDate { get; set; }
         public string ToDate { get; set; }
         public string WorkArea { get; set; }
-        public int Total { get; set; }
+        public long Total { get; set; }
         public List<WorkUnitReport> WorkUnits { get; set; }
     }
 }

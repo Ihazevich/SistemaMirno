@@ -2,6 +2,13 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using jsreport.Client;
+using Newtonsoft.Json;
+using Prism.Commands;
+using Prism.Events;
+using SistemaMirno.UI.Data.Reports;
+using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Wrapper;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,26 +16,22 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using jsreport.Client;
 using MahApps.Metro.Controls.Dialogs;
-using Newtonsoft.Json;
-using Prism.Commands;
-using Prism.Events;
-using SistemaMirno.UI.Data.Reports;
-using SistemaMirno.UI.Data.Repositories;
-using SistemaMirno.UI.Wrapper;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 
 namespace SistemaMirno.UI.ViewModel.Reports
 {
     public class InProcessByWorkAreasViewModel : ViewModelBase
     {
-        private PropertyGroupDescription _workAreaName = new PropertyGroupDescription("WorkArea.Name");
-        private PropertyGroupDescription _colorName = new PropertyGroupDescription("Color.Name");
-        private PropertyGroupDescription _materialName = new PropertyGroupDescription("Material.Name");
-        private PropertyGroupDescription _productName = new PropertyGroupDescription("Product.Name");
+        private IWorkUnitRepository _workUnitRepository;
+
+        private PropertyGroupDescription _workAreaName = new PropertyGroupDescription("Model.CurrentWorkArea.Name");
+        private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
 
         private bool _includePrice = false;
         private bool _includeResponsible = false;
@@ -36,17 +39,20 @@ namespace SistemaMirno.UI.ViewModel.Reports
         private bool _includeClient = false;
 
         public InProcessByWorkAreasViewModel(
-                    IEventAggregator eventAggregator,
-                    IDialogCoordinator dialogCoordinator)
-            : base (eventAggregator, "En Proceso por Areas de Trabajo", dialogCoordinator)
+            IWorkUnitRepository workUnitRepository,
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Detalles de Unidad de Trabajo", dialogCoordinator)
         {
+            _workUnitRepository = workUnitRepository;
+
+            WorkUnits = new ObservableCollection<WorkUnitWrapper>();
+
             PrintReportCommand = new DelegateCommand(OnPrintReportExecute);
 
-            //WorkUnitsCollection = CollectionViewSource.GetDefaultView(WorkUnits);
+            WorkUnitsCollection = CollectionViewSource.GetDefaultView(WorkUnits);
             WorkUnitsCollection.GroupDescriptions.Add(_workAreaName);
             WorkUnitsCollection.GroupDescriptions.Add(_productName);
-            WorkUnitsCollection.GroupDescriptions.Add(_materialName);
-            WorkUnitsCollection.GroupDescriptions.Add(_colorName);
         }
 
         public ICommand PrintReportCommand { get; }
@@ -95,16 +101,23 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
         }
 
+        public ObservableCollection<WorkUnitWrapper> WorkUnits { get; set; }
 
         public ICollectionView WorkUnitsCollection { get; set; }
 
-        public override async Task LoadAsync(int? id = null)
+        public override async Task LoadAsync(int? id)
         {
+            WorkUnits.Clear();
+            var workUnits = await _workUnitRepository.GetWorkUnitsInProcessAsync();
+
+            foreach (var workUnit in workUnits)
+            {
+               Application.Current.Dispatcher.Invoke(() => WorkUnits.Add(new WorkUnitWrapper(workUnit)));
+            }
         }
 
         private async void OnPrintReportExecute()
         {
-            /*
             // Create a new report class to store the report data.
             var inProcessReport = new InProcessReport
             {
@@ -127,7 +140,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 };
 
                 // Select all work units in the current work area
-                var workUnits = WorkUnits.Where(w => w.WorkArea.Name == workArea.Name).ToList();
+                var workUnits = WorkUnits.Where(w => w.Model.CurrentWorkArea.Name == workArea.Name).ToList();
 
                 // Create the reports for each Work Unit in the Work Area
                 foreach (var workUnit in workUnits)
@@ -142,12 +155,12 @@ namespace SistemaMirno.UI.ViewModel.Reports
                         foreach (var workUnitReport in workAreaReport.WorkUnits)
                         {
                             // If there is a work unit in the report that has the same properties, just add to the quantity.
-                            if (workUnitReport.Product == workUnit.Product.Name
-                                && workUnitReport.Material == workUnit.Material.Name
-                                && workUnitReport.Color == workUnit.Color.Name)
+                            if (workUnitReport.Product == workUnit.Model.Product.Name
+                                && workUnitReport.Material == workUnit.Model.Material.Name
+                                && workUnitReport.Color == workUnit.Model.Color.Name)
                             {
                                 workUnitReport.Quantity++;
-                                workUnitReport.Price += workUnit.Product.ProductionPrice;
+                                workUnitReport.Price += workUnit.Model.Product.ProductionValue;
                                 found = true;
                                 break;
                             }
@@ -159,10 +172,10 @@ namespace SistemaMirno.UI.ViewModel.Reports
                             workAreaReport.WorkUnits.Add(new WorkUnitReport
                             {
                                 Quantity = 1,
-                                Product = workUnit.Product.Name,
-                                Material = workUnit.Material.Name,
-                                Color = workUnit.Color.Name,
-                                Price = workUnit.Product.ProductionPrice,
+                                Product = workUnit.Model.Product.Name,
+                                Material = workUnit.Model.Material.Name,
+                                Color = workUnit.Model.Color.Name,
+                                Price = workUnit.Model.Product.ProductionValue,
                                 IncludePrice = _includePrice,
                             });
                         }
@@ -172,16 +185,16 @@ namespace SistemaMirno.UI.ViewModel.Reports
                         workAreaReport.WorkUnits.Add(new WorkUnitReport
                         {
                             Quantity = 1,
-                            Product = workUnit.Product.Name,
-                            Material = workUnit.Material.Name,
-                            Color = workUnit.Color.Name,
-                            Price = workUnit.Product.ProductionPrice,
+                            Product = workUnit.Model.Product.Name,
+                            Material = workUnit.Model.Material.Name,
+                            Color = workUnit.Model.Color.Name,
+                            Price = workUnit.Model.Product.ProductionValue,
                             IncludePrice = _includePrice,
                         });
                     }
 
                     // Add the production price of the work unit to the area total.
-                    workAreaReport.Total += workUnit.Product.ProductionPrice;
+                    workAreaReport.Total += workUnit.Model.Product.ProductionValue;
                 }
 
                 // Add the area total production to the report total.
@@ -209,7 +222,6 @@ namespace SistemaMirno.UI.ViewModel.Reports
             info.FileName = filename;
 
             Process.Start(info);
-            */
         }
     }
 }

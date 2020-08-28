@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -40,6 +41,40 @@ namespace SistemaMirno.UI.Data.Repositories
             try
             {
                 return await Context.WorkAreas.FindAsync(id);
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
+
+        public async Task<List<WorkUnit>> GetWorkUnitsInProcessAsync()
+        {
+            try
+            {
+                return await Context.WorkUnits.Where(w=> w.Delivered == false && w.CurrentWorkArea.ReportsInProcess).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
+
+        public async Task<List<WorkArea>> GetWorkAreasThatReportInProcess()
+        {
+            try
+            {
+                return await Context.WorkAreas.Where(w => w.ReportsInProcess).ToListAsync();
             }
             catch (Exception e)
             {

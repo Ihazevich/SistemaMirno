@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using jsreport.Client;
@@ -18,31 +19,39 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Reports;
 using SistemaMirno.UI.Data.Repositories;
+using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Reports
 {
     public class ProductionByWorkAreaViewModel : ViewModelBase
     {
-        private PropertyGroupDescription _colorName = new PropertyGroupDescription("WorkUnit.Color.Name");
-        private PropertyGroupDescription _materialName = new PropertyGroupDescription("WorkUnit.Material.Name");
-        private PropertyGroupDescription _productName = new PropertyGroupDescription("WorkUnit.Product.Name");
-        
+        private IWorkAreaRepository _workAreaRepository;
+
+        private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.WorkUnit.Product.Name");
+
+        private WorkAreaWrapper _selectedWorkArea;
+
         private DateTime _startDate = DateTime.Today;
         private DateTime _endDate = DateTime.Today;
 
         private bool _areaPickerEnabled = false;
 
         public ProductionByWorkAreaViewModel(
-                    IEventAggregator eventAggregator,
-                    IDialogCoordinator dialogCoordinator)
-            : base (eventAggregator, "Produccion por Areas de Trabajo", dialogCoordinator)
+            IWorkAreaRepository workAreaRepository,
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
+            : base(eventAggregator, "Reporte de Produccion por Area", dialogCoordinator)
         {
+            _workAreaRepository = workAreaRepository;
+
+            WorkAreas = new ObservableCollection<WorkAreaWrapper>();
+            WorkOrderUnits = new ObservableCollection<WorkOrderUnitWrapper>();
+
             PrintReportCommand = new DelegateCommand(OnPrintReportExecute);
 
+            WorkUnitsCollection = CollectionViewSource.GetDefaultView(WorkOrderUnits);
             WorkUnitsCollection.GroupDescriptions.Add(_productName);
-            WorkUnitsCollection.GroupDescriptions.Add(_materialName);
-            WorkUnitsCollection.GroupDescriptions.Add(_colorName);
 
             MonthlySeriesCollection = new SeriesCollection();
             DailySeriesCollection = new SeriesCollection();
@@ -69,6 +78,25 @@ namespace SistemaMirno.UI.ViewModel.Reports
         public SeriesCollection DailySeriesCollection { get; set; }
 
         public ICommand PrintReportCommand { get; }
+
+        /// <summary>
+        /// Gets or sets the selected work area.
+        /// </summary>
+        public WorkAreaWrapper SelectedWorkArea
+        {
+            get => _selectedWorkArea;
+
+            set
+            {
+                _selectedWorkArea = value;
+                OnPropertyChanged();
+                SelectWorkUnits();
+            }
+        }
+
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; set; }
+
+        public ObservableCollection<WorkOrderUnitWrapper> WorkOrderUnits { get; set; }
 
         public ICollectionView WorkUnitsCollection { get; set; }
 
@@ -121,14 +149,19 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
         }
 
-        public override async Task LoadAsync(int? id = null)
+        public override async Task LoadAsync(int? id)
         {
-            return;
+            WorkAreas.Clear();
+            var workAreas = await _workAreaRepository.GetAllAsync();
+
+            foreach (var workArea in workAreas)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(new WorkAreaWrapper(workArea)));
+            }
         }
 
-        private async void OnPrintReportExecute()
+        private void OnPrintReportExecute()
         {
-            /*
             // Create a new report class to store the report data.
             var productionReport = new ProductionReport
             {
@@ -141,7 +174,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
             foreach (var workOrderUnit in WorkOrderUnits)
             {
-                var model = workOrderUnit.WorkUnit;
+                var model = workOrderUnit.Model.WorkUnit;
 
                 // If there is already a work unit in the area report, check to group the similar ones
                 // else just add the Work Unit.
@@ -151,12 +184,12 @@ namespace SistemaMirno.UI.ViewModel.Reports
                     foreach (var workUnitReport in productionReport.WorkUnits)
                     {
                         // If there is a work unit in the report that has the same properties, just add to the quantity.
-                        if (workUnitReport.Product == workOrderUnit.WorkUnit.Product.Name
-                            && workUnitReport.Material == workOrderUnit.WorkUnit.Material.Name
-                            && workUnitReport.Color == workOrderUnit.WorkUnit.Color.Name)
+                        if (workUnitReport.Product == workOrderUnit.Model.WorkUnit.Product.Name
+                            && workUnitReport.Material == workOrderUnit.Model.WorkUnit.Material.Name
+                            && workUnitReport.Color == workOrderUnit.Model.WorkUnit.Color.Name)
                         {
                             workUnitReport.Quantity++;
-                            workUnitReport.Price += workOrderUnit.WorkUnit.Product.ProductionPrice;
+                            workUnitReport.Price += workOrderUnit.Model.WorkUnit.Product.ProductionValue;
                             found = true;
                             break;
                         }
@@ -168,10 +201,10 @@ namespace SistemaMirno.UI.ViewModel.Reports
                         productionReport.WorkUnits.Add(new WorkUnitReport
                         {
                             Quantity = 1,
-                            Product = workOrderUnit.WorkUnit.Product.Name,
-                            Material = workOrderUnit.WorkUnit.Material.Name,
-                            Color = workOrderUnit.WorkUnit.Color.Name,
-                            Price = workOrderUnit.WorkUnit.Product.ProductionPrice,
+                            Product = workOrderUnit.Model.WorkUnit.Product.Name,
+                            Material = workOrderUnit.Model.WorkUnit.Material.Name,
+                            Color = workOrderUnit.Model.WorkUnit.Color.Name,
+                            Price = workOrderUnit.Model.WorkUnit.Product.ProductionValue,
                         });
                     }
                 }
@@ -180,15 +213,15 @@ namespace SistemaMirno.UI.ViewModel.Reports
                     productionReport.WorkUnits.Add(new WorkUnitReport
                     {
                         Quantity = 1,
-                        Product = workOrderUnit.WorkUnit.Product.Name,
-                        Material = workOrderUnit.WorkUnit.Material.Name,
-                        Color = workOrderUnit.WorkUnit.Color.Name,
-                        Price = workOrderUnit.WorkUnit.Product.ProductionPrice,
+                        Product = workOrderUnit.Model.WorkUnit.Product.Name,
+                        Material = workOrderUnit.Model.WorkUnit.Material.Name,
+                        Color = workOrderUnit.Model.WorkUnit.Color.Name,
+                        Price = workOrderUnit.Model.WorkUnit.Product.ProductionValue,
                     });
                 }
 
                 // Add the production price of the work unit to the report total.
-                productionReport.Total += workOrderUnit.WorkUnit.Product.ProductionPrice;
+                productionReport.Total += workOrderUnit.Model.WorkUnit.Product.ProductionValue;
 
             }
 
@@ -209,24 +242,32 @@ namespace SistemaMirno.UI.ViewModel.Reports
             info.FileName = filename;
 
             Process.Start(info);
-            */
         }
 
         private async void SelectWorkUnits()
         {
+            WorkOrderUnits.Clear();
+            if (SelectedWorkArea?.Model.IncomingWorkOrders == null)
+            {
+                return;
+            }
+
+            foreach (var workOrder in SelectedWorkArea.Model.IncomingWorkOrders)
+            {
+                if (workOrder.CreationDateTime <= StartDate || workOrder.CreationDateTime >= EndDate) continue;
+                foreach (var workOrderUnit in workOrder.WorkOrderUnits)
+                {
+                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit));
+                }
+            }
+
+            CalculateMonthlyProduction();
+            CalculateDailyProduction();
         }
 
         private bool ValidateDates()
         {
-            bool areDatesValid = false;
-
-            if (StartDate != null && EndDate != null)
-            {
-                if (StartDate.Date <= DateTime.Today.Date && EndDate.Date >= StartDate.Date)
-                {
-                    areDatesValid = true;
-                }
-            }
+            bool areDatesValid = StartDate.Date <= DateTime.Today.Date && EndDate.Date >= StartDate.Date;
 
             AreaPickerEnabled = areDatesValid;
             return areDatesValid;
@@ -234,19 +275,64 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
         private void CalculateMonthlyProduction()
         {
-            int[] monthlyProductions = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            long[] monthlyProductions = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+            foreach (var workOrderUnit in WorkOrderUnits)
+            {
+                monthlyProductions[workOrderUnit.Model.WorkOrder.CreationDateTime.Month - 1] += workOrderUnit.Model.WorkUnit.Product.ProductionValue;
+            }
 
             LineSeries lineSeries = new LineSeries
             {
                 Title = "Produccion total",
-                Values = new ChartValues<int>(monthlyProductions),
+                Values = new ChartValues<long>(monthlyProductions),
                 DataLabels = true,
                 LabelPoint = point => string.Format("{0:n0}", point.Y) + " Gs.",
             };
 
             MonthlySeriesCollection.Clear();
             MonthlySeriesCollection.Add(lineSeries);
+        }
+
+        private void CalculateDailyProduction()
+        {
+            // Make a list to store the current month daily productions and one to store the cummulative production
+            var dailyProductions = new List<long>(new long[DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month)]);
+            var dailyCummulative = new List<long>(new long[DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month)]);
+
+            foreach (var workOrderUnit in WorkOrderUnits)
+            {
+                if (workOrderUnit.Model.WorkOrder.CreationDateTime.Month == DateTime.Today.Month
+                    && workOrderUnit.Model.WorkOrder.CreationDateTime.Year == DateTime.Today.Year)
+                {
+                    dailyProductions[workOrderUnit.Model.WorkOrder.CreationDateTime.Day - 1] += workOrderUnit.Model.WorkUnit.Product.ProductionValue;
+                }
+            }
+
+            long cummulative = 0;
+            for (var i = 0; i < dailyCummulative.Count; i++)
+            {
+                cummulative += dailyProductions[i];
+                dailyCummulative[i] = cummulative;
+            }
+
+            var lineSeriesDaily = new LineSeries
+            {
+                Title = "Produccion diaria",
+                Values = new ChartValues<long>(dailyProductions),
+                LabelPoint = point => string.Format("{0:n0}", point.Y) + " Gs.",
+            };
+
+            var lineSeriesCummulative = new LineSeries
+            {
+                Title = "Produccion acumulada",
+                Values = new ChartValues<long>(dailyCummulative),
+                LabelPoint = point => string.Format("{0:n0}", point.Y) + " Gs.",
+            };
+
+            DailySeriesCollection.Clear();
+            DailySeriesCollection.Add(lineSeriesDaily);
+            DailySeriesCollection.Add(lineSeriesCummulative);
         }
     }
 }

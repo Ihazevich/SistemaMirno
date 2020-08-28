@@ -57,7 +57,7 @@ namespace SistemaMirno.UI.Wrapper
             set { SetValue(value); }
         }
 
-        public bool ReportsInProgress
+        public bool ReportsInProcess
         {
             get { return GetValue<bool>(); }
             set { SetValue(value); }

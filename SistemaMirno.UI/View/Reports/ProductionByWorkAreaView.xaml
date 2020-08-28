@@ -28,64 +28,34 @@
         <DataGrid Grid.Row="1" 
                   ItemsSource="{Binding WorkUnitsCollection}" 
                   AutoGenerateColumns="false" 
-                  SelectionMode="Extended"
-                  Margin="10,0,10,0">
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  Margin="5">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Producto" Binding="{Binding WorkUnit.Product.Name}"/>
-                <DataGridTextColumn Header="Material" Binding="{Binding WorkUnit.Material.Name}"/>
-                <DataGridTextColumn Header="Color" Binding="{Binding WorkUnit.Color.Name}"/>
-                <DataGridTextColumn Header="Valor de Produccion" Binding="{Binding WorkUnit.Product.ProductionPrice}"/>
+                <DataGridTextColumn Header="Producto" Binding="{Binding Model.WorkUnit.Product.Name}"/>
+                <DataGridTextColumn Header="Material" Binding="{Binding Model.WorkUnit.Material.Name}"/>
+                <DataGridTextColumn Header="Color" Binding="{Binding Model.WorkUnit.Color.Name}"/>
+                <DataGridTextColumn Header="Valor de Produccion" Binding="{Binding Model.WorkUnit.Product.ProductionValue}"/>
             </DataGrid.Columns>
             <DataGrid.GroupStyle>
-                <!-- Style for groups at top level. -->
                 <GroupStyle>
-                    <GroupStyle.ContainerStyle>
-                        <Style TargetType="{x:Type GroupItem}">
-                            <Setter Property="Margin" Value="0,0,0,5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander IsExpanded="False" BorderThickness="1,1,1,5">
-                                            <Expander.Header>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
-                                                </StackPanel>
-                                            </Expander.Header>
-                                            <Expander.Content>
-                                                <ItemsPresenter />
-                                            </Expander.Content>
-                                        </Expander>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
-                </GroupStyle>
-                <!-- Style for groups under the top level. -->
-                <GroupStyle>
-                    <GroupStyle.ContainerStyle>
-                        <Style TargetType="{x:Type GroupItem}">
-                            <Setter Property="Margin" Value="0,0,0,5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander IsExpanded="False" BorderThickness="1,1,1,5">
-                                            <Expander.Header>
-                                                <StackPanel Orientation="Horizontal" Background="LightGray">
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
-                                                </StackPanel>
-                                            </Expander.Header>
-                                            <Expander.Content>
-                                                <ItemsPresenter />
-                                            </Expander.Content>
-                                        </Expander>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <Expander IsExpanded="False" BorderThickness="1,1,1,5">
+                                <Expander.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
+                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
+                                    </StackPanel>
+                                </Expander.Header>
+                                <Expander.Content>
+                                    <VirtualizingStackPanel />
+                                </Expander.Content>
+                            </Expander>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
                 </GroupStyle>
             </DataGrid.GroupStyle>
         </DataGrid>

@@ -40,13 +40,13 @@ namespace SistemaMirno.Model
         public Role SupervisorRole { get; set; }
 
         [Required(ErrorMessage = "Requerido")]
-        public bool ReportsInProgress { get; set; }
-
-        [Required(ErrorMessage = "Requerido")]
         public bool IsFirst { get; set; }
 
         [Required(ErrorMessage = "Requerido")]
         public bool IsLast { get; set; }
+        
+        [Required(ErrorMessage = "Requerido")]
+        public bool ReportsInProcess { get; set; }
 
         [ForeignKey(nameof(WorkAreaMovement.WorkAreaId))]
         public virtual ICollection<WorkAreaMovement> WorkAreaMovements { get; set; } = new HashSet<WorkAreaMovement>();

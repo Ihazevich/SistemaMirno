@@ -12,9 +12,21 @@ namespace SistemaMirno.Model
     {
         [Required]
         public int WorkAreaId { get; set; }
-        
+
         [ForeignKey(nameof(WorkAreaId))]
         public virtual WorkArea WorkArea { get; set; }
+
+        [Required]
+        public int FromWorkAreaId { get; set; }
+        
+        [ForeignKey(nameof(FromWorkAreaId))]
+        public virtual WorkArea FromWorkArea { get; set; }
+
+        [Required]
+        public int ToWorkAreaId { get; set; }
+
+        [ForeignKey(nameof(ToWorkAreaId))]
+        public virtual WorkArea ToWorkArea { get; set; }
 
         [Required]
         public int WorkUnitId { get; set; }
@@ -48,11 +60,5 @@ namespace SistemaMirno.Model
 
         [Required]
         public bool IsTransfer { get; set; }
-
-        [Required]
-        public int OriginWorkAreaId { get; set; }
-
-        [ForeignKey(nameof(OriginWorkAreaId))]
-        public virtual WorkArea OriginWorkArea { get; set; }
     }
 }

@@ -69,6 +69,10 @@
                       Content="Es area final"
                       IsChecked="{Binding WorkArea.IsLast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Margin="5" />
+            <CheckBox Grid.Row="12" 
+                      Content="Reporta en proceso"
+                      IsChecked="{Binding WorkArea.ReportsInProcess, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Margin="5" />
             <!-- Column 2 -->
             <Label Grid.Column="1" Content="Conexiones" />
             <Grid Grid.Column="1" Grid.Row="1" >
