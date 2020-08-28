@@ -13,6 +13,7 @@ using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
@@ -114,8 +115,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             HasChanges = false;
-            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
-                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(UserViewModel),
+                });
         }
 
         /// <inheritdoc/>
@@ -128,14 +133,22 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override async void OnDeleteExecute()
         {
             await _userRepository.DeleteAsync(User.Model);
-            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
-                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(UserViewModel),
+                });
         }
 
         protected override void OnCancelExecute()
         {
-            EventAggregator.GetEvent<CloseDetailViewEvent<UserDetailViewModel>>()
-                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(UserViewModel),
+                });
         }
 
         private void User_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -158,6 +171,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             if (id.HasValue)
             {
                 await LoadDetailAsync(id.Value);
+                return;
             }
 
             IsNew = true;

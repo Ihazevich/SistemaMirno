@@ -39,6 +39,10 @@ namespace SistemaMirno.UI.ViewModel
             ProgressVisibility = Visibility.Visible;
             ViewVisibility = Visibility.Collapsed;
             DataGridIndex = -1;
+
+            EventAggregator.GetEvent<BroadcastSessionInfoEvent>()
+                .Subscribe(GetSessionInfo);
+            EventAggregator.GetEvent<AskSessionInfoEvent>().Publish();
         }
 
         protected IDialogCoordinator DialogCoordinator => _dialogCoordinator;
@@ -93,6 +97,11 @@ namespace SistemaMirno.UI.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand ExitView { get; }
+
+        private void GetSessionInfo(SessionInfo obj)
+        {
+            SessionInfo = obj;
+        }
 
         public abstract Task LoadAsync(int? id = null);
 

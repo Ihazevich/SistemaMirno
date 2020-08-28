@@ -10,7 +10,10 @@ using Prism.Events;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.View.Main;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.ViewModel.General;
+using SistemaMirno.UI.ViewModel.Main;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
@@ -78,8 +81,24 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             HasChanges = false;
-            EventAggregator.GetEvent<CloseDetailViewEvent<BranchDetailViewModel>>()
-                .Publish();
+            if (SessionInfo.Branch != null)
+            {
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs
+                    {
+                        Id = null,
+                        ViewModel = nameof(BranchViewModel),
+                    });
+            }
+            else
+            {   
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs
+                    {
+                        Id = null,
+                        ViewModel = nameof(BranchSelectionViewModel),
+                    });
+            }
         }
 
         /// <inheritdoc/>
@@ -92,14 +111,22 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override async void OnDeleteExecute()
         {
             await _branchRepository.DeleteAsync(Branch.Model);
-            EventAggregator.GetEvent<CloseDetailViewEvent<BranchDetailViewModel>>()
-                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(BranchViewModel),
+                });
         }
 
         protected override void OnCancelExecute()
         {
-            EventAggregator.GetEvent<CloseDetailViewEvent<BranchDetailViewModel>>()
-                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(BranchViewModel),
+                });
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

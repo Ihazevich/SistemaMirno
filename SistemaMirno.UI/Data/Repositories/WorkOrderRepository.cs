@@ -148,5 +148,22 @@ namespace SistemaMirno.UI.Data.Repositories
                 return null;
             }
         }
+
+        public async Task<List<WorkUnit>> GetWorkUnitsByIdAsync(ICollection<int> idCollection)
+        {
+            try
+            {
+                return await Context.WorkUnits.Where(w => idCollection.Contains(w.Id)).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
     }
 }

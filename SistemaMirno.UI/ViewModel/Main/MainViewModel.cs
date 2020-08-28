@@ -386,28 +386,16 @@ namespace SistemaMirno.UI.ViewModel.Main
         {
             var sessionInfo = SessionInfo;
             sessionInfo.UserLoggedIn = true;
-            sessionInfo.User = new UserWrapper
-            {
-                Model =
-                {
-                    Username = args.Username,
-                    HasAccessToProduction = args.HasAccessToProduction,
-                    HasAccessToLogistics = args.HasAccessToLogistics,
-                    HasAccessToSales = args.HasAccessToSales,
-                    HasAccessToAccounting = args.HasAccessToAccounting,
-                    HasAccessToHumanResources = args.HasAccessToHumanResources,
-                    IsSystemAdmin = args.IsSystemAdmin,
-                },
-            };
+            sessionInfo.User = args.User;
 
             SessionInfo = sessionInfo;
 
-            AccountingVisibility = args.HasAccessToAccounting ? Visibility.Visible : Visibility.Collapsed;
-            ProductionVisibility = args.HasAccessToProduction ? Visibility.Visible : Visibility.Collapsed;
-            SalesVisibility = args.HasAccessToSales ? Visibility.Visible : Visibility.Collapsed;
-            HumanResourcesVisibility = args.HasAccessToHumanResources ? Visibility.Visible : Visibility.Collapsed;
-            SysAdminVisibility = args.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
-            ProductsVisibility = args.HasAccessToSales || args.HasAccessToProduction
+            AccountingVisibility = args.User.Model.HasAccessToAccounting ? Visibility.Visible : Visibility.Collapsed;
+            ProductionVisibility = args.User.Model.HasAccessToProduction ? Visibility.Visible : Visibility.Collapsed;
+            SalesVisibility = args.User.Model.HasAccessToSales ? Visibility.Visible : Visibility.Collapsed;
+            HumanResourcesVisibility = args.User.Model.HasAccessToHumanResources ? Visibility.Visible : Visibility.Collapsed;
+            SysAdminVisibility = args.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
+            ProductsVisibility = args.User.Model.HasAccessToSales || args.User.Model.HasAccessToProduction
                 ? Visibility.Visible
                 : Visibility.Collapsed;
 

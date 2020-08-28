@@ -26,6 +26,10 @@
                         Command="{Binding CreateNewCommand}"
                         Width="250" 
                         Margin="10" />
+                <Button Content="Ver Detalles"
+                        Command="{Binding OpenDetailCommand}"
+                        Width="250" 
+                        Margin="10" />
                 <Button Content="Salir" 
                         Command="{Binding ExitView}"
                         Width="250" 
@@ -36,23 +40,23 @@
                       SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
+                      CanUserReorderColumns="True"
                       SelectionMode="Single"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       SelectedIndex="{Binding DataGridIndex, Mode=TwoWay}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Usuario" Binding="{Binding Username}"/>
-                    <DataGridTextColumn Header="Empleado" Binding="{Binding Employee.FullName}"/>
-                    <DataGridCheckBoxColumn Header="Tiene Acceso a Ventas" Binding="{Binding HasAccessToSales}"/>
-                    <DataGridCheckBoxColumn Header="Tiene Acceso a Produccion" Binding="{Binding HasAccessToProduction}"/>
-                    <DataGridCheckBoxColumn Header="Tiene Acceso a Recursos Humanos" Binding="{Binding HasAccessToHumanResources}"/>
-                    <DataGridCheckBoxColumn Header="Tiene Acceso a Contabilidad" Binding="{Binding HasAccessToAccounting}"/>
-                    <DataGridCheckBoxColumn Header="Tiene Acceso a Logistica" Binding="{Binding HasAccessToLogistics}"/>
-                    <DataGridCheckBoxColumn Header="Es Administrador de Sistema" Binding="{Binding IsSystemAdmin}"/>
+                    <DataGridTextColumn Header="Empleado" Binding="{Binding Model.Employee.FullName}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Ventas" Binding="{Binding Model.HasAccessToSales}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Produccion" Binding="{Binding Model.HasAccessToProduction}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Recursos Humanos" Binding="{Binding Model.HasAccessToHumanResources}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Contabilidad" Binding="{Binding Model.HasAccessToAccounting}"/>
+                    <DataGridCheckBoxColumn Header="Tiene Acceso a Logistica" Binding="{Binding Model.HasAccessToLogistics}"/>
+                    <DataGridCheckBoxColumn Header="Es Administrador de Sistema" Binding="{Binding Model.IsSystemAdmin}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
         <mah:ProgressRing Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" Width="250" Height="30"/>
-        <ContentControl Grid.Row="3" Content="{Binding UserDetailViewModel}" Margin="5" />
     </Grid>
 </UserControl>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Annotations;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
@@ -14,6 +15,8 @@ using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.View.Detail;
+using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Main
@@ -32,18 +35,25 @@ namespace SistemaMirno.UI.ViewModel.Main
             _branchRepository = branchRepository;
 
             Branches = new ObservableCollection<BranchWrapper>();
+
             SelectBranchCommand = new DelegateCommand(OnSelectBranchExecute, OnSelectBranchCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute);
+            AddBranchCommand = new DelegateCommand(OnAddBranchExecute);
 
-            EventAggregator.GetEvent<BroadcastSessionInfoEvent>()
-                .Subscribe(GetSessionInfo);
-            EventAggregator.GetEvent<AskSessionInfoEvent>().Publish();
         }
 
-        private void GetSessionInfo(SessionInfo obj)
+        private void OnAddBranchExecute()
         {
-            SessionInfo = obj;
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    ViewModel = nameof(BranchDetailViewModel),
+                });
         }
+
+        public Visibility NewBranchButtonVisibility => SessionInfo.User != null && SessionInfo.User.Model.IsSystemAdmin
+            ? Visibility.Visible
+            : Visibility.Collapsed;
 
         private void OnCancelExecute()
         {
@@ -87,18 +97,17 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public ICommand CancelCommand { get; }
 
+        public ICommand AddBranchCommand { get; }
+
         public override async Task LoadAsync(int? id = null)
         {
             Branches.Clear();
 
             var branches = await _branchRepository.GetAllAsync();
 
-            foreach (var branch in branches)
+            foreach (var branch in branches.Where(branch => SessionInfo.User.Model.IsSystemAdmin || SessionInfo.User.Model.Employee.Roles.Select(r => r.BranchId).Contains(branch.Id)))
             {
-                if (SessionInfo.User.Model.IsSystemAdmin || SessionInfo.Branch.Name == branch.Name)
-                {
-                    Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
-                }
+                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
             }
 
             Application.Current.Dispatcher.Invoke(() =>

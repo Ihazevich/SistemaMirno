@@ -218,6 +218,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _canGetWorkUnitsFromRequisition = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(AddRequisitionWorkUnitVisibility));
             }
         }
 
@@ -579,7 +580,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             WorkOrder.CreationDateTime = DateTime.Now;
             
             // TODO: Record areamovements
-
+            
             foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
             {
                 workOrderUnit.Finished = false;
@@ -656,48 +657,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 return;
             }
 
-            await LoadMaterials();
-            await LoadColors();
-            await LoadProducts();
-
-            await LoadExistingWorkUnits();
-            if (CanGetWorkUnitsFromRequisition)
-            {
-                await LoadRequisitionWorkUnits();
-            }
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                WorkOrder = new WorkOrderWrapper();
-                WorkOrder.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-                WorkOrder.CreationDateTime = DateTime.Now;
-                WorkOrder.Observations = string.Empty;
-                WorkOrder.ResponsibleEmployeeId = 0;
-                WorkOrder.SupervisorEmployeeId = 0;
-                WorkOrder.DestinationWorkAreaId = WorkArea.Id;
-                WorkOrder.OriginWorkAreaId = _originWorkAreaId;
-
-                IsNew = true;
-                Quantity = string.Empty;
-
-                NewWorkUnit = new WorkUnitWrapper();
-                NewWorkUnit.PropertyChanged += NewWorkUnit_PropertyChanged;
-                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
-
-                NewWorkUnit.ProductId = 0;
-                NewWorkUnit.MaterialId = 0;
-                NewWorkUnit.ColorId = 0;
-                NewWorkUnit.Delivered = false;
-                NewWorkUnit.CreationDate = DateTime.Now;
-                NewWorkUnit.TotalWorkTime = 0;
-                NewWorkUnit.LatestResponsibleId = null;
-                NewWorkUnit.LatestSupervisorId = null;
-                NewWorkUnit.CurrentWorkAreaId = WorkArea.Id;
-                NewWorkUnit.Model.CurrentWorkArea = WorkArea.Model;
-                NewWorkUnit.Details = string.Empty;
-            });
 
             await base.LoadDetailAsync().ConfigureAwait(false);
         }
@@ -772,7 +731,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public async Task CreateNewWorkOrder(int destinationWorkAreaId, int originWorkAreaId, IEnumerable<WorkUnitWrapper> workUnits )
+        public async Task CreateNewWorkOrder(int destinationWorkAreaId, int originWorkAreaId, IEnumerable<WorkUnitWrapper> movingWorkUnits)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -787,23 +746,71 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             var workArea = await _workOrderRepository.GetWorkAreaAsync(destinationWorkAreaId);
 
-            Application.Current.Dispatcher.Invoke(() => WorkArea = new WorkAreaWrapper(workArea));
-
-            if (workUnits != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
+                WorkArea = new WorkAreaWrapper(workArea);
+
+                WorkOrder = new WorkOrderWrapper();
+                WorkOrder.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                WorkOrder.CreationDateTime = DateTime.Now;
+                WorkOrder.Observations = string.Empty;
+                WorkOrder.ResponsibleEmployeeId = 0;
+                WorkOrder.SupervisorEmployeeId = 0;
+                WorkOrder.DestinationWorkAreaId = WorkArea.Id;
+                WorkOrder.OriginWorkAreaId = _originWorkAreaId;
+
+                IsNew = true;
+                Quantity = string.Empty;
+
+                NewWorkUnit = new WorkUnitWrapper();
+                NewWorkUnit.PropertyChanged += NewWorkUnit_PropertyChanged;
+                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
+
+                NewWorkUnit.ProductId = 0;
+                NewWorkUnit.MaterialId = 0;
+                NewWorkUnit.ColorId = 0;
+                NewWorkUnit.Delivered = false;
+                NewWorkUnit.CreationDate = DateTime.Now;
+                NewWorkUnit.TotalWorkTime = 0;
+                NewWorkUnit.LatestResponsibleId = null;
+                NewWorkUnit.LatestSupervisorId = null;
+                NewWorkUnit.CurrentWorkAreaId = WorkArea.Id;
+                NewWorkUnit.Model.CurrentWorkArea = WorkArea.Model;
+                NewWorkUnit.Details = string.Empty;
+            });
+            
+            if (movingWorkUnits != null)
+            {
+                var idList = movingWorkUnits.Select(w => w.Id).ToList();
+
+                var workUnits = await _workOrderRepository.GetWorkUnitsByIdAsync(idList);
+
                 foreach (var workUnit in workUnits)
                 {
                     var workOrderUnit = new WorkOrderUnit()
                     {
-                        WorkUnit = workUnit.Model,
+                        WorkUnit = workUnit,
                     };
 
+                    WorkOrder.Model.WorkOrderUnits.Add(workOrderUnit);
                     Application.Current.Dispatcher.Invoke(() => WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit)));
                 }
             }
 
             // Check if the current work area can receive units from requisitions (the first work area)
             CanGetWorkUnitsFromRequisition = workArea.IncomingConnections.Any(c => c.OriginWorkArea.IsFirst);
+
+            await LoadMaterials();
+            await LoadColors();
+            await LoadProducts();
+
+            await LoadExistingWorkUnits();
+            if (CanGetWorkUnitsFromRequisition)
+            {
+                await LoadRequisitionWorkUnits();
+            }
 
             await LoadAsync().ConfigureAwait(false);
         }
@@ -821,9 +828,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             };
 
             // Create the reports for each Work Unit in the Work Order.
-            foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
+            foreach (var workOrderUnit in WorkOrderUnits)
             {
-                var workUnit = workOrderUnit.WorkUnit;
+                var workUnit = workOrderUnit.Model.WorkUnit;
 
                 // If there is already a work unit in the report, check to group the similar ones
                 // else just add the Work Unit.

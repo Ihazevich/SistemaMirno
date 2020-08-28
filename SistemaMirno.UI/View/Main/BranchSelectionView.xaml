@@ -40,11 +40,16 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Seleccionar"
+                <Button Content="Nueva Sucursal"
+                        Visibility="{Binding NewBranchButtonVisibility}"
+                        Command="{Binding AddBranchCommand}"
+                        Margin="10"/>
+                <Button Grid.Column="1" Content="Seleccionar"
                         Command="{Binding SelectBranchCommand}"
                         Margin="10"/>
-                <Button Grid.Column="1" Content="Cancelar"
+                <Button Grid.Column="2" Content="Cancelar"
                         Command="{Binding CancelCommand}"
                         Margin="10"/>
             </Grid>

@@ -100,13 +100,19 @@ namespace SistemaMirno.UI.ViewModel.Main
                 EventAggregator.GetEvent<UserChangedEvent>()
                     .Publish(new UserChangedEventArgs
                     {
-                        Username = User.Username,
-                        HasAccessToAccounting = true,
-                        HasAccessToLogistics = true,
-                        HasAccessToProduction = true,
-                        HasAccessToSales = true,
-                        HasAccessToHumanResources = true,
-                        IsSystemAdmin = true,
+                        User = new UserWrapper
+                        {
+                            Model = new User
+                            {
+                                Username = User.Username,
+                                HasAccessToAccounting = true,
+                                HasAccessToLogistics = true,
+                                HasAccessToProduction = true,
+                                HasAccessToSales = true,
+                                HasAccessToHumanResources = true,
+                                IsSystemAdmin = true,
+                            },
+                        },
                     });
 
                 return;
@@ -123,14 +129,7 @@ namespace SistemaMirno.UI.ViewModel.Main
                     EventAggregator.GetEvent<UserChangedEvent>()
                         .Publish(new UserChangedEventArgs
                         {
-                            Username = User.Username,
-                            EmployeeFullName = user.Model.Employee.FullName,
-                            HasAccessToAccounting = user.Model.HasAccessToAccounting,
-                            HasAccessToProduction = user.Model.HasAccessToProduction,
-                            HasAccessToLogistics = user.Model.HasAccessToLogistics,
-                            HasAccessToSales = user.Model.HasAccessToSales,
-                            HasAccessToHumanResources = user.Model.HasAccessToHumanResources,
-                            IsSystemAdmin = user.Model.IsSystemAdmin,
+                            User = user,
                         });
                 }
             }

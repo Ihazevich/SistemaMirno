@@ -2,6 +2,9 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using SistemaMirno.Model;
+using SistemaMirno.UI.Wrapper;
+
 namespace SistemaMirno.UI.Event
 {
     /// <summary>
@@ -9,14 +12,6 @@ namespace SistemaMirno.UI.Event
     /// </summary>
     public struct UserChangedEventArgs
     {
-        public int UserId { get; set; }
-        public string Username { get; set; }
-        public string EmployeeFullName { get; set; }
-        public bool IsSystemAdmin { get; set; }
-        public bool HasAccessToSales { get; set; }
-        public bool HasAccessToAccounting { get; set; }
-        public bool HasAccessToProduction { get; set; }
-        public bool HasAccessToLogistics { get; set; }
-        public bool HasAccessToHumanResources { get; set; }
+        public UserWrapper User { get; set; }
     }
 }

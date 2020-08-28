@@ -11,6 +11,7 @@ using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
@@ -27,13 +28,13 @@ namespace SistemaMirno.UI.ViewModel.General
         private WorkUnitWrapper _selectedWorkAreaWorkUnit;
         private WorkUnitWrapper _selectedWorkOrderWorkUnit;
         private WorkAreaWrapper _workArea;
-        private WorkAreaConnectionWrapper _selectedWorkAreaConnection;
+        private WorkAreaConnection _selectedWorkAreaConnection;
 
         private string _workAreaWorkUnitProductFilter;
         private string _workAreaWorkUnitMaterialFilter;
         private string _workAreaWorkUnitColorFilter;
         private string _workAreaWorkUnitClientFilter;
-
+        
         private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
 
         public WorkUnitViewModel(
@@ -53,22 +54,109 @@ namespace SistemaMirno.UI.ViewModel.General
             WorkAreaCollectionView.GroupDescriptions.Add(_productName);
             WorkOrderCollectionView.GroupDescriptions.Add(_productName);
 
-            NewWorkOrderCommand = new DelegateCommand(OnNewWorkOrderExecute, OnNewWorkOrderCanExecute);
+            NewWorkOrderCommand = new DelegateCommand<object>(OnNewWorkOrderExecute, OnNewWorkOrderCanExecute);
+            OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
+            AddWorkUnitCommand = new DelegateCommand(OnAddWorkUnitCommandExecute, OnAddWorkUnitCommandCanExecute);
+            RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
         }
 
-        private bool OnNewWorkOrderCanExecute()
+        public string MoveOrderButtonText => SelectedWorkAreaConnection != null
+            ? $"Trasladar a {SelectedWorkAreaConnection.DestinationWorkArea.Name}"
+            : "Trasladar";
+
+        private bool OnRemoveWorkUnitCanExecute()
         {
-            return WorkArea != null && WorkArea.Model.IncomingConnections.Count > 0;
+            return SelectedWorkOrderWorkUnit != null;
         }
 
-        private void OnNewWorkOrderExecute()
+        private bool OnAddWorkUnitCommandCanExecute()
         {
-            EventAggregator.GetEvent<NewWorkOrderEvent>()
-                .Publish(new NewWorkOrderEventArgs()
+            return SelectedWorkAreaWorkUnit != null;
+        }
+
+        private void OnRemoveWorkUnitExecute()
+        {
+            while (SelectedWorkOrderWorkUnit != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    DestinationWorkAreaId = WorkArea.Id,
-                    OriginWorkAreaId = WorkArea.Id,
+                    WorkAreaWorkUnits.Add(SelectedWorkOrderWorkUnit);
+                    WorkOrderWorkUnits.Remove(SelectedWorkOrderWorkUnit);
                 });
+            }
+        }
+
+        private void OnAddWorkUnitCommandExecute()
+        {
+            while (SelectedWorkAreaWorkUnit != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    WorkOrderWorkUnits.Add(SelectedWorkAreaWorkUnit);
+                    WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit);
+                });
+            }
+        }
+
+        private void OnOpenWorkOrderViewExecute()
+        {
+            //Todo
+        }
+
+
+        private bool OnNewWorkOrderCanExecute(object args)
+        {
+            if (WorkArea != null)
+            {
+                switch (args.ToString())
+                {
+                    case "New":
+                        if (WorkArea.Model.IncomingConnections != null)
+                        {
+                            return WorkArea.Model.IncomingConnections.Count > 0;
+                        }
+
+                        return false;
+
+                    case "Move":
+                        if (WorkArea.Model.OutgoingConnections != null)
+                        {
+                            return WorkOrderWorkUnits.Count > 0 && SelectedWorkAreaConnection != null && WorkArea.Model.OutgoingConnections.Count > 0;
+                        }
+
+                        return false;
+
+                    default:
+                        return false;
+                }
+            }
+
+            return false;
+        }
+
+        private void OnNewWorkOrderExecute(object args)
+        {
+            switch (args.ToString())
+            {
+                case "New":
+                    EventAggregator.GetEvent<NewWorkOrderEvent>()
+                        .Publish(new NewWorkOrderEventArgs()
+                        {
+                            DestinationWorkAreaId = WorkArea.Id,
+                            OriginWorkAreaId = WorkArea.Id,
+                        });
+                    break;
+
+                case "Move":
+                    EventAggregator.GetEvent<NewWorkOrderEvent>()
+                        .Publish(new NewWorkOrderEventArgs()
+                        {
+                            DestinationWorkAreaId = SelectedWorkAreaConnection.DestinationWorkAreaId,
+                            OriginWorkAreaId = WorkArea.Id,
+                            WorkUnits = WorkOrderWorkUnits,
+                        });
+                    break;
+            }
         }
 
         public string WorkAreaWorkUnitProductFilter
@@ -127,11 +215,11 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _workArea = value;
                 OnPropertyChanged();
-                ((DelegateCommand)NewWorkOrderCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
             }
         }
 
-        public WorkAreaConnectionWrapper SelectedWorkAreaConnection
+        public WorkAreaConnection SelectedWorkAreaConnection
         {
             get => _selectedWorkAreaConnection;
 
@@ -139,6 +227,32 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _selectedWorkAreaConnection = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(MoveOrderButtonText));
+                ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public WorkUnitWrapper SelectedWorkAreaWorkUnit
+        {
+            get => _selectedWorkAreaWorkUnit;
+
+            set
+            {
+                _selectedWorkAreaWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public WorkUnitWrapper SelectedWorkOrderWorkUnit
+        {
+            get => _selectedWorkOrderWorkUnit;
+
+            set
+            {
+                _selectedWorkOrderWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -229,6 +343,12 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public ICommand NewWorkOrderCommand { get; }
 
+        public ICommand OpenWorkOrderViewCommand { get; }
+
+        public ICommand AddWorkUnitCommand { get; }
+
+        public ICommand RemoveWorkUnitCommand { get; }
+
         public override async Task LoadAsync(int? id = null)
         {
             if (id.HasValue)
@@ -236,20 +356,22 @@ namespace SistemaMirno.UI.ViewModel.General
                 WorkAreaWorkUnits.Clear();
                 _workUnitRepository = _workAreaRepositoryCreator();
 
-                var workArea = await _workUnitRepository.GetWorkAreaById(id.Value);
-
-                Application.Current.Dispatcher.Invoke(() => WorkArea = new WorkAreaWrapper(workArea));
-
-                foreach (var workUnit in workArea.WorkUnits)
+                try
                 {
-                    Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Add(new WorkUnitWrapper(workUnit)));
+                    await LoadWorkArea(id.Value);
+                }
+                catch (Exception ex)
+                {
+                    EventAggregator.GetEvent<ShowDialogEvent>()
+                        .Publish(new ShowDialogEventArgs
+                        {
+                            Message = ex.Message,
+                        });
                 }
 
-                foreach (var connection in workArea.OutgoingConnections)
-                {
-                    Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection)));
-                }
-
+                await LoadWorkUnits(id.Value);
+                await LoadConnections(id.Value);
+                    
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     ProgressVisibility = Visibility.Collapsed;
@@ -260,6 +382,33 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 EventAggregator.GetEvent<ChangeViewEvent>()
                     .Publish(new ChangeViewEventArgs());
+            }
+        }
+
+        private async Task LoadWorkArea(int id)
+        {
+            var workArea = await _workUnitRepository.GetWorkAreaById(id);
+
+            Application.Current.Dispatcher.Invoke(() => WorkArea = new WorkAreaWrapper(workArea));
+        }
+
+        private async Task LoadWorkUnits(int id)
+        {
+            var workUnits = await _workUnitRepository.GetAllWorkUnitsCurrentlyInWorkArea(id);
+
+            foreach (var workUnit in workUnits)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Add(new WorkUnitWrapper(workUnit)));
+            }
+        }
+
+        private async Task LoadConnections(int id)
+        {
+            var connections = await _workUnitRepository.GetWorkAreaOutgoingConnections(id);
+
+            foreach (var connection in connections)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection)));
             }
         }
     }

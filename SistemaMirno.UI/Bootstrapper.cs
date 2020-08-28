@@ -81,8 +81,10 @@ namespace SistemaMirno.UI
             builder.RegisterType<ProductionByWorkAreaViewModel>()
                 .Keyed<IViewModelBase>(nameof(ProductionByWorkAreaViewModel));
 
-            builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
-            builder.RegisterType<BranchDetailViewModel>().As<IBranchDetailViewModel>();
+            builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(UserDetailViewModel));
+            builder.RegisterType<BranchDetailViewModel>().As<IBranchDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(BranchDetailViewModel));
             builder.RegisterType<RoleDetailViewModel>().As<IRoleDetailViewModel>();
             builder.RegisterType<EmployeeDetailViewModel>().As<IEmployeeDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(EmployeeDetailViewModel));

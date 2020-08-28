@@ -13,5 +13,6 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         Task<List<WorkUnit>> GetExistingWorkUnits(ICollection<WorkAreaConnection> incomingConnections);
         Task<List<Employee>> GetEmployeesWithRoleIdAsync(int roleId);
         Task<List<WorkUnit>> GetRequisitionWorkUnits();
+        Task<List<WorkUnit>> GetWorkUnitsByIdAsync(ICollection<int> idCollection);
     }
 }

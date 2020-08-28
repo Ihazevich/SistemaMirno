@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<InfoWarnings>
+  <Info>Begin full analysis with NDepend v2020.1.2</Info>
+  <Warning>Evaluation 4 days left.
+You can ask for evaluation extension if required from the menu Help then License Information.</Warning>
+  <Info>Visual Studio solution file resolved to absolute file path: from    {.\SistemaMirno.sln}    to    {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.sln}</Info>
+  <Info>Output directory resolved to absolute directory path: C:\Users\ihaze\source\repos\SistemaMirno\NDependOut</Info>
+  <Info>Compare with analysis result obtained on 2020 August - 18 Tuesday 09:49  (which is the analysis result with date closest to 30 days ago)</Info>
+  <Info>.NET Assemblies resolved from the Visual Studio solution file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.sln}
+   C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\bin\Debug\SistemaMirno.UI.exe
+   C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.DataAccess\bin\Debug\SistemaMirno.DataAccess.dll
+   C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.Model\bin\Debug\SistemaMirno.Model.dll</Info>
+  <Info>.NET Assembly filtered out from the Visual Studio solution file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.sln}
+   SistemaMirno.UITests</Info>
+  <Info>Concurrent mode</Info>
+  <Info>.NET Assemblies loaded from {C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319} 
+   System.Core.dll   v4.0.0.0
+   System.ComponentModel.DataAnnotations.dll   v4.0.0.0
+   System.Xaml.dll   v4.0.0.0
+   System.dll   v4.0.0.0
+   mscorlib.dll   v4.0.0.0</Info>
+  <Info>.NET Assemblies loaded from {C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\WPF} 
+   PresentationCore.dll   v4.0.0.0
+   WindowsBase.dll   v4.0.0.0
+   PresentationFramework.dll   v4.0.0.0</Info>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Wrapper\WorkAreaWrapper.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Wrapper\WorkOrderUnitWrapper.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Reports\InProcessByWorkAreasViewModel.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Reports\ProductionByWorkAreaViewModel.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\General\WorkUnitViewModel.cs} (last modified 27 Aug 2020 18:09:45) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\EmployeeDetailViewModel.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\RequisitionDetailViewModel.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\WorkAreaDetailViewModel.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\WorkOrderDetailViewModel.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\WorkOrderRepository.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\WorkUnitRepository.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Reports\ProductionReport.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Reports\WorkUnitReport.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\Interfaces\IWorkUnitRepository.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Data\Repositories\Interfaces\IWorkOrderRepository.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Properties\AssemblyInfo.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.UI} (last modified 27 Aug 2020 17:33:28) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.DataAccess\MirnoDbContext.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.DataAccess} (last modified 27 Aug 2020 16:49:24) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.DataAccess\Properties\AssemblyInfo.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.DataAccess} (last modified 27 Aug 2020 16:49:24) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.Model\WorkArea.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.Model} (last modified 27 Aug 2020 16:49:22) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.Model\WorkAreaMovement.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.Model} (last modified 27 Aug 2020 16:49:22) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.Model\WorkOrder.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.Model} (last modified 27 Aug 2020 16:49:22) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.Model\Properties\AssemblyInfo.cs} (last modified 27 Aug 2020 17:44:43) and the PDB file of the assembly {SistemaMirno.Model} (last modified 27 Aug 2020 16:49:22) are not in-sync.</Warning>
+  <Info>278 source files parsed ; all source files found ; 22 source files not in-sync with PDB</Info>
+  <Info>0 code rule has been extracted from code.</Info>
+  <Info>No dependency cycle detected in assemblies referencement graph.</Info>
+  <Info>Do merge code generated by compiler into application code.</Info>
+  <Info>No SuppressMessageAttribute found in the analyzed code base. Since NDepend v2018.2 SuppressMessageAttribute can be used to suppress NDepend issues. Don't forget to set in your projects the compilation symbol CODE_ANALYSIS to use this attribute to suppress NDepend issues.</Info>
+  <Info>Start log trend metrics values out-of-process.</Info>
+</InfoWarnings>

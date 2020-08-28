@@ -39,12 +39,14 @@
                 </Grid.RowDefinitions>
                 <Label Content="Responsable"/>
                 <ComboBox Grid.Row="1" ItemsSource="{Binding Responsibles}"
+                          SelectedItem="{Binding SelectedResponsible}"
                           SelectedValuePath="Id"
                           DisplayMemberPath="Model.FullName"
                           SelectedValue="{Binding WorkOrder.ResponsibleEmployeeId, Mode=TwoWay}"
                           Margin="5"/>
                 <Label Grid.Row="2" Content="Supervisor"/>
                 <ComboBox Grid.Row="3" ItemsSource="{Binding Supervisors}"
+                          SelectedItem="{Binding SelectedSupervisor}"
                           SelectedValuePath="Id"
                           DisplayMemberPath="Model.FullName"
                           SelectedValue="{Binding WorkOrder.SupervisorEmployeeId, Mode=TwoWay}"

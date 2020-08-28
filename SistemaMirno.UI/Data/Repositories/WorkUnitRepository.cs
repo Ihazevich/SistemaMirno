@@ -57,7 +57,8 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.WorkUnits.Where(w=> w.Delivered == false && w.CurrentWorkArea.ReportsInProcess).ToListAsync();
+                return await Context.WorkUnits.Where(w => w.Delivered == false && w.CurrentWorkArea.ReportsInProcess)
+                    .ToListAsync();
             }
             catch (Exception e)
             {
@@ -75,6 +76,23 @@ namespace SistemaMirno.UI.Data.Repositories
             try
             {
                 return await Context.WorkAreas.Where(w => w.ReportsInProcess).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
+
+        public async Task<List<WorkAreaConnection>> GetWorkAreaOutgoingConnections(int workAreaId)
+        {
+            try
+            {
+                return await Context.WorkAreaConnections.Where(c => c.OriginWorkAreaId == workAreaId).ToListAsync();
             }
             catch (Exception e)
             {
