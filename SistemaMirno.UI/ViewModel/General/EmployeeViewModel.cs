@@ -63,7 +63,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
         
-        public ObservableCollection<EmployeeWrapper> Employees { get; set; }
+        public ObservableCollection<EmployeeWrapper> Employees { get; }
 
         public EmployeeWrapper SelectedEmployee
         {

@@ -19,63 +19,60 @@ namespace SistemaMirno.UI.Wrapper
         {
         }
 
-        public int Id
-        {
-            get { return GetValue<int>(); }
-        }
+        public int Id => GetValue<int>();
 
         public string FullName
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string RUC
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string PhoneNumber
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string Address
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string City
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string Department
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string Email
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public bool IsRetail
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public bool IsWholesaler
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         /// <inheritdoc/>
@@ -106,6 +103,14 @@ namespace SistemaMirno.UI.Wrapper
                     }
 
                     break;
+            }
+
+            foreach (var error in base.ValidateProperty(propertyName))
+            {
+                if (error != null)
+                {
+                    yield return error;
+                }
             }
         }
     }

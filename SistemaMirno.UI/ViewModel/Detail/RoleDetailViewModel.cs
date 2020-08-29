@@ -15,6 +15,7 @@ using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
@@ -67,7 +68,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         }
 
-        public ObservableCollection<BranchWrapper> Branches { get; set; }
+        public ObservableCollection<BranchWrapper> Branches { get; }
 
         public ICommand SelectFileCommand { get; }
 
@@ -82,6 +83,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 Role.PropertyChanged += Model_PropertyChanged;
                 ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
             });
+
             await base.LoadDetailAsync(id).ConfigureAwait(false);
         }
 
@@ -99,8 +101,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             HasChanges = false;
-            EventAggregator.GetEvent<CloseDetailViewEvent<RoleDetailViewModel>>()
-                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(RoleViewModel),
+                });
         }
 
         /// <inheritdoc/>
@@ -112,15 +118,25 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnDeleteExecute()
         {
+            base.OnDeleteExecute();
             await _roleRepository.DeleteAsync(Role.Model);
-            EventAggregator.GetEvent<CloseDetailViewEvent<RoleDetailViewModel>>()
-                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(RoleViewModel),
+                });
         }
 
         protected override void OnCancelExecute()
         {
-            EventAggregator.GetEvent<CloseDetailViewEvent<RoleDetailViewModel>>()
-                .Publish();
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(RoleViewModel),
+                });
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -143,10 +159,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
             if (id.HasValue)
             {
                 await LoadDetailAsync(id.Value);
+                return;
             }
 
             Application.Current.Dispatcher.Invoke(() =>
             {
+                IsNew = true;
+
                 Role = new RoleWrapper();
                 Role.PropertyChanged += Model_PropertyChanged;
                 ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
@@ -164,6 +183,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
                 ProgressVisibility = Visibility.Collapsed;
             });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
         }
 
         private async Task LoadBranches()

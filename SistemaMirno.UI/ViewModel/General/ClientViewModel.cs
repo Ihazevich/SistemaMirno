@@ -62,7 +62,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
 
-        public ObservableCollection<ClientWrapper> Clients { get; set; }
+        public ObservableCollection<ClientWrapper> Clients { get; }
 
         public ClientWrapper SelectedClient
         {

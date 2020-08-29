@@ -124,17 +124,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
         }
 
 
-        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; set; }
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
 
-        public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; set; }
+        public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; }
 
-        public ObservableCollection<BranchWrapper> Branches { get; set; }
+        public ObservableCollection<BranchWrapper> Branches { get; }
 
-        public ObservableCollection<RoleWrapper> Roles { get; set; }
+        public ObservableCollection<RoleWrapper> Roles { get; }
 
-        public ICommand AddConnectionCommand { get; set; }
+        public ICommand AddConnectionCommand { get; }
 
-        public ICommand RemoveConnectionCommand { get; set; }
+        public ICommand RemoveConnectionCommand { get; }
 
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
@@ -209,7 +209,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnDeleteExecute()
         {
+            base.OnDeleteExecute();
+
             await _workAreaRepository.DeleteAsync(WorkArea.Model);
+
             EventAggregator.GetEvent<ReloadNavigationViewEvent>()
                 .Publish();
             EventAggregator.GetEvent<ChangeViewEvent>()
@@ -222,6 +225,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected override void OnCancelExecute()
         {
+            base.OnCancelExecute();
+
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {

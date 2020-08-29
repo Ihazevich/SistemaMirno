@@ -36,8 +36,8 @@
                         Margin="10" />
             </StackPanel>
             <DataGrid Grid.Column="1" 
-                      ItemsSource="{Binding WorkAreas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                      SelectedItem="{Binding SelectedWorkArea, Mode=TwoWay}"
+                      ItemsSource="{Binding WorkAreas}"
+                      SelectedItem="{Binding SelectedWorkArea}"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       SelectionMode="Single"

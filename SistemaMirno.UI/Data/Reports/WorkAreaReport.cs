@@ -38,6 +38,6 @@ namespace SistemaMirno.UI.Data.Reports
         /// <summary>
         /// Gets or sets the work units in the work area.
         /// </summary>
-        public List<WorkUnitReport> WorkUnits { get; set; }
+        public ICollection<WorkUnitReport> WorkUnits { get; set; }
     }
 }

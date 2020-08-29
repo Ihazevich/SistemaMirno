@@ -36,8 +36,8 @@
                         Margin="10" />
             </StackPanel>
             <DataGrid Grid.Column="1" 
-                      ItemsSource="{Binding Roles, Mode=TwoWay}"
-                      SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
+                      ItemsSource="{Binding Roles}"
+                      SelectedItem="{Binding SelectedRole}"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       SelectionMode="Single"

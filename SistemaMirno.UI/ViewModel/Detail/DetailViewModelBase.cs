@@ -104,14 +104,16 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 IsEnabled = true;
                 ProgressVisibility = Visibility.Collapsed;
+                ViewVisibility = Visibility.Visible;
             });
             return Task.CompletedTask;
         }
-        
+
         protected virtual void OnSaveExecute()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
+                ViewVisibility = Visibility.Collapsed;
                 ProgressVisibility = Visibility.Visible;
                 IsEnabled = false;
             });
@@ -130,12 +132,22 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected virtual void OnDeleteExecute()
         {
-            throw new NotImplementedException();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ViewVisibility = Visibility.Collapsed;
+                ProgressVisibility = Visibility.Visible;
+                IsEnabled = false;
+            });
         }
 
         protected virtual void OnCancelExecute()
         {
-            throw new NotImplementedException();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ViewVisibility = Visibility.Collapsed;
+                ProgressVisibility = Visibility.Visible;
+                IsEnabled = false;
+            });
         }
     }
 }

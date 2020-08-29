@@ -89,7 +89,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override async void OnSaveExecute()
         {
             base.OnSaveExecute();
-            User.Password = User.GetPasswordHash(User.Password);
+            User.Password = UserWrapper.GetPasswordHash(User.Password);
 
             var roles = await _userRepository.GetAllRolesFromEmployeeAsync(User.EmployeeId);
 
@@ -132,6 +132,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnDeleteExecute()
         {
+            base.OnDeleteExecute();
             await _userRepository.DeleteAsync(User.Model);
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
@@ -143,6 +144,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected override void OnCancelExecute()
         {
+            base.OnCancelExecute();
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {

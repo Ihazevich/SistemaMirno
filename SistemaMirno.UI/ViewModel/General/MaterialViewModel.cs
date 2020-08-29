@@ -61,7 +61,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
 
-        public ObservableCollection<MaterialWrapper> Materials { get; set; }
+        public ObservableCollection<MaterialWrapper> Materials { get; }
 
         public MaterialWrapper SelectedMaterial
         {

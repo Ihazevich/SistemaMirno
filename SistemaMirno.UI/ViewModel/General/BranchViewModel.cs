@@ -54,7 +54,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
 
-        public ObservableCollection<BranchWrapper> Branches { get; set; }
+        public ObservableCollection<BranchWrapper> Branches { get; }
 
         public BranchWrapper SelectedBranch
         {

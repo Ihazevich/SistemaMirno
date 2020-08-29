@@ -79,7 +79,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             return SelectedBranch != null;
         }
 
-        public ObservableCollection<BranchWrapper> Branches { get; set; }
+        public ObservableCollection<BranchWrapper> Branches { get; }
 
         public BranchWrapper SelectedBranch
         {

@@ -62,7 +62,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
 
-        public ObservableCollection<ColorWrapper> Colors { get; set; }
+        public ObservableCollection<ColorWrapper> Colors { get; }
 
         public ColorWrapper SelectedColor
         {

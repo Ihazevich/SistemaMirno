@@ -148,11 +148,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public ObservableCollection<BranchWrapper> Branches { get; set; }
+        public ObservableCollection<BranchWrapper> Branches { get; }
 
-        public ObservableCollection<RoleWrapper> Roles { get; set; }
+        public ObservableCollection<RoleWrapper> Roles { get; }
 
-        public ObservableCollection<RoleWrapper> EmployeeRoles { get; set; }
+        public ObservableCollection<RoleWrapper> EmployeeRoles { get; }
 
         public ICommand AddRoleCommand { get; }
 
@@ -217,6 +217,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnDeleteExecute()
         {
+            base.OnDeleteExecute();
             await _employeeRepository.DeleteAsync(Employee.Model);
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
@@ -228,6 +229,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected override void OnCancelExecute()
         {
+            base.OnCancelExecute();
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {

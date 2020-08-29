@@ -35,7 +35,7 @@ namespace SistemaMirno.UI.ViewModel.General
         private string _workAreaWorkUnitColorFilter;
         private string _workAreaWorkUnitClientFilter;
         
-        private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
 
         public WorkUnitViewModel(
             Func<IWorkUnitRepository> workUnitRepositoryCreator,
@@ -335,7 +335,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public ObservableCollection<WorkUnitWrapper> WorkOrderWorkUnits { get; }
 
-        public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; set; }
+        public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; }
 
         public ICollectionView WorkAreaCollectionView { get; }
 

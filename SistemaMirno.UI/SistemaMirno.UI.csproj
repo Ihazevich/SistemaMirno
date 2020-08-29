@@ -257,7 +257,6 @@
     <Compile Include="Event\ChangeNavigationStatusEvent.cs" />
     <Compile Include="Event\ChangeViewEvent.cs" />
     <Compile Include="Event\ChangeViewEventArgs.cs" />
-    <Compile Include="Event\CloseDetailViewEvent.cs" />
     <Compile Include="Event\ExitApplicationEvent.cs" />
     <Compile Include="Event\NewWorkOrderEvent.cs" />
     <Compile Include="Event\NewWorkOrderEventArgs.cs" />

@@ -37,7 +37,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         // Status bar fields
         private string _statusMessage;
 
-        private IIndex<string, IViewModelBase> _viewModelCreator;
+        private readonly IIndex<string, IViewModelBase> _viewModelCreator;
 
         private string _windowTitle =
             $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";

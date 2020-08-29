@@ -607,6 +607,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected override void OnCancelExecute()
         {
+            base.OnCancelExecute();
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {

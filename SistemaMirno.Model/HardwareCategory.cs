@@ -14,6 +14,6 @@ namespace SistemaMirno.Model
         public string Name { get; set; }
 
         [ForeignKey(nameof(Hardware.HardwareCategoryId))]
-        public virtual ICollection<Hardware> HardwareCollection { get; set; } = new HashSet<Hardware>();
+        public virtual ICollection<Hardware> Hardwares { get; set; } = new HashSet<Hardware>();
     }
 }

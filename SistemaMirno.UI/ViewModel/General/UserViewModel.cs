@@ -78,7 +78,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
 
-        public ObservableCollection<UserWrapper> Users { get; set; }
+        public ObservableCollection<UserWrapper> Users { get; }
 
         public UserWrapper SelectedUser
         {

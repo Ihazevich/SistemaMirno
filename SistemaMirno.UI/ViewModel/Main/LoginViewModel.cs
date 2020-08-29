@@ -122,7 +122,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             if (user.Model != null)
             {
-                if (user.Password == User.GetPasswordHash(User.Password))
+                if (user.Password == UserWrapper.GetPasswordHash(User.Password))
                 {
                     EventAggregator.GetEvent<NotifyStatusBarEvent>()
                         .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });

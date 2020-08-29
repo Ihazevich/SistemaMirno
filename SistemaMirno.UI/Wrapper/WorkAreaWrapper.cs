@@ -1,9 +1,9 @@
-﻿using SistemaMirno.Model;
-using System;
+﻿// <copyright file="WorkAreaWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
@@ -19,15 +19,15 @@ namespace SistemaMirno.UI.Wrapper
         {
         }
 
-        public int Id { get { return GetValue<int>(); } }
+        public int Id => GetValue<int>();
 
         /// <summary>
         /// Gets or sets the User name.
         /// </summary>
         public string Name
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         /// <summary>
@@ -35,44 +35,44 @@ namespace SistemaMirno.UI.Wrapper
         /// </summary>
         public string Position
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public int BranchId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public int ResponsibleRoleId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public int SupervisorRoleId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public bool ReportsInProcess
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public bool IsLast
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public bool IsFirst
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         /// <inheritdoc/>
@@ -143,6 +143,14 @@ namespace SistemaMirno.UI.Wrapper
                     }
 
                     break;
+            }
+
+            foreach (var error in base.ValidateProperty(propertyName))
+            {
+                if (error != null)
+                {
+                    yield return error;
+                }
             }
         }
     }

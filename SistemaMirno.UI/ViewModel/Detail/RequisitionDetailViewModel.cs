@@ -37,7 +37,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private bool _isForStock;
         private bool _hasTargetDate;
 
-        private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
 
         public RequisitionDetailViewModel(
             IRequisitionRepository requisitionRepository,
@@ -451,6 +451,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnDeleteExecute()
         {
+            base.OnDeleteExecute();
             await _requisitionRepository.DeleteAsync(Requisition.Model);
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
@@ -462,6 +463,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected override void OnCancelExecute()
         {
+            base.OnCancelExecute();
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {

@@ -28,7 +28,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
     {
         private IWorkAreaRepository _workAreaRepository;
 
-        private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.WorkUnit.Product.Name");
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.WorkUnit.Product.Name");
 
         private WorkAreaWrapper _selectedWorkArea;
 
@@ -73,9 +73,9 @@ namespace SistemaMirno.UI.ViewModel.Reports
             };
         }
 
-        public SeriesCollection MonthlySeriesCollection { get; set; }
+        public SeriesCollection MonthlySeriesCollection { get; }
 
-        public SeriesCollection DailySeriesCollection { get; set; }
+        public SeriesCollection DailySeriesCollection { get; }
 
         public ICommand PrintReportCommand { get; }
 
@@ -94,9 +94,9 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
         }
 
-        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; set; }
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
 
-        public ObservableCollection<WorkOrderUnitWrapper> WorkOrderUnits { get; set; }
+        public ObservableCollection<WorkOrderUnitWrapper> WorkOrderUnits { get; }
 
         public ICollectionView WorkUnitsCollection { get; set; }
 

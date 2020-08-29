@@ -19,48 +19,48 @@ namespace SistemaMirno.UI.Wrapper
         {
         }
 
-        public int Id { get { return GetValue<int>(); } }
+        public int Id => GetValue<int>();
 
         public DateTime CreationDateTime
         {
-            get { return GetValue<DateTime>(); }
-            set { SetValue(value); }
+            get => GetValue<DateTime>();
+            set => SetValue(value);
         }
 
         public DateTime? FinishedDateTime
         {
-            get { return GetValue<DateTime?>(); }
-            set { SetValue(value); }
+            get => GetValue<DateTime?>();
+            set => SetValue(value);
         }
 
         public int OriginWorkAreaId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public int DestinationWorkAreaId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public int ResponsibleEmployeeId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public int SupervisorEmployeeId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public string Observations
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         /// <inheritdoc/>
@@ -83,6 +83,14 @@ namespace SistemaMirno.UI.Wrapper
                     }
 
                     break;
+            }
+
+            foreach (var error in base.ValidateProperty(propertyName))
+            {
+                if (error != null)
+                {
+                    yield return error;
+                }
             }
         }
     }

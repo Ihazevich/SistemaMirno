@@ -16,15 +16,15 @@ namespace SistemaMirno.UI.Wrapper
         {
         }
 
-        public int Id { get { return GetValue<int>(); } }
+        public int Id => GetValue<int>();
 
         /// <summary>
         /// Gets or sets the User name.
         /// </summary>
         public string Description
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         /// <summary>
@@ -32,55 +32,55 @@ namespace SistemaMirno.UI.Wrapper
         /// </summary>
         public int BranchId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public bool HasAccessToSales
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public bool HasAccessToAccounting
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public bool HasAccessToHumanResources
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public bool HasAccessToProduction
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public bool HasAccessToLogistics
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public bool IsSystemAdmin
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public string ProceduresManualPdfFile
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public bool HasProceduresManual
         {
-            get { return GetValue<bool>(); }
+            get => GetValue<bool>();
             set
             {
                 SetValue(value);
@@ -142,6 +142,14 @@ namespace SistemaMirno.UI.Wrapper
                     }
 
                     break;
+            }
+
+            foreach (var error in base.ValidateProperty(propertyName))
+            {
+                if (error != null)
+                {
+                    yield return error;
+                }
             }
         }
     }

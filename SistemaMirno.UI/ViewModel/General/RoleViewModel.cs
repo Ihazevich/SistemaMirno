@@ -54,7 +54,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
 
-        public ObservableCollection<RoleWrapper> Roles { get; set; }
+        public ObservableCollection<RoleWrapper> Roles { get; }
 
         public RoleWrapper SelectedRole
         {
@@ -99,7 +99,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 .Publish(new ChangeViewEventArgs
                 {
                     Id = null,
-                    ViewModel = nameof(BranchDetailViewModel),
+                    ViewModel = nameof(RoleDetailViewModel),
                 });
         }
     }

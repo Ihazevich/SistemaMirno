@@ -36,8 +36,8 @@
                         Margin="10" />
             </StackPanel>
             <DataGrid Grid.Column="1" 
-                      ItemsSource="{Binding Branches, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                      SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
+                      ItemsSource="{Binding Branches}"
+                      SelectedItem="{Binding SelectedBranch}"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       SelectionMode="Single"
