@@ -190,14 +190,25 @@ namespace SistemaMirno.UI.ViewModel.General
                         Title = "Proceso completado",
                         Message = $"Registros nuevos: {productsAdded} | Registros descartados: {productsDiscarded}",
                     });
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs
+                    {
+                        ViewModel = nameof(ProductViewModel),
+                    });
             }
             catch (Exception ex)
             {
+                Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Collapsed);
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
                     {
                         Title = "Error",
                         Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                    });
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs
+                    {
+                        ViewModel = nameof(ProductViewModel),
                     });
             }
         }

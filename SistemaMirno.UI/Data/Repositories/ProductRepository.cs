@@ -60,7 +60,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return Context.Products.Select(p => p.Name.ToLowerInvariant()).Contains(productName.ToLowerInvariant());
+                return Context.Products.Select(p => p.Name.ToLower()).Contains(productName.ToLower());
             }
             catch (Exception ex)
             {
