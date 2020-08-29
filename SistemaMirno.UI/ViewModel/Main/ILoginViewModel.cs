@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.ViewModel.Main
 {
-    public interface ILoginViewModel
+    public interface ILoginViewModel : IViewModelBase
     {
     }
 }

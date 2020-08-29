@@ -25,46 +25,33 @@ namespace SistemaMirno.UI.ViewModel.General
         private IBranchRepository _branchRepository;
         private Func<IBranchRepository> _branchRepositoryCreator;
         private BranchWrapper _selectedBranch;
-        private IBranchDetailViewModel _branchDetailViewModel;
-        private Func<IBranchDetailViewModel> _branchDetailViewModelCreator;
 
         public BranchViewModel(
-            Func<IBranchDetailViewModel> branchDetailViewModelCreator,
             Func<IBranchRepository> branchRepositoryCreator,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Sucursales", dialogCoordinator)
         {
-            _branchDetailViewModelCreator = branchDetailViewModelCreator;
             _branchRepositoryCreator = branchRepositoryCreator;
 
             Branches = new ObservableCollection<BranchWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
-
-            EventAggregator.GetEvent<CloseDetailViewEvent<BranchDetailViewModel>>()
-                .Subscribe(CloseDetailView, ThreadOption.UIThread);
+            OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        protected override async void CloseDetailView()
+        private bool OnOpenDetailCanExecute()
         {
-            base.CloseDetailView();
-            BranchDetailViewModel = null;
-
-            await LoadAsync();
+            return SelectedBranch != null;
         }
 
-        public IBranchDetailViewModel BranchDetailViewModel
+        private void OnOpenDetailExecute()
         {
-            get
-            {
-                return _branchDetailViewModel;
-            }
-
-            private set
-            {
-                _branchDetailViewModel = value;
-                OnPropertyChanged();
-            }
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedBranch.Id,
+                    ViewModel = nameof(BranchDetailViewModel),
+                });
         }
 
         public ObservableCollection<BranchWrapper> Branches { get; set; }
@@ -80,14 +67,13 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 OnPropertyChanged();
                 _selectedBranch = value;
-                if (_selectedBranch != null)
-                {
-                    UpdateDetailViewModel(_selectedBranch.Id);
-                }
+                ((DelegateCommand)OpenDetailCommand).RaiseCanExecuteChanged();
             }
         }
 
         public ICommand CreateNewCommand { get; }
+
+        public ICommand OpenDetailCommand { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
@@ -108,38 +94,14 @@ namespace SistemaMirno.UI.ViewModel.General
             });
         }
 
-        private async Task UpdateDetailViewModel(int id)
-        {
-            if (BranchDetailViewModel != null && BranchDetailViewModel.HasChanges)
-            {
-                EventAggregator.GetEvent<ShowDialogEvent>()
-                    .Publish(new ShowDialogEventArgs
-                    {
-                        Message = "Guarde o descarte los cambios antes de salir",
-                        Title = "Advertencia",
-                    });
-                return;
-            }
-
-            BranchDetailViewModel = _branchDetailViewModelCreator();
-            await BranchDetailViewModel.LoadAsync(id);
-        }
-
         private void OnCreateNewExecute()
         {
-            if (BranchDetailViewModel != null && BranchDetailViewModel.HasChanges)
-            {
-                EventAggregator.GetEvent<ShowDialogEvent>()
-                    .Publish(new ShowDialogEventArgs
-                    {
-                        Message = "Guarde o descarte los cambios antes de salir",
-                        Title = "Advertencia",
-                    });
-                return;
-            }
-
-            BranchDetailViewModel = _branchDetailViewModelCreator();
-            BranchDetailViewModel.LoadAsync();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(BranchDetailViewModel),
+                });
         }
     }
 }

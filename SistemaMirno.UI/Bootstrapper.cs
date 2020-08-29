@@ -22,7 +22,7 @@ using SistemaMirno.UI.ViewModel.Reports;
 namespace SistemaMirno.UI
 {
     /// <summary>
-    /// A class represneting the Autofac boostrapper.
+    /// A class representing the Autofac boostrapper.
     /// </summary>
     public static class Bootstrapper
     {
@@ -41,6 +41,21 @@ namespace SistemaMirno.UI
 
             builder.RegisterType<MainWindow>().AsSelf();
 
+            RegisterMainViewModels(builder);
+            RegisterGeneralViewModels(builder);
+            RegisterReportViewModels(builder);
+            RegisterDetailViewModels(builder);
+            RegisterRepositories(builder);
+
+            return builder.Build();
+        }
+
+        /// <summary>
+        /// Registers all main view models with autofac.
+        /// </summary>
+        /// <param name="builder">The autofac builder.</param>
+        private static void RegisterMainViewModels(ContainerBuilder builder)
+        {
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<NavigationViewModel>()
                 .Keyed<IViewModelBase>(nameof(NavigationViewModel));
@@ -48,7 +63,14 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(LoginViewModel));
             builder.RegisterType<BranchSelectionViewModel>()
                 .Keyed<IViewModelBase>(nameof(BranchSelectionViewModel));
+        }
 
+        /// <summary>
+        /// Registers all general view models with autofac.
+        /// </summary>
+        /// <param name="builder">The autofac builder.</param>
+        private static void RegisterGeneralViewModels(ContainerBuilder builder)
+        {
             builder.RegisterType<UserViewModel>()
                 .Keyed<IViewModelBase>(nameof(UserViewModel));
             builder.RegisterType<BranchViewModel>()
@@ -75,17 +97,32 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(RequisitionViewModel));
             builder.RegisterType<StockViewModel>()
                 .Keyed<IViewModelBase>(nameof(StockViewModel));
+        }
 
+        /// <summary>
+        /// Registers all report view models with autofac.
+        /// </summary>
+        /// <param name="builder">The autofac builder.</param>
+        private static void RegisterReportViewModels(ContainerBuilder builder)
+        {
             builder.RegisterType<InProcessByWorkAreasViewModel>()
                 .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));
             builder.RegisterType<ProductionByWorkAreaViewModel>()
                 .Keyed<IViewModelBase>(nameof(ProductionByWorkAreaViewModel));
+        }
 
+        /// <summary>
+        /// Registers all detail view models with autofac.
+        /// </summary>
+        /// <param name="builder">The autofac builder.</param>
+        private static void RegisterDetailViewModels(ContainerBuilder builder)
+        {
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(UserDetailViewModel));
             builder.RegisterType<BranchDetailViewModel>().As<IBranchDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(BranchDetailViewModel));
-            builder.RegisterType<RoleDetailViewModel>().As<IRoleDetailViewModel>();
+            builder.RegisterType<RoleDetailViewModel>().As<IRoleDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(RoleDetailViewModel));
             builder.RegisterType<EmployeeDetailViewModel>().As<IEmployeeDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(EmployeeDetailViewModel));
             builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>()
@@ -106,7 +143,14 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(RequisitionDetailViewModel));
             builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
+        }
 
+        /// <summary>
+        /// Registers all repositories with autofac.
+        /// </summary>
+        /// <param name="builder">The autofac builder.</param>
+        private static void RegisterRepositories(ContainerBuilder builder)
+        {
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<BranchRepository>().As<IBranchRepository>();
             builder.RegisterType<RoleRepository>().As<IRoleRepository>();
@@ -119,10 +163,7 @@ namespace SistemaMirno.UI
             builder.RegisterType<ClientRepository>().As<IClientRepository>();
             builder.RegisterType<RequisitionRepository>().As<IRequisitionRepository>();
             builder.RegisterType<WorkOrderRepository>().As<IWorkOrderRepository>();
-
             builder.RegisterType<WorkUnitRepository>().As<IWorkUnitRepository>();
-
-            return builder.Build();
         }
     }
 }

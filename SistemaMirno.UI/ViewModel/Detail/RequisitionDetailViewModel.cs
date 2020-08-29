@@ -31,7 +31,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private Visibility _newWorkUnitGridVisibility;
         private Visibility _existingWorkUnitGridVisibility;
-        private Visibility _removeWorkUnitVisibility;
 
         private string _quantity;
         private string _existingWorkUnitSearchText;

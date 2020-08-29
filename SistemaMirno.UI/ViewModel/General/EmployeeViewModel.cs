@@ -23,8 +23,6 @@ namespace SistemaMirno.UI.ViewModel.General
         private IEmployeeRepository _employeeRepository;
         private Func<IEmployeeRepository> _employeeRepositoryCreator;
         private EmployeeWrapper _selectedEmployee;
-        private IEmployeeDetailViewModel _employeeDetailViewModel;
-        private Func<IEmployeeDetailViewModel> _employeeDetailViewModelCreator;
 
         public EmployeeViewModel(
             Func<IEmployeeDetailViewModel> employeeDetailViewModelCreator,
@@ -33,7 +31,6 @@ namespace SistemaMirno.UI.ViewModel.General
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Empleados", dialogCoordinator)
         {
-            _employeeDetailViewModelCreator = employeeDetailViewModelCreator;
             _employeeRepositoryCreator = employeeRepositoryCreator;
 
             Employees = new ObservableCollection<EmployeeWrapper>();
@@ -65,21 +62,7 @@ namespace SistemaMirno.UI.ViewModel.General
                     ViewModel = nameof(EmployeeDetailViewModel),
                 });
         }
-
-        public IEmployeeDetailViewModel EmployeeDetailViewModel
-        {
-            get
-            {
-                return _employeeDetailViewModel;
-            }
-
-            private set
-            {
-                _employeeDetailViewModel = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public ObservableCollection<EmployeeWrapper> Employees { get; set; }
 
         public EmployeeWrapper SelectedEmployee

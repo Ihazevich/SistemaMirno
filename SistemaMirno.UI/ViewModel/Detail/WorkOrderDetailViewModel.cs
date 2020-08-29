@@ -45,7 +45,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private Visibility _newWorkUnitGridVisibility;
         private Visibility _existingWorkUnitGridVisibility;
-        private Visibility _removeWorkUnitVisibility;
 
         private string _quantity;
         private string _existingWorkUnitSearchText;
@@ -53,9 +52,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private bool _canGetWorkUnitsFromRequisition;
 
-        private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
 
-        private PropertyGroupDescription _currentWorkAreaName =
+        private readonly PropertyGroupDescription _currentWorkAreaName =
             new PropertyGroupDescription("Model.CurrentWorkArea.Name");
 
         public WorkOrderDetailViewModel(
@@ -731,6 +730,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        /// <summary>
+        /// Creates a new <see cref="Model.WorkOrder"/> and loads all the necessary data from the context.
+        /// </summary>
+        /// <param name="destinationWorkAreaId">The id of the work area the work order is destined to.</param>
+        /// <param name="originWorkAreaId">The id of the work area the work order is originating from.</param>
+        /// <param name="movingWorkUnits">The collection of work units being moved by the work order.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task CreateNewWorkOrder(int destinationWorkAreaId, int originWorkAreaId, IEnumerable<WorkUnitWrapper> movingWorkUnits)
         {
             Application.Current.Dispatcher.Invoke(() =>

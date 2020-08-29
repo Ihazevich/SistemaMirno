@@ -101,6 +101,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="SistemaMirno.DataAccess.ruleset" />
+    <None Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.6\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />

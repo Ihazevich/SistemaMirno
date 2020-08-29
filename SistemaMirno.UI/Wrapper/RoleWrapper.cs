@@ -140,7 +140,7 @@ namespace SistemaMirno.UI.Wrapper
                     {
                         yield return "Para seleccionar un archivo debe indicar que el rol posee un manual";
                     }
-                    
+
                     break;
             }
         }
