@@ -13,5 +13,8 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         Task<List<WorkUnit>> GetWorkUnitsInProcessAsync();
         Task<List<WorkArea>> GetWorkAreasThatReportInProcess();
         Task<List<WorkAreaConnection>> GetWorkAreaOutgoingConnections(int workAreaId);
+        Task<List<WorkUnit>> GetAllWorkUnitsInAllLastWorkAreasAsync();
+        Task<List<Branch>> GetAllBranchesAsync();
+        Task<WorkArea> GetLastWorkAreaFromBranchIdAsync(int id);
     }
 }

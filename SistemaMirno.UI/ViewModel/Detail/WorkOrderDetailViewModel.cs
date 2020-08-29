@@ -589,7 +589,21 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             await _workOrderRepository.AddAsync(WorkOrder.Model);
-            await CreateWorkOrderReport();
+
+            try
+            {
+                await CreateWorkOrderReport();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Title = "Error",
+                        Message = e.Message,
+                    });
+            }
+
             HasChanges = false;
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
@@ -891,7 +905,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             stream.Close();
 
             ProcessStartInfo info = new ProcessStartInfo();
-            info.Verb = "print";
+            info.Verb = "open";
             info.FileName = filename;
 
             Process.Start(info);

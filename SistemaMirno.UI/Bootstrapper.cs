@@ -2,16 +2,12 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
-using System.Security.Principal;
-using System.Windows.Shell;
 using Autofac;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
 using SistemaMirno.DataAccess;
-using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
-using SistemaMirno.UI.View;
 using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.Detail.Interfaces;

@@ -69,6 +69,12 @@ namespace SistemaMirno.UI.Wrapper
             set => SetValue(value);
         }
 
+        public bool Sold
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
         public int? LatestResponsibleId
         {
             get => GetValue<int?>();

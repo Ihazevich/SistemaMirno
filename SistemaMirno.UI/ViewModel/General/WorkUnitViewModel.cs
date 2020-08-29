@@ -359,6 +359,8 @@ namespace SistemaMirno.UI.ViewModel.General
                 try
                 {
                     await LoadWorkArea(id.Value);
+                    await LoadWorkUnits(id.Value);
+                    await LoadConnections(id.Value);
                 }
                 catch (Exception ex)
                 {
@@ -369,9 +371,6 @@ namespace SistemaMirno.UI.ViewModel.General
                         });
                 }
 
-                await LoadWorkUnits(id.Value);
-                await LoadConnections(id.Value);
-                    
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     ProgressVisibility = Visibility.Collapsed;
