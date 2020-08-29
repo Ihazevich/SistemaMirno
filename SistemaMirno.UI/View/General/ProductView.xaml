@@ -30,6 +30,10 @@
                         Command="{Binding OpenDetailCommand}"
                         Width="250" 
                         Margin="10" />
+                <Button Content="Importar desde archivo"
+                        Command="{Binding ImportFromFileCommand}"
+                        Width="250" 
+                        Margin="10" />
                 <Button Content="Salir" 
                         Command="{Binding ExitView}"
                         Width="250" 
