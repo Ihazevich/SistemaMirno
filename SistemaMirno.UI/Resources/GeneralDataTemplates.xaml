@@ -47,4 +47,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:WorkAreaMovementViewModel}">
         <general:WorkAreaMovementView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:WorkOrderViewModel}">
+        <general:WorkOrderView/>
+    </DataTemplate>
 </ResourceDictionary>

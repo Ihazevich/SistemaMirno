@@ -22,8 +22,28 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <Button Content="Agregar nueva area de trabajo"
-                        Command="{Binding CreateNewCommand}"
+                <Label Content="Area de trabajo"/>
+                <ComboBox  ItemsSource="{Binding WorkAreas}"
+                           SelectedItem="{Binding SelectedWorkArea}"
+                           DisplayMemberPath="Name"
+                           IsEnabled="{Binding WorkAreaSelectionEnabled}"
+                           Width="250"
+                           Margin="10"/>
+                <CheckBox Content="Ver Ordenes de todas las areas"
+                          IsChecked="{Binding ShowAllWorkAreas}"
+                          Margin="10"/>
+                <CheckBox Content="Ver Ordenes de solo un dia"
+                          IsChecked="{Binding ShowSingleDay}"
+                          Margin="10"/>
+                <Label Content="Desde fecha"/>
+                <DatePicker SelectedDate="{Binding FromDate}"
+                            Margin="10"/>
+                <Label Content="Hasta fecha"/>
+                <DatePicker SelectedDate="{Binding ToDate}"
+                            IsEnabled="{Binding ToDateEnabled}"
+                            Margin="10"/>
+                <Button Content="Actualizar listado"
+                        Command="{Binding ReloadWorkOrdersCommand}"
                         Width="250" 
                         Margin="10" />
                 <Button Content="Ver Detalles"
@@ -36,8 +56,8 @@
                         Margin="10" />
             </StackPanel>
             <DataGrid Grid.Column="1" 
-                      ItemsSource="{Binding WorkAreas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                      SelectedItem="{Binding SelectedWorkArea, Mode=TwoWay}"
+                      ItemsSource="{Binding WorkOrders}"
+                      SelectedItem="{Binding SelectedWorkOrder, Mode=TwoWay}"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       SelectionMode="Single"
@@ -45,10 +65,12 @@
                       IsReadOnly="True"
                       SelectedIndex="{Binding DataGridIndex, Mode=TwoWay}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nombre" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Sucursal" Binding="{Binding Model.Branch.Name}"/>
-                    <DataGridTextColumn Header="Posición" Binding="{Binding Position}"/>
-                    <DataGridTextColumn Header="Conexiones" Binding="{Binding Model.OutgoingConnections.Count}"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Fecha y Hora" Binding="{Binding CreationDateTime}"/>
+                    <DataGridTextColumn Header="Area Destino" Binding="{Binding Model.DestinationWorkArea.Name}"/>
+                    <DataGridTextColumn Header="Cantidad de unidades" Binding="{Binding Model.WorkOrderUnits.Count}"/>
+                    <DataGridTextColumn Header="Responsable" Binding="{Binding Model.ResponsibleEmployee.FullName}"/>
+                    <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.SupervisorEmployee.FullName}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

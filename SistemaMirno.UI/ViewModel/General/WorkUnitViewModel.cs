@@ -111,9 +111,13 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void OnOpenWorkOrderViewExecute()
         {
-            //Todo
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = WorkArea.Id,
+                    ViewModel = nameof(WorkOrderViewModel),
+                });
         }
-
 
         private bool OnNewWorkOrderCanExecute(object args)
         {

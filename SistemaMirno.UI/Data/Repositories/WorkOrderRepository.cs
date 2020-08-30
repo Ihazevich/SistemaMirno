@@ -165,5 +165,44 @@ namespace SistemaMirno.UI.Data.Repositories
                 return null;
             }
         }
+
+        public async Task<List<WorkOrder>> GetAllWorkOrdersFromWorkAreasBetweenDatesAsync(List<int> workAreasIds, DateTime fromDate, DateTime toDate)
+        {
+            try
+            {
+                return await Context.WorkOrders.Where(w =>
+                    workAreasIds.Contains(w.DestinationWorkAreaId) && w.CreationDateTime.Year >= fromDate.Year &&
+                    w.CreationDateTime.Month >= fromDate.Month && w.CreationDateTime.Day >= fromDate.Day &&
+                    w.CreationDateTime.Year <= toDate.Year && w.CreationDateTime.Month <= toDate.Month &&
+                    w.CreationDateTime.Day <= toDate.Day).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
+
+        public async Task<List<WorkArea>> GetAllWorkAreasAsync(int branchId)
+        {
+            try
+            {
+                return await Context.WorkAreas.Where(w => w.BranchId == branchId && !w.IsLast && !w.IsFirst)
+                    .ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
     }
 }

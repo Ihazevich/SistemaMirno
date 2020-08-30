@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
 
@@ -14,5 +15,7 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         Task<List<Employee>> GetEmployeesWithRoleIdAsync(int roleId);
         Task<List<WorkUnit>> GetRequisitionWorkUnits();
         Task<List<WorkUnit>> GetWorkUnitsByIdAsync(ICollection<int> idCollection);
+        Task<List<WorkOrder>> GetAllWorkOrdersFromWorkAreasBetweenDatesAsync(List<int> workAreasIds, DateTime fromDate, DateTime toDate);
+        Task<List<WorkArea>> GetAllWorkAreasAsync(int branchId);
     }
 }

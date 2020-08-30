@@ -317,6 +317,7 @@
     <Compile Include="ViewModel\General\Interfaces\IRequisitionViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IStockViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IWorkAreaMovementViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IWorkOrderView.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
@@ -326,6 +327,7 @@
     <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaMovementViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
+    <Compile Include="ViewModel\General\WorkOrderViewModel.cs" />
     <Compile Include="ViewModel\General\WorkUnitViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\Main\BranchSelectionViewModel.cs" />
