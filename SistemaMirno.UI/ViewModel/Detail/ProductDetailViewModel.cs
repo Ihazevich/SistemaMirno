@@ -23,8 +23,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
     {
         private IProductRepository _productRepository;
         private ProductWrapper _product;
-        private ProductCategoryWrapper _newProductCategory;
-        private bool _createNewProductCategory;
 
         public ProductDetailViewModel(
             IProductRepository productRepository,
@@ -49,7 +47,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public ObservableCollection<ProductCategoryWrapper> ProductCategories { get; set; }
+        public ObservableCollection<ProductCategoryWrapper> ProductCategories { get; }
 
         public ICommand SelectFileCommand { get; }
 
@@ -100,6 +98,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnDeleteExecute()
         {
+            base.OnDeleteExecute();
             await _productRepository.DeleteAsync(Product.Model);
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
@@ -111,6 +110,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected override void OnCancelExecute()
         {
+            base.OnCancelExecute();
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {

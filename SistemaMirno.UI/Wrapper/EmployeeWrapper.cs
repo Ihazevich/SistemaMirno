@@ -20,108 +20,108 @@ namespace SistemaMirno.UI.Wrapper
         {
         }
 
-        public int Id { get { return GetValue<int>(); } }
+        public int Id => GetValue<int>();
 
         public string FirstName
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string LastName
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string FullName
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string DocumentNumber
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public DateTime BirthDate
         {
-            get { return GetValue<DateTime>(); }
-            set { SetValue(value); }
+            get => GetValue<DateTime>();
+            set => SetValue(value);
         }
 
         public int Age
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public string Address
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string PhoneNumber
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public string Profession
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public long BaseSalary
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public long SalaryOtherBonus
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public long SalaryProductionBonus
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public long SalarySalesBonus
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public long SalaryWorkOrderBonus
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public long SalaryNormalHoursBonus
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public long SalaryExtraHoursBonus
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public long TotalSalary
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public long ReportedIpsSalary
@@ -132,50 +132,50 @@ namespace SistemaMirno.UI.Wrapper
 
         public double ProductionBonusRatio
         {
-            get { return GetValue<double>(); }
-            set { SetValue(value); }
+            get => GetValue<double>();
+            set => SetValue(value);
         }
 
         public double SalesBonusRatio
         {
-            get { return GetValue<double>(); }
-            set { SetValue(value); }
+            get => GetValue<double>();
+            set => SetValue(value);
         }
 
         public long PricePerNormalHour
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public long PricePerExtraHour
         {
-            get { return GetValue<long>(); }
-            set { SetValue(value); }
+            get => GetValue<long>();
+            set => SetValue(value);
         }
 
         public DateTime ContractStartDate
         {
-            get { return GetValue<DateTime>(); }
-            set { SetValue(value); }
+            get => GetValue<DateTime>();
+            set => SetValue(value);
         }
 
         public string ContractFile
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         public bool IsRegisteredInIps
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public DateTime? IpsStartDate
         {
-            get { return GetValue<DateTime?>(); }
-            set { SetValue(value); }
+            get => GetValue<DateTime?>();
+            set => SetValue(value);
         }
 
         public bool Terminated
@@ -186,14 +186,14 @@ namespace SistemaMirno.UI.Wrapper
 
         public DateTime? TerminationDate
         {
-            get { return GetValue<DateTime?>(); }
-            set { SetValue(value); }
+            get => GetValue<DateTime?>();
+            set => SetValue(value);
         }
 
         public int? UserId
         {
-            get { return GetValue<int?>(); }
-            set { SetValue(value); }
+            get => GetValue<int?>();
+            set => SetValue(value);
         }
 
         /// <inheritdoc/>
@@ -224,6 +224,14 @@ namespace SistemaMirno.UI.Wrapper
                     }
 
                     break;
+            }
+
+            foreach (var error in base.ValidateProperty(propertyName))
+            {
+                if (error != null)
+                {
+                    yield return error;
+                }
             }
         }
     }

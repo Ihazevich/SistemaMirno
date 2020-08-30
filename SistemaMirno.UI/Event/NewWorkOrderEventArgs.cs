@@ -16,7 +16,7 @@ namespace SistemaMirno.UI.Event
         /// <summary>
         /// Gets or sets the collection of WorkUnits depending on the work order that triggered the event.
         /// </summary>
-        public ICollection<WorkUnitWrapper> WorkUnits { get; set; }
+        public IReadOnlyCollection<WorkUnitWrapper> WorkUnits { get; set; }
 
         /// <summary>
         /// Gets or sets the id of the work area where the work order originated.

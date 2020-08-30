@@ -19,15 +19,12 @@ namespace SistemaMirno.UI.Wrapper
         {
         }
 
-        public int Id
-        {
-            get { return GetValue<int>(); }
-        }
+        public int Id => GetValue<int>();
 
         public string Name
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         /// <inheritdoc/>
@@ -42,6 +39,14 @@ namespace SistemaMirno.UI.Wrapper
                     }
 
                     break;
+            }
+
+            foreach (var error in base.ValidateProperty(propertyName))
+            {
+                if (error != null)
+                {
+                    yield return error;
+                }
             }
         }
     }

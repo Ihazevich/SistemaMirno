@@ -54,10 +54,10 @@ namespace SistemaMirno.UI.Wrapper
         /// Validates a property with the specified name.
         /// </summary>
         /// <param name="propertyName">The property name.</param>
-        /// <returns>A collection representing the erorrs found after validation.</returns>
+        /// <returns>A collection representing the errors found after validation.</returns>
         protected virtual IEnumerable<string> ValidateProperty(string propertyName)
         {
-            return null;
+            yield return null;
         }
 
         private void ValidatePropertyInternal(string propertyName, object currentValue)

@@ -62,7 +62,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
 
-        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; set; }
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
 
         public WorkAreaWrapper SelectedWorkArea
         {

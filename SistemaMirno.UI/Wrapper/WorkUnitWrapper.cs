@@ -19,73 +19,78 @@ namespace SistemaMirno.UI.Wrapper
         {
         }
 
-        public bool IsNew { get; set; } = false;
-
-        public int Id { get { return GetValue<int>(); } }
+        public int Id => GetValue<int>();
 
         public int ProductId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public int MaterialId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
         
         public int ColorId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public int CurrentWorkAreaId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public int RequisitionId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public DateTime CreationDate
         {
-            get { return GetValue<DateTime>(); }
-            set { SetValue(value); }
+            get => GetValue<DateTime>();
+            set => SetValue(value);
         }
 
         public double TotalWorkTime
         {
-            get { return GetValue<double>(); }
-            set { SetValue(value); }
+            get => GetValue<double>();
+            set => SetValue(value);
         }
+
         public bool Delivered
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
+        public bool Sold
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public int? LatestResponsibleId
         {
-            get { return GetValue<int?>(); }
-            set { SetValue(value); }
+            get => GetValue<int?>();
+            set => SetValue(value);
         }
 
         public int? LatestSupervisorId
         {
-            get { return GetValue<int?>(); }
-            set { SetValue(value); }
+            get => GetValue<int?>();
+            set => SetValue(value);
         }
 
         public string Details
         {
-            get { return GetValue<string>(); }
-            set { SetValue(value); }
+            get => GetValue<string>();
+            set => SetValue(value);
         }
 
         /// <inheritdoc/>
@@ -116,6 +121,14 @@ namespace SistemaMirno.UI.Wrapper
                     }
 
                     break;
+            }
+
+            foreach (var error in base.ValidateProperty(propertyName))
+            {
+                if (error != null)
+                {
+                    yield return error;
+                }
             }
         }
     }

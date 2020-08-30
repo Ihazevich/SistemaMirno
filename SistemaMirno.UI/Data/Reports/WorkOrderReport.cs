@@ -55,6 +55,6 @@ namespace SistemaMirno.UI.Data.Reports
         /// <summary>
         /// Gets or sets the collection of work units that the work order is moving/creating.
         /// </summary>
-        public List<WorkUnitReport> WorkUnits { get; set; }
+        public ICollection<WorkUnitReport> WorkUnits { get; set; }
     }
 }

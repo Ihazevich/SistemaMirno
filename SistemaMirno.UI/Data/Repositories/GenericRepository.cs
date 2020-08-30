@@ -23,33 +23,31 @@ namespace SistemaMirno.UI.Data.Repositories
         where TEntity : ModelBase, new()
         where TContext : DbContext
     {
-        private readonly DbSet<TEntity> _table;
-        private TContext _db;
-        private Func<TContext> _dbCreator;
-        private readonly IEventAggregator _eventAggregator;
+        private readonly DbSet<TEntity> _entities;
+        private readonly Func<TContext> _dbCreator;
 
         protected GenericRepository(Func<TContext> contextCreator, IEventAggregator eventAggregator)
         {
             _dbCreator = contextCreator;
-            _db = _dbCreator();
-            _table = _db.Set<TEntity>();
-            _eventAggregator = eventAggregator;
+            Context = _dbCreator();
+            _entities = Context.Set<TEntity>();
+            EventAggregator = eventAggregator;
         }
 
-        protected IEventAggregator EventAggregator => _eventAggregator;
+        protected IEventAggregator EventAggregator { get; }
 
-        protected TContext Context => _db;
+        protected TContext Context { get; }
 
         public void Dispose()
         {
-            _db?.Dispose();
+            Context?.Dispose();
         }
 
         internal async Task<int> SaveChangesAsync()
         {
             try
             {
-                return await _db.SaveChangesAsync();
+                return await Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -93,37 +91,37 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public Task<TEntity> GetByIdAsync(int? id) => _table.FindAsync(id);
+        public Task<TEntity> GetByIdAsync(int? id) => _entities.FindAsync(id);
 
-        public virtual Task<List<TEntity>> GetAllAsync() => _table.ToListAsync();
+        public virtual Task<List<TEntity>> GetAllAsync() => _entities.ToListAsync();
 
         public Task<int> AddAsync(TEntity entity)
         {
-            _table.Add(entity);
+            _entities.Add(entity);
             return SaveChangesAsync();
         }
 
         public Task<int> AddRangeAsync(IList<TEntity> entities)
         {
-            _table.AddRange(entities);
+            _entities.AddRange(entities);
             return SaveChangesAsync();
         }
 
         public Task<int> SaveAsync(TEntity entity)
         {
-            _db.Entry(entity).State = EntityState.Modified;
+            Context.Entry(entity).State = EntityState.Modified;
             return SaveChangesAsync();
         }
 
         public Task<int> DeleteAsync(int id, byte[] timeStamp)
         {
-            _db.Entry(new TEntity() {Id = id, Timestamp = timeStamp}).State = EntityState.Deleted;
+            Context.Entry(new TEntity() {Id = id, Timestamp = timeStamp}).State = EntityState.Deleted;
             return SaveChangesAsync();
         }
 
         public Task<int> DeleteAsync(TEntity entity)
         {
-            _db.Entry(entity).State = EntityState.Deleted;
+            Context.Entry(entity).State = EntityState.Deleted;
             return SaveChangesAsync();
         }
 

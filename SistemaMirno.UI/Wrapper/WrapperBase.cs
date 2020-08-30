@@ -12,7 +12,7 @@ namespace SistemaMirno.UI.Wrapper
     /// </summary>
     public class WrapperBase : INotifyPropertyChanged, INotifyDataErrorInfo
     {
-        private Dictionary<string, List<string>> _errorsByPropertyName = new Dictionary<string, List<string>>();
+        private readonly Dictionary<string, HashSet<string>> _errorsByPropertyName = new Dictionary<string, HashSet<string>>();
 
         /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
@@ -59,7 +59,7 @@ namespace SistemaMirno.UI.Wrapper
         {
             if (!_errorsByPropertyName.ContainsKey(propertyName))
             {
-                _errorsByPropertyName[propertyName] = new List<string>();
+                _errorsByPropertyName[propertyName] = new HashSet<string>();
             }
 
             if (!_errorsByPropertyName[propertyName].Contains(error))

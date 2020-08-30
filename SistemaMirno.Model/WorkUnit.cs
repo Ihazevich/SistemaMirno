@@ -81,6 +81,8 @@ namespace SistemaMirno.Model
         [Required]
         public bool Delivered { get; set; }
 
+        public bool Sold { get; set; }
+
         public int? LatestResponsibleId { get; set; }
 
         [ForeignKey(nameof(LatestResponsibleId))]

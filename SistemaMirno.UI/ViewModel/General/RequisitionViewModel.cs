@@ -61,7 +61,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
 
-        public ObservableCollection<RequisitionWrapper> Requisitions { get; set; }
+        public ObservableCollection<RequisitionWrapper> Requisitions { get; }
 
         public RequisitionWrapper SelectedRequisition
         {

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="RoleViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -23,8 +24,6 @@ namespace SistemaMirno.UI.ViewModel.General
         private IRoleRepository _roleRepository;
         private Func<IRoleRepository> _roleRepositoryCreator;
         private RoleWrapper _selectedRole;
-        private IRoleDetailViewModel _roleDetailViewModel;
-        private Func<IRoleDetailViewModel> _roleDetailViewModelCreator;
 
         public RoleViewModel(
             Func<IRoleDetailViewModel> roleDetailViewModelCreator,
@@ -33,39 +32,29 @@ namespace SistemaMirno.UI.ViewModel.General
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Roles", dialogCoordinator)
         {
-            _roleDetailViewModelCreator = roleDetailViewModelCreator;
             _roleRepositoryCreator = branchRepositoryCreator;
 
             Roles = new ObservableCollection<RoleWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
-
-            EventAggregator.GetEvent<CloseDetailViewEvent<RoleDetailViewModel>>()
-                .Subscribe(CloseDetailView, ThreadOption.UIThread);
+            OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        protected override async void CloseDetailView()
+        private bool OnOpenDetailCanExecute()
         {
-            base.CloseDetailView();
-            RoleDetailViewModel = null;
-
-            await LoadAsync();
+            return SelectedRole != null;
         }
 
-        public IRoleDetailViewModel RoleDetailViewModel
+        private void OnOpenDetailExecute()
         {
-            get
-            {
-                return _roleDetailViewModel;
-            }
-
-            private set
-            {
-                _roleDetailViewModel = value;
-                OnPropertyChanged();
-            }
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedRole.Id,
+                    ViewModel = nameof(RoleDetailViewModel),
+                });
         }
 
-        public ObservableCollection<RoleWrapper> Roles { get; set; }
+        public ObservableCollection<RoleWrapper> Roles { get; }
 
         public RoleWrapper SelectedRole
         {
@@ -78,14 +67,12 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 OnPropertyChanged();
                 _selectedRole = value;
-                if (_selectedRole != null)
-                {
-                    UpdateDetailViewModel(_selectedRole.Id);
-                }
+                ((DelegateCommand)OpenDetailCommand).RaiseCanExecuteChanged();
             }
         }
 
         public ICommand CreateNewCommand { get; }
+        public ICommand OpenDetailCommand { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
@@ -106,39 +93,14 @@ namespace SistemaMirno.UI.ViewModel.General
             });
         }
 
-        private async Task UpdateDetailViewModel(int id)
-        {
-            if (RoleDetailViewModel != null && RoleDetailViewModel.HasChanges)
-            {
-                EventAggregator.GetEvent<ShowDialogEvent>()
-                    .Publish(new ShowDialogEventArgs
-                    {
-                        Message = "Guarde o descarte los cambios antes de salir",
-                        Title = "Advertencia",
-                    });
-                return;
-            }
-
-            RoleDetailViewModel = _roleDetailViewModelCreator();
-            await RoleDetailViewModel.LoadDetailAsync(id).ConfigureAwait(false);
-        }
-
         private void OnCreateNewExecute()
         {
-            if (RoleDetailViewModel != null && RoleDetailViewModel.HasChanges)
-            {
-                EventAggregator.GetEvent<ShowDialogEvent>()
-                    .Publish(new ShowDialogEventArgs
-                    {
-                        Message = "Guarde o descarte los cambios antes de salir",
-                        Title = "Advertencia",
-                    });
-                return;
-            }
-
-            RoleDetailViewModel = _roleDetailViewModelCreator();
-            RoleDetailViewModel.IsNew = true;
-            RoleDetailViewModel.LoadAsync();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(RoleDetailViewModel),
+                });
         }
     }
 }

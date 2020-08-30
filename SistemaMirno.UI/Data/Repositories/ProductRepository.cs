@@ -19,11 +19,11 @@ namespace SistemaMirno.UI.Data.Repositories
         {
         }
 
-        public Task<List<ProductCategory>> GetAllProductCategoriesAsync()
+        public async Task<List<ProductCategory>> GetAllProductCategoriesAsync()
         {
             try
             {
-                return Context.ProductCategories.ToListAsync();
+                return await Context.ProductCategories.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -34,6 +34,43 @@ namespace SistemaMirno.UI.Data.Repositories
                         Title = "Error",
                     });
                 return null;
+            }
+        }
+
+        public async Task<ProductCategory> GetProductCategoryByNameAsync(string productCategoryName)
+        {
+            try
+            {
+                return await Context.ProductCategories.SingleAsync(c =>
+                    string.Equals(c.Name, productCategoryName, StringComparison.InvariantCultureIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<bool> CheckForDuplicatesAsync(string productName)
+        {
+            try
+            {
+                return Context.Products.Select(p => p.Name.ToLower()).Contains(productName.ToLower());
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return true;
             }
         }
     }

@@ -134,7 +134,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.Employees.Where(e => e.Roles.Select(r => r.Id).ToList().Contains(roleId))
+                return await Context.Employees.Where(e => e.Roles.Select(r => r.Id).Contains(roleId))
                     .ToListAsync();
             }
             catch (Exception ex)

@@ -61,7 +61,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 });
         }
 
-        public ObservableCollection<ProductCategoryWrapper> ProductCategories { get; set; }
+        public ObservableCollection<ProductCategoryWrapper> ProductCategories { get; }
 
         public ProductCategoryWrapper SelectedProductCategory
         {

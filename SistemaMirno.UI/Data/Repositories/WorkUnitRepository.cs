@@ -23,7 +23,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.WorkUnits.Where(w => w.CurrentWorkAreaId == id).ToListAsync();
+                return await Context.WorkUnits.Where(w => w.CurrentWorkAreaId == id && !w.Sold && !w.Delivered).ToListAsync();
             }
             catch (Exception e)
             {
@@ -57,7 +57,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.WorkUnits.Where(w => w.Delivered == false && w.CurrentWorkArea.ReportsInProcess)
+                return await Context.WorkUnits.Where(w => !w.Delivered && !w.Sold && w.CurrentWorkArea.ReportsInProcess)
                     .ToListAsync();
             }
             catch (Exception e)
@@ -93,6 +93,58 @@ namespace SistemaMirno.UI.Data.Repositories
             try
             {
                 return await Context.WorkAreaConnections.Where(c => c.OriginWorkAreaId == workAreaId).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
+
+        public async Task<List<WorkUnit>> GetAllWorkUnitsInAllLastWorkAreasAsync()
+        {
+            try
+            {
+                return await Context.WorkUnits.Where(w => w.CurrentWorkArea.IsLast && !w.Sold && !w.Delivered)
+                    .ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
+
+        public async Task<List<Branch>> GetAllBranchesAsync()
+        {
+            try
+            {
+                return await Context.Branches.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
+        }
+
+        public async Task<WorkArea> GetLastWorkAreaFromBranchIdAsync(int id)
+        {
+            try
+            {
+                return await Context.WorkAreas.SingleAsync(w => w.IsLast && w.BranchId == id);
             }
             catch (Exception e)
             {

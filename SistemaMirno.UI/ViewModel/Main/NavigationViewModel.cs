@@ -97,6 +97,7 @@ namespace SistemaMirno.UI.ViewModel.Main
                     EventAggregator.GetEvent<ChangeViewEvent>()
                         .Publish(new ChangeViewEventArgs
                         {
+                            Id = SessionInfo.Branch.Id,
                             ViewModel = nameof(StockViewModel),
                         });
                 }

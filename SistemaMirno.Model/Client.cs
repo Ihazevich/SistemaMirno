@@ -16,7 +16,7 @@ namespace SistemaMirno.Model
 
         [Required]
         [StringLength(100)]
-        public string RUC { get; set; }
+        public string Ruc { get; set; }
 
         [Required]
         [StringLength(20)]

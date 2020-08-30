@@ -15,12 +15,12 @@ namespace SistemaMirno.UI.Data.Reports
         /// <summary>
         /// Gets or sets the date and time the report was generated.
         /// </summary>
-        public string Datetime { get; set; }
+        public string DateTime { get; set; }
 
         /// <summary>
         /// Gets or sets the work areas included in the report.
         /// </summary>
-        public List<WorkAreaReport> WorkAreas { get; set; }
+        public ICollection<WorkAreaReport> WorkAreas { get; set; }
       
         /// <summary>
         /// Sets or gets if the report includes the work unit's production prices.

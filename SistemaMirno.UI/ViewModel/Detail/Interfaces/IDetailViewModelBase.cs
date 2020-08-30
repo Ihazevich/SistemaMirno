@@ -10,7 +10,5 @@ namespace SistemaMirno.UI.ViewModel.Detail.Interfaces
         bool HasChanges { get; }
 
         bool IsNew { get; set; }
-
-        Task LoadDetailAsync(int id);
     }
 }

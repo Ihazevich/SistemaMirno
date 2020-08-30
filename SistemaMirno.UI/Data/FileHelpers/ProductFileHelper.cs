@@ -20,13 +20,13 @@ namespace SistemaMirno.UI.Data.FileHelpers
 
         public string Category;
 
-        [FieldConverter(ConverterKind.Int32)]
-        public int Price;
+        [FieldConverter(ConverterKind.Int64)]
+        public long ProductionValue;
 
-        [FieldConverter(ConverterKind.Int32)]
-        public int WholesalePrice;
+        [FieldConverter(ConverterKind.Int64)]
+        public long WholesalerPrice;
 
-        [FieldConverter(ConverterKind.Int32)]
-        public int ProductionPrice;
+        [FieldConverter(ConverterKind.Int64)]
+        public long RetailPrice;
     }
 }

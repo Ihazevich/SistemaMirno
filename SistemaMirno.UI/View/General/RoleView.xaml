@@ -26,14 +26,18 @@
                         Command="{Binding CreateNewCommand}"
                         Width="250" 
                         Margin="10" />
+                <Button Content="Ver Detalles"
+                        Command="{Binding OpenDetailCommand}"
+                        Width="250" 
+                        Margin="10" />
                 <Button Content="Salir" 
                         Command="{Binding ExitView}"
                         Width="250" 
                         Margin="10" />
             </StackPanel>
             <DataGrid Grid.Column="1" 
-                      ItemsSource="{Binding Roles, Mode=TwoWay}"
-                      SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
+                      ItemsSource="{Binding Roles}"
+                      SelectedItem="{Binding SelectedRole}"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       SelectionMode="Single"

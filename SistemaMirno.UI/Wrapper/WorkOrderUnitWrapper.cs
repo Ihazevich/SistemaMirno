@@ -1,8 +1,9 @@
-﻿using System;
+﻿// <copyright file="WorkOrderUnitWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
@@ -19,39 +20,45 @@ namespace SistemaMirno.UI.Wrapper
         {
         }
 
-        public int Id
-        {
-            get { return GetValue<int>(); }
-        }
+        public int Id => GetValue<int>();
 
         public int WorkOrderId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
 
         public int WorkUnitId
         {
-            get { return GetValue<int>(); }
-            set { SetValue(value); }
+            get => GetValue<int>();
+            set => SetValue(value);
         }
+
         public bool Finished
         {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
+            get => GetValue<bool>();
+            set => SetValue(value);
         }
 
         public DateTime? FinishedDateTime
         {
-            get { return GetValue<DateTime?>(); }
-            set { SetValue(value); }
+            get => GetValue<DateTime?>();
+            set => SetValue(value);
         }
-
 
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {
             yield return null;
+
+
+            foreach (var error in base.ValidateProperty(propertyName))
+            {
+                if (error != null)
+                {
+                    yield return error;
+                }
+            }
         }
     }
 }

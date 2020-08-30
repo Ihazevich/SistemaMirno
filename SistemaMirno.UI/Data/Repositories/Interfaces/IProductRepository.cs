@@ -8,5 +8,7 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
     public interface IProductRepository : IGenericRepository<Product>
     {
         Task<List<ProductCategory>> GetAllProductCategoriesAsync();
+        Task<ProductCategory> GetProductCategoryByNameAsync(string productCategoryName);
+        Task<bool> CheckForDuplicatesAsync(string productName);
     }
 }

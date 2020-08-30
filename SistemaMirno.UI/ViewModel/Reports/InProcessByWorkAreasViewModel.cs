@@ -30,8 +30,8 @@ namespace SistemaMirno.UI.ViewModel.Reports
     {
         private IWorkUnitRepository _workUnitRepository;
 
-        private PropertyGroupDescription _workAreaName = new PropertyGroupDescription("Model.CurrentWorkArea.Name");
-        private PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
+        private readonly PropertyGroupDescription _workAreaName = new PropertyGroupDescription("Model.CurrentWorkArea.Name");
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
 
         private bool _includePrice = false;
         private bool _includeResponsible = false;
@@ -101,7 +101,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
         }
 
-        public ObservableCollection<WorkUnitWrapper> WorkUnits { get; set; }
+        public ObservableCollection<WorkUnitWrapper> WorkUnits { get; }
 
         public ICollectionView WorkUnitsCollection { get; set; }
 
@@ -121,7 +121,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
             // Create a new report class to store the report data.
             var inProcessReport = new InProcessReport
             {
-                Datetime = DateTime.Now.ToString(),
+                DateTime = DateTime.Now.ToString(),
                 WorkAreas = new List<WorkAreaReport>(),
                 IncludePrice = _includePrice,
                 Total = 0,

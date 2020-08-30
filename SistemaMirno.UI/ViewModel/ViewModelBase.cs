@@ -21,14 +21,14 @@ namespace SistemaMirno.UI.ViewModel
     public abstract class ViewModelBase : IViewModelBase, INotifyPropertyChanged
     {
         private readonly IEventAggregator _eventAggregator;
+        private readonly IDialogCoordinator _dialogCoordinator;
         private Visibility _viewVisibility;
         private Visibility _progressVisibility;
-        private string _name;
-        private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly string _name;
         private int _dataGridIndex;
         private SessionInfo _sessionInfo;
 
-        public ViewModelBase(IEventAggregator eventAggregator, string name, IDialogCoordinator dialogCoordinator)
+        protected ViewModelBase(IEventAggregator eventAggregator, string name, IDialogCoordinator dialogCoordinator)
         {
             _eventAggregator = eventAggregator;
             _name = name;
@@ -144,9 +144,5 @@ namespace SistemaMirno.UI.ViewModel
                 .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
         }
 
-        protected virtual void CloseDetailView()
-        {
-            DataGridIndex = -1;
-        }
     }
 }

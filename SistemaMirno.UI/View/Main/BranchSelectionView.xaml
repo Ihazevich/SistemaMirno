@@ -27,7 +27,7 @@
             </Grid.RowDefinitions>
             <Label Content="Seleccionar Sucursal" FontSize="25" HorizontalAlignment="Center"/>
             <Separator Grid.Row="1"/>
-            <ListBox Grid.Row="2" ItemsSource="{Binding Branches, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <ListBox Grid.Row="2" ItemsSource="{Binding Branches}"
                      SelectedItem="{Binding SelectedBranch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      SelectionMode="Single">
                 <ListBox.ItemTemplate>

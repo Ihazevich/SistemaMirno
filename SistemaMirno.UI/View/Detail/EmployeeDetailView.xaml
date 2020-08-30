@@ -84,14 +84,14 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Label Content="Sucursales" Margin="5"/>
-                <ComboBox Grid.Row="1" ItemsSource="{Binding Branches, Mode=TwoWay}" 
+                <ComboBox Grid.Row="1" ItemsSource="{Binding Branches}" 
                           DisplayMemberPath="Name"
                           SelectedValuePath="Id"
                           SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
                           Margin="5"/>
                 <Label Grid.Column="1" Content="Roles" Margin="5"/>
                 <ComboBox Grid.Column="1" Grid.Row="1"
-                          ItemsSource="{Binding Roles, Mode=TwoWay}" 
+                          ItemsSource="{Binding Roles}" 
                           DisplayMemberPath="Description"
                           SelectedValuePath="Id"
                           SelectedItem="{Binding SelectedAddRole, Mode=TwoWay}"
@@ -105,7 +105,7 @@
                         Command="{Binding RemoveRoleCommand}"
                         Margin="5"/>
             </Grid>
-            <DataGrid Grid.Row="18" ItemsSource="{Binding EmployeeRoles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <DataGrid Grid.Row="18" ItemsSource="{Binding EmployeeRoles}"
                       SelectedItem="{Binding SelectedRemoveRole, Mode=TwoWay}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"

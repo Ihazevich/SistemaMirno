@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SistemaMirno.UI.View
+namespace SistemaMirno.UI.View.General
 {
     /// <summary>
     /// Interaction logic for WorkOrderView.xaml
