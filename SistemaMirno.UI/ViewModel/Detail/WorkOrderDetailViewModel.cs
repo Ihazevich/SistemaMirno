@@ -579,10 +579,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             WorkOrder.CreationDateTime = DateTime.Now;
             
-            // TODO: Record areamovements
-            
             foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
             {
+                var movement = new WorkAreaMovement
+                {
+                    FromWorkAreaId = workOrderUnit.WorkUnit.CurrentWorkAreaId,
+                    ToWorkAreaId = WorkArea.Id,
+                    ResponsibleId = WorkOrder.ResponsibleEmployeeId,
+                    SupervisorId = WorkOrder.SupervisorEmployeeId,
+                    Date = DateTime.Now,
+                    WorkUnit = workOrderUnit.WorkUnit,
+                };
+
                 workOrderUnit.Finished = false;
                 workOrderUnit.WorkUnit.CurrentWorkAreaId = WorkArea.Id;
                 workOrderUnit.WorkUnit.LatestResponsibleId = WorkOrder.ResponsibleEmployeeId;

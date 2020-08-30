@@ -48,9 +48,6 @@ namespace SistemaMirno.Model
         [Required(ErrorMessage = "Requerido")]
         public bool ReportsInProcess { get; set; }
 
-        [ForeignKey(nameof(WorkAreaMovement.WorkAreaId))]
-        public virtual ICollection<WorkAreaMovement> WorkAreaMovements { get; set; } = new HashSet<WorkAreaMovement>();
-
         [ForeignKey(nameof(WorkUnit.CurrentWorkAreaId))]
         public virtual ICollection<WorkUnit> WorkUnits { get; set; } = new HashSet<WorkUnit>();
 
