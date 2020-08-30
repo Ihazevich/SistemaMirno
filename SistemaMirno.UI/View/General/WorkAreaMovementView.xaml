@@ -1,11 +1,11 @@
-﻿    <UserControl x:Class="SistemaMirno.UI.View.General.WorkUnitView"
+﻿<UserControl x:Class="SistemaMirno.UI.View.General.WorkAreaMovementView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d"
+             mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -22,19 +22,15 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <Button Content="Nueva Orden" 
-                        Command="{Binding NewWorkOrderCommand}" 
-                        CommandParameter="New"
-                        Width="250" 
-                        Margin="10"/>
-                <Button Content="Ver Ordenes" 
-                        Command="{Binding OpenWorkOrderViewCommand}" 
-                        Width="250" 
-                        Margin="10"/>
-                <Button Content="Ver Movimientos" 
-                        Command="{Binding OpenWorkAreaMovementViewCommand}" 
-                        Width="250" 
-                        Margin="10"/>
+                <Label Content="Area de trabajo"/>
+                <ComboBox  ItemsSource="{Binding WorkAreas}"
+                           SelectedItem="{Binding SelectedWorkArea}"
+                           DisplayMemberPath="Name"
+                           Width="250"
+                           Margin="10"/>
+                <Label Content="Fecha"/>
+                <DatePicker SelectedDate="{Binding SelectedDate}"
+                            Margin="10"/>
                 <Button Content="Salir" 
                         Command="{Binding ExitView}" 
                         Width="250" 
@@ -80,7 +76,6 @@
                 <Grid Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
@@ -89,13 +84,12 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Label Content="Unidades de trabajo en area" 
+                        <Label Content="Unidades que llegaron al area" 
                                FontWeight="DemiBold"
                                FontSize="15" 
                                HorizontalAlignment="Center"/>
                         <DataGrid Grid.Row="2" 
-                                  ItemsSource="{Binding WorkAreaCollectionView}" 
-                                  SelectedItem="{Binding SelectedWorkAreaWorkUnit}"
+                                  ItemsSource="{Binding WorkAreaIncomingMovementsCollectionView}"
                                   AutoGenerateColumns="false" 
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -103,12 +97,13 @@
                                   SelectionMode="Extended"
                                   Margin="10,0,10,0">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
-                                <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
-                                <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
-                                <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Requisition.Client.FullName}"/>
-                                <DataGridTextColumn Header="Responsable" Binding="{Binding Model.LatestResponsible.FullName}"/>
-                                <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.LatestSupervisor.FullName}"/>
+                                <DataGridTextColumn Header="Fecha" Binding="{Binding Date}"/>
+                                <DataGridTextColumn Header="Desde" Binding="{Binding FromWorkArea.Name}"/>
+                                <DataGridTextColumn Header="Producto" Binding="{Binding WorkUnit.Product.Name}"/>
+                                <DataGridTextColumn Header="Material" Binding="{Binding WorkUnit.Material.Name}"/>
+                                <DataGridTextColumn Header="Color" Binding="{Binding WorkUnit.Color.Name}"/>
+                                <DataGridTextColumn Header="Responsable" Binding="{Binding Responsible.FullName}"/>
+                                <DataGridTextColumn Header="Supervisor" Binding="{Binding Supervisor.FullName}"/>
                             </DataGrid.Columns>
                             <DataGrid.GroupStyle>
                                 <!-- Style for groups at top level. -->
@@ -144,38 +139,13 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Button Grid.Row="0" 
-                                Content="⮞" FontSize="20" Width="30" 
-                                Command="{Binding AddWorkUnitCommand}" 
-                                Margin="5"/>
-                        <Button Grid.Row="1" 
-                                Content="⮜" FontSize="20" Width="30" 
-                                Command="{Binding RemoveWorkUnitCommand}"
-                                Margin="5"/>
-                        <Button Grid.Row="2"
-                                Content="{Binding MoveOrderButtonText}"
-                                Command="{Binding NewWorkOrderCommand}" 
-                                CommandParameter="Move"
-                                Margin="5"/>
-                        <ComboBox Grid.Row="3" 
-                                  ItemsSource="{Binding WorkArea.Model.OutgoingConnections}"
-                                  SelectedItem="{Binding SelectedWorkAreaConnection}"
-                                  DisplayMemberPath="DestinationWorkArea.Name"
-                                  SelectedValuePath="Id"
-                                  Margin="5"/>
-                    </Grid>
-                    <Grid Grid.Column="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Productos para trasladar" FontSize="15"/>
+                        <Label Content="Unidades que salieron del area" 
+                               FontWeight="DemiBold"
+                               FontSize="15" 
+                               HorizontalAlignment="Center"/>
                         <DataGrid Grid.Row="1" 
-                                  ItemsSource="{Binding WorkOrderCollectionView}" 
-                                  SelectedItem="{Binding SelectedWorkOrderWorkUnit}"
+                                  ItemsSource="{Binding WorkAreaOutgoingMovementsCollectionView}"
                                   AutoGenerateColumns="false" 
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -183,12 +153,13 @@
                                   SelectionMode="Extended"
                                   Margin="10,0,10,0">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
-                                <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
-                                <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
-                                <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Requisition.Client.FullName}"/>
-                                <DataGridTextColumn Header="Responsable" Binding="{Binding Model.LatestResponsible.FullName}"/>
-                                <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.LatestSupervisor.FullName}"/>
+                                <DataGridTextColumn Header="Fecha" Binding="{Binding Date}"/>
+                                <DataGridTextColumn Header="A" Binding="{Binding ToWorkArea.Name}"/>
+                                <DataGridTextColumn Header="Producto" Binding="{Binding WorkUnit.Product.Name}"/>
+                                <DataGridTextColumn Header="Material" Binding="{Binding WorkUnit.Material.Name}"/>
+                                <DataGridTextColumn Header="Color" Binding="{Binding WorkUnit.Color.Name}"/>
+                                <DataGridTextColumn Header="Responsable" Binding="{Binding Responsible.FullName}"/>
+                                <DataGridTextColumn Header="Supervisor" Binding="{Binding Supervisor.FullName}"/>
                             </DataGrid.Columns>
                             <DataGrid.GroupStyle>
                                 <!-- Style for groups at top level. -->

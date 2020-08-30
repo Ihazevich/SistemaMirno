@@ -240,12 +240,14 @@
     <Compile Include="Data\Repositories\Interfaces\IProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IWorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IRequisitionRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IWorkAreaMovementRepository.cs" />
     <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductRepository.cs" />
     <Compile Include="Data\Repositories\RequisitionRepository.cs" />
     <Compile Include="Data\Repositories\RoleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
+    <Compile Include="Data\Repositories\WorkAreaMovementRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\WorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\WorkUnitRepository.cs" />
@@ -314,6 +316,7 @@
     <Compile Include="ViewModel\General\Interfaces\IProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IRequisitionViewModel.cs" />
     <Compile Include="ViewModel\General\Interfaces\IStockViewModel.cs" />
+    <Compile Include="ViewModel\General\Interfaces\IWorkAreaMovementViewModel.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
     <Compile Include="ViewModel\General\ProductViewModel.cs" />
@@ -321,6 +324,7 @@
     <Compile Include="ViewModel\General\RoleViewModel.cs" />
     <Compile Include="ViewModel\General\StockViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
+    <Compile Include="ViewModel\General\WorkAreaMovementViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\WorkUnitViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
@@ -432,6 +436,9 @@
     </Compile>
     <Compile Include="View\General\WorkUnitView.xaml.cs">
       <DependentUpon>WorkUnitView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\General\WorkAreaMovementView.xaml.cs">
+      <DependentUpon>WorkAreaMovementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wrapper\BranchWrapper.cs" />
     <Compile Include="Wrapper\ClientWrapper.cs" />
@@ -608,6 +615,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\General\WorkUnitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\General\WorkAreaMovementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

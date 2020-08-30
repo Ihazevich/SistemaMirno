@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -94,5 +95,8 @@ namespace SistemaMirno.Model
         public virtual Employee LatestSupervisor { get; set; }
 
         public string Details { get; set; }
+
+        [ForeignKey(nameof(WorkAreaMovement.WorkUnitId))]
+        public virtual ICollection<WorkAreaMovement> Movements { get; set; } = new HashSet<WorkAreaMovement>();
     }
 }

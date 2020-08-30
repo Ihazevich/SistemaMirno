@@ -589,7 +589,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     Date = DateTime.Now,
                     WorkUnit = workOrderUnit.WorkUnit,
                 };
-
+                workOrderUnit.WorkUnit.Movements.Add(movement);
                 workOrderUnit.Finished = false;
                 workOrderUnit.WorkUnit.CurrentWorkAreaId = WorkArea.Id;
                 workOrderUnit.WorkUnit.LatestResponsibleId = WorkOrder.ResponsibleEmployeeId;

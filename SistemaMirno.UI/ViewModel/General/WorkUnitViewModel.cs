@@ -58,6 +58,17 @@ namespace SistemaMirno.UI.ViewModel.General
             OpenWorkOrderViewCommand = new DelegateCommand(OnOpenWorkOrderViewExecute);
             AddWorkUnitCommand = new DelegateCommand(OnAddWorkUnitCommandExecute, OnAddWorkUnitCommandCanExecute);
             RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
+            OpenWorkAreaMovementViewCommand = new DelegateCommand(OnOpenWorkAreaMovementViewExecute);
+        }
+
+        private void OnOpenWorkAreaMovementViewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = WorkArea.Id,
+                    ViewModel = nameof(WorkAreaMovementViewModel),
+                });
         }
 
         public string MoveOrderButtonText => SelectedWorkAreaConnection != null
@@ -348,6 +359,8 @@ namespace SistemaMirno.UI.ViewModel.General
         public ICommand AddWorkUnitCommand { get; }
 
         public ICommand RemoveWorkUnitCommand { get; }
+
+        public ICommand OpenWorkAreaMovementViewCommand { get; }
 
         public override async Task LoadAsync(int? id = null)
         {

@@ -93,6 +93,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(RequisitionViewModel));
             builder.RegisterType<StockViewModel>()
                 .Keyed<IViewModelBase>(nameof(StockViewModel));
+            builder.RegisterType<WorkAreaMovementViewModel>()
+                .Keyed<IViewModelBase>(nameof(WorkAreaMovementViewModel));
         }
 
         /// <summary>
@@ -160,6 +162,7 @@ namespace SistemaMirno.UI
             builder.RegisterType<RequisitionRepository>().As<IRequisitionRepository>();
             builder.RegisterType<WorkOrderRepository>().As<IWorkOrderRepository>();
             builder.RegisterType<WorkUnitRepository>().As<IWorkUnitRepository>();
+            builder.RegisterType<WorkAreaMovementRepository>().As<IWorkAreaMovementRepository>();
         }
     }
 }

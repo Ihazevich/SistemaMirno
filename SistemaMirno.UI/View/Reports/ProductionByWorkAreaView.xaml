@@ -71,7 +71,7 @@
             <Label Content="Area"/>
             <ComboBox Grid.Row="5"
                       IsEnabled="{Binding AreaPickerEnabled}"
-                      ItemsSource="{Binding WorkAreas, Mode=TwoWay}"
+                      ItemsSource="{Binding WorkAreas}"
                       DisplayMemberPath="Name"
                       SelectedValue="{Binding SelectedWorkArea, Mode=TwoWay}"
                       Margin="5" />

@@ -44,4 +44,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:StockViewModel}">
         <general:StockView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:WorkAreaMovementViewModel}">
+        <general:WorkAreaMovementView/>
+    </DataTemplate>
 </ResourceDictionary>
