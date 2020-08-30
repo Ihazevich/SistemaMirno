@@ -53,6 +53,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private bool _canGetWorkUnitsFromRequisition;
 
         private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
+        private readonly PropertyGroupDescription _workOrderUnitProductName = new PropertyGroupDescription("Model.WorkUnit.Product.Name");
 
         private readonly PropertyGroupDescription _currentWorkAreaName =
             new PropertyGroupDescription("Model.CurrentWorkArea.Name");
@@ -77,7 +78,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             RequisitionWorkUnits = new ObservableCollection<WorkUnitWrapper>();
 
             WorkOrderUnitsCollectionView = CollectionViewSource.GetDefaultView(WorkOrderUnits);
-            WorkOrderUnitsCollectionView.GroupDescriptions.Add(_productName);
+            WorkOrderUnitsCollectionView.GroupDescriptions.Add(_workOrderUnitProductName);
             ExistingWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(ExistingWorkUnits);
             ExistingWorkUnitsCollectionView.GroupDescriptions.Add(_productName);
             RequisitionWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(RequisitionWorkUnits);
@@ -559,6 +560,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 WorkOrder = new WorkOrderWrapper(model);
                 WorkOrder.PropertyChanged += Model_PropertyChanged;
                 ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+                WorkArea = new WorkAreaWrapper(model.DestinationWorkArea);
             });
 
             foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
@@ -630,12 +632,24 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override void OnCancelExecute()
         {
             base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = _originWorkAreaId,
-                    ViewModel = nameof(WorkUnitViewModel),
-                });
+            if (IsNew)
+            {
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs
+                    {
+                        Id = _originWorkAreaId,
+                        ViewModel = nameof(WorkUnitViewModel),
+                    });
+            }
+            else
+            {
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs
+                    {
+                        Id = WorkOrder.DestinationWorkAreaId,
+                        ViewModel = nameof(WorkOrderViewModel),
+                    });
+            }
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -670,15 +684,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 RequisitionWorkUnitsProgressVisibility = Visibility.Hidden;
             });
 
-            await LoadResponsibles();
-            await LoadSupervisors();
-
             if (id.HasValue)
             {
                 await LoadDetailAsync(id.Value);
-                return;
             }
 
+            await LoadResponsibles();
+            await LoadSupervisors();
 
             await base.LoadDetailAsync().ConfigureAwait(false);
         }
@@ -809,7 +821,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 NewWorkUnit.Model.CurrentWorkArea = WorkArea.Model;
                 NewWorkUnit.Details = string.Empty;
             });
-            
+
             if (movingWorkUnits != null)
             {
                 var idList = movingWorkUnits.Select(w => w.Id).ToList();

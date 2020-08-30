@@ -50,6 +50,10 @@
                         Command="{Binding OpenDetailCommand}"
                         Width="250" 
                         Margin="10" />
+                <Button Content="Atras"
+                        Command="{Binding GoBackCommand}"
+                        Width="250" 
+                        Margin="10" />
                 <Button Content="Salir" 
                         Command="{Binding ExitView}"
                         Width="250" 

@@ -28,7 +28,9 @@
                     <MenuItem Header="Produccion por areas" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByWorkAreaViewModel"/>
                 </MenuItem>
                 <MenuItem Header="Historiales" IsEnabled="{Binding NavigationStatus}">
-                    <MenuItem Header="Ordenes por dia" IsEnabled="False" />
+                    <MenuItem Header="Historial de Ordenes" 
+                              Command="{Binding ChangeViewCommand}"
+                              CommandParameter="WorkOrderViewModel"/>
                     <MenuItem Header="Productos por dia" IsEnabled="False" />
                     <MenuItem Header="Productos en proceso" IsEnabled="False" />
                     <MenuItem Header="Productos por responsable" IsEnabled="False" />

@@ -352,7 +352,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private void OnChangeViewExecute(string viewModel)
         {
-            ChangeView(new ChangeViewEventArgs { ViewModel = viewModel, Id = -1 });
+            ChangeView(new ChangeViewEventArgs { ViewModel = viewModel, Id = null });
         }
 
         private void OnCloseApplicationExecute()
