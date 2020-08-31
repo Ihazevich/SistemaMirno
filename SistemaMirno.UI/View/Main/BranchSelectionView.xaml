@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -24,36 +25,72 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Label Content="Seleccionar Sucursal" FontSize="25" HorizontalAlignment="Center"/>
+            <TextBlock Text="Seleccionar Sucursal" HorizontalAlignment="Center"
+                   Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                   Margin="20"/>
             <Separator Grid.Row="1"/>
-            <ListBox Grid.Row="2" ItemsSource="{Binding Branches}"
-                     SelectedItem="{Binding SelectedBranch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     SelectionMode="Single">
-                <ListBox.ItemTemplate>
+            <ProgressBar Grid.Row="2" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
+            <ItemsControl Grid.Row="3"
+                          ItemsSource="{Binding Branches}"
+                          Grid.IsSharedSizeScope="True">
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" FontSize="20" Margin="10"/>
+                        <Border
+                            x:Name="Border"
+                            Padding="8"
+                            BorderThickness="0 0 0 1"
+                            BorderBrush="{DynamicResource MaterialDesignDivider}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition
+                                        SharedSizeGroup="Checkerz" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton
+                                    VerticalAlignment="Center"
+                                    IsChecked="{Binding IsSelected}"
+                                    Style="{StaticResource MaterialDesignFloatingActionButton}"
+                                    Content="{Binding Name[0]}" 
+                                    Command="{Binding DataContext.ChangeBranchCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding Id}"
+                                    FontSize="20"/>
+                                <StackPanel
+                                    Margin="8 0 0 0"
+                                    Grid.Column="1">
+                                    <TextBlock
+                                        FontWeight="Bold"
+                                        Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                        Text="{Binding Name}" />
+                                    <TextBlock
+                                        Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                        Text="{Binding Address}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Grid Grid.Row="3">
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Grid Grid.Row="4" HorizontalAlignment="Center" Margin="20">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Content="Nueva Sucursal"
                         Visibility="{Binding NewBranchButtonVisibility}"
                         Command="{Binding AddBranchCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:RippleAssist.Feedback="#DD000000"
+                        Width="200"
                         Margin="10"/>
-                <Button Grid.Column="1" Content="Seleccionar"
-                        Command="{Binding SelectBranchCommand}"
-                        Margin="10"/>
-                <Button Grid.Column="2" Content="Cancelar"
+                <Button Content="Cerrar sesion" 
                         Command="{Binding CancelCommand}"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        materialDesign:RippleAssist.Feedback="#DD000000"
+                        Width="200"
                         Margin="10"/>
             </Grid>
         </Grid>
-        <mah:ProgressRing Grid.Column="1" Grid.Row="1" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" Width="250" Height="30"/>
     </Grid>
 </UserControl>

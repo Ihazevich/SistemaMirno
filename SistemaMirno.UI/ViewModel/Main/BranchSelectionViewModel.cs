@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Annotations;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.DataAccess;
-using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.View.Detail;
 using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.Wrapper;
 
@@ -36,7 +28,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             Branches = new ObservableCollection<BranchWrapper>();
 
-            SelectBranchCommand = new DelegateCommand(OnSelectBranchExecute, OnSelectBranchCanExecute);
+            ChangeBranchCommand = new DelegateCommand<object>(OnSelectBranchExecute, OnSelectBranchCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute);
             AddBranchCommand = new DelegateCommand(OnAddBranchExecute);
 
@@ -64,19 +56,21 @@ namespace SistemaMirno.UI.ViewModel.Main
                 });
         }
 
-        private void OnSelectBranchExecute()
+        private void OnSelectBranchExecute(object obj)
         {
+            var branch = Branches.Single(b => b.Id == int.Parse(obj.ToString()));
             EventAggregator.GetEvent<BranchChangedEvent>()
                 .Publish(new BranchChangedEventArgs
                 {
-                    BranchId = SelectedBranch.Id,
-                    Name = SelectedBranch.Name,
+                    BranchId = branch.Id,
+                    Name = branch.Name,
                 });
         }
 
-        private bool OnSelectBranchCanExecute()
+        private bool OnSelectBranchCanExecute(object obj)
         {
-            return SelectedBranch != null;
+            return SessionInfo.User.Model.IsSystemAdmin || SessionInfo.User.Model.Employee.Roles.Select(r => r.BranchId)
+                .Contains(int.Parse(obj.ToString()));
         }
 
         public ObservableCollection<BranchWrapper> Branches { get; }
@@ -89,11 +83,11 @@ namespace SistemaMirno.UI.ViewModel.Main
             {
                 _selectedBranch = value;
                 OnPropertyChanged();
-                ((DelegateCommand)SelectBranchCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand<object>)ChangeBranchCommand).RaiseCanExecuteChanged();
             }
         }
 
-        public ICommand SelectBranchCommand { get; }
+        public ICommand ChangeBranchCommand { get; }
 
         public ICommand CancelCommand { get; }
 
@@ -105,7 +99,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             var branches = await _branchRepository.GetAllAsync();
 
-            foreach (var branch in branches.Where(branch => SessionInfo.User.Model.IsSystemAdmin || SessionInfo.User.Model.Employee.Roles.Select(r => r.BranchId).Contains(branch.Id)))
+            foreach (var branch in branches)
             {
                 Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
             }
