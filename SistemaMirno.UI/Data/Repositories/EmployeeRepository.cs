@@ -50,5 +50,26 @@ namespace SistemaMirno.UI.Data.Repositories
                 return null;
             }
         }
+
+        public async Task<List<WorkOrderUnit>> GetThisYearsWorkOrderUnitsFromEmployeeAsync(int employeeId)
+        {
+            try
+            {
+                return await Context.WorkOrderUnits.Where(w =>
+                    w.WorkOrder.ResponsibleEmployeeId == employeeId &&
+                    w.WorkOrder.CreationDateTime.Year == DateTime.Today.Year)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
     }
 }

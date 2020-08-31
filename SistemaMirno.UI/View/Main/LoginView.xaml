@@ -5,6 +5,7 @@
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
               xmlns:local="clr-namespace:SistemaMirno.UI.View"
               xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
               Dialog:DialogParticipation.Register="{Binding DialogCoordinator}"
               mc:Ignorable="d" 
               d:DesignHeight="450" d:DesignWidth="800">
@@ -17,14 +18,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Column="1" Grid.Row="1" IsEnabled="{Binding NotBusy}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -32,27 +28,54 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Content="Ingrese sus datos para entrar al sistema" FontSize="20"/>
-            </StackPanel>
-            <Separator Grid.ColumnSpan="2" Grid.Row="1"/>
-            <Label Grid.Row="2" Content="Usuario" HorizontalContentAlignment="Right"/>
-            <Label Grid.Row="3" Content="Contraseña" HorizontalContentAlignment="Right"/>
-            <TextBox Grid.Column="1" Grid.Row="2" 
-                 Text="{Binding User.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <PasswordBox Grid.Column="1" Grid.Row="3" 
-                         Name="PasswordBox"/>
-            <Button Grid.Row="4" 
-                    Content="Iniciar sesion" 
-                    Command="{Binding LoginCommand}"
-                    CommandParameter="{Binding ElementName=PasswordBox}"
-                    Margin="10"/>
-            <Button Grid.Column="1" Grid.Row="4" 
-                    Content="Cancelar" 
-                    Command="{Binding CancelCommand}"
-                    Margin="10"/>
+            <TextBlock Grid.Row="0" 
+                       Text="Ingrese sus datos para entrar al sistema" 
+                       HorizontalAlignment="Center" 
+                       Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                       Margin="20"/>
+            <Separator Grid.Row="1"/>
+            <ProgressBar Grid.Row="2" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
+            <Grid Grid.Row="3" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0"  
+                         Text="{Binding User.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Usuario"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         FontSize="20"
+                         Margin="20"/>
+                <PasswordBox Grid.Row="1" 
+                             Name="PasswordBox"
+                             materialDesign:HintAssist.Hint="Contraseña"
+                             materialDesign:HintAssist.Foreground="Green"
+                             materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                             materialDesign:HintAssist.HelperText="Al menos 4 caracteres"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
+                             FontSize="20"
+                             Margin="20"/>
+            </Grid>
+            <Separator Grid.Row="4" Margin="0,20,0,20"/>
+            <Grid Grid.Row="5">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+                    <Button Content="Iniciar sesion" 
+                            Command="{Binding LoginCommand}"
+                            CommandParameter="{Binding ElementName=PasswordBox}"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            materialDesign:RippleAssist.Feedback="#DD000000"
+                            Width="200"
+                            Margin="10"/>
+                    <Button Content="Salir" 
+                            Command="{Binding CancelCommand}"
+                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                            materialDesign:RippleAssist.Feedback="#DD000000"
+                            Width="200"
+                            Margin="10"/>
+                </StackPanel>
+            </Grid>
         </Grid>
-        <ProgressBar Grid.Column="1" Grid.Row="2" Visibility="{Binding ProgressVisibility}" IsIndeterminate="True"/>
     </Grid>
 </UserControl>

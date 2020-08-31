@@ -19,7 +19,7 @@
                  WindowStyle="SingleBorderWindow"
                  utilities:DialogCloser.DialogResult="{Binding DialogResult}">
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}">
+        <Menu DockPanel.Dock="Top" Style="{StaticResource MahApps.Styles.Menu}" Visibility="{Binding MenuVisibility}">
             <MenuItem Header="Reportes de Producción" 
                       Visibility="{Binding ProductionVisibility}"
                       IsEnabled="{Binding NavigationStatus}">
@@ -73,7 +73,7 @@
                       Command="{Binding ChangeViewCommand}"
                       CommandParameter="BranchSelectionViewModel"
                       IsEnabled="{Binding NavigationStatus}" 
-                      Visibility="{Binding SysAdminVIsibility}"/>
+                      Visibility="{Binding SysAdminVisibility}"/>
             <MenuItem Header="Cerrar sesion de usuario" Command="{Binding CloseUserSessionCommand}" IsEnabled="{Binding NavigationStatus}"/>
             <MenuItem Header="Salir del sistema" Command="{Binding CloseApplicationCommand}" IsEnabled="{Binding NavigationStatus}"/>
         </Menu>
@@ -86,7 +86,9 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <main:NavigationView DataContext="{Binding NavigationViewModel}" />
+            <Grid Visibility="{Binding MenuVisibility}">
+                <main:NavigationView DataContext="{Binding NavigationViewModel}" />
+            </Grid>
             <ContentPresenter Grid.Column="1" Content="{Binding SelectedViewModel}" />
             <StatusBar Grid.Row="1" Grid.ColumnSpan="2" FontSize="15">
                 <StatusBar.ItemsPanel>

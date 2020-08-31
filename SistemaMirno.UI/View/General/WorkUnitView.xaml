@@ -26,18 +26,23 @@
                         Command="{Binding NewWorkOrderCommand}" 
                         CommandParameter="New"
                         Width="250" 
+                        FontSize="15"
                         Margin="10"/>
                 <Button Content="Ver Ordenes" 
                         Command="{Binding OpenWorkOrderViewCommand}" 
                         Width="250" 
+                        FontSize="15"
                         Margin="10"/>
                 <Button Content="Ver Movimientos" 
                         Command="{Binding OpenWorkAreaMovementViewCommand}" 
                         Width="250" 
+                        FontSize="15"
                         Margin="10"/>
                 <Button Content="Salir" 
                         Command="{Binding ExitView}" 
                         Width="250" 
+                        FontSize="15"
+                        Background="OrangeRed"
                         Margin="10"/>
             </StackPanel>
             <Grid Grid.Column="1">

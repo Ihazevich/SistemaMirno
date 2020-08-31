@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label Content="Reporte de Produccion por Empleado" FontSize="30" />
@@ -48,11 +49,20 @@
             </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <DataGrid Grid.Row="0" 
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Produccion total en el periodo seleccionado:" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="1" Content="{Binding TotalProductionInPeriod}" HorizontalAlignment="Left"/>   
+                </Grid>
+                <Separator Grid.Row="1" />
+                <DataGrid Grid.Row="2" 
                   ItemsSource="{Binding WorkUnitsCollection}" 
                   AutoGenerateColumns="false" 
                   SelectionMode="Single"
@@ -94,31 +104,37 @@
                         </GroupStyle>
                     </DataGrid.GroupStyle>
                 </DataGrid>
-                <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Content="Produccion mensual del presente año" FontSize="20"/>
-                    <wpf:CartesianChart Grid.Row="1"
-                                        Series="{Binding MonthlySeriesCollection}"
-                                        Margin="10">
-                        <wpf:CartesianChart.AxisX>
-                            <wpf:Axis LabelsRotation="20" Labels="{Binding MonthlyLabels}" Position="LeftBottom" />
-                        </wpf:CartesianChart.AxisX>
-                    </wpf:CartesianChart>
-                </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0"  Content="Produccion diario del presente mes" FontSize="20"/>
-                    <wpf:CartesianChart Grid.Row="1"
-                                        Series="{Binding DailySeriesCollection}" 
-                                        Margin="10">
-                    </wpf:CartesianChart>
-                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="Produccion mensual del presente año" FontSize="20"/>
+                <wpf:CartesianChart Grid.Row="1"
+                                    Series="{Binding MonthlySeriesCollection}"
+                                    Margin="10">
+                    <wpf:CartesianChart.AxisX>
+                        <wpf:Axis LabelsRotation="20" Labels="{Binding MonthlyLabels}" Position="LeftBottom" />
+                    </wpf:CartesianChart.AxisX>
+                </wpf:CartesianChart>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"  Content="Produccion diaria del presente mes" FontSize="20"/>
+                <wpf:CartesianChart Grid.Row="1"
+                                    Series="{Binding DailySeriesCollection}" 
+                                    Margin="10">
+                </wpf:CartesianChart>
             </Grid>
         </Grid>
     </Grid>

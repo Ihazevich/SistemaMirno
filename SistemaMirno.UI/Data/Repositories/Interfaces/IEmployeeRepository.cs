@@ -12,5 +12,6 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
 
         Task<List<Role>> GetAllRolesFromBranchAsync(int branchId);
         Task<List<WorkOrderUnit>> GetThisMonthWorkOrderUnitsFromEmployeeAsync(int employeeId);
+        Task<List<WorkOrderUnit>> GetThisYearsWorkOrderUnitsFromEmployeeAsync(int employeeId);
     }
 }

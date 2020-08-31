@@ -10,23 +10,24 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
-            <Grid Height="48">
+            <Grid Height="48" Margin="10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="48" />
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"
-                    FontSize="16"
+                    FontSize="25"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
+                    Foreground="LawnGreen"
                     FontFamily="Segoe MDL2 Assets"
-                    Foreground="White"
-                    Text="&#xE72A;" />
+                    Text="&#xE72A;" 
+                    Margin="5"/>
                 <TextBlock Grid.Column="1"
                     VerticalAlignment="Center"
-                    FontSize="16"
+                    FontSize="25"
                     Foreground="White"
-                    Text="{Binding Name}" />
+                    Text="{Binding Name}"/>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>

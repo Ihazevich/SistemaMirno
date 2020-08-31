@@ -12,6 +12,7 @@
              xmlns:detail="clr-namespace:SistemaMirno.UI.View.Detail"
              xmlns:general="clr-namespace:SistemaMirno.UI.View.General"
              xmlns:main="clr-namespace:SistemaMirno.UI.View.Main"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
@@ -23,11 +24,47 @@
                 </Style.Triggers>
             </Style>
             <ResourceDictionary.MergedDictionaries>
-                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <!-- MahApps -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <!-- Theme setting -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Green.xaml" />
+
+                <!-- Material Design -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <!-- primary color -->
+                <ResourceDictionary>
+                    <!-- include your primary palette -->
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Green.Named.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                    <!--
+                            include three hues from the primary palette (and the associated forecolours).
+                            Do not rename, keep in sequence; light to dark.
+                        -->
+                    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource GreenPrimary500}"/>
+                    <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource GreenPrimary500Foreground}"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource GreenPrimary600}"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource GreenPrimary600Foreground}"/>
+                    <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource GreenPrimary700}"/>
+                    <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource GreenPrimary700Foreground}"/>
+                </ResourceDictionary>
+
+                <!-- secondary colour -->
+                <ResourceDictionary>
+                    <!-- include your secondary pallette -->
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Red.Named.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+
+                    <!-- include a single secondary accent color (and the associated forecolour) -->
+                    <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{StaticResource RedAccent400}"/>
+                    <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{StaticResource RedPrimary400Foreground}"/>
+                </ResourceDictionary>
+
+                <!-- Material Design: MahApps Compatibility -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
                 <!-- Own Resources-->
                 <ResourceDictionary Source="Resources/DetailDataTemplates.xaml"/>
                 <ResourceDictionary Source="Resources/GeneralDataTemplates.xaml"/>

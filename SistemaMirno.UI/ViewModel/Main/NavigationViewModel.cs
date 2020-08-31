@@ -69,10 +69,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// </summary>
         public WorkAreaWrapper SelectedWorkArea
         {
-            get
-            {
-                return _selectedWorkArea;
-            }
+            get => _selectedWorkArea;
 
             set
             {

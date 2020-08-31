@@ -34,8 +34,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
         private DateTime _startDate = DateTime.Today;
         private DateTime _endDate = DateTime.Today;
-
-        private bool _areaPickerEnabled = false;
+        private long _totalProductionInPeriod;
 
         public ProductionByEmployeeViewModel(
             IEmployeeRepository employeeRepository,
@@ -71,6 +70,8 @@ namespace SistemaMirno.UI.ViewModel.Reports
             };
         }
 
+        public string TotalProductionInPeriod => $"{_totalProductionInPeriod:n0}" + " Gs.";
+
         public SeriesCollection MonthlySeriesCollection { get; }
 
         public SeriesCollection DailySeriesCollection { get; }
@@ -86,9 +87,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
             {
                 _selectedEmployee = value;
                 OnPropertyChanged();
-                SelectWorkUnits();
-                CalculateMonthlyProduction();
-                CalculateDailyProduction();
+                UpdateView();
             }
         }
 
@@ -129,18 +128,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 SelectWorkUnits();
             }
         }
-
-        public bool AreaPickerEnabled
-        {
-            get => _areaPickerEnabled;
-
-            set
-            {
-                _areaPickerEnabled = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public override async Task LoadAsync(int? id)
         {
             Employees.Clear();
@@ -152,9 +140,13 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
         }
 
-        private async void SelectWorkUnits()
+        private async Task SelectWorkUnits()
         {
-            WorkOrderUnits.Clear();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                WorkOrderUnits.Clear();
+                _totalProductionInPeriod = 0;
+            });
 
             if (SelectedEmployee == null)
             {
@@ -179,7 +171,13 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
                     foreach (var workOrderUnit in workOrder.WorkOrderUnits)
                     {
-                        Application.Current.Dispatcher.Invoke(() => WorkOrderUnits.Add(workOrderUnit));
+                        var value = workOrderUnit.WorkUnit.Product.ProductionValue;
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            _totalProductionInPeriod += value;
+                            WorkOrderUnits.Add(workOrderUnit);
+                            OnPropertyChanged(nameof(TotalProductionInPeriod));
+                        });
                     }
                 }
             });
@@ -191,11 +189,13 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
         }
 
-        private async void CalculateMonthlyProduction()
+        private async Task CalculateMonthlyProduction()
         {
             long[] monthlyProductions = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-            foreach (var workOrderUnit in await _employeeRepository.GetThisMonthWorkOrderUnitsFromEmployeeAsync())
+            var workOrderUnits = await _employeeRepository.GetThisYearsWorkOrderUnitsFromEmployeeAsync(SelectedEmployee.Id);
+
+            foreach (var workOrderUnit in workOrderUnits)
             {
                 monthlyProductions[workOrderUnit.WorkOrder.CreationDateTime.Month - 1] += workOrderUnit.WorkUnit.Product.ProductionValue;
             }
@@ -208,23 +208,25 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 LabelPoint = point => $"{point.Y:n0}" + " Gs.",
             };
 
-            MonthlySeriesCollection.Clear();
-            MonthlySeriesCollection.Add(lineSeries);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MonthlySeriesCollection.Clear();
+                MonthlySeriesCollection.Add(lineSeries);
+            });
         }
 
-        private void CalculateDailyProduction()
+        private async Task CalculateDailyProduction()
         {
             // Make a list to store the current month daily productions and one to store the cummulative production
             var dailyProductions = new List<long>(new long[DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month)]);
             var dailyCumulative = new List<long>(new long[DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month)]);
 
-            foreach (var workOrderUnit in WorkOrderUnits)
+            var workOrderUnits = await _employeeRepository.GetThisMonthWorkOrderUnitsFromEmployeeAsync(SelectedEmployee.Id);
+
+            foreach (var workOrderUnit in workOrderUnits.Where(workOrderUnit => workOrderUnit.WorkOrder.CreationDateTime.Month == DateTime.Today.Month
+                && workOrderUnit.WorkOrder.CreationDateTime.Year == DateTime.Today.Year))
             {
-                if (workOrderUnit.WorkOrder.CreationDateTime.Month == DateTime.Today.Month
-                    && workOrderUnit.WorkOrder.CreationDateTime.Year == DateTime.Today.Year)
-                {
-                    dailyProductions[workOrderUnit.WorkOrder.CreationDateTime.Day - 1] += workOrderUnit.WorkUnit.Product.ProductionValue;
-                }
+                dailyProductions[workOrderUnit.WorkOrder.CreationDateTime.Day - 1] += workOrderUnit.WorkUnit.Product.ProductionValue;
             }
 
             long cumulative = 0;
@@ -248,9 +250,19 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 LabelPoint = point => $"{point.Y:n0}" + " Gs.",
             };
 
-            DailySeriesCollection.Clear();
-            DailySeriesCollection.Add(lineSeriesDaily);
-            DailySeriesCollection.Add(lineSeriesCummulative);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                DailySeriesCollection.Clear();
+                DailySeriesCollection.Add(lineSeriesDaily);
+                DailySeriesCollection.Add(lineSeriesCummulative);
+            });
+        }
+
+        private async Task UpdateView()
+        {
+            await SelectWorkUnits();
+            await CalculateMonthlyProduction();
+            await CalculateDailyProduction().ConfigureAwait(false);
         }
     }
 }

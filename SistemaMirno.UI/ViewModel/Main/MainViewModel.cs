@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Autofac.Features.Indexed;
@@ -33,6 +34,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         private Visibility _salesVisibility;
         private Visibility _humanResourcesVisibility;
         private Visibility _sysAdminVisibility;
+        private Visibility _menuVisibility;
 
         // Status bar fields
         private string _statusMessage;
@@ -114,6 +116,17 @@ namespace SistemaMirno.UI.ViewModel.Main
         #endregion Constructors
 
         #region Properties
+
+        public Visibility MenuVisibility
+        {
+            get => _menuVisibility;
+
+            set
+            {
+                _menuVisibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Visibility AccountingVisibility
         {
@@ -285,7 +298,10 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         public async void ShowDialog(ShowDialogEventArgs args)
         {
-            await DialogCoordinator.ShowMessageAsync(this, args.Title, args.Message);
+            var dictionary = new ResourceDictionary();
+            dictionary.Source = new Uri("pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml");
+
+            await DialogCoordinator.ShowMessageAsync(this, args.Title, args.Message,MessageDialogStyle.Affirmative,new MetroDialogSettings{CustomResourceDictionary = dictionary});
         }
 
         private async void BranchChanged(BranchChangedEventArgs args)
@@ -306,6 +322,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             UpdateStatusBar(new NotifyStatusBarEventArgs {Message = "Cargando navegación", Processing = true});
             ReloadNavigationView();
+            MenuVisibility = Visibility.Visible;
             ClearStatusBar();
         }
 
@@ -328,6 +345,11 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
 
             NotifyStatusBar("Cambiando de vista", true);
+            if (args.ViewModel == nameof(LoginViewModel) || args.ViewModel == nameof(BranchSelectionViewModel))
+            {
+                MenuVisibility = Visibility.Collapsed;
+            }
+
             SelectedViewModel = _viewModelCreator[args.ViewModel];
             SelectedViewModel.LoadAsync(args.Id);
             EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
