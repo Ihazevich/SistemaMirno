@@ -130,5 +130,8 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(HistoricalSalary.EmployeeId))]
         public virtual ICollection<HistoricalSalary> HistoricalSalaries { get; set; } = new HashSet<HistoricalSalary>();
+
+        [ForeignKey(nameof(WorkOrder.ResponsibleEmployeeId))]
+        public virtual ICollection<WorkOrder> WorkOrders { get; set; } = new HashSet<WorkOrder>();
    }
 }

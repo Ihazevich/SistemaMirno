@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="SistemaMirno.UI.View.Reports.ProductionByEmployeeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SistemaMirno.UI.View.Reports"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:controls="clr-namespace:DotNetKit.Windows.Controls;assembly=DotNetKit.Wpf.AutoCompleteComboBox"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Content="Reporte de Produccion por Empleado" FontSize="30" />
+        <Separator Grid.Row="1"/>
+        <ProgressBar Grid.Row="2" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" >
+                <Label Content="Empleado"/>
+                <controls:AutoCompleteComboBox ItemsSource="{Binding Employees}"
+                                               SelectedItem="{Binding SelectedEmployee}"
+                                               DisplayMemberPath="FullName"
+                                               TextSearch.TextPath="FullName"
+                                               Margin="10">
+                    <controls:AutoCompleteComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </controls:AutoCompleteComboBox.ItemsPanel>
+                </controls:AutoCompleteComboBox>
+                <Label Content="Desde"/>
+                <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" Margin="10"/>
+                <Label Content="Hasta"/>
+                <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" Margin="10"/>
+                <Button Content="Actualizar listado"
+                        Command="{Binding ReloadWorkUnitsCommand}"
+                        Width="250" 
+                        Margin="10" />
+                <Button Content="Salir" Command="{Binding ExitView}" Margin="10"/>
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="0" 
+                  ItemsSource="{Binding WorkUnitsCollection}" 
+                  AutoGenerateColumns="false" 
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  Margin="5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Producto" Binding="{Binding WorkUnit.Product.Name}"/>
+                        <DataGridTextColumn Header="Material" Binding="{Binding WorkUnit.Material.Name}"/>
+                        <DataGridTextColumn Header="Color" Binding="{Binding WorkUnit.Color.Name}"/>
+                        <DataGridTextColumn Header="Valor de Produccion" Binding="{Binding WorkUnit.Product.ProductionValue}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.GroupStyle>
+                        <!-- Style for groups at top level. -->
+                        <GroupStyle>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Margin" Value="0,0,0,5"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                <Expander IsExpanded="False" BorderThickness="1,1,1,5">
+                                                    <Expander.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
+                                                        </StackPanel>
+                                                    </Expander.Header>
+                                                    <Expander.Content>
+                                                        <ItemsPresenter />
+                                                    </Expander.Content>
+                                                </Expander>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </DataGrid.GroupStyle>
+                </DataGrid>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="Produccion mensual del presente año" FontSize="20"/>
+                    <wpf:CartesianChart Grid.Row="1"
+                                        Series="{Binding MonthlySeriesCollection}"
+                                        Margin="10">
+                        <wpf:CartesianChart.AxisX>
+                            <wpf:Axis LabelsRotation="20" Labels="{Binding MonthlyLabels}" Position="LeftBottom" />
+                        </wpf:CartesianChart.AxisX>
+                    </wpf:CartesianChart>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0"  Content="Produccion diario del presente mes" FontSize="20"/>
+                    <wpf:CartesianChart Grid.Row="1"
+                                        Series="{Binding DailySeriesCollection}" 
+                                        Margin="10">
+                    </wpf:CartesianChart>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

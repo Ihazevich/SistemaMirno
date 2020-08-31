@@ -9,4 +9,7 @@
     <DataTemplate DataType="{x:Type reportsviewmodel:ProductionByWorkAreaViewModel}">
         <reports:ProductionByWorkAreaView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type reportsviewmodel:ProductionByEmployeeViewModel}">
+        <reports:ProductionByEmployeeView />
+    </DataTemplate>
 </ResourceDictionary>

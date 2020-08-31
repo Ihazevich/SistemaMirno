@@ -26,6 +26,7 @@
                 <MenuItem Header="Listados" IsEnabled="{Binding NavigationStatus}">
                     <MenuItem Header="En proceso por areas" Command="{Binding ChangeViewCommand}" CommandParameter="InProcessByWorkAreasViewModel"/>
                     <MenuItem Header="Produccion por areas" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByWorkAreaViewModel"/>
+                    <MenuItem Header="Produccion por empleado" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByEmployeeViewModel"/>
                 </MenuItem>
                 <MenuItem Header="Historiales" IsEnabled="{Binding NavigationStatus}">
                     <MenuItem Header="Historial de Ordenes" 
@@ -33,7 +34,6 @@
                               CommandParameter="WorkOrderViewModel"/>
                     <MenuItem Header="Productos por dia" IsEnabled="False" />
                     <MenuItem Header="Productos en proceso" IsEnabled="False" />
-                    <MenuItem Header="Productos por responsable" IsEnabled="False" />
                     <MenuItem Header="Movimientos entre sucursales" IsEnabled="False" />
                     <MenuItem Header="Historial de eventos" IsEnabled="False" />
                     <MenuItem Header="Historial de logins" IsEnabled="False" />

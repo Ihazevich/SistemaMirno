@@ -127,7 +127,7 @@ namespace SistemaMirno.UI.ViewModel
                 }
                 else
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() => PropertyChanged(this, new PropertyChangedEventArgs(propertyName))));
+                    Application.Current.Dispatcher.Invoke(() => PropertyChanged(this, new PropertyChangedEventArgs(propertyName)));
                 }
             }
         }

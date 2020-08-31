@@ -109,6 +109,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(InProcessByWorkAreasViewModel));
             builder.RegisterType<ProductionByWorkAreaViewModel>()
                 .Keyed<IViewModelBase>(nameof(ProductionByWorkAreaViewModel));
+            builder.RegisterType<ProductionByEmployeeViewModel>()
+                .Keyed<IViewModelBase>(nameof(ProductionByEmployeeViewModel));
         }
 
         /// <summary>
