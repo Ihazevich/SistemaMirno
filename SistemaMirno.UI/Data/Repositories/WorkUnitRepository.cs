@@ -19,7 +19,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
         }
 
-        public async Task<List<WorkUnit>> GetAllWorkUnitsCurrentlyInWorkArea(int id)
+        public async Task<List<WorkUnit>> GetAllWorkUnitsCurrentlyInWorkAreaAsync(int id)
         {
             try
             {

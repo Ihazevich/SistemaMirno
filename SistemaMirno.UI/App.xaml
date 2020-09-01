@@ -35,10 +35,10 @@
                             include three hues from the primary palette (and the associated forecolours).
                             Do not rename, keep in sequence; light to dark.
                         -->
-                    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource GreenPrimary500}"/>
-                    <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource GreenPrimary500Foreground}"/>
-                    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource GreenPrimary600}"/>
-                    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource GreenPrimary600Foreground}"/>
+                    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource GreenPrimary200}"/>
+                    <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource GreenPrimary200Foreground}"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource GreenPrimary500}"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource GreenPrimary500Foreground}"/>
                     <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource GreenPrimary700}"/>
                     <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource GreenPrimary700Foreground}"/>
                 </ResourceDictionary>

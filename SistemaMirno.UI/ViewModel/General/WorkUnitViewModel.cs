@@ -72,8 +72,8 @@ namespace SistemaMirno.UI.ViewModel.General
         }
 
         public string MoveOrderButtonText => SelectedWorkAreaConnection != null
-            ? $"Trasladar a {SelectedWorkAreaConnection.DestinationWorkArea.Name}"
-            : "Trasladar";
+            ? $"MOVER A {SelectedWorkAreaConnection.DestinationWorkArea.Name.ToUpperInvariant()}"
+            : "MOVER";
 
         private bool OnRemoveWorkUnitCanExecute()
         {
@@ -95,6 +95,9 @@ namespace SistemaMirno.UI.ViewModel.General
                     WorkOrderWorkUnits.Remove(SelectedWorkOrderWorkUnit);
                 });
             }
+
+            ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
         }
 
         private void OnAddWorkUnitCommandExecute()
@@ -107,6 +110,9 @@ namespace SistemaMirno.UI.ViewModel.General
                     WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit);
                 });
             }
+
+            ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
         }
 
         private void OnOpenWorkOrderViewExecute()
@@ -410,7 +416,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private async Task LoadWorkUnits(int id)
         {
-            var workUnits = await _workUnitRepository.GetAllWorkUnitsCurrentlyInWorkArea(id);
+            var workUnits = await _workUnitRepository.GetAllWorkUnitsCurrentlyInWorkAreaAsync(id);
 
             foreach (var workUnit in workUnits)
             {
