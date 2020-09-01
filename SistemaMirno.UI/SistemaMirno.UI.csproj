@@ -35,7 +35,7 @@
     <PublishUrl>C:\SistemaMirno\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateEnabled>false</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
@@ -45,13 +45,12 @@
     <ProductName>Sistema Mirno</ProductName>
     <PublisherName>Snek Solutions</PublisherName>
     <MinimumRequiredVersion>1.0.0.6</MinimumRequiredVersion>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -239,6 +238,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\FileHelpers\ProductFileHelper.cs" />
+    <Compile Include="Data\FileHelpers\WorkUnitFileHelper.cs" />
     <Compile Include="Data\Reports\InProcessReport.cs" />
     <Compile Include="Data\Reports\ProductionReport.cs" />
     <Compile Include="Data\Reports\WorkAreaReport.cs" />
@@ -360,6 +360,7 @@
     <Compile Include="ViewModel\Reports\InProcessByWorkAreasViewModel.cs" />
     <Compile Include="ViewModel\Reports\ProductionByEmployeeViewModel.cs" />
     <Compile Include="ViewModel\Reports\ProductionByWorkAreaViewModel.cs" />
+    <Compile Include="ViewModel\SysAdmin\AdminWorkUnitViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\Main\INavigationViewModel.cs" />
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
@@ -469,6 +470,9 @@
     <Compile Include="View\General\WorkAreaMovementView.xaml.cs">
       <DependentUpon>WorkAreaMovementView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SysAdmin\AdminWorkUnitView.xaml.cs">
+      <DependentUpon>AdminWorkUnitView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wrapper\BranchWrapper.cs" />
     <Compile Include="Wrapper\ClientWrapper.cs" />
     <Compile Include="Wrapper\ColorWrapper.cs" />
@@ -516,6 +520,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\ReportDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\SysAdminDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -656,6 +664,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\General\WorkAreaMovementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SysAdmin\AdminWorkUnitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

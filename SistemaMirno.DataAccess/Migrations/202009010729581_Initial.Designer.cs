@@ -7,13 +7,13 @@ namespace SistemaMirno.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class DbReworkInitial : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DbReworkInitial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "202008240323215_DbRework-Initial"; }
+            get { return "202009010729581_Initial"; }
         }
         
         string IMigrationMetadata.Source

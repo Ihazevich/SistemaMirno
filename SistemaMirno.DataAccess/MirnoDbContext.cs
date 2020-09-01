@@ -14,16 +14,16 @@ namespace SistemaMirno.DataAccess
     /// </summary>
     public class MirnoDbContext : DbContext
     {
-        private static readonly DatabaseLogger DatabaseLogger = new DatabaseLogger("LogFile.txt", true);
+        //private static readonly DatabaseLogger DatabaseLogger = new DatabaseLogger("MainLogFile.txt", true);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MirnoDbContext"/> class.
         /// </summary>
         public MirnoDbContext()
-            : base("Deployment")
+            : base("LaptopMirnoDb")
         {
-            DatabaseLogger.StartLogging();
-            DbInterception.Add(DatabaseLogger);
+            //DatabaseLogger.StartLogging();
+            //DbInterception.Add(DatabaseLogger);
         }
 
         /// <summary>
@@ -310,8 +310,8 @@ namespace SistemaMirno.DataAccess
 
         protected override void Dispose(bool disposing)
         {
-            DbInterception.Remove(DatabaseLogger);
-            DatabaseLogger.StopLogging();
+            //DbInterception.Remove(DatabaseLogger);
+            //DatabaseLogger.StopLogging();
             base.Dispose(disposing);
         }
     }

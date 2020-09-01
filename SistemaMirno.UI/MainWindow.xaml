@@ -81,7 +81,8 @@
                             <MenuItem Header="Sucursales" Command="{Binding ChangeViewCommand}" CommandParameter="BranchViewModel" />
                             <MenuItem Header="Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
                             <MenuItem Header="Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
-                        </MenuItem>
+                            <MenuItem Header="Administrar Unidades de Trabajo" Command="{Binding ChangeViewCommand}" CommandParameter="AdminWorkUnitsViewModel" />
+                    </MenuItem>
                         <MenuItem Header="Producción" Visibility="{Binding ProductsVisibility}">
                             <MenuItem Header="Productos" Command="{Binding ChangeViewCommand}" CommandParameter="ProductViewModel" />
                             <MenuItem Header="Categorias" Command="{Binding ChangeViewCommand}" CommandParameter="ProductCategoryViewModel" />

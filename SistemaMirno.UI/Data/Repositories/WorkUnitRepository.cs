@@ -156,5 +156,25 @@ namespace SistemaMirno.UI.Data.Repositories
                 return null;
             }
         }
+
+        public Task<int> FindProductByNameAsync(string workUnitProduct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> FindMaterialByNameAsync(string workUnitMaterial)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> FindColorByNameAsync(string workUnitColor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> FindWorkAreaByNameAndBranchNameAsync(string workUnitCurrentArea, string workUnitBranch)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
