@@ -29,18 +29,18 @@ namespace SistemaMirno.UI.Data.Repositories
             {
                 EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
                 {
-                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Message = $"     [{e.Message}] contacte al Administrador del Sistema",
                     Title = "Error",
                 });
                 return null;
             }
         }
 
-        public async Task<List<WorkArea>> GetAllWorkAreasFromBranchAsync(int id)
+        public async Task<List<WorkArea>> GetAllWorkAreasAsync()
         {
             try
             {
-                return await Context.WorkAreas.Where(w => w.BranchId == id).ToListAsync();
+                return await Context.WorkAreas.ToListAsync();
             }
             catch (Exception e)
             {
@@ -53,11 +53,11 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public async Task<List<Role>> GetAllRolesFromBranchAsync(int id)
+        public async Task<List<Role>> GetAllRolesAsync()
         {
             try
             {
-                return await Context.Roles.Where(r => r.BranchId == id).ToListAsync();
+                return await Context.Roles.ToListAsync();
             }
             catch (Exception e)
             {
@@ -72,7 +72,7 @@ namespace SistemaMirno.UI.Data.Repositories
 
 
 
-        public async Task<List<WorkAreaConnection>> GetWorkAreaConnectionsFromWorkAreaBranchAsync(int id)
+        public async Task<List<WorkAreaConnection>> GetAllWorkAreaConnectionsFromWorkAreaAsync(int id)
         {
             try
             {
@@ -103,6 +103,23 @@ namespace SistemaMirno.UI.Data.Repositories
                     Title = "Error",
                 });
                 return true;
+            }
+        }
+
+        public async Task<List<WorkArea>> GetAllWorkAreasFromBranchAsync(int id)
+        {
+            try
+            {
+                return await Context.WorkAreas.Where(w => w.BranchId == id).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
             }
         }
 

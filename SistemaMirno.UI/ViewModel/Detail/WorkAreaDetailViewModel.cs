@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
@@ -22,9 +25,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
     {
         private IWorkAreaRepository _workAreaRepository;
         private WorkAreaWrapper _workArea;
-        private WorkAreaWrapper _selectedWorkArea;
-        private WorkAreaConnectionWrapper _selectedWorkAreaConnection;
-        private BranchWrapper _selectedBranch;
+        private WorkArea _selectedWorkArea;
+        private WorkAreaConnection _selectedWorkAreaConnection;
+        private Branch _selectedBranch;
 
         public WorkAreaDetailViewModel(
             IWorkAreaRepository workAreaRepository,
@@ -34,10 +37,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             _workAreaRepository = workAreaRepository;
 
-            Roles = new ObservableCollection<RoleWrapper>();
-            Branches = new ObservableCollection<BranchWrapper>();
-            WorkAreas = new ObservableCollection<WorkAreaWrapper>();
-            WorkAreaConnections = new ObservableCollection<WorkAreaConnectionWrapper>();
+            Roles = new ObservableCollection<Role>();
+            Branches = new ObservableCollection<Branch>();
+            WorkAreas = new ObservableCollection<WorkArea>();
+            WorkAreaConnections = new ObservableCollection<WorkAreaConnection>();
+
+            RolesCollectionView = CollectionViewSource.GetDefaultView(Roles);
+            BranchesCollectionView = CollectionViewSource.GetDefaultView(Branches);
+            WorkAreasCollectionView = CollectionViewSource.GetDefaultView(WorkAreas);
 
             AddConnectionCommand = new DelegateCommand(OnAddConnectionExecute, OnAddConnectionCanExecute);
             RemoveConnectionCommand = new DelegateCommand(OnRemoveConnectionExecute, OnRemoveConnectionCanExecute);
@@ -48,17 +55,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             var connection = new WorkAreaConnection
             {
                 DestinationWorkAreaId = SelectedWorkArea.Id,
-                DestinationWorkArea = SelectedWorkArea.Model,
+                DestinationWorkArea = SelectedWorkArea,
             };
 
             WorkArea.Model.OutgoingConnections.Add(connection);
-            WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection));
+            WorkAreaConnections.Add(connection);
             HasChanges = true;
         }
 
         private void OnRemoveConnectionExecute()
         {
-            WorkArea.Model.OutgoingConnections.Remove(SelectedWorkAreaConnection.Model);
+            WorkArea.Model.OutgoingConnections.Remove(SelectedWorkAreaConnection);
             WorkAreaConnections.Remove(SelectedWorkAreaConnection);
             HasChanges = true;
         }
@@ -84,10 +91,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _workArea = value;
                 OnPropertyChanged();
+                if (WorkArea != null)
+                {
+                    FilterWorkAreas();
+                }
             }
         }
 
-        public WorkAreaWrapper SelectedWorkArea
+        public WorkArea SelectedWorkArea
         {
             get => _selectedWorkArea;
 
@@ -99,7 +110,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public WorkAreaConnectionWrapper SelectedWorkAreaConnection
+        public WorkAreaConnection SelectedWorkAreaConnection
         {
             get => _selectedWorkAreaConnection;
 
@@ -111,7 +122,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
         
-        public BranchWrapper SelectedBranch
+        public Branch SelectedBranch
         {
             get => _selectedBranch;
 
@@ -119,18 +130,21 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _selectedBranch = value;
                 OnPropertyChanged();
-                SelectedBranchChanged(_selectedBranch.Id);
+                FilterRoles(_selectedBranch.Id);
             }
         }
 
+        public ObservableCollection<WorkArea> WorkAreas { get; }
 
-        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
+        public ObservableCollection<WorkAreaConnection> WorkAreaConnections { get; }
 
-        public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; }
+        public ObservableCollection<Branch> Branches { get; }
 
-        public ObservableCollection<BranchWrapper> Branches { get; }
+        public ObservableCollection<Role> Roles { get; }
 
-        public ObservableCollection<RoleWrapper> Roles { get; }
+        public ICollectionView BranchesCollectionView { get; }
+        public ICollectionView RolesCollectionView { get; }
+        public ICollectionView WorkAreasCollectionView { get; }
 
         public ICommand AddConnectionCommand { get; }
 
@@ -251,6 +265,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public override async Task LoadAsync(int? id = null)
         {
             await LoadBranches();
+            await LoadRoles();
+            await LoadWorkAreas();
 
             if (id.HasValue)
             {
@@ -285,55 +301,62 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             foreach (var branch in branches)
             {
-                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
+                Application.Current.Dispatcher.Invoke(() => Branches.Add(branch));
             }
         }
 
-        private async Task LoadRoles(int id)
+        private async Task LoadRoles()
         {
-            var roles = await _workAreaRepository.GetAllRolesFromBranchAsync(id);
+            var roles = await _workAreaRepository.GetAllRolesAsync();
 
             foreach (var role in roles)
             {
-                Application.Current.Dispatcher.Invoke(() => Roles.Add(new RoleWrapper(role)));
+                Application.Current.Dispatcher.Invoke(() => Roles.Add(role));
             }
         }
 
-        private async Task LoadWorkAreas(int id)
+        private async Task LoadWorkAreas()
         {
-            var workAreas = await _workAreaRepository.GetAllWorkAreasFromBranchAsync(id);
+            var workAreas = await _workAreaRepository.GetAllWorkAreasAsync();
 
-            foreach (var workArea in workAreas.Where(workArea => workArea.Name != WorkArea.Name || workArea.BranchId != WorkArea.BranchId))
+            foreach (var workArea in workAreas)
             {
-                Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(new WorkAreaWrapper(workArea)));
+                Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(workArea));
             }
         }
 
         private async Task LoadWorkAreaConnections(int id)
         {
-            var connections = await _workAreaRepository.GetWorkAreaConnectionsFromWorkAreaBranchAsync(id);
-            
+            var connections = await _workAreaRepository.GetAllWorkAreaConnectionsFromWorkAreaAsync(id);
             foreach (var connection in connections)
             {
-                Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection)));
+                Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(connection));
             }
         }
 
-        private async Task SelectedBranchChanged(int id)
+        private void FilterRoles(int branchId)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                IsEnabled = false;
-                ProgressVisibility = Visibility.Visible;
+                RolesCollectionView.Filter = item =>
+                {
+                    Role vitem = item as Role;
+                    return vitem != null &&
+                           vitem.BranchId == branchId;
+                };
             });
+        }
 
-            await LoadWorkAreas(id);
-            await LoadRoles(id);
-
+        private void FilterWorkAreas()
+        {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                IsEnabled = true;
-                ProgressVisibility = Visibility.Collapsed;
+                WorkAreasCollectionView.Filter = item =>
+                {
+                    WorkArea vitem = item as WorkArea;
+                    return vitem != null &&
+                           vitem.BranchId == WorkArea.BranchId && !string.Equals(vitem.Name, WorkArea.Name, StringComparison.CurrentCultureIgnoreCase);
+                };
             });
         }
     }

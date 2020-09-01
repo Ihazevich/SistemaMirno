@@ -343,7 +343,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public Visibility AddWorkAreaWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
 
         public Visibility AddNewWorkUnitVisibility =>
-            IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
+            IsNew ? Visibility.Visible : Visibility.Collapsed;
 
         public Visibility AddRequisitionWorkUnitVisibility =>
             IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
