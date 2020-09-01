@@ -46,6 +46,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private EmployeeWrapper _selectedSupervisor;
 
         private Visibility _newWorkUnitGridVisibility;
+        private Visibility _requisitionWorkUnitGridVisibility;
         private Visibility _existingWorkUnitGridVisibility;
 
         private string _quantity;
@@ -221,6 +222,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 _canGetWorkUnitsFromRequisition = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(AddRequisitionWorkUnitVisibility));
+                OnPropertyChanged(nameof(AddNewWorkUnitVisibility));
             }
         }
 
@@ -254,6 +256,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         NewWorkUnitGridVisibility = Visibility.Visible;
+                        RequisitionWorkUnitGridVisibility = Visibility.Collapsed;
                         ExistingWorkUnitGridVisibility = Visibility.Collapsed;
                     });
                     break;
@@ -313,11 +316,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public Visibility RequisitionWorkUnitGridVisibility
         {
-            get => _existingWorkUnitGridVisibility;
+            get => _requisitionWorkUnitGridVisibility;
 
             set
             {
-                _existingWorkUnitGridVisibility = value;
+                _requisitionWorkUnitGridVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -912,7 +915,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     });
                 }
             }
-
 
             var rs = new LocalReporting()
                 .UseBinary(JsReportBinary.GetBinary())

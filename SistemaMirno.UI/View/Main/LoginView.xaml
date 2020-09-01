@@ -61,14 +61,14 @@
             <Separator Grid.Row="4" Margin="0,20,0,20"/>
             <Grid Grid.Row="5">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
-                    <Button Content="Iniciar sesion" 
+                    <Button Content="INICIAR SESION" 
                             Command="{Binding LoginCommand}"
                             CommandParameter="{Binding ElementName=PasswordBox}"
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             materialDesign:RippleAssist.Feedback="#DD000000"
                             Width="200"
                             Margin="10"/>
-                    <Button Content="Salir" 
+                    <Button Content="SALIR" 
                             Command="{Binding CancelCommand}"
                             Style="{StaticResource MaterialDesignRaisedAccentButton}"
                             materialDesign:RippleAssist.Feedback="#DD000000"

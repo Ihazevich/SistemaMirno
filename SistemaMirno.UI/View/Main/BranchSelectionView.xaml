@@ -77,14 +77,14 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Nueva Sucursal"
+                <Button Content="AGREGAR SUCURSAL"
                         Visibility="{Binding NewBranchButtonVisibility}"
                         Command="{Binding AddBranchCommand}"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000"
                         Width="200"
                         Margin="10"/>
-                <Button Content="Cerrar sesion" 
+                <Button Content="CERRAR SESION" 
                         Command="{Binding CancelCommand}"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000"
