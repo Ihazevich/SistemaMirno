@@ -42,7 +42,7 @@ namespace SistemaMirno.UI.Data.Repositories
             try
             {
                 return await Context.ProductCategories.SingleAsync(c =>
-                    string.Equals(c.Name, productCategoryName, StringComparison.InvariantCultureIgnoreCase));
+                    c.Name.ToLower() == productCategoryName.ToLower());
             }
             catch (Exception ex)
             {
