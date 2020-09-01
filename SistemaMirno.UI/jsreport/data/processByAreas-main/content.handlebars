@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <style>
+            {#asset reports-style.css @encoding=utf8}
+        </style>
+    </head>
+    <body>
+        <div class="report-box">
+            <table>
+                <tr class="top">
+                    <td colspan="5">
+                        <table>
+                            <tr>
+                                <td >
+                                    <img src="{#asset mirno-logo.png @encoding=dataURI}" style="width:100%; max-width:100px;" />
+                                </td>
+                                <td class="title">
+                                    Reporte de Unidades en Proceso por Area
+                                </td>
+                        </table>
+                    </td>    
+                </tr>
+
+                <tr class="content">
+                    <td colspan="5">
+                        {{#each WorkAreas}}
+                        <table>
+                            <tr class="header">
+                                <td>
+                                    {{Name}}
+                                </td>
+                            </tr>
+                            <tr class="heading">
+                                <td>
+                                    Cantidad
+                                </td>
+                                <td>
+                                    Producto
+                                </td>
+                                <td>
+                                    Material
+                                </td>
+                                <td>
+                                    Color/Lustre
+                                </td>
+                                {{#if IncludePrice}}
+                                <td>
+                                    Precio
+                                </td>
+                                {{/if}}
+                            </tr>
+
+                            {{#each WorkUnits}}
+                            <tr class="item">
+                                <td class="detail">
+                                    {{Quantity}}
+                                </td>
+                                <td>
+                                    {{Product}}
+                                </td>
+                                <td class="detail">
+                                    {{Material}}
+                                </td>
+                                <td class="detail">
+                                    {{Color}}
+                                </td>
+                                {{#if IncludePrice}}
+                                <td class="detail">
+                                    {{formatNumber Price}}
+                                </td>
+                                {{/if}}
+                            </tr>
+                            {{/each}}
+
+                            {{#if IncludePrice}}
+                            <tr class="total">
+                                <td colspan="4">
+                                    Subtotal
+                                </td>
+                                <td>
+                                    {{formatNumber Total}}
+                                </td>
+                            </tr>
+                            {{/if}}
+                        </table>
+                        {{/each}}                        
+                    </td>
+                </tr>
+                {{#if IncludePrice}}
+                <tr class="footer">
+                    <td colspan="5">
+                        Total   {{formatNumber Total}}
+                    </td>
+                </tr>
+                {{/if}}
+            </table>
+            
+        </div>
+        
+    </body>
+</html>

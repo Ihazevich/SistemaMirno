@@ -1,0 +1,20 @@
+{
+    "shortid": "Sk7y2f_MD",
+    "name": "productionByArea-main",
+    "recipe": "chrome-pdf",
+    "engine": "handlebars",
+    "chrome": {
+        "printBackground": true
+    },
+    "creationDate": {
+        "$$date": 1597676615626
+    },
+    "modificationDate": {
+        "$$date": 1597678235611
+    },
+    "_id": "QcmTwPtSQBlXLlQm",
+    "$entitySet": "templates",
+    "data": {
+        "shortid": "HygNv2zuzP"
+    }
+}

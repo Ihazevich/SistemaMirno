@@ -1,0 +1,89 @@
+.report-box {
+    max-width: 1000px;
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid rgb(0, 0, 0);
+    font-size: 16px;
+    line-height: 24px;
+    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    color: #555;
+}
+
+.report-box div.id
+{
+    font-size: 15;
+    text-align: right;
+    position: absolute;
+    right: 20;
+}
+
+.report-box div.subtitle
+{
+    font-size: 20;
+}
+
+.report-box table {
+    width: 100%;
+    line-height: inherit;
+    text-align: left;
+}
+.report-box table td {
+    vertical-align: top;
+}
+
+.report-box table tr td:nth-child(2) {
+    text-align: left;
+}
+
+.report-box table tr.top td {
+    vertical-align: bottom;
+}
+
+.report-box table tr.top table {
+    border-bottom: 2px solid rgb(0, 0, 0);
+    margin-bottom: 5px;
+}
+
+.report-box table tr.top table td.title {
+    font-size: 30px;
+    line-height: 45px;
+    color: #333;
+}
+
+.report-box table tr.content table {
+    margin-bottom: 0px;
+}
+
+.report-box table tr.content table tr.header{
+    text-align: left;
+    font-size: 20px;
+}
+
+.report-box table tr.content table tr.heading td {
+    border-bottom: 1px solid rgb(0, 0, 0);
+    font-weight: bold;
+    text-align: center;
+}
+
+.report-box table tr.content tr.details td {
+    padding-bottom: 5px;
+}
+
+.report-box table tr.content tr.item td.detail {
+    text-align: center;
+}
+
+.report-box table tr.content tr.item td {
+    font-size: 12;
+    border-bottom: 1px dotted rgb(0, 0, 0);
+}
+
+.report-box table tr.content tr.total td {
+    text-align: right;
+}
+
+.report-box table tr.footer td {
+    font-size: 20;
+    font-weight: bold;
+    text-align: right;
+}

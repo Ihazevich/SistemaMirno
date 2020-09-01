@@ -1,0 +1,20 @@
+{
+    "shortid": "SJxysfBNMD",
+    "name": "processByAreas-main",
+    "recipe": "chrome-pdf",
+    "engine": "handlebars",
+    "chrome": {
+        "printBackground": true
+    },
+    "creationDate": {
+        "$$date": 1597424309112
+    },
+    "modificationDate": {
+        "$$date": 1597658773798
+    },
+    "_id": "ByBNf17Vzsa7Iqcn",
+    "$entitySet": "templates",
+    "data": {
+        "shortid": "rygkjfIEfv"
+    }
+}

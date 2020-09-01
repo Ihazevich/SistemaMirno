@@ -113,14 +113,20 @@
     <Reference Include="FileHelpers, Version=3.4.1.0, Culture=neutral, PublicKeyToken=3e0c08d59cc3d657, processorArchitecture=MSIL">
       <HintPath>..\packages\FileHelpers.3.4.1\lib\net45\FileHelpers.dll</HintPath>
     </Reference>
-    <Reference Include="jsreport.Client, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\jsreport.Client.3.0.1\lib\net45\jsreport.Client.dll</HintPath>
+    <Reference Include="jsreport.Binary, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jsreport.Binary.2.9.0\lib\netstandard2.0\jsreport.Binary.dll</HintPath>
     </Reference>
-    <Reference Include="jsreport.Shared, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\jsreport.Shared.2.0.1\lib\net45\jsreport.Shared.dll</HintPath>
+    <Reference Include="jsreport.Client, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jsreport.Client.3.1.0\lib\net45\jsreport.Client.dll</HintPath>
     </Reference>
-    <Reference Include="jsreport.Types, Version=2.2.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\jsreport.Types.2.2.7\lib\net45\jsreport.Types.dll</HintPath>
+    <Reference Include="jsreport.Local, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jsreport.Local.2.3.0\lib\net45\jsreport.Local.dll</HintPath>
+    </Reference>
+    <Reference Include="jsreport.Shared, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jsreport.Shared.2.3.0\lib\net45\jsreport.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="jsreport.Types, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jsreport.Types.2.7.0\lib\net45\jsreport.Types.dll</HintPath>
     </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
@@ -164,6 +170,11 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.4.3.2\lib\net46\System.Net.Http.dll</HintPath>
       <Private>True</Private>
@@ -176,6 +187,11 @@
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
@@ -663,12 +679,34 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.manifest" />
+    <None Include="jsreport\data\mirno-logo.png\config.json" />
+    <None Include="jsreport\data\processByAreas-data\config.json" />
+    <None Include="jsreport\data\processByAreas-data\dataJson.json" />
+    <None Include="jsreport\data\processByAreas-main\config.json" />
+    <None Include="jsreport\data\processByAreas-main\content.handlebars" />
+    <None Include="jsreport\data\productionByArea-data\config.json" />
+    <None Include="jsreport\data\productionByArea-data\dataJson.json" />
+    <None Include="jsreport\data\productionByArea-main\config.json" />
+    <None Include="jsreport\data\productionByArea-main\content.handlebars" />
+    <None Include="jsreport\data\reports-style.css\config.json" />
+    <None Include="jsreport\data\settings" />
+    <None Include="jsreport\data\SistemaMirno\config.json" />
+    <None Include="jsreport\data\SistemaMirno\WorkOrder\config.json" />
+    <None Include="jsreport\data\style.css\config.json" />
+    <None Include="jsreport\data\versions" />
+    <None Include="jsreport\data\workorder-data\config.json" />
+    <None Include="jsreport\data\workorder-data\dataJson.json" />
+    <None Include="jsreport\data\workorder-main\config.json" />
+    <None Include="jsreport\data\workorder-main\content.handlebars" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="SistemaMirno.UI.ruleset" />
+    <None Include="jsreport\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
@@ -689,7 +727,9 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="jsreport\data\storage\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
@@ -701,6 +741,13 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="jsreport\data\mirno-logo.png\content.png" />
+    <Content Include="jsreport\data\processByAreas-main\helpers.js" />
+    <Content Include="jsreport\data\productionByArea-main\helpers.js" />
+    <Content Include="jsreport\data\reports-style.css\content.css" />
+    <Content Include="jsreport\data\style.css\content.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

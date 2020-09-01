@@ -1,0 +1,49 @@
+{
+    "FromDate": "01-08-2020",
+    "ToDate": "17-08-2020",
+    "WorkArea": "Pedidos",
+    "Total": "81726384",
+    "WorkUnits": [{
+        "Quantity": "10",
+        "Product": "Mesa Millenium de 1,70",
+        "Material": "Paraiso",
+        "Color": "Natural",
+        "Price": "8763"
+        },{
+        "Quantity": "5",
+        "Product": "Mesa Classic de 1,60 x 0,80",
+        "Material": "Paraiso",
+        "Color": "Tabaco Filipino",
+        "Price": "8763"
+        },{
+        "Quantity": "2",
+        "Product": "Comoda Novel de 5 cajones",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Price": "8763"
+        },{
+        "Quantity": "3",
+        "Product": "Comoda Novel de 6 cajones",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Price": "8763"
+        },{
+        "Quantity": "7",
+        "Product": "Comoda Novel de 7 cajones",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Price": "8763"
+        },{
+        "Quantity": "3",
+        "Product": "Cama Oydis de 1,00",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Price": "8763"
+        },{
+        "Quantity": "3",
+        "Product": "Cama Oydis de 1,40",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Price": "8763"
+        }]
+}

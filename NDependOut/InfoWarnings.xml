@@ -17,8 +17,8 @@
    System.dll   v4.0.0.0
    mscorlib.dll   v4.0.0.0</Info>
   <Info>.NET Assemblies loaded from {C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\WPF} 
-   PresentationCore.dll   v4.0.0.0
    WindowsBase.dll   v4.0.0.0
+   PresentationCore.dll   v4.0.0.0
    PresentationFramework.dll   v4.0.0.0</Info>
   <Info>288 source files parsed ; all source files found ; all source files in-sync with PDB</Info>
   <Info>0 code rule has been extracted from code.</Info>

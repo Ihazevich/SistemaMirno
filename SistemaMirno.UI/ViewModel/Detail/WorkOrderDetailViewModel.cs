@@ -10,7 +10,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using jsreport.Binary;
 using jsreport.Client;
+using jsreport.Local;
 using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -911,7 +913,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 }
             }
 
-            var rs = new ReportingService("http://127.0.0.1:5488", "admin", "mirno");
+
+            var rs = new LocalReporting()
+                .UseBinary(JsReportBinary.GetBinary())
+                .Configure(cfg => cfg.FileSystemStore().BaseUrlAsWorkingDirectory())
+                .AsUtility()
+                .Create();
+
             workOrderReport.Id = WorkOrder.Id;
             var jsonString = JsonConvert.SerializeObject(workOrderReport);
             var report = rs.RenderByNameAsync("workorder-main", jsonString).Result;

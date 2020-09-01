@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using jsreport.Binary;
 using jsreport.Client;
+using jsreport.Local;
 using LiveCharts;
 using LiveCharts.Wpf;
 using MahApps.Metro.Controls.Dialogs;
@@ -226,7 +228,13 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
 
             // Create the json string and send it to the jsreport server for conversion
-            var rs = new ReportingService("http://127.0.0.1:5488", "admin", "mirno");
+
+            var rs = new LocalReporting()
+                .UseBinary(JsReportBinary.GetBinary())
+                .Configure(cfg => cfg.FileSystemStore().BaseUrlAsWorkingDirectory())
+                .AsUtility()
+                .Create();
+
             var jsonString = JsonConvert.SerializeObject(productionReport);
             var report = rs.RenderByNameAsync("productionByArea-main", jsonString).Result;
 

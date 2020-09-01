@@ -1,0 +1,59 @@
+{
+    "Id": "145",
+    "CreationDateTime": "06-08-2020 13:45 PM",
+    "OriginWorkArea": "Pedidos",
+    "DestinationWorkArea": "Lamina",
+    "Responsible": "Leoncio Orue",
+    "Supervisor": "Jonas Carrasco",
+    "WorkUnits": [{
+        "Quantity": "10",
+        "Product": "Mesa Millenium de 1,70",
+        "Material": "Paraiso",
+        "Color": "Natural",
+        "Responsible": "",
+        "Supervisor": ""
+        },{
+        "Quantity": "5",
+        "Product": "Mesa Classic de 1,60 x 0,80",
+        "Material": "Paraiso",
+        "Color": "Tabaco Filipino",
+        "Responsible": "",
+        "Supervisor": ""
+        },{
+        "Quantity": "2",
+        "Product": "Comoda Novel de 5 cajones",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Responsible": "",
+        "Supervisor": ""
+        },{
+        "Quantity": "3",
+        "Product": "Comoda Novel de 6 cajones",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Responsible": "",
+        "Supervisor": ""
+        },{
+        "Quantity": "7",
+        "Product": "Comoda Novel de 7 cajones",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Responsible": "",
+        "Supervisor": ""
+        },{
+        "Quantity": "3",
+        "Product": "Cama Oydis de 1,00",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Responsible": "",
+        "Supervisor": ""
+        },{
+        "Quantity": "3",
+        "Product": "Cama Oydis de 1,40",
+        "Material": "Cedro",
+        "Color": "Natural",
+        "Responsible": "",
+        "Supervisor": ""
+        }],
+    "Observations": "Las Mesas Millenium llevan un diseño especial segun el adjunto."
+}

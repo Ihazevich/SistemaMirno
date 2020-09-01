@@ -1,0 +1,25 @@
+{
+    "shortid": "rylwLQaFZw",
+    "name": "workorder-main",
+    "recipe": "chrome-pdf",
+    "engine": "handlebars",
+    "chrome": {
+        "printBackground": true,
+        "format": "A4",
+        "marginRight": "",
+        "marginTop": "1cm"
+    },
+    "creationDate": {
+        "$$date": 1596736374290
+    },
+    "modificationDate": {
+        "$$date": 1596832701294
+    },
+    "_id": "3OZStvJkzO9mbfvO",
+    "$entitySet": "templates",
+    "data": {
+        "shortid": "BklG-W6t-v"
+    },
+    "inheritedReadPermissions": [],
+    "inheritedEditPermissions": []
+}

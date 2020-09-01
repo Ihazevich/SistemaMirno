@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using jsreport.Binary;
+using jsreport.Local;
 using MahApps.Metro.Controls.Dialogs;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 
@@ -205,8 +207,13 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 inProcessReport.WorkAreas.Add(workAreaReport);
             }
 
+            var rs = new LocalReporting()
+                .UseBinary(JsReportBinary.GetBinary())
+                .Configure(cfg => cfg.FileSystemStore().BaseUrlAsWorkingDirectory())
+                .AsUtility()
+                .Create();
+
             // Create the json string and send it to the jsreport server for conversion
-            var rs = new ReportingService("http://127.0.0.1:5488", "admin", "mirno");
             var jsonString = JsonConvert.SerializeObject(inProcessReport);
             var report = rs.RenderByNameAsync("processByAreas-main", jsonString).Result;
 
