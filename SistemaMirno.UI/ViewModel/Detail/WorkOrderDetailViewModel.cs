@@ -343,7 +343,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         public Visibility AddWorkAreaWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
 
         public Visibility AddNewWorkUnitVisibility =>
-            IsNew ? Visibility.Visible : Visibility.Collapsed;
+            IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
 
         public Visibility AddRequisitionWorkUnitVisibility =>
             IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
@@ -926,9 +926,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             var jsonString = JsonConvert.SerializeObject(workOrderReport);
             var report = rs.RenderByNameAsync("workorder-main", jsonString).Result;
 
-            Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}\\WorkOrders");
+            Directory.CreateDirectory($"C:\\SistemaMirno\\WorkOrders");
 
-            var filename = $"{Directory.GetCurrentDirectory()}\\WorkOrders\\WorkOrder{WorkOrder.Id}.pdf";
+            var filename = $"C:\\SistemaMirno\\WorkOrders\\WorkOrder{WorkOrder.Id}.pdf";
             var stream = new FileStream(filename, FileMode.Create);
 
             report.Content.CopyTo(stream);

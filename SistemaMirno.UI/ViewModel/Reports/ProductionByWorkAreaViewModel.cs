@@ -238,8 +238,10 @@ namespace SistemaMirno.UI.ViewModel.Reports
             var jsonString = JsonConvert.SerializeObject(productionReport);
             var report = rs.RenderByNameAsync("productionByArea-main", jsonString).Result;
 
+            Directory.CreateDirectory($"C:\\SistemaMirno\\Reports");
+
             // Save the pdf file
-            string filename = $"{Directory.GetCurrentDirectory()}\\Reports\\ProcessReport{DateTime.Now.Ticks}.pdf";
+            string filename = $"C:\\SistemaMirno\\Reports\\ProductionReport{DateTime.Now.Ticks}.pdf";
             FileStream stream = new FileStream(filename, FileMode.Create);
             report.Content.CopyTo(stream);
             stream.Close();
