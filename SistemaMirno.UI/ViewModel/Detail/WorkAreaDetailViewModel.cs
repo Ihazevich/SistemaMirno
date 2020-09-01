@@ -312,7 +312,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private async Task LoadWorkAreaConnections(int id)
         {
             var connections = await _workAreaRepository.GetWorkAreaConnectionsFromWorkAreaBranchAsync(id);
-
+            
             foreach (var connection in connections)
             {
                 Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection)));

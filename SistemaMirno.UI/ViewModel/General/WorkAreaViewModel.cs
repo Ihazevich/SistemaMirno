@@ -20,17 +20,16 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class WorkAreaViewModel : ViewModelBase, IWorkAreaViewModel
     {
-        private readonly Func<IWorkAreaRepository> _workAreaRepositoryCreator;
         private IWorkAreaRepository _workAreaRepository;
         private WorkAreaWrapper _selectedWorkArea;
 
         public WorkAreaViewModel(
-            Func<IWorkAreaRepository> workAreaRepositoryCreator,
+            IWorkAreaRepository workAreaRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Areas de Trabajo", dialogCoordinator)
         {
-            _workAreaRepositoryCreator = workAreaRepositoryCreator;
+            _workAreaRepository = workAreaRepository;
 
             WorkAreas = new ObservableCollection<WorkAreaWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
@@ -66,7 +65,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public WorkAreaWrapper SelectedWorkArea
         {
-            get =>_selectedWorkArea;
+            get => _selectedWorkArea;
 
             set
             {
@@ -83,7 +82,6 @@ namespace SistemaMirno.UI.ViewModel.General
         public override async Task LoadAsync(int? id = null)
         {
             WorkAreas.Clear();
-            _workAreaRepository = _workAreaRepositoryCreator();
 
             var workAreas = await _workAreaRepository.GetAllAsync();
 

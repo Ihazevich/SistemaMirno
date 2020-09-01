@@ -41,8 +41,8 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.ProductCategories.SingleAsync(c =>
-                    c.Name.ToLower() == productCategoryName.ToLower());
+                return await Context.ProductCategories.SingleOrDefaultAsync(c =>
+                    string.Equals(c.Name, productCategoryName, StringComparison.CurrentCultureIgnoreCase));
             }
             catch (Exception ex)
             {

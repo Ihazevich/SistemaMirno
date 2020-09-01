@@ -85,7 +85,7 @@ namespace SistemaMirno.UI.Data.Repositories
                     Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
                     Title = "Error",
                 });
-                return null;
+                return new List<WorkAreaConnection>();
             }
         }
 

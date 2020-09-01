@@ -154,13 +154,27 @@ namespace SistemaMirno.UI.ViewModel.General
                     }
 
                     // Look for a matching product category
-                    // If the category doesn't exists, create a new one
-                    var category = await _productRepository.GetProductCategoryByNameAsync(product.Category) ?? new ProductCategory
-                    {
-                        Name = product.Category,
-                    };
+                    var category = await _productRepository.GetProductCategoryByNameAsync(product.Category);
 
-                    // Create a new model 
+                    if (category == null)
+                    {
+                        // If the category doesn't exist, check if it hasnt been created yet during this process
+                        var matchingProduct = products.Find(p => p.ProductCategory.Name == product.Category);
+
+                        if (matchingProduct != null)
+                        {
+                            category = matchingProduct.ProductCategory;
+                        }
+                        else
+                        {
+                            category = new ProductCategory
+                            {
+                                Name = product.Category,
+                            };
+                        }
+                    }
+
+                    // Create a new model
                     var newProduct = new Product
                     {
                         Code = product.Code,
