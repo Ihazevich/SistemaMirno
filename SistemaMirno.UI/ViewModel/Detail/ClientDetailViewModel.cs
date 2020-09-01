@@ -141,7 +141,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
 
                 Client.FullName = string.Empty;
-                Client.RUC = string.Empty;
+                Client.Ruc = string.Empty;
                 Client.PhoneNumber = string.Empty;
                 Client.Address = string.Empty;
                 Client.City = string.Empty;

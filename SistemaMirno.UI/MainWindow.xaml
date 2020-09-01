@@ -18,7 +18,10 @@
                  WindowStyle="SingleBorderWindow"
                  utilities:DialogCloser.DialogResult="{Binding DialogResult}">
     <materialDesign:DrawerHost>
-            <materialDesign:DrawerHost.Style>
+        <materialDesign:DrawerHost.LayoutTransform>
+            <ScaleTransform ScaleX="{Binding TransformScaleX}" ScaleY="{Binding TransformScaleY}" CenterX=".5" CenterY=".5" />
+        </materialDesign:DrawerHost.LayoutTransform>
+        <materialDesign:DrawerHost.Style>
                 <Style
                     TargetType="materialDesign:DrawerHost"
                     BasedOn="{StaticResource {x:Type materialDesign:DrawerHost}}">

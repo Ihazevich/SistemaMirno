@@ -27,7 +27,7 @@ namespace SistemaMirno.UI.Wrapper
             set => SetValue(value);
         }
 
-        public string RUC
+        public string Ruc
         {
             get => GetValue<string>();
             set => SetValue(value);

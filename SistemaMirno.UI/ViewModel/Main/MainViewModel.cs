@@ -35,7 +35,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         private Visibility _humanResourcesVisibility;
         private Visibility _sysAdminVisibility;
         private Visibility _menuVisibility;
-
+        
         // Status bar fields
         private string _statusMessage;
 
@@ -100,6 +100,9 @@ namespace SistemaMirno.UI.ViewModel.Main
                 ViewModel = nameof(LoginViewModel),
             });
         }
+
+        public double TransformScaleX => Application.Current.MainWindow.RenderSize.Width / 1920.0;
+        public double TransformScaleY => Application.Current.MainWindow.RenderSize.Height / 1080.0;
 
         private void ReloadNavigationView()
         {
