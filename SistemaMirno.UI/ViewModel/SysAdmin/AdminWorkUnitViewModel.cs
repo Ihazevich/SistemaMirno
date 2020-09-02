@@ -74,6 +74,7 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
                     MaterialId = NewWorkUnit.MaterialId,
                     ColorId = NewWorkUnit.ColorId,
                     CurrentWorkAreaId = NewWorkUnit.CurrentWorkAreaId,
+                    Details = NewWorkUnit.Details,
                 };
                 newWorkUnits.Add(workUnit);
             }
