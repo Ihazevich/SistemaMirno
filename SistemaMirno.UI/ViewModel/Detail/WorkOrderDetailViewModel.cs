@@ -882,7 +882,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 if (workOrderReport.WorkUnits.Count > 0)
                 {
                     var found = false;
-                    foreach (var workUnitReport in workOrderReport.WorkUnits.Where(workUnitReport => workUnitReport.Product == workUnit.Details
+                    foreach (var workUnitReport in workOrderReport.WorkUnits.Where(workUnitReport => workUnitReport.Product == workUnit.Description
                         && workUnitReport.Material == workUnit.Material.Name
                         && workUnitReport.Color == workUnit.Color.Name))
                     {
@@ -897,7 +897,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                         workOrderReport.WorkUnits.Add(new WorkUnitReport
                         {
                             Quantity = 1,
-                            Product = workUnit.Details,
+                            Product = workUnit.Description,
                             Material = workUnit.Material.Name,
                             Color = workUnit.Color.Name,
                         });
@@ -908,7 +908,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     workOrderReport.WorkUnits.Add(new WorkUnitReport
                     {
                         Quantity = 1,
-                        Product = workUnit.Details,
+                        Product = workUnit.Description,
                         Material = workUnit.Material.Name,
                         Color = workUnit.Color.Name,
                     });
