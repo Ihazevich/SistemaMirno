@@ -98,5 +98,8 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(WorkAreaMovement.WorkUnitId))]
         public virtual ICollection<WorkAreaMovement> Movements { get; set; } = new HashSet<WorkAreaMovement>();
+
+        [NotMapped]
+        public string Description => (Product != null ? Product.Name : string.Empty) + (string.IsNullOrEmpty(Details) ? string.Empty : string.Concat("- ", Details));
     }
 }

@@ -71,7 +71,7 @@
                   CanUserDeleteRows="False"
                   Margin="5">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Producto" Binding="{Binding WorkUnit.Product.Name}"/>
+                        <DataGridTextColumn Header="Descripción" Binding="{Binding WorkUnit.Description}"/>
                         <DataGridTextColumn Header="Material" Binding="{Binding WorkUnit.Material.Name}"/>
                         <DataGridTextColumn Header="Color" Binding="{Binding WorkUnit.Color.Name}"/>
                         <DataGridTextColumn Header="Valor de Produccion" Binding="{Binding WorkUnit.Product.ProductionValue}"/>

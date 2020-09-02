@@ -244,7 +244,7 @@
                                   VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   Margin="5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
+                                <DataGridTextColumn Header="Descripción" Binding="{Binding Model.Description}"/>
                                 <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
                                 <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
                             </DataGrid.Columns>
@@ -321,28 +321,36 @@
                                   VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   Margin="5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
+                                <DataGridTextColumn Header="Descripción" Binding="{Binding Model.Description}"/>
                                 <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
                                 <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
                                 <DataGridTextColumn Header="Area Actual" Binding="{Binding Model.CurrentWorkArea.Name}"/>
                             </DataGrid.Columns>
                             <DataGrid.GroupStyle>
                                 <GroupStyle>
-                                    <GroupStyle.HeaderTemplate>
-                                        <DataTemplate>
-                                            <Expander IsExpanded="False" materialDesign:ExpanderAssist.DownHeaderPadding="35,2,24,2">
-                                                <Expander.Header>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
-                                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
-                                                    </StackPanel>
-                                                </Expander.Header>
-                                                <Expander.Content>
-                                                    <ItemsPresenter/>
-                                                </Expander.Content>
-                                            </Expander>
-                                        </DataTemplate>
-                                    </GroupStyle.HeaderTemplate>
+                                    <GroupStyle.ContainerStyle>
+                                        <Style TargetType="{x:Type GroupItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                        <Expander IsExpanded="False" materialDesign:ExpanderAssist.DownHeaderPadding="35,2,24,2">
+                                                            <Expander.Header>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" 
+                                                                               HorizontalAlignment="Center"
+                                                                               Width="30"/>
+                                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                                                </StackPanel>
+                                                            </Expander.Header>
+                                                            <Expander.Content>
+                                                                <ItemsPresenter/>
+                                                            </Expander.Content>
+                                                        </Expander>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.ContainerStyle>
                                 </GroupStyle>
                             </DataGrid.GroupStyle>
                         </DataGrid>
@@ -376,7 +384,7 @@
                           VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                           Margin="5">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Producto" Binding="{Binding Model.WorkUnit.Product.Name}"/>
+                        <DataGridTextColumn Header="Descripción" Binding="{Binding Model.WorkUnit.Description}"/>
                         <DataGridTextColumn Header="Material" Binding="{Binding Model.WorkUnit.Material.Name}"/>
                         <DataGridTextColumn Header="Color" Binding="{Binding Model.WorkUnit.Color.Name}"/>
                         <DataGridTextColumn Header="Area Actual" Binding="{Binding Model.WorkUnit.CurrentWorkArea.Name}"/>

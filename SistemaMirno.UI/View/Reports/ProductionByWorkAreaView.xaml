@@ -34,7 +34,7 @@
                   CanUserDeleteRows="False"
                   Margin="5">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Producto" Binding="{Binding Model.WorkUnit.Product.Name}"/>
+                <DataGridTextColumn Header="Descripción" Binding="{Binding Model.WorkUnit.Description}"/>
                 <DataGridTextColumn Header="Material" Binding="{Binding Model.WorkUnit.Material.Name}"/>
                 <DataGridTextColumn Header="Color" Binding="{Binding Model.WorkUnit.Color.Name}"/>
                 <DataGridTextColumn Header="Valor de Produccion" Binding="{Binding Model.WorkUnit.Product.ProductionValue}"/>

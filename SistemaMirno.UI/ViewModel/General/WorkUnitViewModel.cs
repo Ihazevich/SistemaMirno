@@ -35,7 +35,7 @@ namespace SistemaMirno.UI.ViewModel.General
         private string _workAreaWorkUnitColorFilter;
         private string _workAreaWorkUnitClientFilter;
         
-        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Description");
 
         public WorkUnitViewModel(
             Func<IWorkUnitRepository> workUnitRepositoryCreator,
@@ -281,7 +281,7 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             switch (columnId)
             {
-                // Product
+                // Description
                 case 0:
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -289,7 +289,7 @@ namespace SistemaMirno.UI.ViewModel.General
                         WorkAreaCollectionView.Filter = item =>
                         {
                             WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                            return vitem != null && vitem.Model.Product.Name.ToLowerInvariant().Contains(value.ToLowerInvariant());
+                            return vitem != null && vitem.Model.Description.ToLowerInvariant().Contains(value.ToLowerInvariant());
                         };
                         ProgressVisibility = Visibility.Hidden;
                     });

@@ -30,7 +30,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
     {
         private IWorkAreaRepository _workAreaRepository;
 
-        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.WorkUnit.Product.Name");
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.WorkUnit.Description");
 
         private WorkAreaWrapper _selectedWorkArea;
 

@@ -216,7 +216,7 @@
                                   VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   Margin="5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
+                                <DataGridTextColumn Header="Descripción" Binding="{Binding Model.Description}"/>
                                 <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
                                 <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
                                 <DataGridTextColumn Header="Area Actual" Binding="{Binding Model.CurrentWorkArea.Name}"/>
@@ -288,7 +288,7 @@
                           VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                           Margin="5">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
+                        <DataGridTextColumn Header="Descripción" Binding="{Binding Model.Description}"/>
                         <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
                         <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
                         <DataGridTextColumn Header="Area Actual" Binding="{Binding Model.CurrentWorkArea.Name}"/>

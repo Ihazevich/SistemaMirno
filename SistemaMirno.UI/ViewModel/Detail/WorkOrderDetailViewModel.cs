@@ -54,8 +54,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private bool _canGetWorkUnitsFromRequisition;
 
-        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
-        private readonly PropertyGroupDescription _workOrderUnitProductName = new PropertyGroupDescription("Model.WorkUnit.Product.Name");
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Description");
+        private readonly PropertyGroupDescription _workOrderUnitProductName = new PropertyGroupDescription("Model.WorkUnit.Description");
 
         private readonly PropertyGroupDescription _currentWorkAreaName =
             new PropertyGroupDescription("Model.CurrentWorkArea.Name");
@@ -523,7 +523,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 {
                     WorkUnitWrapper vitem = item as WorkUnitWrapper;
                     return vitem != null &&
-                           vitem.Model.Product.Name.ToLowerInvariant().Contains(search.ToLowerInvariant());
+                           vitem.Model.Description.ToLowerInvariant().Contains(search.ToLowerInvariant());
                 };
                 ExistingWorkUnitsProgressVisibility = Visibility.Hidden;
             });
@@ -538,7 +538,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 {
                     WorkUnitWrapper vitem = item as WorkUnitWrapper;
                     return vitem != null &&
-                           vitem.Model.Product.Name.ToLowerInvariant().Contains(search.ToLowerInvariant());
+                           vitem.Model.Description.ToLowerInvariant().Contains(search.ToLowerInvariant());
                 };
                 RequisitionWorkUnitsProgressVisibility = Visibility.Hidden;
             });

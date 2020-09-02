@@ -28,7 +28,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
     {
         private IEmployeeRepository _employeeRepository;
 
-        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("WorkUnit.Product.Name");
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("WorkUnit.Description");
 
         private Employee _selectedEmployee;
 
