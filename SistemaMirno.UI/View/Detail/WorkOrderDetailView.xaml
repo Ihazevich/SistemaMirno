@@ -240,6 +240,8 @@
                                   CanUserAddRows="True"
                                   CanUserDeleteRows="True"
                                   SelectionMode="Extended"
+                                  EnableRowVirtualization="True"
+                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   Margin="5">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
@@ -315,6 +317,8 @@
                                   CanUserAddRows="True"
                                   CanUserDeleteRows="True"
                                   SelectionMode="Extended"
+                                  EnableRowVirtualization="True"
+                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   Margin="5">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
@@ -334,7 +338,7 @@
                                                     </StackPanel>
                                                 </Expander.Header>
                                                 <Expander.Content>
-                                                    <VirtualizingStackPanel />
+                                                    <ItemsPresenter/>
                                                 </Expander.Content>
                                             </Expander>
                                         </DataTemplate>
@@ -368,6 +372,8 @@
                           CanUserAddRows="False"
                           CanUserDeleteRows="False"
                           CanUserResizeRows="False"
+                          EnableRowVirtualization="True"
+                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                           Margin="5">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Producto" Binding="{Binding Model.WorkUnit.Product.Name}"/>

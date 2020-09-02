@@ -95,6 +95,8 @@
                                   CanUserDeleteRows="False"
                                   IsReadOnly="True"
                                   SelectionMode="Extended"
+                                  EnableRowVirtualization="True"
+                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   Margin="10,0,10,0">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Fecha" Binding="{Binding Date}"/>
@@ -151,6 +153,8 @@
                                   CanUserDeleteRows="False"
                                   IsReadOnly="True"
                                   SelectionMode="Extended"
+                                  EnableRowVirtualization="True"
+                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   Margin="10,0,10,0">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Fecha" Binding="{Binding Date}"/>

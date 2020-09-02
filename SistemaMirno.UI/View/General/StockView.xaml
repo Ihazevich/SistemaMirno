@@ -112,6 +112,8 @@
                                   CanUserDeleteRows="False"
                                   IsReadOnly="True"
                                   SelectionMode="Extended"
+                                  EnableRowVirtualization="True"
+                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   Margin="10,0,10,0">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>

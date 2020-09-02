@@ -212,6 +212,8 @@
                                   CanUserAddRows="True"
                                   CanUserDeleteRows="True"
                                   SelectionMode="Extended"
+                                  EnableRowVirtualization="True"
+                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   Margin="5">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
@@ -282,6 +284,8 @@
                           CanUserAddRows="False"
                           CanUserDeleteRows="False"
                           CanUserResizeRows="False"
+                          EnableRowVirtualization="True"
+                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                           Margin="5">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
