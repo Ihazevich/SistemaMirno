@@ -21,10 +21,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using jsreport.Binary;
 using jsreport.Local;
 using MahApps.Metro.Controls.Dialogs;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
+using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.ViewModel.Reports
 {
@@ -207,30 +207,53 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 inProcessReport.WorkAreas.Add(workAreaReport);
             }
 
-            var rs = new LocalReporting()
-                .UseBinary(JsReportBinary.GetBinary())
-                .Configure(cfg => cfg.FileSystemStore().BaseUrlAsWorkingDirectory())
-                .AsUtility()
-                .Create();
+            try
+            {
+                var rs = new ReportingService("http://192.168.1.99:5488","Mirno","MirnoReports");
 
-            // Create the json string and send it to the jsreport server for conversion
-            var jsonString = JsonConvert.SerializeObject(inProcessReport);
-            var report = rs.RenderByNameAsync("processByAreas-main", jsonString).Result;
+                // Create the json string and send it to the jsreport server for conversion
+                var jsonString = JsonConvert.SerializeObject(inProcessReport);
+                var report = rs.RenderByNameAsync("processByAreas-main", jsonString).Result;
 
-            Directory.CreateDirectory($"C:\\SistemaMirno\\Reports");
+                Directory.CreateDirectory($"C:\\SistemaMirno\\Reports");
 
-            // Save the pdf file
-            string filename = $"C:\\SistemaMirno\\Reports\\ProcessReport{DateTime.Now.Ticks}.pdf";
-            FileStream stream = new FileStream(filename, FileMode.Create);
-            report.Content.CopyTo(stream);
-            stream.Close();
+                // Save the pdf file
+                string filename = $"C:\\SistemaMirno\\Reports\\ProcessReport{DateTime.Now.Ticks}.pdf";
+                FileStream stream = new FileStream(filename, FileMode.Create);
+                report.Content.CopyTo(stream);
+                stream.Close();
 
-            // Open the report with the default application to open pdf files
-            ProcessStartInfo info = new ProcessStartInfo();
-            info.Verb = "open";
-            info.FileName = filename;
+                // Open the report with the default application to open pdf files
+                ProcessStartInfo info = new ProcessStartInfo();
+                info.Verb = "open";
+                info.FileName = filename;
 
-            Process.Start(info);
+                Process.Start(info);
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() == typeof(AggregateException))
+                {
+                    foreach (var innerEx in ((AggregateException)ex).InnerExceptions)
+                    {
+                        EventAggregator.GetEvent<ShowDialogEvent>()
+                            .Publish(new ShowDialogEventArgs
+                            {
+                                Message = innerEx.Message,
+                                Title = "Error",
+                            });
+                    }
+                }
+                else
+                {
+                    EventAggregator.GetEvent<ShowDialogEvent>()
+                        .Publish(new ShowDialogEventArgs
+                        {
+                            Message = ex.Message,
+                            Title = "Error",
+                        });
+                }
+            }
         }
     }
 }

@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using jsreport.Binary;
 using jsreport.Client;
 using jsreport.Local;
 using MahApps.Metro.Controls.Dialogs;
@@ -916,29 +915,51 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 }
             }
 
-            var rs = new LocalReporting()
-                .UseBinary(JsReportBinary.GetBinary())
-                .Configure(cfg => cfg.FileSystemStore().BaseUrlAsWorkingDirectory())
-                .AsUtility()
-                .Create();
+            try
+            {
+                var rs = new ReportingService("http://192.168.1.99:5488", "Mirno", "MirnoReports");
+                workOrderReport.Id = WorkOrder.Id;
+                var jsonString = JsonConvert.SerializeObject(workOrderReport);
+                var report = rs.RenderByNameAsync("workorder-main", jsonString).Result;
 
-            workOrderReport.Id = WorkOrder.Id;
-            var jsonString = JsonConvert.SerializeObject(workOrderReport);
-            var report = rs.RenderByNameAsync("workorder-main", jsonString).Result;
+                Directory.CreateDirectory($"C:\\SistemaMirno\\WorkOrders");
 
-            Directory.CreateDirectory($"C:\\SistemaMirno\\WorkOrders");
+                var filename = $"C:\\SistemaMirno\\WorkOrders\\WorkOrder{WorkOrder.Id}.pdf";
+                var stream = new FileStream(filename, FileMode.Create);
 
-            var filename = $"C:\\SistemaMirno\\WorkOrders\\WorkOrder{WorkOrder.Id}.pdf";
-            var stream = new FileStream(filename, FileMode.Create);
+                report.Content.CopyTo(stream);
+                stream.Close();
 
-            report.Content.CopyTo(stream);
-            stream.Close();
+                ProcessStartInfo info = new ProcessStartInfo();
+                info.Verb = "open";
+                info.FileName = filename;
 
-            ProcessStartInfo info = new ProcessStartInfo();
-            info.Verb = "open";
-            info.FileName = filename;
-
-            Process.Start(info);
+                Process.Start(info);
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() == typeof(AggregateException))
+                {
+                    foreach (var innerEx in ((AggregateException) ex).InnerExceptions)
+                    {
+                        EventAggregator.GetEvent<ShowDialogEvent>()
+                            .Publish(new ShowDialogEventArgs
+                            {
+                                Message = innerEx.Message,
+                                Title = "Error",
+                            });
+                    }
+                }
+                else
+                {
+                    EventAggregator.GetEvent<ShowDialogEvent>()
+                        .Publish(new ShowDialogEventArgs
+                        {
+                            Message = ex.Message,
+                            Title = "Error",
+                        });
+                }
+            }
         }
     }
 }

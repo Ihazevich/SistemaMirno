@@ -20,8 +20,8 @@
    WindowsBase.dll   v4.0.0.0
    PresentationCore.dll   v4.0.0.0
    PresentationFramework.dll   v4.0.0.0</Info>
-  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\WorkOrderDetailViewModel.cs} (last modified 01 Sep 2020 16:18:56) and the PDB file of the assembly {SistemaMirno.UI} (last modified 01 Sep 2020 16:03:08) are not in-sync.</Warning>
-  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Properties\AssemblyInfo.cs} (last modified 01 Sep 2020 16:19:04) and the PDB file of the assembly {SistemaMirno.UI} (last modified 01 Sep 2020 16:03:08) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\ViewModel\Detail\WorkOrderDetailViewModel.cs} (last modified 01 Sep 2020 17:26:05) and the PDB file of the assembly {SistemaMirno.UI} (last modified 01 Sep 2020 17:08:42) are not in-sync.</Warning>
+  <Warning>The source file {C:\Users\ihaze\source\repos\SistemaMirno\SistemaMirno.UI\Properties\AssemblyInfo.cs} (last modified 01 Sep 2020 17:15:30) and the PDB file of the assembly {SistemaMirno.UI} (last modified 01 Sep 2020 17:08:42) are not in-sync.</Warning>
   <Info>290 source files parsed ; all source files found ; 2 source files not in-sync with PDB</Info>
   <Info>0 code rule has been extracted from code.</Info>
   <Info>No dependency cycle detected in assemblies referencement graph.</Info>
