@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Input;
 using FileHelpers;
 using MahApps.Metro.Controls.Dialogs;
@@ -24,7 +25,13 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
     public class AdminWorkUnitViewModel : ViewModelBase
     {
         private IWorkUnitRepository _workUnitRepository;
-        private ProductWrapper _selectedProduct;
+        private WorkUnitWrapper _workUnit;
+        private Product _selectedProduct;
+        private Material _selectedMaterial;
+        private Color _selectedColor;
+        private WorkArea _selectedWorkArea;
+
+        private string _quantity;
 
         public AdminWorkUnitViewModel(
             IWorkUnitRepository workUnitRepository,
@@ -34,124 +41,192 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
         {
             _workUnitRepository = workUnitRepository;
 
-            ImportFromFileCommand = new DelegateCommand(OnImportFromFileExecute);
+            Products = new ObservableCollection<Product>();
+            Materials = new ObservableCollection<Material>();
+            Colors = new ObservableCollection<Color>();
+            WorkAreas = new ObservableCollection<WorkArea>();
+
+            AddNewWorkUnitCommand = new DelegateCommand(OnAddNewWorkUnitExecute, OnAddNewWorkUnitCanExecute);
         }
 
-        public ICommand ImportFromFileCommand { get; }
+        private bool OnAddNewWorkUnitCanExecute()
+        {
+            return NewWorkUnit != null && !NewWorkUnit.HasErrors && int.TryParse(Quantity, out int quantity) && quantity > 0;
+        }
+
+        private async void OnAddNewWorkUnitExecute()
+        {
+            Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Visible);
+
+            var newWorkUnits = new List<WorkUnit>();
+            
+            for (var i = 0; i < int.Parse(Quantity); i++)
+            {
+                var workUnit = new WorkUnit
+                {
+                    CreationDate = DateTime.Now,
+                    LatestResponsibleId = SessionInfo.User.EmployeeId,
+                    LatestSupervisorId = SessionInfo.User.EmployeeId,
+                    Delivered = false,
+                    Sold = false,
+                    TotalWorkTime = 0,
+                    ProductId = NewWorkUnit.ProductId,
+                    MaterialId = NewWorkUnit.MaterialId,
+                    ColorId = NewWorkUnit.ColorId,
+                    CurrentWorkAreaId = NewWorkUnit.CurrentWorkAreaId,
+                };
+                newWorkUnits.Add(workUnit);
+            }
+
+            await _workUnitRepository.AddRangeAsync(newWorkUnits);
+
+            Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Collapsed);
+        }
+
+        public ObservableCollection<Product> Products { get; }
+
+        public ObservableCollection<Material> Materials { get; }
+
+        public ObservableCollection<Color> Colors { get; }
+
+        public ObservableCollection<WorkArea> WorkAreas { get; }
+
+        public ICommand AddNewWorkUnitCommand { get; }
+
+        public string Quantity
+        {
+            get => _quantity;
+
+            set
+            {
+                _quantity = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public WorkUnitWrapper NewWorkUnit
+        {
+            get => _workUnit;
+
+            set
+            {
+                _workUnit = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Product SelectedProduct
+        {
+            get => _selectedProduct;
+
+            set
+            {
+                _selectedProduct = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Material SelectedMaterial
+        {
+            get => _selectedMaterial;
+
+            set
+            {
+                _selectedMaterial= value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Color SelectedColor
+        {
+            get => _selectedColor;
+
+            set
+            {
+                _selectedColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public WorkArea SelectedWorkArea
+        {
+            get => _selectedWorkArea;
+
+            set
+            {
+                _selectedWorkArea = value;
+                OnPropertyChanged();
+            }
+        }
 
         public override async Task LoadAsync(int? id = null)
         {
+            await LoadProducts();
+            await LoadColors();
+            await LoadMaterials();
+            await LoadWorkAreas();
+
             Application.Current.Dispatcher.Invoke(() =>
             {
+                NewWorkUnit = new WorkUnitWrapper();
+                NewWorkUnit.PropertyChanged += Model_PropertyChanged;
+
+                NewWorkUnit.CurrentWorkAreaId = 0;
+                NewWorkUnit.ProductId = 0;
+                NewWorkUnit.MaterialId = 0;
+                NewWorkUnit.ColorId = 0;
+
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
         }
 
-        private async void OnImportFromFileExecute()
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            // Configure open file dialog box
-            var dialog = new Microsoft.Win32.OpenFileDialog
+
+            if (e.PropertyName == nameof(NewWorkUnit.HasErrors))
             {
-                InitialDirectory = Directory.GetCurrentDirectory(),
-                DefaultExt = ".csv",
-                Filter = "CSV Files(.csv)|*.csv",
-            };
-
-            // Show open file dialog box
-            var result = dialog.ShowDialog();
-
-            var workUnitsAdded = 0;
-            var workUnitsDiscarded = 0;
-
-            // Process open file dialog box results
-            if (result != true)
-            {
-                return;
+                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
             }
+        }
 
-            Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Visible);
+        private async Task LoadWorkAreas()
+        {
+            var workAreas = await _workUnitRepository.GetAllWorkAreasAsync();
 
-            // Open document
-            string filename = dialog.FileName;
-
-            // Create FileHelpers Engine
-            var engine = new FileHelperEngine<WorkUnitFileHelper>();
-
-            // Collection of processed products
-            var workUnits = new List<WorkUnit>();
-
-            try
+            foreach (var workArea in workAreas)
             {
-                // Read Use:
-                var data = engine.ReadFile(filename);
-
-                foreach (WorkUnitFileHelper workUnit in data)
-                {
-                    // Search the product
-                    var productId = await _workUnitRepository.FindProductByNameAsync(workUnit.Product);
-
-                    // Search the material
-                    var materialId = await _workUnitRepository.FindMaterialByNameAsync(workUnit.Material);
-
-                    // Search the color
-                    var colorId = await _workUnitRepository.FindColorByNameAsync(workUnit.Color);
-
-                    // Search the area
-                    var workAreaId =
-                        await _workUnitRepository.FindWorkAreaByNameAndBranchNameAsync(workUnit.CurrentArea,
-                            workUnit.Branch);
-
-                    // Create a new model 
-                    var newWorkUnit = new WorkUnit
-                    {
-                        ProductId = productId,
-                        MaterialId = materialId,
-                        ColorId = colorId,
-                        Sold = false,
-                        Delivered = false,
-                        CurrentWorkAreaId = workAreaId,
-                        LatestResponsibleId = SessionInfo.User.EmployeeId,
-                        LatestSupervisorId = SessionInfo.User.EmployeeId,
-                        Details = string.Empty,
-                    };
-
-                    workUnits.Add(newWorkUnit);
-                    workUnitsAdded++;
-                }
-
-                // After all products added to the context, save to the database
-                await _workUnitRepository.AddRangeAsync(workUnits);
-
-                Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Collapsed);
-
-                // Show a messagebox with the results
-                EventAggregator.GetEvent<ShowDialogEvent>()
-                    .Publish(new ShowDialogEventArgs
-                    {
-                        Title = "Proceso completado",
-                        Message = $"Registros nuevos: {workUnitsAdded} | Registros descartados: {workUnitsDiscarded}",
-                    });
-                EventAggregator.GetEvent<ChangeViewEvent>()
-                    .Publish(new ChangeViewEventArgs
-                    {
-                        ViewModel = nameof(ProductViewModel),
-                    });
+                Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(workArea));
             }
-            catch (Exception ex)
+        }
+
+        private async Task LoadMaterials()
+        {
+            var materials = await _workUnitRepository.GetAllMaterialsAsync();
+
+            foreach (var material in materials)
             {
-                Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Collapsed);
-                EventAggregator.GetEvent<ShowDialogEvent>()
-                    .Publish(new ShowDialogEventArgs
-                    {
-                        Title = "Error",
-                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
-                    });
-                EventAggregator.GetEvent<ChangeViewEvent>()
-                    .Publish(new ChangeViewEventArgs
-                    {
-                        ViewModel = nameof(ProductViewModel),
-                    });
+                Application.Current.Dispatcher.Invoke(() => Materials.Add(material));
+            }
+        }
+
+        private async Task LoadColors()
+        {
+            var colors = await _workUnitRepository.GetAllColorsAsync();
+
+            foreach (var color in colors)
+            {
+                Application.Current.Dispatcher.Invoke(() => Colors.Add(color));
+            }
+        }
+
+        private async Task LoadProducts()
+        {
+            var products = await _workUnitRepository.GetAllProductsAsync();
+
+            foreach (var product in products)
+            {
+                Application.Current.Dispatcher.Invoke(() => Products.Add(product));
             }
         }
     }

@@ -61,10 +61,16 @@ namespace SistemaMirno.UI.Data.Repositories
             }
             catch (DbUpdateException ex)
             {
+                var details = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    details = ex.InnerException.Message;
+                }
+
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
                     {
-                        Message = "Error al intentar guardar a la base de datos. Contacte al Administrador de Sistema.",
+                        Message = $"Error al intentar guardar a la base de datos. Contacte al Administrador de Sistema.\n {details}",
                         Title = "Error",
                     });
                 return -1;

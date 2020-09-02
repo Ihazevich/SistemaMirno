@@ -157,24 +157,72 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public Task<int> FindProductByNameAsync(string workUnitProduct)
+        public async Task<List<WorkArea>> GetAllWorkAreasAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Context.WorkAreas.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
         }
 
-        public Task<int> FindMaterialByNameAsync(string workUnitMaterial)
+        public async Task<List<Material>> GetAllMaterialsAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Context.Materials.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
         }
 
-        public Task<int> FindColorByNameAsync(string workUnitColor)
+        public async Task<List<Color>> GetAllColorsAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Context.Colors.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
         }
 
-        public Task<int> FindWorkAreaByNameAndBranchNameAsync(string workUnitCurrentArea, string workUnitBranch)
+        public async Task<List<Product>> GetAllProductsAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Context.Products.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
+                {
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
+                    Title = "Error",
+                });
+                return null;
+            }
         }
     }
 }

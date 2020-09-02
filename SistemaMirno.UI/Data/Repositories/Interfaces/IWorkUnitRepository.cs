@@ -16,9 +16,9 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         Task<List<WorkUnit>> GetAllWorkUnitsInAllLastWorkAreasAsync();
         Task<List<Branch>> GetAllBranchesAsync();
         Task<WorkArea> GetLastWorkAreaFromBranchIdAsync(int id);
-        Task<int> FindProductByNameAsync(string workUnitProduct);
-        Task<int> FindMaterialByNameAsync(string workUnitMaterial);
-        Task<int> FindColorByNameAsync(string workUnitColor);
-        Task<int> FindWorkAreaByNameAndBranchNameAsync(string workUnitCurrentArea, string workUnitBranch);
+        Task<List<WorkArea>> GetAllWorkAreasAsync();
+        Task<List<Material>> GetAllMaterialsAsync();
+        Task<List<Color>> GetAllColorsAsync();
+        Task<List<Product>> GetAllProductsAsync();
     }
 }

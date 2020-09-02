@@ -14,6 +14,7 @@ using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.ViewModel.Main;
 using SistemaMirno.UI.ViewModel.Reports;
+using SistemaMirno.UI.ViewModel.SysAdmin;
 
 namespace SistemaMirno.UI
 {
@@ -41,9 +42,20 @@ namespace SistemaMirno.UI
             RegisterGeneralViewModels(builder);
             RegisterReportViewModels(builder);
             RegisterDetailViewModels(builder);
+            RegisterSysAdminViewModels(builder);
             RegisterRepositories(builder);
 
             return builder.Build();
+        }
+
+        /// <summary>
+        /// Registers all sysadmin view models with autofac.
+        /// </summary>
+        /// <param name="builder">The autofac builder.</param>
+        private static void RegisterSysAdminViewModels(ContainerBuilder builder)
+        {
+            builder.RegisterType<AdminWorkUnitViewModel>()
+                .Keyed<IViewModelBase>(nameof(AdminWorkUnitViewModel));
         }
 
         /// <summary>

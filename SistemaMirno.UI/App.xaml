@@ -63,6 +63,7 @@
                 <ResourceDictionary Source="Resources/GeneralDataTemplates.xaml"/>
                 <ResourceDictionary Source="Resources/MainDataTemplates.xaml"/>
                 <ResourceDictionary Source="Resources/ReportDataTemplates.xaml"/>
+                <ResourceDictionary Source="Resources/SysAdminDataTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
