@@ -376,7 +376,6 @@
                           SelectedItem="{Binding SelectedWorkOrderUnit}"
                           AutoGenerateColumns="false" 
                           SelectionMode="Extended"
-                          IsReadOnly="True"
                           CanUserAddRows="False"
                           CanUserDeleteRows="False"
                           CanUserResizeRows="False"
@@ -384,10 +383,27 @@
                           VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                           Margin="5">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Descripción" Binding="{Binding Model.WorkUnit.Description}"/>
-                        <DataGridTextColumn Header="Material" Binding="{Binding Model.WorkUnit.Material.Name}"/>
-                        <DataGridTextColumn Header="Color" Binding="{Binding Model.WorkUnit.Color.Name}"/>
-                        <DataGridTextColumn Header="Area Actual" Binding="{Binding Model.WorkUnit.CurrentWorkArea.Name}"/>
+                        <DataGridTextColumn Header="Descripción" Binding="{Binding Model.WorkUnit.Description}"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Material" Binding="{Binding Model.WorkUnit.Material.Name}"
+                                            IsReadOnly="True"/>
+                        <DataGridComboBoxColumn Header="Color" 
+                                                DisplayMemberPath="Name"
+                                                SelectedValuePath="Id"
+                                                SelectedValueBinding="{Binding Model.WorkUnit.ColorId}">
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Colors, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Colors, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                        </DataGridComboBoxColumn>
+                        <DataGridTextColumn Header="Area Actual" Binding="{Binding Model.WorkUnit.CurrentWorkArea.Name}"
+                                            IsReadOnly="True"/>
                     </DataGrid.Columns>
                     <DataGrid.GroupStyle>
                         <!-- Style for groups at top level. -->
