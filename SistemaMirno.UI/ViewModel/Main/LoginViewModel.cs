@@ -132,13 +132,22 @@ namespace SistemaMirno.UI.ViewModel.Main
                             User = user,
                         });
                 }
+                else
+                {
+                    EventAggregator.GetEvent<ShowDialogEvent>()
+                        .Publish(new ShowDialogEventArgs
+                        {
+                            Message = "Contraseña incorrecta",
+                            Title = "Advertencia",
+                        });
+                }
             }
             else
             {
                 EventAggregator.GetEvent<ShowDialogEvent>()
                     .Publish(new ShowDialogEventArgs
                     {
-                        Message = "Usuario o contraseña incorrectos",
+                        Message = "Usuario no existe",
                         Title = "Advertencia",
                     });
             }
