@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
@@ -89,17 +90,29 @@ namespace SistemaMirno.UI.Wrapper
                     break;
 
                 case nameof(IsRetail):
-                    if (!(IsRetail || IsWholesaler))
+                    if (!IsRetail && !IsWholesaler)
                     {
+
                         yield return "Debe ser minorista o mayorista al menos.";
+                    }
+
+                    if (IsRetail)
+                    {
+                        Application.Current.Dispatcher.Invoke(() => IsWholesaler = false);
                     }
 
                     break;
 
                 case nameof(IsWholesaler):
-                    if (!(IsRetail || IsWholesaler))
+                    if (!IsRetail && !IsWholesaler)
                     {
+
                         yield return "Debe ser minorista o mayorista al menos.";
+                    }
+
+                    if (IsWholesaler)
+                    {
+                        Application.Current.Dispatcher.Invoke(() => IsRetail = false);
                     }
 
                     break;

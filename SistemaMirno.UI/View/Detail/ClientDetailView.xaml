@@ -52,7 +52,7 @@
                  Margin="5" />
             <Label Grid.Row="2" Content="RUC" />
             <TextBox Grid.Row="3"
-                     Text="{Binding Client.RUC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Client.Ruc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Margin="5" />
             <Label Grid.Row="4" Content="Teléfono" />
             <TextBox Grid.Row="5"
