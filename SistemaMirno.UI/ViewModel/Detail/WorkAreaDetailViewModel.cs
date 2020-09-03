@@ -193,6 +193,34 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             base.OnSaveExecute();
+
+            if (WorkArea.IsPassthrough)
+            {
+                try
+                {
+                    WorkArea.PassthroughWorkAreaId =
+                        WorkAreas.Single(w => w.BranchId == WorkArea.BranchId && w.IsLast).Id;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    EventAggregator.GetEvent<ShowDialogEvent>()
+                        .Publish(new ShowDialogEventArgs
+                        {
+                            Title = "Error",
+                            Message = "¿Existe mas de un area final?",
+                        });
+                }
+                catch (Exception ex)
+                {
+                    EventAggregator.GetEvent<ShowDialogEvent>()
+                        .Publish(new ShowDialogEventArgs
+                        {
+                            Title = "Error",
+                            Message = $"Contacte al administrador de sistema, oh wait it's you hehe fix this >:C \n {ex.Message}",
+                        });
+                }
+            }
+
             if (IsNew)
             {
 

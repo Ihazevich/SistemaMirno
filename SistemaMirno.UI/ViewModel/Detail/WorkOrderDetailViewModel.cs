@@ -579,13 +579,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// <inheritdoc/>
         protected override async void OnSaveExecute()
         {
-            if (!IsNew) return;
+            if (!IsNew)
+            {
+                return;
+            }
+
             base.OnSaveExecute();
 
             WorkOrder.CreationDateTime = DateTime.Now;
             
             foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
             {
+                // Store movement history
                 var movement = new WorkAreaMovement
                 {
                     FromWorkAreaId = workOrderUnit.WorkUnit.CurrentWorkAreaId,
@@ -595,11 +600,43 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     Date = DateTime.Now,
                     WorkUnit = workOrderUnit.WorkUnit,
                 };
+
                 workOrderUnit.WorkUnit.Movements.Add(movement);
-                workOrderUnit.Finished = false;
-                workOrderUnit.WorkUnit.CurrentWorkAreaId = WorkArea.Id;
+
+                if (WorkArea.IsPassthrough && WorkArea.PassthroughWorkAreaId.HasValue)
+                {
+                    // If area is passthrough, store the second movement aswell
+                    movement = new WorkAreaMovement
+                    {
+                        FromWorkAreaId = WorkArea.Id,
+                        ToWorkAreaId = WorkArea.PassthroughWorkAreaId.Value,
+                        ResponsibleId = WorkOrder.ResponsibleEmployeeId,
+                        SupervisorId = WorkOrder.SupervisorEmployeeId,
+                        Date = DateTime.Now,
+                        WorkUnit = workOrderUnit.WorkUnit,
+                    };
+                    workOrderUnit.WorkUnit.Movements.Add(movement);
+
+                    workOrderUnit.WorkUnit.CurrentWorkAreaId = WorkArea.PassthroughWorkAreaId.Value;
+                }
+                else
+                {
+                    workOrderUnit.WorkUnit.CurrentWorkAreaId = WorkArea.Id;
+                }
+
                 workOrderUnit.WorkUnit.LatestResponsibleId = WorkOrder.ResponsibleEmployeeId;
                 workOrderUnit.WorkUnit.LatestSupervisorId = WorkOrder.SupervisorEmployeeId;
+
+                // Check if destination workArea is last, if it is mark the unit as finished
+                if (WorkArea.IsLast || WorkArea.IsPassthrough)
+                {
+                    workOrderUnit.Finished = true;
+                }
+                else
+                {
+                    workOrderUnit.Finished = false;
+                }
+
             }
 
             await _workOrderRepository.AddAsync(WorkOrder.Model);

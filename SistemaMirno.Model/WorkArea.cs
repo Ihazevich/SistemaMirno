@@ -48,6 +48,13 @@ namespace SistemaMirno.Model
         [Required(ErrorMessage = "Requerido")]
         public bool ReportsInProcess { get; set; }
 
+        public bool IsPassthrough { get; set; }
+
+        public int? PassthroughWorkAreaId { get; set; }
+
+        [ForeignKey(nameof(PassthroughWorkAreaId))]
+        public virtual WorkArea PassthroughWorkArea { get; set; }
+
         [ForeignKey(nameof(WorkUnit.CurrentWorkAreaId))]
         public virtual ICollection<WorkUnit> WorkUnits { get; set; } = new HashSet<WorkUnit>();
 

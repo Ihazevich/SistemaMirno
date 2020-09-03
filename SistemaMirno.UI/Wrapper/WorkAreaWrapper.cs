@@ -75,6 +75,18 @@ namespace SistemaMirno.UI.Wrapper
             set => SetValue(value);
         }
 
+        public bool IsPassthrough
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
+        public int? PassthroughWorkAreaId
+        {
+            get => GetValue<int?>();
+            set => SetValue(value);
+        }
+
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {
@@ -140,6 +152,23 @@ namespace SistemaMirno.UI.Wrapper
                     if (IsFirst && IsLast)
                     {
                         yield return "Area no puede ser primera y ultima a la vez >:(";
+                    }
+
+                    break;
+
+                case nameof(IsPassthrough):
+                    if (IsPassthrough && PassthroughWorkAreaId < 1)
+                    {
+                        yield return "Debe elegir un area de destino";
+                    }
+
+                    break;
+
+                case nameof(PassthroughWorkAreaId):
+                    if (IsPassthrough && PassthroughWorkAreaId < 1)
+                    {
+                        IsPassthrough = true;
+                        yield return "Debe elegir un area de destino";
                     }
 
                     break;
