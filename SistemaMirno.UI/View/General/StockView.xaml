@@ -89,7 +89,7 @@
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="650"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <DataGrid ItemsSource="{Binding WorkAreaCollectionView}" 
                           SelectedItem="{Binding SelectedWorkAreaWorkUnit}"
@@ -146,13 +146,19 @@
                         </GroupStyle>
                     </DataGrid.GroupStyle>
                 </DataGrid>
-                <StackPanel Grid.Row="1">
-                    <TextBlock Text="Totales"/>
+                <StackPanel Grid.Row="1" Visibility="{Binding TotalsVisibility}">
+                    <TextBlock Text="Totales" Style="{StaticResource MaterialDesignHeadline4TextBlock}"/>
                     <Separator/>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding TotalProductionValue, StringFormat=Produccion: Gs {0:n0}}" Visibility="{Binding TotalsVisibility}"/>
-                        <TextBlock Text="{Binding TotalWholesalerPrice, StringFormat=Mayorista: Gs {0:n0}}" Visibility="{Binding TotalsVisibility}"/>
-                        <TextBlock Text="{Binding TotalRetailPrice, StringFormat=Minorista: Gs {0:n0}}" Visibility="{Binding TotalsVisibility}"/>
+                        <TextBlock Text="{Binding TotalProductionValue, StringFormat=Producción: Gs. {0:n0}}"
+                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Margin="20"/>
+                        <TextBlock Text="{Binding TotalWholesalerPrice, StringFormat=Mayorista: Gs. {0:n0}}" 
+                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Margin="20"/>
+                        <TextBlock Text="{Binding TotalRetailPrice, StringFormat=Minorista: Gs. {0:n0}}"
+                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Margin="20"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

@@ -97,6 +97,10 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -252,6 +256,22 @@
                         </DataGrid.GroupStyle>
                     </DataGrid>
                 </Grid>
+
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Visibility="{Binding TotalsVisibility}">
+                    <TextBlock Text="Totales" Style="{StaticResource MaterialDesignHeadline4TextBlock}"/>
+                    <Separator/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TotalProductionValue, StringFormat=Producción: Gs. {0:n0}}" 
+                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Margin="20"/>
+                        <TextBlock Text="{Binding TotalWholesalerPrice, StringFormat=Mayorista: Gs. {0:n0}}"
+                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Margin="20"/>
+                        <TextBlock Text="{Binding TotalRetailPrice, StringFormat=Minorista: Gs. {0:n0}}"
+                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Margin="20"/>
+                    </StackPanel>
+                </StackPanel>
             </Grid>
         </Grid>
         <mah:ProgressRing Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" Width="250" Height="30"/>
