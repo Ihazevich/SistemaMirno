@@ -46,7 +46,7 @@
                           SelectedItem="{Binding SelectedBranch}"
                           IsEnabled="{Binding BranchSelectionEnabled}"
                           Margin="10"/>
-                <TextBox materialDesign:HintAssist.Hint="Filtrar por Producto"
+                <TextBox materialDesign:HintAssist.Hint="Filtrar por Producto/Descripcion"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          Text="{Binding WorkAreaWorkUnitProductFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="20"
@@ -99,7 +99,7 @@
                           VirtualizingPanel.CacheLength="10"
                           Margin="10">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
+                        <DataGridTextColumn Header="Descripcion" Binding="{Binding Model.Description}"/>
                         <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
                         <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
                         <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Requisition.Client.FullName}"/>

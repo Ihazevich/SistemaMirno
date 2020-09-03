@@ -52,6 +52,11 @@ namespace SistemaMirno.UI.ViewModel.General
             NewSaleCommand = new DelegateCommand(OnNewSaleExecute);
             MoveToBranchCommand = new DelegateCommand(OnMoveToBranchExecute);
             ShowMovementHistoryCommand = new DelegateCommand(OnShowMovementHistoryExecute);
+
+            WorkAreaWorkUnitProductFilter = string.Empty;
+            WorkAreaWorkUnitMaterialFilter = string.Empty;
+            WorkAreaWorkUnitColorFilter = string.Empty;
+            WorkAreaWorkUnitClientFilter = string.Empty;
         }
 
         private void OnMoveToBranchExecute()
@@ -83,7 +88,7 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _workAreaWorkUnitProductFilter = value;
                 OnPropertyChanged();
-                FilterWorkAreaCollection(value, 0);
+                FilterWorkAreaCollection();
             }
         }
 
@@ -95,7 +100,7 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _workAreaWorkUnitMaterialFilter = value;
                 OnPropertyChanged();
-                FilterWorkAreaCollection(value, 1);
+                FilterWorkAreaCollection();
             }
         }
 
@@ -107,7 +112,7 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _workAreaWorkUnitColorFilter = value;
                 OnPropertyChanged();
-                FilterWorkAreaCollection(value, 2);
+                FilterWorkAreaCollection();
             }
         }
 
@@ -119,7 +124,7 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _workAreaWorkUnitClientFilter = value;
                 OnPropertyChanged();
-                FilterWorkAreaCollection(value, 3);
+                FilterWorkAreaCollection();
             }
         }
 
@@ -134,7 +139,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 OnPropertyChanged(nameof(BranchSelectionEnabled));
                 if (value)
                 {
-                    FilterWorkAreaCollection(string.Empty, 4);
+                    FilterWorkAreaCollection();
                 }
             }
         }
@@ -171,112 +176,47 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _selectedBranch = value;
                 OnPropertyChanged();
-                FilterWorkAreaCollection(_selectedBranch.Name, 4);
+                FilterWorkAreaCollection();
             }
         }
 
-        private void FilterWorkAreaCollection(string value, int columnId)
+        private void FilterWorkAreaCollection()
         {
-            switch (columnId)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                // Product
-                case 0:
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProgressVisibility = Visibility.Visible;
-                        WorkAreaCollectionView.Filter = item =>
-                        {
-                            WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                            return vitem != null && vitem.Model.Product.Name.ToLowerInvariant().Contains(value.ToLowerInvariant());
-                        };
-                        ProgressVisibility = Visibility.Hidden;
-                    });
-                    break;
+                ProgressVisibility = Visibility.Visible;
+                WorkAreaCollectionView.Filter = item =>
+                    item is WorkUnitWrapper vitem &&
 
-                // Material
-                case 1:
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProgressVisibility = Visibility.Visible;
-                        WorkAreaCollectionView.Filter = item =>
-                        {
-                            WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                            return vitem != null && vitem.Model.Material.Name.ToLowerInvariant().Contains(value.ToLowerInvariant());
-                        };
-                        ProgressVisibility = Visibility.Hidden;
-                    });
-                    break;
+                    // Filter by description
+                    vitem.Model.Description.ToLowerInvariant()
+                        .Contains(WorkAreaWorkUnitProductFilter
+                            .ToLowerInvariant()) &&
 
-                // Color
-                case 2:
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProgressVisibility = Visibility.Visible;
-                        WorkAreaCollectionView.Filter = item =>
-                        {
-                            WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                            return vitem != null && vitem.Model.Color.Name.ToLowerInvariant().Contains(value.ToLowerInvariant());
-                        };
-                        ProgressVisibility = Visibility.Hidden;
-                    });
-                    break;
+                    // Filter by material
+                    vitem.Model.Material.Name.ToLowerInvariant()
+                        .Contains(WorkAreaWorkUnitMaterialFilter
+                            .ToLowerInvariant()) &&
 
-                // Client
-                case 3:
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProgressVisibility = Visibility.Visible;
-                        WorkAreaCollectionView.Filter = item =>
-                        {
-                            if (!(item is WorkUnitWrapper vitem))
-                            {
-                                return false;
-                            }
+                    // Filter by color
+                    vitem.Model.Color.Name.ToLowerInvariant()
+                        .Contains(WorkAreaWorkUnitColorFilter.ToLowerInvariant()) &&
 
-                            if (value == string.Empty)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return vitem.Model.Requisition.Client != null && vitem.Model.Requisition.Client
-                                    .FullName.ToLowerInvariant().Contains(value.ToLowerInvariant());
-                            }
+                    // If client name not empty check if item has client, then filter by client
+                    (WorkAreaWorkUnitClientFilter == string.Empty ||
+                     (vitem.Model.Requisition.Client != null &&
+                      vitem.Model.Requisition.Client.FullName.ToLowerInvariant()
+                          .Contains(WorkAreaWorkUnitClientFilter
+                              .ToLowerInvariant()))) &&
 
-                        };
-                        ProgressVisibility = Visibility.Hidden;
-                    });
-                    break;
+                    // If not showing all branches, filter by branch
+                    (ShowAllBranches ||
+                     (vitem.Model.CurrentWorkArea != null &&
+                      SelectedBranch != null &&
+                      vitem.Model.CurrentWorkArea.Branch.Id == SelectedBranch.Id));
+                ProgressVisibility = Visibility.Hidden;
+            });
 
-                // Branch
-                case 4:
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProgressVisibility = Visibility.Visible;
-                        WorkAreaCollectionView.Filter = item =>
-                        {
-                            if (!(item is WorkUnitWrapper vitem))
-                            {
-                                return false;
-                            }
-
-                            if (value == string.Empty)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return vitem.Model.CurrentWorkArea != null && string.Equals(
-                                    vitem.Model.CurrentWorkArea.Branch.Name,
-                                    value,
-                                    StringComparison.InvariantCultureIgnoreCase);
-                            }
-
-                        };
-                        ProgressVisibility = Visibility.Hidden;
-                    });
-                    break;
-            }
         }
 
         public ObservableCollection<WorkUnitWrapper> WorkAreaWorkUnits { get; }
