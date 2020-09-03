@@ -20,7 +20,7 @@ namespace SistemaMirno.DataAccess
         /// Initializes a new instance of the <see cref="MirnoDbContext"/> class.
         /// </summary>
         public MirnoDbContext()
-            : base("Laptop")
+            : base("Deployment")
         {
             DatabaseLogger.StartLogging();
             DbInterception.Add(DatabaseLogger);
@@ -300,6 +300,11 @@ namespace SistemaMirno.DataAccess
         /// Gets or sets the collection of <see cref="CashMovement"/> entities in the context.
         /// </summary>
         public DbSet<CashMovement> CashMovements { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of <see cref="WorkUnitWorkDetail"/> entities in the context.
+        /// </summary>
+        public DbSet<WorkUnitWorkDetail> WorkUnitWorkDetails { get; set; }
 
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
