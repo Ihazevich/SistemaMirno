@@ -1,4 +1,6 @@
-﻿using SistemaMirno.UI.ViewModel.Detail.Interfaces;
+﻿// <copyright file="IWorkUnitDetailViewModels.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
 
 namespace SistemaMirno.UI.ViewModel.Detail.Interfaces
 {

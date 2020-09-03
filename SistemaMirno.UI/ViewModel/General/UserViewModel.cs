@@ -29,9 +29,9 @@ namespace SistemaMirno.UI.ViewModel.General
     /// </summary>
     public class UserViewModel : ViewModelBase, IUserViewModel
     {
+        private UserWrapper _selectedUser;
         private IUserRepository _userRepository;
         private Func<IUserRepository> _userRepositoryCreator;
-        private UserWrapper _selectedUser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserViewModel"/> class.
@@ -53,32 +53,9 @@ namespace SistemaMirno.UI.ViewModel.General
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedUser.Id,
-                    ViewModel = nameof(UserDetailViewModel),
-                });
-        }
+        public ICommand CreateNewCommand { get; }
 
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedUser != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(UserDetailViewModel),
-                });
-        }
-
-        public ObservableCollection<UserWrapper> Users { get; }
+        public ICommand OpenDetailCommand { get; }
 
         public UserWrapper SelectedUser
         {
@@ -92,9 +69,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
+        public ObservableCollection<UserWrapper> Users { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
@@ -113,6 +88,31 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(UserDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedUser != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedUser.Id,
+                    ViewModel = nameof(UserDetailViewModel),
+                });
         }
     }
 }

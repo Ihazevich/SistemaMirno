@@ -182,7 +182,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 // else just add the Work Unit.
                 if (productionReport.WorkUnits.Count > 0)
                 {
-                    bool found = false;
+                    var found = false;
                     foreach (var workUnitReport in productionReport.WorkUnits)
                     {
                         // If there is a work unit in the report that has the same properties, just add to the quantity.
@@ -224,10 +224,14 @@ namespace SistemaMirno.UI.ViewModel.Reports
 
                 // Add the production price of the work unit to the report total.
                 productionReport.Total += workOrderUnit.Model.WorkUnit.Product.ProductionValue;
-
             }
 
             // Create the json string and send it to the jsreport server for conversion
+            CreateJsReport(productionReport);
+        }
+
+        private void CreateJsReport(ProductionReport productionReport)
+        {
             try
             {
                 var rs = new ReportingService("http://192.168.1.99:5488", "Mirno", "MirnoReports");
@@ -254,7 +258,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
             {
                 if (ex.GetType() == typeof(AggregateException))
                 {
-                    foreach (var innerEx in ((AggregateException) ex).InnerExceptions)
+                    foreach (var innerEx in ((AggregateException)ex).InnerExceptions)
                     {
                         EventAggregator.GetEvent<ShowDialogEvent>()
                             .Publish(new ShowDialogEventArgs

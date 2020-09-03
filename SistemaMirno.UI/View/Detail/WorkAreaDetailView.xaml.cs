@@ -1,11 +1,13 @@
-﻿using System.Text.RegularExpressions;
+﻿// <copyright file="WorkAreaDetailView.xaml.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace SistemaMirno.UI.View.Detail
 {
     /// <summary>
-    /// Interaction logic for ProductionAreaDetailView.xaml
+    /// Interaction logic for ProductionAreaDetailView.xaml.
     /// </summary>
     public partial class WorkAreaDetailView : UserControl
     {

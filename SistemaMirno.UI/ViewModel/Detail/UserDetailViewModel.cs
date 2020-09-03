@@ -79,7 +79,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 User = new UserWrapper(user);
                 User.PropertyChanged += User_PropertyChanged;
-                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             });
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);

@@ -7,7 +7,7 @@ using System;
 namespace SistemaMirno.UI.Data.Reports
 {
     /// <summary>
-    /// A class representing the data of a work unit  
+    /// A class representing the data of a work unit.
     /// </summary>
     [Serializable]
     public class WorkUnitReport
@@ -54,14 +54,14 @@ namespace SistemaMirno.UI.Data.Reports
         /// Gets or sets the client's name the work unit is assigned to.
         /// </summary>
         public string Client { get; set; }
-      
+
         /// <summary>
         /// Gets or sets the price of the work unit.
         /// </summary>
         public long Price { get; set; }
 
         /// <summary>
-        /// Gets or sets if the report includes the work unit production price.
+        /// Gets or sets a value indicating whether the report includes the work unit production price.
         /// </summary>
         public bool IncludePrice { get; set; }
     }

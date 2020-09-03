@@ -1,8 +1,11 @@
-﻿using System;
+﻿// <copyright file="EmployeeRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Prism.Events;
 using SistemaMirno.DataAccess;

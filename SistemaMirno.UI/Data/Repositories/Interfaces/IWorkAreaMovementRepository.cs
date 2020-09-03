@@ -1,8 +1,11 @@
-﻿using System;
+﻿// <copyright file="IWorkAreaMovementRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories.Interfaces;
 
 namespace SistemaMirno.UI.Data.Repositories.Interfaces
 {

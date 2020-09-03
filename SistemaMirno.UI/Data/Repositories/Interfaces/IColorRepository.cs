@@ -1,5 +1,8 @@
-﻿using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories.Interfaces;
+﻿// <copyright file="IColorRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories.Interfaces
 {

@@ -1,8 +1,11 @@
-﻿using System;
+﻿// <copyright file="ProductRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Prism.Events;
 using SistemaMirno.DataAccess;
@@ -60,7 +63,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return Context.Products.Select(p => p.Name.ToLower()).Contains(productName.ToLower());
+                return await Task.Run(() => Context.Products.Select(p => p.Name.ToLower()).Contains(productName.ToLower()));
             }
             catch (Exception ex)
             {

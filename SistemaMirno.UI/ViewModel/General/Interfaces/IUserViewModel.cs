@@ -1,4 +1,4 @@
-﻿// <copyright file="UserViewModel.cs" company="HazeLabs">
+﻿// <copyright file="IUserViewModel.cs" company="HazeLabs">
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 

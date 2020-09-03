@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="ColorRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
@@ -12,7 +12,7 @@ namespace SistemaMirno.UI.Data.Repositories
 {
     public class ColorRepository : GenericRepository<Color, MirnoDbContext>, IColorRepository
     {
-        public ColorRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator) 
+        public ColorRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }

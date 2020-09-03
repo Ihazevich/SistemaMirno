@@ -1,9 +1,13 @@
-﻿using System.Windows.Controls;
+﻿// <copyright file="WorkAreaView.xaml.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Windows.Controls;
 
 namespace SistemaMirno.UI.View.General
 {
     /// <summary>
-    /// Interaction logic for ProductionAreaView.xaml
+    /// Interaction logic for ProductionAreaView.xaml.
     /// </summary>
     public partial class WorkAreaView : UserControl
     {

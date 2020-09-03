@@ -1,4 +1,8 @@
-﻿using SistemaMirno.UI.Wrapper;
+﻿// <copyright file="SessionInfo.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.Event
 {

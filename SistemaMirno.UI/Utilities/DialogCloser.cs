@@ -18,17 +18,6 @@ namespace SistemaMirno.UI.Utilities
                 typeof(DialogCloser),
                 new PropertyMetadata(DialogResultChanged));
 
-        private static void DialogResultChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
-        {
-            var window = d as Window;
-            if (window != null)
-            {
-                window.DialogResult = e.NewValue as bool?;
-            }
-        }
-
         /// <summary>
         /// Sets the Dialog Result of a specific window.
         /// </summary>
@@ -37,6 +26,16 @@ namespace SistemaMirno.UI.Utilities
         public static void SetDialogResult(Window target, bool? value)
         {
             target.SetValue(DialogResultProperty, value);
+        }
+
+        private static void DialogResultChanged(
+            DependencyObject d,
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is Window window)
+            {
+                window.DialogResult = e.NewValue as bool?;
+            }
         }
     }
 }

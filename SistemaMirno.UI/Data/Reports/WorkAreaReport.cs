@@ -1,8 +1,9 @@
-﻿using System;
+﻿// <copyright file="WorkAreaReport.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.Data.Reports
 {
@@ -26,7 +27,7 @@ namespace SistemaMirno.UI.Data.Reports
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets if the report includes the production price of work units.
+        /// Gets or sets a value indicating whether the report includes the production price of work units.
         /// </summary>
         public bool IncludePrice { get; set; }
 

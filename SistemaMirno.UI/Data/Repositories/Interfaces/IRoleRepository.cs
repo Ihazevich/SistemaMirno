@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="IRoleRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories.Interfaces;
 
 namespace SistemaMirno.UI.Data.Repositories.Interfaces
 {

@@ -1,8 +1,9 @@
-﻿using System;
+﻿// <copyright file="InProcessReport.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.UI.Data.Reports
 {
@@ -21,9 +22,9 @@ namespace SistemaMirno.UI.Data.Reports
         /// Gets or sets the work areas included in the report.
         /// </summary>
         public ICollection<WorkAreaReport> WorkAreas { get; set; }
-      
+
         /// <summary>
-        /// Sets or gets if the report includes the work unit's production prices.
+        /// Gets or sets a value indicating whether the report includes the work unit's production prices.
         /// </summary>
         public bool IncludePrice { get; set; }
 

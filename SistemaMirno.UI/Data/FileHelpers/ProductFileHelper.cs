@@ -1,4 +1,4 @@
-﻿// <copyright file="ProductCSV.cs" company="HazeLabs">
+﻿// <copyright file="ProductFileHelper.cs" company="HazeLabs">
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
