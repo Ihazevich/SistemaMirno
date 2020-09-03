@@ -59,11 +59,25 @@ namespace SistemaMirno.UI.ViewModel.General
             AddWorkUnitCommand = new DelegateCommand(OnAddWorkUnitCommandExecute, OnAddWorkUnitCommandCanExecute);
             RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
             OpenWorkAreaMovementViewCommand = new DelegateCommand(OnOpenWorkAreaMovementViewExecute);
+            DeleteWorkUnitCommand = new DelegateCommand(OnDeleteWorkUnitExecute, OnDeleteWorkUnitCanExecute);
 
             WorkAreaWorkUnitProductFilter = string.Empty;
             WorkAreaWorkUnitMaterialFilter = string.Empty;
             WorkAreaWorkUnitColorFilter = string.Empty;
             WorkAreaWorkUnitClientFilter = string.Empty;
+        }
+
+        public ICommand DeleteWorkUnitCommand { get; }
+
+        private bool OnDeleteWorkUnitCanExecute()
+        {
+            return SelectedWorkAreaWorkUnit != null;
+        }
+
+        private async void OnDeleteWorkUnitExecute()
+        {
+            await _workUnitRepository.DeleteAsync(SelectedWorkAreaWorkUnit.Model);
+            Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit));
         }
 
         private void OnOpenWorkAreaMovementViewExecute()
@@ -267,6 +281,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 _selectedWorkAreaWorkUnit = value;
                 OnPropertyChanged();
                 ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)DeleteWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -358,6 +373,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    DeleteWorkUnitButtonVisibility = SessionInfo.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
                     ProgressVisibility = Visibility.Collapsed;
                     ViewVisibility = Visibility.Visible;
                 });
@@ -368,6 +384,8 @@ namespace SistemaMirno.UI.ViewModel.General
                     .Publish(new ChangeViewEventArgs());
             }
         }
+
+        public Visibility DeleteWorkUnitButtonVisibility { get; set; }
 
         private async Task LoadWorkArea(int id)
         {

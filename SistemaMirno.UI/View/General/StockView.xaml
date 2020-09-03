@@ -79,6 +79,12 @@
                         Style="{StaticResource MaterialDesignFlatAccentBgButton}"
                         FontSize="15"
                         Margin="20"/>
+                <Button Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+                        Command="{Binding DeleteWorkUnitCommand}"
+                        Visibility="{Binding DeleteWorkUnitButtonVisibility}"
+                        Margin="30">
+                    <materialDesign:PackIcon Kind="Delete" />
+                </Button>
             </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>

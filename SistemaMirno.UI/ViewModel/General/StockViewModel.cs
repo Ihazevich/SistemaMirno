@@ -52,11 +52,25 @@ namespace SistemaMirno.UI.ViewModel.General
             NewSaleCommand = new DelegateCommand(OnNewSaleExecute);
             MoveToBranchCommand = new DelegateCommand(OnMoveToBranchExecute);
             ShowMovementHistoryCommand = new DelegateCommand(OnShowMovementHistoryExecute);
+            DeleteWorkUnitCommand = new DelegateCommand(OnDeleteWorkUnitExecute, OnDeleteWorkUnitCanExecute);
 
             WorkAreaWorkUnitProductFilter = string.Empty;
             WorkAreaWorkUnitMaterialFilter = string.Empty;
             WorkAreaWorkUnitColorFilter = string.Empty;
             WorkAreaWorkUnitClientFilter = string.Empty;
+        }
+
+        public ICommand DeleteWorkUnitCommand { get; }
+
+        private bool OnDeleteWorkUnitCanExecute()
+        {
+            return SelectedWorkAreaWorkUnit != null;
+        }
+
+        private async void OnDeleteWorkUnitExecute()
+        {
+            await _workUnitRepository.DeleteAsync(SelectedWorkAreaWorkUnit.Model);
+            Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit));
         }
 
         private void OnMoveToBranchExecute()
@@ -165,6 +179,7 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _selectedWorkAreaWorkUnit = value;
                 OnPropertyChanged();
+                ((DelegateCommand)DeleteWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
