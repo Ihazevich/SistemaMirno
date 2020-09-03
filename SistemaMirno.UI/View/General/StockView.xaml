@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -14,7 +15,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Content="Unidades en Stock" FontSize="30" />
+        <TextBlock Text="Unidades en Stock" Style="{StaticResource MaterialDesignHeadline2TextBlock}"/>
         <Separator Grid.Row="1"/>
         <Grid Grid.Row="2" Visibility="{Binding ViewVisibility}">
             <Grid.ColumnDefinitions>
@@ -22,137 +23,122 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <Button Content="Nueva Venta" 
+                <Button Content="NUEVA VENTA" 
                         Command="{Binding NewSaleCommand}" 
                         CommandParameter="New"
+                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                        FontSize="16"
                         Width="250" 
                         Margin="10"/>
-                <Button Content="Traslado a Sucursal" 
+                <Button Content="NUEVO TRASLADO" 
                         Command="{Binding MoveToBranchCommand}" 
+                        Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                        FontSize="16"
                         Width="250" 
                         Margin="10"/>
-                <Button Content="Historial de Movimientos" 
+                <Separator Margin="20"/>
+                <CheckBox Content="Mostrar todas las sucursales"
+                          FontSize="16"
+                          IsChecked="{Binding ShowAllBranches, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Margin="10"/>
+                <ComboBox ItemsSource="{Binding Branches}"
+                          DisplayMemberPath="Name"
+                          SelectedItem="{Binding SelectedBranch}"
+                          IsEnabled="{Binding BranchSelectionEnabled}"
+                          Margin="10"/>
+                <TextBox materialDesign:HintAssist.Hint="Filtrar por Producto"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding WorkAreaWorkUnitProductFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="20"
+                         Margin="10"/>
+                <TextBox materialDesign:HintAssist.Hint="Filtrar por Material"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding WorkAreaWorkUnitMaterialFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="20"
+                         Margin="10"/>
+                <TextBox materialDesign:HintAssist.Hint="Filtrar por Color"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding WorkAreaWorkUnitColorFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="20"
+                         Margin="10"/>
+                <TextBox materialDesign:HintAssist.Hint="Filtrar por Cliente"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding WorkAreaWorkUnitClientFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="20"
+                         Margin="10"/>
+                <Separator Margin="20"/>
+                <Button Content="HISTORIAL DE MOVIMIENTOS" 
                         Command="{Binding ShowMovementHistoryCommand}" 
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        FontSize="16"
                         Width="250" 
                         Margin="10"/>
-                <Button Content="Salir" 
+                <Button Content="SALIR" 
                         Command="{Binding ExitView}" 
                         Width="250" 
-                        Margin="10"/>
+                        Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                        FontSize="15"
+                        Margin="20"/>
             </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="650"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Separator Grid.ColumnSpan="5"/>
-                    <CheckBox Grid.Column="0" Grid.Row="1" 
-                              Content="Mostrar todas las sucursales"
-                              IsChecked="{Binding ShowAllBranches, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="5"/>
-                    <Label Grid.Column="1" Grid.Row="1" Content="Producto" HorizontalAlignment="Center"/>
-                    <Label Grid.Column="2" Grid.Row="1" Content="Material" HorizontalAlignment="Center"/>
-                    <Label Grid.Column="3" Grid.Row="1" Content="Lustre/Color" HorizontalAlignment="Center"/>
-                    <Label Grid.Column="4" Grid.Row="1" Content="Cliente" HorizontalAlignment="Center"/>
-                    <ComboBox Grid.Column="0" Grid.Row="2" 
-                              ItemsSource="{Binding Branches}"
-                              DisplayMemberPath="Name"
-                              SelectedItem="{Binding SelectedBranch}"
-                              IsEnabled="{Binding BranchSelectionEnabled}"
-                              Margin="5"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" 
-                         Text="{Binding WorkAreaWorkUnitProductFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="5"/>
-                    <TextBox Grid.Column="2" Grid.Row="2" 
-                         Text="{Binding WorkAreaWorkUnitMaterialFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="5"/>
-                    <TextBox Grid.Column="3" Grid.Row="2" 
-                         Text="{Binding WorkAreaWorkUnitColorFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="5"/>
-                    <TextBox Grid.Column="4" Grid.Row="2" 
-                         Text="{Binding WorkAreaWorkUnitClientFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="5"/>
-                    <Separator Grid.Row="4" Grid.ColumnSpan="5"/>
-                </Grid>
-                <Grid Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Unidades de trabajo en area" 
-                               FontWeight="DemiBold"
-                               FontSize="15" 
-                               HorizontalAlignment="Center"/>
-                        <DataGrid Grid.Row="2" 
-                                  ItemsSource="{Binding WorkAreaCollectionView}" 
-                                  SelectedItem="{Binding SelectedWorkAreaWorkUnit}"
-                                  AutoGenerateColumns="false" 
-                                  CanUserAddRows="False"
-                                  CanUserDeleteRows="False"
-                                  IsReadOnly="True"
-                                  SelectionMode="Extended"
-                                  EnableRowVirtualization="True"
-                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                  Margin="10,0,10,0">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
-                                <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
-                                <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
-                                <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Requisition.Client.FullName}"/>
-                                <DataGridTextColumn Header="Responsable" Binding="{Binding Model.LatestResponsible.FullName}"/>
-                                <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.LatestSupervisor.FullName}"/>
-                            </DataGrid.Columns>
-                            <DataGrid.GroupStyle>
-                                <!-- Style for groups at top level. -->
-                                <GroupStyle>
-                                    <GroupStyle.ContainerStyle>
-                                        <Style TargetType="{x:Type GroupItem}">
-                                            <Setter Property="Margin" Value="0,0,0,5"/>
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                        <Expander IsExpanded="False" BorderThickness="1,1,1,5">
-                                                            <Expander.Header>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
-                                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
-                                                                </StackPanel>
-                                                            </Expander.Header>
-                                                            <Expander.Content>
-                                                                <ItemsPresenter/>
-                                                            </Expander.Content>
-                                                        </Expander>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </GroupStyle.ContainerStyle>
-                                </GroupStyle>
-                            </DataGrid.GroupStyle>
-                        </DataGrid>
-                    </Grid>
-                </Grid>
+                <DataGrid ItemsSource="{Binding WorkAreaCollectionView}" 
+                          SelectedItem="{Binding SelectedWorkAreaWorkUnit}"
+                          AutoGenerateColumns="false" 
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          IsReadOnly="True"
+                          SelectionMode="Extended"
+                          EnableRowVirtualization="True"
+                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling"
+                          VirtualizingPanel.ScrollUnit="Item"
+                          VirtualizingPanel.CacheLengthUnit="Item"
+                          VirtualizingPanel.CacheLength="10"
+                          Margin="10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Producto" Binding="{Binding Model.Product.Name}"/>
+                        <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
+                        <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
+                        <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Requisition.Client.FullName}"/>
+                        <DataGridTextColumn Header="Responsable" Binding="{Binding Model.LatestResponsible.FullName}"/>
+                        <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.LatestSupervisor.FullName}"/>
+                        <DataGridTextColumn Header="Valor de Produccion" Binding="{Binding Model.Product.ProductionValue, StringFormat=Gs. {0:n0}}"/>
+                        <DataGridTextColumn Header="Precio Mayorista" Binding="{Binding Model.Product.WholesalerPrice, StringFormat=Gs. {0:n0}}"/>
+                        <DataGridTextColumn Header="Precio Minorista" Binding="{Binding Model.Product.RetailPrice, StringFormat=Gs. {0:n0}}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.GroupStyle>
+                        <!-- Style for groups at top level. -->
+                        <GroupStyle>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Margin" Value="0,0,0,5"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                <Expander IsExpanded="False" materialDesign:ExpanderAssist.DownHeaderPadding="35,2,24,2">
+                                                    <Expander.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" 
+                                                                       HorizontalAlignment="Center"
+                                                                       Width="30"/>
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                                        </StackPanel>
+                                                    </Expander.Header>
+                                                    <Expander.Content>
+                                                        <ItemsPresenter/>
+                                                    </Expander.Content>
+                                                </Expander>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </DataGrid.GroupStyle>
+                </DataGrid>
             </Grid>
         </Grid>
         <mah:ProgressRing Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" Width="250" Height="30"/>

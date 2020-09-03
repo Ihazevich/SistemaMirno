@@ -14,7 +14,7 @@ namespace SistemaMirno.DataAccess
     /// </summary>
     public class MirnoDbContext : DbContext
     {
-        //private static readonly DatabaseLogger DatabaseLogger = new DatabaseLogger("MainLogFile.txt", true);
+        private static readonly DatabaseLogger DatabaseLogger = new DatabaseLogger("MainLogFile.txt", true);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MirnoDbContext"/> class.
@@ -22,8 +22,8 @@ namespace SistemaMirno.DataAccess
         public MirnoDbContext()
             : base("Laptop")
         {
-            //DatabaseLogger.StartLogging();
-            //DbInterception.Add(DatabaseLogger);
+            DatabaseLogger.StartLogging();
+            DbInterception.Add(DatabaseLogger);
         }
 
         /// <summary>
