@@ -51,9 +51,12 @@ namespace SistemaMirno.Model
         public virtual Invoice Invoice { get; set; }
 
         [ForeignKey(nameof(SaleCollection.SaleId))]
-        public virtual ICollection<SaleCollection> SaleCollections { get; set; }
+        public virtual ICollection<SaleCollection> SaleCollections { get; set; } = new HashSet<SaleCollection>();
 
         [ForeignKey(nameof(Requisition.SaleId))]
-        public virtual ICollection<Requisition> Requisitions { get; set; }
+        public virtual ICollection<Requisition> Requisitions { get; set; } = new HashSet<Requisition>();
+
+        [ForeignKey(nameof(WorkUnit.SaleId))]
+        public virtual ICollection<WorkUnit> WorkUnits { get; set; } = new HashSet<WorkUnit>();
     }
 }

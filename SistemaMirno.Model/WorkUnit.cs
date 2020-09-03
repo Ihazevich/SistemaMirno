@@ -76,6 +76,10 @@ namespace SistemaMirno.Model
         [Required]
         public DateTime CreationDate { get; set; }
 
+        public bool Finished { get; set; }
+
+        public DateTime? FinishedDate { get; set; }
+
         [Required]
         public double TotalWorkTime { get; set; }
 
@@ -83,6 +87,11 @@ namespace SistemaMirno.Model
         public bool Delivered { get; set; }
 
         public bool Sold { get; set; }
+
+        public int? SaleId { get; set; }
+
+        [ForeignKey(nameof(SaleId))]
+        public virtual Sale Sale { get; set; }
 
         public int? LatestResponsibleId { get; set; }
 
