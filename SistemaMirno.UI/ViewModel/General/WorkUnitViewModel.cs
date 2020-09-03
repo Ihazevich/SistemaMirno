@@ -59,6 +59,11 @@ namespace SistemaMirno.UI.ViewModel.General
             AddWorkUnitCommand = new DelegateCommand(OnAddWorkUnitCommandExecute, OnAddWorkUnitCommandCanExecute);
             RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
             OpenWorkAreaMovementViewCommand = new DelegateCommand(OnOpenWorkAreaMovementViewExecute);
+
+            WorkAreaWorkUnitProductFilter = string.Empty;
+            WorkAreaWorkUnitMaterialFilter = string.Empty;
+            WorkAreaWorkUnitColorFilter = string.Empty;
+            WorkAreaWorkUnitClientFilter = string.Empty;
         }
 
         private void OnOpenWorkAreaMovementViewExecute()
@@ -279,77 +284,34 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void FilterWorkAreaCollection(string value, int columnId)
         {
-            switch (columnId)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                // Description
-                case 0:
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProgressVisibility = Visibility.Visible;
-                        WorkAreaCollectionView.Filter = item =>
-                        {
-                            WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                            return vitem != null && vitem.Model.Description.ToLowerInvariant().Contains(value.ToLowerInvariant());
-                        };
-                        ProgressVisibility = Visibility.Hidden;
-                    });
-                    break;
+                ProgressVisibility = Visibility.Visible;
+                WorkAreaCollectionView.Filter = item =>
+                    item is WorkUnitWrapper vitem &&
 
-                // Material
-                case 1:
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProgressVisibility = Visibility.Visible;
-                        WorkAreaCollectionView.Filter = item =>
-                        {
-                            WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                            return vitem != null && vitem.Model.Material.Name.ToLowerInvariant().Contains(value.ToLowerInvariant());
-                        };
-                        ProgressVisibility = Visibility.Hidden;
-                    });
-                    break;
+                    // Filter by description
+                    vitem.Model.Description.ToLowerInvariant()
+                        .Contains(WorkAreaWorkUnitProductFilter
+                            .ToLowerInvariant()) &&
 
-                // Color
-                case 2:
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProgressVisibility = Visibility.Visible;
-                        WorkAreaCollectionView.Filter = item =>
-                        {
-                            WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                            return vitem != null && vitem.Model.Color.Name.ToLowerInvariant().Contains(value.ToLowerInvariant());
-                        };
-                        ProgressVisibility = Visibility.Hidden;
-                    });
-                    break;
+                    // Filter by material
+                    vitem.Model.Material.Name.ToLowerInvariant()
+                        .Contains(WorkAreaWorkUnitMaterialFilter
+                            .ToLowerInvariant()) &&
 
-                // Client
-                case 3:
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProgressVisibility = Visibility.Visible;
-                        WorkAreaCollectionView.Filter = item =>
-                        {
-                            if (!(item is WorkUnitWrapper vitem))
-                            {
-                                return false;
-                            }
+                    // Filter by color
+                    vitem.Model.Color.Name.ToLowerInvariant()
+                        .Contains(WorkAreaWorkUnitColorFilter.ToLowerInvariant()) &&
 
-                            if (value == string.Empty)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return vitem.Model.Requisition.Client != null && vitem.Model.Requisition.Client
-                                    .FullName.ToLowerInvariant().Contains(value.ToLowerInvariant());
-                            }
-
-                        };
-                        ProgressVisibility = Visibility.Hidden;
-                    });
-                    break;
-            }
+                    // If client name not empty check if item has client, then filter by client
+                    (WorkAreaWorkUnitClientFilter == string.Empty ||
+                     (vitem.Model.Requisition?.Client != null &&
+                      vitem.Model.Requisition.Client.FullName.ToLowerInvariant()
+                         .Contains(WorkAreaWorkUnitClientFilter
+                             .ToLowerInvariant())));
+                ProgressVisibility = Visibility.Hidden;
+            });
         }
 
         public ObservableCollection<WorkUnitWrapper> WorkAreaWorkUnits { get; }

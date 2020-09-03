@@ -202,9 +202,9 @@ namespace SistemaMirno.UI.ViewModel.General
                     vitem.Model.Color.Name.ToLowerInvariant()
                         .Contains(WorkAreaWorkUnitColorFilter.ToLowerInvariant()) &&
 
-                    // If client name not empty check if item has client, then filter by client
+                    // If client and requisition exist, filter by client
                     (WorkAreaWorkUnitClientFilter == string.Empty ||
-                     (vitem.Model.Requisition.Client != null &&
+                     (vitem.Model.Requisition?.Client != null &&
                       vitem.Model.Requisition.Client.FullName.ToLowerInvariant()
                           .Contains(WorkAreaWorkUnitClientFilter
                               .ToLowerInvariant()))) &&
