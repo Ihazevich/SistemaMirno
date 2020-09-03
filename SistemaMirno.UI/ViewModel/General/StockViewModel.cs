@@ -60,6 +60,13 @@ namespace SistemaMirno.UI.ViewModel.General
             WorkAreaWorkUnitClientFilter = string.Empty;
         }
 
+        public long TotalProductionValue { get; set; }
+        public long TotalWholesalerPrice { get; set; }
+        public long TotalRetailPrice { get; set; }
+
+        public Visibility TotalsVisibility =>
+            SessionInfo.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
+
         public ICommand DeleteWorkUnitCommand { get; }
 
         private bool OnDeleteWorkUnitCanExecute()
@@ -263,6 +270,10 @@ namespace SistemaMirno.UI.ViewModel.General
                 {
                     ProgressVisibility = Visibility.Collapsed;
                     ViewVisibility = Visibility.Visible;
+                    OnPropertyChanged(nameof(TotalsVisibility));
+                    OnPropertyChanged(nameof(TotalProductionValue));
+                    OnPropertyChanged(nameof(TotalWholesalerPrice));
+                    OnPropertyChanged(nameof(TotalRetailPrice));
                 });
             }
             else
@@ -283,9 +294,19 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             var workUnits = await _workUnitRepository.GetAllWorkUnitsInAllLastWorkAreasAsync();
 
+            TotalProductionValue = 0;
+            TotalWholesalerPrice = 0;
+            TotalRetailPrice = 0;
+
             foreach (var workUnit in workUnits)
             {
-                Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Add(new WorkUnitWrapper(workUnit)));
+                TotalProductionValue += workUnit.Product.ProductionValue;
+                TotalWholesalerPrice += workUnit.Product.WholesalerPrice;
+                TotalRetailPrice += workUnit.Product.RetailPrice;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    WorkAreaWorkUnits.Add(new WorkUnitWrapper(workUnit));
+                });
             }
         }
 

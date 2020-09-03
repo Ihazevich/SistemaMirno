@@ -89,6 +89,7 @@
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="650"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <DataGrid ItemsSource="{Binding WorkAreaCollectionView}" 
                           SelectedItem="{Binding SelectedWorkAreaWorkUnit}"
@@ -145,6 +146,15 @@
                         </GroupStyle>
                     </DataGrid.GroupStyle>
                 </DataGrid>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="Totales"/>
+                    <Separator/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TotalProductionValue, StringFormat=Produccion: Gs {0:n0}}" Visibility="{Binding TotalsVisibility}"/>
+                        <TextBlock Text="{Binding TotalWholesalerPrice, StringFormat=Mayorista: Gs {0:n0}}" Visibility="{Binding TotalsVisibility}"/>
+                        <TextBlock Text="{Binding TotalRetailPrice, StringFormat=Minorista: Gs {0:n0}}" Visibility="{Binding TotalsVisibility}"/>
+                    </StackPanel>
+                </StackPanel>
             </Grid>
         </Grid>
         <mah:ProgressRing Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" Width="250" Height="30"/>
