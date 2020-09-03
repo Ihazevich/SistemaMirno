@@ -137,6 +137,7 @@
     <Compile Include="WorkOrder.cs" />
     <Compile Include="WorkOrderUnit.cs" />
     <Compile Include="WorkUnit.cs" />
+    <Compile Include="WorkUnitWorkDetail.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
