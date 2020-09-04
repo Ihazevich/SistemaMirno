@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -15,45 +16,36 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ProgressBar Grid.Row="0" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
-        <Label Grid.Row="1" Content="Detalles del lustre/color" FontSize="20" Margin="5" />
-        <Separator Grid.Row="2" />
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <!-- Column 1 -->
-            <Label Grid.Row="0" Content="Nombre" />
-            <TextBox Grid.Row="1"
-                     Text="{Binding Color.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Margin="5" />
-        </Grid>
+        <TextBlock Grid.Row="0" Text="Detalles de lustre/color" 
+               Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+               Margin="5" />
+        <Separator Grid.Row="1" />
+        <ProgressBar Grid.Row="2" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
+        <TextBox Grid.Row="3"
+                 materialDesign:HintAssist.Hint="Nombre"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 Text="{Binding Color.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 FontSize="20"
+                 Margin="5" />
         <StackPanel Grid.Row="5" Orientation="Horizontal">
-            <Button Content="Guardar" 
+            <Button Content="GUARDAR" 
+                    FontSize="16"
                     Width="125" 
                     Margin="10" 
-                    Background="GreenYellow"
-                    Command="{Binding SaveCommand}" />
-            <Button Content="Cancelar" 
+                    Command="{Binding SaveCommand}" 
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+            <Button Content="CANCELAR" 
+                    FontSize="16"
                     Width="125" 
                     Margin="10" 
-                    Command="{Binding CancelCommand}" />
-            <Button Content="Eliminar"
+                    Command="{Binding CancelCommand}" 
+                    Style="{StaticResource MaterialDesignOutlinedButton}"/>
+            <Button Content="ELIMINAR"
+                    FontSize="16"
                     Width="125"
                     Margin="10"
-                    Background="Red"
-                    Command="{Binding DeleteCommand}" />
+                    Command="{Binding DeleteCommand}" 
+                    Style="{StaticResource MaterialDesignRaisedAccentButton}" />
         </StackPanel>
     </Grid>
 </UserControl>

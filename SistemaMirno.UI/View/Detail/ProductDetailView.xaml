@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -15,16 +16,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ProgressBar Grid.Row="0" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
-        <Label Grid.Row="1" Content="Detalles del producto" FontSize="20" Margin="5" />
-        <Separator Grid.Row="2" />
+        <TextBlock Grid.Row="0" 
+                   Text="Detalles del producto"
+                   Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                   Margin="5" />
+        <Separator Grid.Row="1" />
+        <ProgressBar Grid.Row="2" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
         <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -46,83 +44,125 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!-- Column 1 -->
-            <Label Grid.Row="0" Content="Código" />
-            <TextBox Grid.Row="1"
-                 Text="{Binding Product.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 Margin="5" />
-            <Label Grid.Row="2" Content="Nombre" />
-            <TextBox Grid.Row="3"
-                     Text="{Binding Product.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Grid.Row="0"
+                     materialDesign:HintAssist.Hint="Codigo"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Product.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     FontSize="20"
                      Margin="5" />
-            <Label Grid.Row="4" Content="Categoría" />
-            <ComboBox Grid.Row="5"
+            <TextBox Grid.Row="1"
+                     Text="{Binding Product.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Nombre"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     FontSize="20"
+                     Margin="5" />
+            <ComboBox Grid.Row="2"
                       ItemsSource="{Binding ProductCategories}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Id"
                       SelectedValue="{Binding Product.ProductCategoryId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                      materialDesign:HintAssist.Hint="Categoria"
+                      FontSize="20"
                       Margin="5" />
-            <Label Grid.Row="6" Content="Valor de Producción" />
-            <TextBox Grid.Row="7"
-                     Text="{Binding Product.ProductionValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Grid.Row="3"
+                     Text="{Binding Product.ProductionValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=n0}"
+                     materialDesign:HintAssist.Hint="Valor de Producción"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     FontSize="20"
                      Margin="5" />
-            <Label Grid.Row="8" Content="Precio Mayorista" />
-            <TextBox Grid.Row="9"
-                     Text="{Binding Product.WholesalerPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Grid.Row="4"
+                     Text="{Binding Product.WholesalerPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=n0}"
+                     materialDesign:HintAssist.Hint="Precio Mayorista"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     FontSize="20"
                      Margin="5" />
-            <Label Grid.Row="10" Content="Precio Minorista" />
-            <TextBox Grid.Row="11"
-                     Text="{Binding Product.RetailPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Grid.Row="5"
+                     Text="{Binding Product.RetailPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=n0}"
+                     materialDesign:HintAssist.Hint="Precio Minorista"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     FontSize="20"
                      Margin="5" />
-            <CheckBox Grid.Row="12" 
+            <CheckBox Grid.Row="6" 
                       Content="Es especial"
                       IsChecked="{Binding Product.IsCustom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      FontSize="20"
+                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
                       Margin="5" />
-            <Label Grid.Row="13" Content="Despiece Sketchup"/>
-            <Grid Grid.Row="14">
+            <Grid Grid.Row="7">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Text="{Binding Product.SketchupFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Product.SketchupFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Archivo Sketchup"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         FontSize="20" 
                          IsEnabled="False"
                          Margin="5"/>
                 <Button Grid.Column="1" 
-                        Content="Seleccionar archivo" 
                         Command="{Binding SelectFileCommand}"
                         CommandParameter="Sketchup"
-                        Margin="5"/>
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        VerticalAlignment="Bottom"
+                        Margin="5">
+                    <materialDesign:PackIcon Kind="Plus" Width="20" Height="20"/>
+                </Button>
+                <Button Grid.Column="2" 
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        VerticalAlignment="Bottom"
+                        Margin="5">
+                    <materialDesign:PackIcon Kind="Draw" Width="20" Height="20"/>
+                </Button>
             </Grid>
-            <Label Grid.Row="15" Content="Plantilla"/>
-            <Grid Grid.Row="16">
+            <Grid Grid.Row="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Text="{Binding Product.TemplateFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Product.TemplateFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Archivo Plantilla"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         FontSize="20" 
                          IsEnabled="False"
                          Margin="5"/>
                 <Button Grid.Column="1" 
-                        Content="Seleccionar archivo" 
                         Command="{Binding SelectFileCommand}"
                         CommandParameter="Template"
-                        Margin="5"/>
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        VerticalAlignment="Bottom"
+                        Margin="5">
+                    <materialDesign:PackIcon Kind="Plus" Width="20" Height="20"/>
+                </Button>
+                <Button Grid.Column="2" 
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        VerticalAlignment="Bottom"
+                        Margin="5">
+                    <materialDesign:PackIcon Kind="Printer" Width="20" Height="20"/>
+                </Button>
             </Grid>
         </Grid>
         <StackPanel Grid.Row="5" Orientation="Horizontal">
-            <Button Content="Guardar" 
+            <Button Content="GUARDAR" 
+                    FontSize="16"
                     Width="125" 
                     Margin="10" 
-                    Background="GreenYellow"
-                    Command="{Binding SaveCommand}" />
-            <Button Content="Cancelar" 
+                    Command="{Binding SaveCommand}" 
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+            <Button Content="CANCELAR" 
+                    FontSize="16"
                     Width="125" 
                     Margin="10" 
-                    Command="{Binding CancelCommand}" />
-            <Button Content="Eliminar"
+                    Command="{Binding CancelCommand}" 
+                    Style="{StaticResource MaterialDesignOutlinedButton}"/>
+            <Button Content="ELIMINAR"
+                    FontSize="16"
                     Width="125"
                     Margin="10"
-                    Background="Red"
-                    Command="{Binding DeleteCommand}" />
+                    Command="{Binding DeleteCommand}" 
+                    Style="{StaticResource MaterialDesignRaisedAccentButton}" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -46,7 +46,7 @@
     <ProductName>Sistema Mirno</ProductName>
     <PublisherName>Snek Solutions</PublisherName>
     <MinimumRequiredVersion>1.0.0.6</MinimumRequiredVersion>
-    <ApplicationRevision>26</ApplicationRevision>
+    <ApplicationRevision>27</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -364,6 +364,9 @@
     <Compile Include="ViewModel\Main\INavigationViewModel.cs" />
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
     <Compile Include="ViewModel\Main\NavigationViewModel.cs" />
+    <Compile Include="View\Detail\WorkUnitDetailView.xaml.cs">
+      <DependentUpon>WorkUnitDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Main\BranchSelectionView.xaml.cs">
       <DependentUpon>BranchSelectionView.xaml</DependentUpon>
     </Compile>
@@ -523,6 +526,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\SysAdminDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Detail\WorkUnitDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
