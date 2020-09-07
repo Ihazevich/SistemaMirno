@@ -82,9 +82,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             WorkOrderUnitsCollectionView = CollectionViewSource.GetDefaultView(WorkOrderUnits);
             WorkOrderUnitsCollectionView.GroupDescriptions.Add(_workOrderUnitProductName);
             ExistingWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(ExistingWorkUnits);
+            ExistingWorkUnitsCollectionView.GroupDescriptions.Add(_currentWorkAreaName);
             ExistingWorkUnitsCollectionView.GroupDescriptions.Add(_productName);
             RequisitionWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(RequisitionWorkUnits);
-            RequisitionWorkUnitsCollectionView.GroupDescriptions.Add(_currentWorkAreaName);
             RequisitionWorkUnitsCollectionView.GroupDescriptions.Add(_productName);
 
             AddWorkUnitCommand = new DelegateCommand<object>(OnAddWorkUnitExecute);
