@@ -134,6 +134,7 @@
                             <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Requisition.Client.FullName}"/>
                             <DataGridTextColumn Header="Responsable" Binding="{Binding Model.LatestResponsible.FullName}"/>
                             <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.LatestSupervisor.FullName}"/>
+                            <DataGridTextColumn Header="Valor de Producción" Binding="{Binding Model.Product.ProductionValue, StringFormat= Gs. {0:n0}}"/>
                         </DataGrid.Columns>
                         <DataGrid.GroupStyle>
                             <!-- Style for groups at top level. -->
@@ -225,6 +226,7 @@
                             <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Requisition.Client.FullName}"/>
                             <DataGridTextColumn Header="Responsable" Binding="{Binding Model.LatestResponsible.FullName}"/>
                             <DataGridTextColumn Header="Supervisor" Binding="{Binding Model.LatestSupervisor.FullName}"/>
+                            <DataGridTextColumn Header="Valor de Producción" Binding="{Binding Model.Product.ProductionValue, StringFormat= Gs. {0:n0}}"/>
                         </DataGrid.Columns>
                         <DataGrid.GroupStyle>
                             <!-- Style for groups at top level. -->
