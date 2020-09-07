@@ -94,7 +94,7 @@ namespace SistemaMirno.UI.Data.Repositories
 
         public async Task<List<WorkUnit>> GetExistingWorkUnits(ICollection<WorkAreaConnection> incomingConnections)
         {
-            var workAreasIds = incomingConnections.Select(c => c.Id);
+            var workAreasIds = incomingConnections.Select(c => c.OriginWorkAreaId).ToList();
 
             try
             {
