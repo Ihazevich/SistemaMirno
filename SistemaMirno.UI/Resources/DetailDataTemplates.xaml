@@ -42,4 +42,7 @@
     <DataTemplate DataType="{x:Type detailviewmodel:WorkUnitDetailViewModel}">
         <detail:WorkUnitDetailView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:SaleDetailViewModel}">
+        <detail:SaleDetailView />
+    </DataTemplate>
 </ResourceDictionary>

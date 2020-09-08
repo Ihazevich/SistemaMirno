@@ -310,11 +310,13 @@
     <Compile Include="ViewModel\Detail\Interfaces\IProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IWorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IRequisitionDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\Interfaces\ISaleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductCategoryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ProductDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\RequisitionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\RoleDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\SaleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IDetailViewModelBase.cs" />

@@ -14,6 +14,7 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.ViewModel.Detail;
 using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
@@ -92,13 +93,11 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private void OnNewSaleExecute()
         {
-            /*
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
                 {
-                    ViewModel = nameof(SaleDetailViewModel);
+                    ViewModel = nameof(SaleDetailViewModel),
                 });
-            */
         }
 
         public string WorkAreaWorkUnitProductFilter
