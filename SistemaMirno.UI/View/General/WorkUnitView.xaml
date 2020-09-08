@@ -171,6 +171,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Button Grid.Row="0" 
                             Style="{StaticResource MaterialDesignFloatingActionLightButton}"
@@ -186,6 +187,15 @@
                         <materialDesign:PackIcon Kind="Delete" />
                     </Button>
                     <Button Grid.Row="2" 
+                            Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+                            Command="{Binding ShowWorkUnitDetailsCommand}"
+                            Visibility="{Binding DeleteWorkUnitButtonVisibility}"
+                            Background="Orange"
+                            BorderBrush="Orange"
+                            Margin="10,20,10,20">
+                        <materialDesign:PackIcon Kind="InformationOutline" />
+                    </Button>
+                    <Button Grid.Row="3" 
                             Style="{StaticResource MaterialDesignFloatingActionLightButton}"
                             Command="{Binding RemoveWorkUnitCommand}"
                             Margin="10,20,10,20">

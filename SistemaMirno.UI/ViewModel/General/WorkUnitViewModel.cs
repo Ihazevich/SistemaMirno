@@ -60,6 +60,7 @@ namespace SistemaMirno.UI.ViewModel.General
             RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
             OpenWorkAreaMovementViewCommand = new DelegateCommand(OnOpenWorkAreaMovementViewExecute);
             DeleteWorkUnitCommand = new DelegateCommand(OnDeleteWorkUnitExecute, OnDeleteWorkUnitCanExecute);
+            ShowWorkUnitDetailsCommand = new DelegateCommand(OnShowWorkUnitDetailsExecute, OnShowWorkUnitDetailsCanExecute);
 
             WorkAreaWorkUnitProductFilter = string.Empty;
             WorkAreaWorkUnitMaterialFilter = string.Empty;
@@ -67,8 +68,25 @@ namespace SistemaMirno.UI.ViewModel.General
             WorkAreaWorkUnitClientFilter = string.Empty;
         }
 
+        private bool OnShowWorkUnitDetailsCanExecute()
+        {
+            return SelectedWorkAreaWorkUnit != null;
+        }
+
+        private void OnShowWorkUnitDetailsExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    ViewModel = nameof(WorkUnitDetailViewModel),
+                    Id = SelectedWorkAreaWorkUnit.Id,
+                });
+        }
+
         public long TotalProductionValue { get; set; }
+
         public long TotalWholesalerPrice { get; set; }
+
         public long TotalRetailPrice { get; set; }
 
         public Visibility TotalsVisibility =>
@@ -289,6 +307,7 @@ namespace SistemaMirno.UI.ViewModel.General
                 OnPropertyChanged();
                 ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)DeleteWorkUnitCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)ShowWorkUnitDetailsCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -355,6 +374,8 @@ namespace SistemaMirno.UI.ViewModel.General
         public ICommand RemoveWorkUnitCommand { get; }
 
         public ICommand OpenWorkAreaMovementViewCommand { get; }
+
+        public ICommand ShowWorkUnitDetailsCommand { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
