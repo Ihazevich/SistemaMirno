@@ -45,4 +45,7 @@
     <DataTemplate DataType="{x:Type detailviewmodel:SaleDetailViewModel}">
         <detail:SaleDetailView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type detailviewmodel:DeliveryOrderDetailViewModel}">
+        <detail:DeliveryOrderDetailView />
+    </DataTemplate>
 </ResourceDictionary>

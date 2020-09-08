@@ -161,6 +161,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(WorkUnitDetailViewModel));
             builder.RegisterType<SaleDetailViewModel>().As<ISaleDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(SaleDetailViewModel));
+            builder.RegisterType<DeliveryOrderDetailViewModel>().As<IDeliveryOrderDetailViewModel>()
+                .Keyed<IViewModelBase>(nameof(DeliveryOrderDetailViewModel));
         }
 
         /// <summary>
