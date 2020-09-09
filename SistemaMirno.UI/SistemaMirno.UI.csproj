@@ -371,6 +371,9 @@
     <Compile Include="View\Detail\DeliveryOrderDetailView.xaml.cs">
       <DependentUpon>DeliveryOrderDetailView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Detail\VehicleDetailView.xaml.cs">
+      <DependentUpon>VehicleDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Detail\WorkUnitDetailView.xaml.cs">
       <DependentUpon>WorkUnitDetailView.xaml</DependentUpon>
     </Compile>
@@ -537,6 +540,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Detail\DeliveryOrderDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Detail\VehicleDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

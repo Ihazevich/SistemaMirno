@@ -10,6 +10,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class DeliveryOrderDetailViewModel : DetailViewModelBase, IDeliveryOrderDetailViewModel
     {
+
+
         public DeliveryOrderDetailViewModel(IEventAggregator eventAggregator, IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Detalle de Orden de Entrega", dialogCoordinator)
         {
