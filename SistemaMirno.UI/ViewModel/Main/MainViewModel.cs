@@ -15,41 +15,43 @@ using SistemaMirno.UI.Wrapper;
 namespace SistemaMirno.UI.ViewModel.Main
 {
     /// <summary>
-    /// Class representing the main view model.
+    ///     Class representing the main view model.
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        #region Fields
+        private readonly IIndex<string, IViewModelBase> _viewModelCreator;
+
+        private Visibility _accountingVisibility;
 
         private bool? _dialogResult;
+
+        private Visibility _humanResourcesVisibility;
+
+        private Visibility _menuVisibility;
+
         private bool _navigationStatus = true;
+
         private IViewModelBase _navigationViewModel;
-        private IViewModelBase _selectedViewModel;
+
         private bool _processing;
 
-        // Visibility fields
-        private Visibility _accountingVisibility;
         private Visibility _productionVisibility;
+
         private Visibility _productsVisibility;
+
         private Visibility _salesVisibility;
-        private Visibility _humanResourcesVisibility;
-        private Visibility _sysAdminVisibility;
-        private Visibility _menuVisibility;
-        
-        // Status bar fields
+
+        private IViewModelBase _selectedViewModel;
+
         private string _statusMessage;
 
-        private readonly IIndex<string, IViewModelBase> _viewModelCreator;
+        private Visibility _sysAdminVisibility;
 
         private string _windowTitle =
             $"Sistema Mirno v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
 
-        #endregion Fields
-
-        #region Constructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="MainViewModel"/> class.
+        ///     Initializes a new instance of the <see cref="MainViewModel" /> class.
         /// </summary>
         /// <param name="viewModelCreator">The view model creator.</param>
         /// <param name="eventAggregator">The event aggregator.</param>
@@ -97,38 +99,8 @@ namespace SistemaMirno.UI.ViewModel.Main
             ChangeView(new ChangeViewEventArgs
             {
                 Id = null,
-                ViewModel = nameof(LoginViewModel),
+                ViewModel = nameof(LoginViewModel)
             });
-        }
-
-        public double TransformScaleX => Application.Current.MainWindow.RenderSize.Width / 1920.0;
-        public double TransformScaleY => Application.Current.MainWindow.RenderSize.Height / 1080.0;
-
-        private void ReloadNavigationView()
-        {
-            NavigationViewModel = _viewModelCreator[nameof(Main.NavigationViewModel)];
-            NavigationViewModel.LoadAsync(SessionInfo.Branch.Id);
-        }
-
-        private void BroadcastSessionInfo()
-        {
-            EventAggregator.GetEvent<BroadcastSessionInfoEvent>()
-                .Publish(SessionInfo);
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public Visibility MenuVisibility
-        {
-            get => _menuVisibility;
-
-            set
-            {
-                _menuVisibility = value;
-                OnPropertyChanged();
-            }
         }
 
         public Visibility AccountingVisibility
@@ -142,19 +114,19 @@ namespace SistemaMirno.UI.ViewModel.Main
         }
 
         /// <summary>
-        /// Gets or sets the change view command.
+        ///     Gets or sets the change view command.
         /// </summary>
         public ICommand ChangeViewCommand { get; set; }
 
         /// <summary>
-        /// Gets or sets the close application command.
+        ///     Gets or sets the close application command.
         /// </summary>
         public ICommand CloseApplicationCommand { get; set; }
 
         public ICommand CloseUserSessionCommand { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the dialog result of the main view.
+        ///     Gets or sets the dialog result of the main view.
         /// </summary>
         public bool? DialogResult
         {
@@ -176,6 +148,17 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
+        public Visibility MenuVisibility
+        {
+            get => _menuVisibility;
+
+            set
+            {
+                _menuVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool NavigationStatus
         {
             get => _navigationStatus;
@@ -188,7 +171,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         }
 
         /// <summary>
-        /// Gets the area navigation view model.
+        ///     Gets the area navigation view model.
         /// </summary>
         public IViewModelBase NavigationViewModel
         {
@@ -243,7 +226,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         }
 
         /// <summary>
-        /// Gets or sets the currently selected view model.
+        ///     Gets or sets the currently selected view model.
         /// </summary>
         public IViewModelBase SelectedViewModel
         {
@@ -277,34 +260,22 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
+        public double TransformScaleX => Application.Current.MainWindow.RenderSize.Width / 1920.0;
+
+        public double TransformScaleY => Application.Current.MainWindow.RenderSize.Height / 1080.0;
+
         /// <summary>
-        /// Gets or sets the main window title.
+        ///     Gets or sets the main window title.
         /// </summary>
         public string WindowTitle
         {
-            get { return _windowTitle; }
+            get => _windowTitle;
 
             set
             {
                 _windowTitle = value;
                 OnPropertyChanged();
             }
-        }
-
-        #endregion Properties
-
-        #region Methods
-
-        public override async Task LoadAsync(int? id = null)
-        {
-        }
-
-        public async void ShowDialog(ShowDialogEventArgs args)
-        {
-            var dictionary = new ResourceDictionary();
-            dictionary.Source = new Uri("pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml");
-
-            await DialogCoordinator.ShowMessageAsync(this, args.Title, args.Message,MessageDialogStyle.Affirmative,new MetroDialogSettings{CustomResourceDictionary = dictionary});
         }
 
         private async void BranchChanged(BranchChangedEventArgs args)
@@ -315,8 +286,8 @@ namespace SistemaMirno.UI.ViewModel.Main
                 Name = args.Name,
                 Model =
                 {
-                    Id = args.BranchId,
-                },
+                    Id = args.BranchId
+                }
             };
 
             SessionInfo = sessionInfo;
@@ -329,12 +300,15 @@ namespace SistemaMirno.UI.ViewModel.Main
             ClearStatusBar();
         }
 
+        private void BroadcastSessionInfo()
+        {
+            EventAggregator.GetEvent<BroadcastSessionInfoEvent>()
+                .Publish(SessionInfo);
+        }
+
         private void ChangeNavigationStatus(bool arg)
         {
-            if (NavigationStatus == false && arg)
-            {
-                SelectedViewModel = null;
-            }
+            if (NavigationStatus == false && arg) SelectedViewModel = null;
 
             NavigationStatus = arg;
         }
@@ -349,9 +323,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             NotifyStatusBar("Cambiando de vista", true);
             if (args.ViewModel == nameof(LoginViewModel) || args.ViewModel == nameof(BranchSelectionViewModel))
-            {
                 MenuVisibility = Visibility.Collapsed;
-            }
 
             SelectedViewModel = _viewModelCreator[args.ViewModel];
             SelectedViewModel.LoadAsync(args.Id);
@@ -365,6 +337,10 @@ namespace SistemaMirno.UI.ViewModel.Main
             DialogResult = true;
         }
 
+        public override async Task LoadAsync(int? id = null)
+        {
+        }
+
         private void NewWorkOrder(NewWorkOrderEventArgs args)
         {
             NotifyStatusBar("Cambiando de vista", true);
@@ -372,12 +348,15 @@ namespace SistemaMirno.UI.ViewModel.Main
             EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
                 .Publish(false);
 
-            ((WorkOrderDetailViewModel)SelectedViewModel).CreateNewWorkOrder(args.DestinationWorkAreaId, args.OriginWorkAreaId, args.WorkUnits);
+            ((WorkOrderDetailViewModel) SelectedViewModel).CreateNewWorkOrder(
+                args.DestinationWorkAreaId,
+                args.OriginWorkAreaId,
+                args.WorkUnits);
         }
 
         private void OnChangeViewExecute(string viewModel)
         {
-            ChangeView(new ChangeViewEventArgs { ViewModel = viewModel, Id = null });
+            ChangeView(new ChangeViewEventArgs {ViewModel = viewModel, Id = null});
         }
 
         private void OnCloseApplicationExecute()
@@ -397,10 +376,31 @@ namespace SistemaMirno.UI.ViewModel.Main
             ChangeView(new ChangeViewEventArgs
             {
                 Id = null,
-                ViewModel = nameof(LoginViewModel),
+                ViewModel = nameof(LoginViewModel)
             });
         }
-        
+
+        private void ReloadNavigationView()
+        {
+            NavigationViewModel = _viewModelCreator[nameof(Main.NavigationViewModel)];
+            NavigationViewModel.LoadAsync(SessionInfo.Branch.Id);
+        }
+
+        public async void ShowDialog(ShowDialogEventArgs args)
+        {
+            var dictionary = new ResourceDictionary();
+            dictionary.Source =
+                new Uri(
+                    "pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml");
+
+            await DialogCoordinator.ShowMessageAsync(
+                this,
+                args.Title,
+                args.Message,
+                MessageDialogStyle.Affirmative,
+                new MetroDialogSettings {CustomResourceDictionary = dictionary});
+        }
+
         private void UpdateStatusBar(NotifyStatusBarEventArgs args)
         {
             StatusMessage = args.Message;
@@ -418,7 +418,8 @@ namespace SistemaMirno.UI.ViewModel.Main
             AccountingVisibility = args.User.Model.HasAccessToAccounting ? Visibility.Visible : Visibility.Collapsed;
             ProductionVisibility = args.User.Model.HasAccessToProduction ? Visibility.Visible : Visibility.Collapsed;
             SalesVisibility = args.User.Model.HasAccessToSales ? Visibility.Visible : Visibility.Collapsed;
-            HumanResourcesVisibility = args.User.Model.HasAccessToHumanResources ? Visibility.Visible : Visibility.Collapsed;
+            HumanResourcesVisibility =
+                args.User.Model.HasAccessToHumanResources ? Visibility.Visible : Visibility.Collapsed;
             SysAdminVisibility = args.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
             ProductsVisibility = args.User.Model.HasAccessToSales || args.User.Model.HasAccessToProduction
                 ? Visibility.Visible
@@ -426,10 +427,8 @@ namespace SistemaMirno.UI.ViewModel.Main
 
             ChangeView(new ChangeViewEventArgs
             {
-                ViewModel = nameof(BranchSelectionViewModel),
+                ViewModel = nameof(BranchSelectionViewModel)
             });
         }
-
-        #endregion Methods
     }
 }

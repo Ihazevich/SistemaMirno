@@ -131,8 +131,8 @@
                                                         <Expander.Header>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" 
-                                                                               HorizontalAlignment="Center"
-                                                                               Width="30"/>
+                                                                           HorizontalAlignment="Center"
+                                                                           Width="30"/>
                                                                 <TextBlock FontWeight="Bold" Text="{Binding Name}" />
                                                             </StackPanel>
                                                         </Expander.Header>
