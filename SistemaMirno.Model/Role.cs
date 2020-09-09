@@ -44,6 +44,20 @@ namespace SistemaMirno.Model
         [Required]
         public bool IsSystemAdmin { get; set; }
 
+        public bool IsFromHumanResourcesDepartment { get; set; }
+
+        public bool IsFromProductionDepartment { get; set; }
+
+        public bool IsFromSalesDepartment { get; set; }
+
+        public bool IsFromLogisticsDepartment { get; set; }
+
+        public bool IsFromInformationTechnologyDepartment { get; set; }
+
+        public bool IsFromAdministrationDepartment { get; set; }
+
+        public bool IsFromManagmentDepartment { get; set; }
+
         public string ProceduresManualPdfFile { get; set; }
 
         [Required]
