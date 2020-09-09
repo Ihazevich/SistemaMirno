@@ -9,16 +9,14 @@ using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public class ClientDetailViewModel : DetailViewModelBase, IClientDetailViewModel
+    public class ClientDetailViewModel : DetailViewModelBase
     {
         private IClientRepository _clientRepository;
         private ClientWrapper _client;

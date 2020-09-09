@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -15,13 +12,12 @@ using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public class WorkAreaDetailViewModel : DetailViewModelBase, IWorkAreaDetailViewModel
+    public class WorkAreaDetailViewModel : DetailViewModelBase
     {
         private IWorkAreaRepository _workAreaRepository;
         private WorkAreaWrapper _workArea;

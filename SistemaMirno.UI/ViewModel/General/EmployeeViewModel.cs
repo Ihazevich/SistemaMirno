@@ -12,20 +12,17 @@ using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class EmployeeViewModel : ViewModelBase, IEmployeeViewModel
+    public class EmployeeViewModel : ViewModelBase
     {
         private IEmployeeRepository _employeeRepository;
         private Func<IEmployeeRepository> _employeeRepositoryCreator;
         private EmployeeWrapper _selectedEmployee;
 
         public EmployeeViewModel(
-            Func<IEmployeeDetailViewModel> employeeDetailViewModelCreator,
             Func<IEmployeeRepository> employeeRepositoryCreator,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)

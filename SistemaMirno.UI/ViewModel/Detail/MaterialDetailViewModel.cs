@@ -9,13 +9,12 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public class MaterialDetailViewModel : DetailViewModelBase, IMaterialDetailViewModel
+    public class MaterialDetailViewModel : DetailViewModelBase
     {
         private IMaterialRepository _materialRepository;
         private MaterialWrapper _material;

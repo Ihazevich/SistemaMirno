@@ -9,14 +9,13 @@ using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.ViewModel.Main;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public class BranchDetailViewModel : DetailViewModelBase, IBranchDetailViewModel
+    public class BranchDetailViewModel : DetailViewModelBase
     {
         private IBranchRepository _branchRepository;
         private BranchWrapper _branch;

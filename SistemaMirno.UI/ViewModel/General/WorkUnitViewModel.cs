@@ -15,13 +15,11 @@ using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class WorkUnitViewModel : ViewModelBase, IWorkUnitViewModel
+    public class WorkUnitViewModel : ViewModelBase
     {
         private readonly Func<IWorkUnitRepository> _workAreaRepositoryCreator;
         private IWorkUnitRepository _workUnitRepository;

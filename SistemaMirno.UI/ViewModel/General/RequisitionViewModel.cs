@@ -12,12 +12,11 @@ using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class RequisitionViewModel : ViewModelBase, IRequisitionViewModel
+    public class RequisitionViewModel : ViewModelBase
     {
         private IRequisitionRepository _requisitionRepository;
         private Func<IRequisitionRepository> _requisitionRepositoryCreator;

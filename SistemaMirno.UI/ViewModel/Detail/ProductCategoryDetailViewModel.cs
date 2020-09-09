@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public class ProductCategoryDetailViewModel : DetailViewModelBase, IProductCategoryDetailViewModel
+    public class ProductCategoryDetailViewModel : DetailViewModelBase
     {
         private IProductCategoryRepository _productCategoryRepository;
         private ProductCategoryWrapper _productCategory;

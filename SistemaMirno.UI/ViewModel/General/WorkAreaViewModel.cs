@@ -12,13 +12,11 @@ using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class WorkAreaViewModel : ViewModelBase, IWorkAreaViewModel
+    public class WorkAreaViewModel : ViewModelBase
     {
         private IWorkAreaRepository _workAreaRepository;
         private WorkAreaWrapper _selectedWorkArea;

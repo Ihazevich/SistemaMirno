@@ -16,12 +16,11 @@ using SistemaMirno.UI.Data.FileHelpers;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class ProductViewModel : ViewModelBase, IProductViewModel
+    public class ProductViewModel : ViewModelBase
     {
         private IProductRepository _productRepository;
         private ProductWrapper _selectedProduct;

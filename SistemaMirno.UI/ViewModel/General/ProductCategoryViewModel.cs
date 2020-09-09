@@ -12,12 +12,11 @@ using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class ProductCategoryViewModel : ViewModelBase, IProductCategoryViewModel
+    public class ProductCategoryViewModel : ViewModelBase
     {
         private IProductCategoryRepository _productCategoryRepository;
         private Func<IProductCategoryRepository> _materialRepositoryCreator;

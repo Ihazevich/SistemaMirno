@@ -14,13 +14,11 @@ using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class BranchViewModel : ViewModelBase, IBranchViewModel
+    public class BranchViewModel : ViewModelBase
     {
         private IBranchRepository _branchRepository;
         private Func<IBranchRepository> _branchRepositoryCreator;

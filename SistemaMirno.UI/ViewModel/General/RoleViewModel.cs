@@ -13,20 +13,17 @@ using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class RoleViewModel : ViewModelBase, IRoleViewModel
+    public class RoleViewModel : ViewModelBase
     {
         private IRoleRepository _roleRepository;
         private Func<IRoleRepository> _roleRepositoryCreator;
         private RoleWrapper _selectedRole;
 
         public RoleViewModel(
-            Func<IRoleDetailViewModel> roleDetailViewModelCreator,
             Func<IRoleRepository> branchRepositoryCreator,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)

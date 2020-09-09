@@ -13,12 +13,11 @@ using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class ColorViewModel : ViewModelBase , IColorViewModel
+    public class ColorViewModel : ViewModelBase
     {
         private IColorRepository _colorRepository;
         private Func<IColorRepository> _colorRepositoryCreator;

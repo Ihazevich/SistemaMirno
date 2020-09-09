@@ -18,8 +18,6 @@ using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
@@ -27,7 +25,7 @@ namespace SistemaMirno.UI.ViewModel.General
     /// <summary>
     /// A class representing the view model of the users view.
     /// </summary>
-    public class UserViewModel : ViewModelBase, IUserViewModel
+    public class UserViewModel : ViewModelBase
     {
         private UserWrapper _selectedUser;
         private IUserRepository _userRepository;
@@ -39,7 +37,6 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <param name="userDetailViewModelCreator">A function to create detailviewmodel instances.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
         public UserViewModel(
-            Func<IUserDetailViewModel> userDetailViewModelCreator,
             Func<IUserRepository> userRepositoryCreator,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)

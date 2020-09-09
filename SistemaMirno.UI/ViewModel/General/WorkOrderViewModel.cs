@@ -13,12 +13,11 @@ using Prism.Events;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.General.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
-    public class WorkOrderViewModel : ViewModelBase, IWorkOrderView
+    public class WorkOrderViewModel : ViewModelBase
     {
         private IWorkOrderRepository _workOrderRepository;
         private WorkOrderWrapper _selectedWorkOrder;

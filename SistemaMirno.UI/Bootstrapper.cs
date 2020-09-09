@@ -10,7 +10,6 @@ using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.ViewModel;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.ViewModel.Main;
 using SistemaMirno.UI.ViewModel.Reports;
@@ -131,37 +130,37 @@ namespace SistemaMirno.UI
         /// <param name="builder">The autofac builder.</param>
         private static void RegisterDetailViewModels(ContainerBuilder builder)
         {
-            builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>()
+            builder.RegisterType<UserDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(UserDetailViewModel));
-            builder.RegisterType<BranchDetailViewModel>().As<IBranchDetailViewModel>()
+            builder.RegisterType<BranchDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(BranchDetailViewModel));
-            builder.RegisterType<RoleDetailViewModel>().As<IRoleDetailViewModel>()
+            builder.RegisterType<RoleDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(RoleDetailViewModel));
-            builder.RegisterType<EmployeeDetailViewModel>().As<IEmployeeDetailViewModel>()
+            builder.RegisterType<EmployeeDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(EmployeeDetailViewModel));
-            builder.RegisterType<WorkAreaDetailViewModel>().As<IWorkAreaDetailViewModel>()
+            builder.RegisterType<WorkAreaDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkAreaDetailViewModel));
-            builder.RegisterType<ProductDetailViewModel>().As<IProductDetailViewModel>()
+            builder.RegisterType<ProductDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(ProductDetailViewModel));
-            builder.RegisterType<MaterialDetailViewModel>().As<IMaterialDetailViewModel>()
+            builder.RegisterType<MaterialDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(MaterialDetailViewModel));
-            builder.RegisterType<ColorDetailViewModel>().As<IColorDetailViewModel>()
+            builder.RegisterType<ColorDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(ColorDetailViewModel));
-            builder.RegisterType<ProductCategoryDetailViewModel>().As<IProductCategoryDetailViewModel>()
+            builder.RegisterType<ProductCategoryDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(ProductCategoryDetailViewModel));
-            builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>()
+            builder.RegisterType<WorkOrderDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
-            builder.RegisterType<ClientDetailViewModel>().As<IClientDetailViewModel>()
+            builder.RegisterType<ClientDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(ClientDetailViewModel));
-            builder.RegisterType<RequisitionDetailViewModel>().As<IRequisitionDetailViewModel>()
+            builder.RegisterType<RequisitionDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(RequisitionDetailViewModel));
-            builder.RegisterType<WorkOrderDetailViewModel>().As<IWorkOrderDetailViewModel>()
+            builder.RegisterType<WorkOrderDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkOrderDetailViewModel));
-            builder.RegisterType<WorkUnitDetailViewModel>().As<IWorkUnitDetailViewModels>()
+            builder.RegisterType<WorkUnitDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkUnitDetailViewModel));
-            builder.RegisterType<SaleDetailViewModel>().As<ISaleDetailViewModel>()
+            builder.RegisterType<SaleDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(SaleDetailViewModel));
-            builder.RegisterType<DeliveryOrderDetailViewModel>().As<IDeliveryOrderDetailViewModel>()
+            builder.RegisterType<DeliveryOrderDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(DeliveryOrderDetailViewModel));
             builder.RegisterType<VehicleDetailViewModel>()
                 .Keyed<IViewModelBase>(nameof(VehicleDetailViewModel));

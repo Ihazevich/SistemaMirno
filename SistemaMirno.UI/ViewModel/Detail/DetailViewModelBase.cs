@@ -1,16 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Web.ModelBinding;
 using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.Model;
-using SistemaMirno.UI.Event;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
@@ -19,7 +13,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
     /// A class representing the base detail view model.
     /// </summary>
     /// <typeparam name="T">The type of data model the view model will use.</typeparam>
-    public abstract class DetailViewModelBase : ViewModelBase, IDetailViewModelBase
+    public abstract class DetailViewModelBase : ViewModelBase
     {
         private bool _hasChanges;
         private bool _isNew;

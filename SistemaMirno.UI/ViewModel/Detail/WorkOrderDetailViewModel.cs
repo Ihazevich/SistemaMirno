@@ -7,11 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using jsreport.Client;
-using jsreport.Local;
 using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -20,13 +18,12 @@ using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Reports;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.ViewModel.Detail.Interfaces;
 using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public class WorkOrderDetailViewModel : DetailViewModelBase, IWorkOrderDetailViewModel
+    public class WorkOrderDetailViewModel : DetailViewModelBase
     {
         private readonly IWorkOrderRepository _workOrderRepository;
 

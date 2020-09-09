@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
-    public class DeliveryOrderDetailViewModel : DetailViewModelBase, IDeliveryOrderDetailViewModel
+    public class DeliveryOrderDetailViewModel : DetailViewModelBase
     {
 
 
