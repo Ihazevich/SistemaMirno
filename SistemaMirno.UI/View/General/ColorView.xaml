@@ -11,12 +11,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="700" />
         </Grid.RowDefinitions>
         <Label Content="Lustres/Colores" FontSize="30" />
         <Separator Grid.Row="1"/>
-        <Grid Grid.Row="2" Visibility="{Binding ViewVisibility}">
+        <ProgressBar Grid.Row="2" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
+        <Grid Grid.Row="3" Visibility="{Binding ViewVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -50,6 +51,5 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <mah:ProgressRing Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" Width="250" Height="30"/>
     </Grid>
 </UserControl>

@@ -350,6 +350,9 @@
     <Compile Include="View\Detail\WorkUnitDetailView.xaml.cs">
       <DependentUpon>WorkUnitDetailView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\General\VehicleView.xaml.cs">
+      <DependentUpon>VehicleView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Main\BranchSelectionView.xaml.cs">
       <DependentUpon>BranchSelectionView.xaml</DependentUpon>
     </Compile>
@@ -522,6 +525,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Detail\WorkUnitDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\General\VehicleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

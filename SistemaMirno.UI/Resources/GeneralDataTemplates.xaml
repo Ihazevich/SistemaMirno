@@ -50,4 +50,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:WorkOrderViewModel}">
         <general:WorkOrderView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:VehicleViewModel}">
+        <general:VehicleView/>
+    </DataTemplate>
 </ResourceDictionary>

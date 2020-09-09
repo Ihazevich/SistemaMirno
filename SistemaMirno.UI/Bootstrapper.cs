@@ -108,6 +108,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(WorkAreaMovementViewModel));
             builder.RegisterType<WorkOrderViewModel>()
                 .Keyed<IViewModelBase>(nameof(WorkOrderViewModel));
+            builder.RegisterType<VehicleViewModel>()
+                .Keyed<IViewModelBase>(nameof(VehicleViewModel));
         }
 
         /// <summary>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
@@ -41,7 +37,7 @@ namespace SistemaMirno.UI.Wrapper
             get => GetValue<string>();
             set => SetValue(value);
         }
-        
+
         public string Department
         {
             get => GetValue<string>();
