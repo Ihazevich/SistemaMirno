@@ -45,17 +45,17 @@
                         <DatePicker Grid.Row="0"
                                 materialDesign:HintAssist.Hint="Fecha de entrega"
                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                                Text="{Binding Sale.ContractStartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding DeliveryOrder.Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 FontSize="20"
                                 Margin="5" />
                         <ComboBox Grid.Row="1"
                               materialDesign:HintAssist.Hint="Vehículo"
                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                              ItemsSource="{Binding Responsibles}"
+                              ItemsSource="{Binding Vehicles}"
                               SelectedItem="{Binding SelectedResponsible}"
                               SelectedValuePath="Id"
-                              DisplayMemberPath="Model.FullName"
-                              SelectedValue="{Binding WorkOrder.ResponsibleEmployeeId, Mode=TwoWay}"
+                              DisplayMemberPath="VehicleModel"
+                              SelectedValue="{Binding DeliveryOrder.VehicleId, Mode=TwoWay}"
                               FontSize="20"
                               Margin="5"/>
                         <ComboBox Grid.Row="2"
@@ -64,20 +64,20 @@
                               ItemsSource="{Binding Responsibles}"
                               SelectedItem="{Binding SelectedResponsible}"
                               SelectedValuePath="Id"
-                              DisplayMemberPath="Model.FullName"
-                              SelectedValue="{Binding WorkOrder.ResponsibleEmployeeId, Mode=TwoWay}"
+                              DisplayMemberPath="FullName"
+                              SelectedValue="{Binding DeliveryOrder.ResponsibleId, Mode=TwoWay}"
                               FontSize="20"
                               Margin="5"/>
                         <TextBox Grid.Column="1" Grid.Row="1"
                              materialDesign:HintAssist.Hint="Km. antes"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             Text="{Binding Employee.PricePerExtraHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
+                             Text="{Binding DeliveryOrder.KmBefore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
                              FontSize="20"
                              Margin="5" />
                         <TextBox Grid.Column="1" Grid.Row="2"
                              materialDesign:HintAssist.Hint="Km. despues"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             Text="{Binding Employee.PricePerExtraHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
+                             Text="{Binding DeliveryOrder.KmAfter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
                              FontSize="20"
                              Margin="5" />
                     </Grid>
@@ -87,8 +87,8 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <DataGrid Grid.Column="1" 
-                                  ItemsSource="{Binding ExistingWorkUnitsCollectionView}"
-                                  SelectedItem="{Binding SelectedExistingWorkUnit}"
+                                  ItemsSource="{Binding DeliveryWorkUnitsCollectionView}"
+                                  SelectedItem="{Binding SelectedDeliveryWorkUnit}"
                                   AutoGenerateColumns="False"
                                   IsReadOnly="True"
                                   CanUserAddRows="True"
@@ -101,9 +101,9 @@
                                   Height="596"
                                   Margin="5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Descripción" Binding="{Binding Model.Description}"/>
-                                <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
-                                <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
+                                <DataGridTextColumn Header="Descripción" Binding="{Binding Description}"/>
+                                <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
+                                <DataGridTextColumn Header="Color" Binding="{Binding Color.Name}"/>
                             </DataGrid.Columns>
                             <DataGrid.GroupStyle>
                                 <GroupStyle>
@@ -150,7 +150,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Button Grid.Column="0" Grid.Row="1" 
-                                Command="{Binding SelectFileCommand}"
+                                Command="{Binding RemoveWorkUnitCommand}"
                                 Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
                                 VerticalAlignment="Bottom"
                                 Margin="5">
@@ -159,12 +159,12 @@
                         <TextBox Grid.Column="1" Grid.Row="0"
                                  materialDesign:HintAssist.Hint="Cliente"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 Text="{Binding Employee.PricePerExtraHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding SaleClientFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontSize="20"
                                  Margin="5" />
                         <DataGrid Grid.Column="1" Grid.Row="1" 
-                                  ItemsSource="{Binding ExistingWorkUnitsCollectionView}"
-                                  SelectedItem="{Binding SelectedExistingWorkUnit}"
+                                  ItemsSource="{Binding SalesCollectionView}"
+                                  SelectedItem="{Binding SelectedSale}"
                                   AutoGenerateColumns="False"
                                   IsReadOnly="True"
                                   CanUserAddRows="True"
@@ -177,8 +177,8 @@
                                   Height="250"
                                   Margin="5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Fecha" Binding="{Binding Model.Description, StringFormat=d}"/>
-                                <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Material.Name}"/>
+                                <DataGridTextColumn Header="Fecha" Binding="{Binding Date, StringFormat=d}"/>
+                                <DataGridTextColumn Header="Cliente" Binding="{Binding Client.FullName}"/>
                             </DataGrid.Columns>
                             <DataGrid.GroupStyle>
                                 <GroupStyle>
@@ -215,15 +215,15 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0"  
-                                Command="{Binding SelectFileCommand}"
+                                Command="{Binding AddWorkUnitCommand}"
                                 Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                                 VerticalAlignment="Top"
                                 Margin="5">
                             <materialDesign:PackIcon Kind="Plus" Width="20" Height="20"/>
                         </Button>
                         <DataGrid Grid.Column="1" 
-                                  ItemsSource="{Binding ExistingWorkUnitsCollectionView}"
-                                  SelectedItem="{Binding SelectedExistingWorkUnit}"
+                                  ItemsSource="{Binding SaleWorkUnitsCollectionView}"
+                                  SelectedItem="{Binding SelectedSaleWorkUnit}"
                                   AutoGenerateColumns="False"
                                   IsReadOnly="True"
                                   CanUserAddRows="True"
@@ -236,9 +236,9 @@
                                   Height="460"
                                   Margin="5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Descripción" Binding="{Binding Model.Description}"/>
-                                <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
-                                <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
+                                <DataGridTextColumn Header="Descripción" Binding="{Binding Description}"/>
+                                <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
+                                <DataGridTextColumn Header="Color" Binding="{Binding Color.Name}"/>
                             </DataGrid.Columns>
                             <DataGrid.GroupStyle>
                                 <GroupStyle>

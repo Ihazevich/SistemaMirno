@@ -189,6 +189,7 @@ namespace SistemaMirno.UI
             builder.RegisterType<WorkUnitRepository>().As<IWorkUnitRepository>();
             builder.RegisterType<WorkAreaMovementRepository>().As<IWorkAreaMovementRepository>();
             builder.RegisterType<VehicleRepository>().As<IVehicleRepository>();
+            builder.RegisterType<DeliveryOrderRepository>().As<IDeliveryOrderRepository>();
         }
     }
 }

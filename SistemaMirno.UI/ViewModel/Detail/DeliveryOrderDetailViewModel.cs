@@ -25,6 +25,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private WorkUnit _selectedSaleWorkUnit;
         private WorkUnit _selectedDeliveryWorkUnit;
         private string _saleClientFilter;
+        private readonly PropertyGroupDescription _clientFullName = new PropertyGroupDescription("Model.Description");
 
         public DeliveryOrderDetailViewModel(
             IDeliveryOrderRepository deliveryOrderRepository,
@@ -238,28 +239,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
             return OnSaveCanExecute(DeliveryOrder);
         }
 
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            await _deliveryOrderRepository.DeleteAsync(DeliveryOrder.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ColorViewModel),
-                });
-        }
-
         protected override void OnCancelExecute()
         {
             base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ColorViewModel),
-                });
+            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Publish(true);
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

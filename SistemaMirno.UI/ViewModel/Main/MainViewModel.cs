@@ -308,7 +308,10 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private void ChangeNavigationStatus(bool arg)
         {
-            if (NavigationStatus == false && arg) SelectedViewModel = null;
+            if (NavigationStatus == false && arg)
+            {
+                SelectedViewModel = null;
+            }
 
             NavigationStatus = arg;
         }
