@@ -82,42 +82,99 @@
                     <materialDesign:PackIcon Kind="Printer" Width="20" Height="20"/>
                 </Button>
             </Grid>
-            <CheckBox Grid.Row="4" 
-                      Content="Tiene acceso a Contabilidad"
-                      IsChecked="{Binding Role.HasAccessToAccounting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="20"
-                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
-                      Margin="5" />
-            <CheckBox Grid.Row="5"
-                      Content="Tiene acceso a Logistica"
-                      IsChecked="{Binding Role.HasAccessToLogistics, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="20"
-                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
-                      Margin="5" />
-            <CheckBox Grid.Row="6" 
-                      Content="Tiene acceso a Produccion" 
-                      IsChecked="{Binding Role.HasAccessToProduction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="20"
-                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
-                      Margin="5" />
-            <CheckBox Grid.Row="7"
-                      Content="Tiene acceso a Recursos Humanos" 
-                      IsChecked="{Binding Role.HasAccessToHumanResources, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="20"
-                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
-                      Margin="5" />
-            <CheckBox Grid.Row="8" 
-                      Content="Tiene acceso a Ventas"
-                      IsChecked="{Binding Role.HasAccessToSales, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="20"
-                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
-                      Margin="5" />
-            <CheckBox Grid.Row="9" 
-                      Content="Es Administrador de Sistema"
-                      IsChecked="{Binding Role.IsSystemAdmin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="20"
-                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
-                      Margin="5" />
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <CheckBox Grid.Column="0" Grid.Row="0" 
+                          Content="Tiene acceso a modulo de Contabilidad"
+                          IsChecked="{Binding Role.HasAccessToAccounting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="0" Grid.Row="1"
+                          Content="Tiene acceso a modulo de Logistica"
+                          IsChecked="{Binding Role.HasAccessToLogistics, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="0" Grid.Row="2" 
+                          Content="Tiene acceso a modulo de Produccion" 
+                          IsChecked="{Binding Role.HasAccessToProduction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="0" Grid.Row="3"
+                          Content="Tiene acceso a modulo de Recursos Humanos" 
+                          IsChecked="{Binding Role.HasAccessToHumanResources, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="0" Grid.Row="4" 
+                          Content="Tiene acceso a modulo de Ventas"
+                          IsChecked="{Binding Role.HasAccessToSales, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="0" Grid.Row="5" 
+                          Content="Es Administrador de Sistema"
+                          IsChecked="{Binding Role.IsSystemAdmin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="1" Grid.Row="0" 
+                          Content="Departamento de Contabilidad"
+                          IsChecked="{Binding Role.IsFromAccountingDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="1" Grid.Row="1"
+                          Content="Departamento de Logistica"
+                          IsChecked="{Binding Role.IsFromLogisticsDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="1" Grid.Row="2" 
+                          Content="Departamento de Produccion" 
+                          IsChecked="{Binding Role.IsFromProductionDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="1" Grid.Row="3"
+                          Content="Departamento de Recursos Humanos" 
+                          IsChecked="{Binding Role.IsFromHumanResourcesDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="1" Grid.Row="4" 
+                          Content="Departamento de Ventas"
+                          IsChecked="{Binding Role.IsFromSalesDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="1" Grid.Row="5" 
+                          Content="Departamento de Tecnologia de la Información"
+                          IsChecked="{Binding Role.IsFromInformationTechnologyDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+                <CheckBox Grid.Column="1" Grid.Row="6" 
+                          Content="Departamento de Gerencia"
+                          IsChecked="{Binding Role.IsFromManagementDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="20"
+                          materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                          Margin="5" />
+            </Grid>
         </Grid>
         <StackPanel Grid.Row="5" Orientation="Horizontal">
             <Button Content="GUARDAR" 

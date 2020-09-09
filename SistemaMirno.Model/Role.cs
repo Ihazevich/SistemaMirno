@@ -54,7 +54,7 @@ namespace SistemaMirno.Model
 
         public bool IsFromInformationTechnologyDepartment { get; set; }
 
-        public bool IsFromAdministrationDepartment { get; set; }
+        public bool IsFromAccountingDepartment { get; set; }
 
         public bool IsFromManagmentDepartment { get; set; }
 
