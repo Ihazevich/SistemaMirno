@@ -8,7 +8,8 @@ using SistemaMirno.Model;
 namespace SistemaMirno.UI.Wrapper
 {
     public class VehicleWrapper : ModelWrapper<Vehicle>
-    { public VehicleWrapper()
+    {
+        public VehicleWrapper()
             : base(new Vehicle())
         {
         }

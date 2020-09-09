@@ -246,8 +246,10 @@
     <Compile Include="Data\Repositories\BranchRepository.cs" />
     <Compile Include="Data\Repositories\ClientRepository.cs" />
     <Compile Include="Data\Repositories\ColorRepository.cs" />
+    <Compile Include="Data\Repositories\DeliveryOrderRepository.cs" />
     <Compile Include="Data\Repositories\EmployeeRepository.cs" />
     <Compile Include="Data\Repositories\GenericRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IDeliveryOrderRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IClientRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IMaterialRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IColorRepository.cs" />
@@ -464,6 +466,7 @@
     <Compile Include="Wrapper\BranchWrapper.cs" />
     <Compile Include="Wrapper\ClientWrapper.cs" />
     <Compile Include="Wrapper\ColorWrapper.cs" />
+    <Compile Include="Wrapper\DeliveryOrderWrapper.cs" />
     <Compile Include="Wrapper\EmployeeWrapper.cs" />
     <Compile Include="Wrapper\IModelWrapper.cs" />
     <Compile Include="Wrapper\MaterialWrapper.cs" />
