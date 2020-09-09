@@ -72,6 +72,48 @@ namespace SistemaMirno.UI.Wrapper
             set => SetValue(value);
         }
 
+        public bool IsFromHumanResourcesDepartment
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
+        public bool IsFromLogisticsDepartment
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
+        public bool IsFromProductionDepartment
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
+        public bool IsFromSalesDepartment
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
+        public bool IsFromInformationTechnologyDepartment
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
+        public bool IsFromAccountingDepartment
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
+        public bool IsFromManagementDepartment
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
         public string ProceduresManualPdfFile
         {
             get => GetValue<string>();

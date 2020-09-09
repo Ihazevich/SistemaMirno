@@ -89,7 +89,7 @@
                     </MenuItem>
                     <MenuItem Header="_Utilidades" IsEnabled="{Binding NavigationStatus}">
                         <MenuItem Header="_Logistica" Visibility="{Binding LogisticVisibility}">
-                            <MenuItem Header="_Vehiculos"/>
+                        <MenuItem Header="_Vehiculos" Command="{Binding ChangeViewCommand}" CommandParameter="VehicleDetailViewModel" />
                         </MenuItem>
                         <MenuItem Header="_Producción" Visibility="{Binding ProductsVisibility}">
                             <MenuItem Header="_Productos" Command="{Binding ChangeViewCommand}" CommandParameter="ProductViewModel" />

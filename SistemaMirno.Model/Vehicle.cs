@@ -11,30 +11,22 @@ namespace SistemaMirno.Model
     public partial class Vehicle : ModelBase
     {
         [Required]
-        public string Model { get; set; }
+        public string VehicleModel { get; set; }
 
-        [Required]
-        public int Year { get; set; }
+        public string Year { get; set; }
 
-        [Required]
-        public int Odometer { get; set; }
-
-        [Required]
+        public string Patent { get; set; }
+        
         public bool IsAvailable { get; set; }
 
-        [Required]
         public DateTime PatentExpiration { get; set; }
 
-        [Required]
         public bool PatentPaid { get; set; }
 
-        [Required]
         public DateTime DinatranExpiration { get; set; }
 
-        [Required]
         public bool DinatranPaid { get; set; }
 
-        [Required]
         public DateTime FireExtinguisherExpiration { get; set; }
 
         [ForeignKey(nameof(VehicleMaintenanceOrder.VehicleId))]

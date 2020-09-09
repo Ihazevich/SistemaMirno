@@ -56,7 +56,7 @@ namespace SistemaMirno.Model
 
         public bool IsFromAccountingDepartment { get; set; }
 
-        public bool IsFromManagmentDepartment { get; set; }
+        public bool IsFromManagementDepartment { get; set; }
 
         public string ProceduresManualPdfFile { get; set; }
 

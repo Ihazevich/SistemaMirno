@@ -263,12 +263,14 @@
     <Compile Include="Data\Repositories\Interfaces\IWorkOrderRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IRequisitionRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IWorkAreaMovementRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IVehicleRepository.cs" />
     <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductRepository.cs" />
     <Compile Include="Data\Repositories\RequisitionRepository.cs" />
     <Compile Include="Data\Repositories\RoleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
+    <Compile Include="Data\Repositories\VehicleRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaMovementRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaRepository.cs" />
     <Compile Include="Data\Repositories\WorkOrderRepository.cs" />
@@ -322,6 +324,7 @@
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\Interfaces\IDetailViewModelBase.cs" />
+    <Compile Include="ViewModel\Detail\VehicleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkAreaDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\WorkUnitDetailViewModel.cs" />
@@ -351,6 +354,7 @@
     <Compile Include="ViewModel\General\RoleViewModel.cs" />
     <Compile Include="ViewModel\General\StockViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
+    <Compile Include="ViewModel\General\VehicleViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaMovementViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaViewModel.cs" />
     <Compile Include="ViewModel\General\WorkOrderViewModel.cs" />
@@ -497,6 +501,7 @@
     <Compile Include="Wrapper\RequisitionWrapper.cs" />
     <Compile Include="Wrapper\RoleWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
+    <Compile Include="Wrapper\VehicleWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaConnectionWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaWrapper.cs" />
     <Compile Include="Wrapper\WorkOrderUnitWrapper.cs" />

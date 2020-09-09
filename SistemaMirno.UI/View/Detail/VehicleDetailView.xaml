@@ -38,51 +38,41 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBox Grid.Row="1"
-                     Text="{Binding Vehicle.Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Vehicle.VehicleModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Modelo"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="20"
                      Margin="5" />
-            <TextBox Grid.Row="3"
+            <TextBox Grid.Row="2"
                      Text="{Binding Vehicle.Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Año"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="20"
                      Margin="5" />
-            <TextBox Grid.Row="5"
-                     Text="{Binding Vehicle.Odometer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     materialDesign:HintAssist.Hint="Km. totales"
+            <TextBox Grid.Row="3"
+                     Text="{Binding Vehicle.Patent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Patente"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="20"
                      Margin="5" />
-            <DatePicker Grid.Row="0"
+            <DatePicker Grid.Row="4"
                         materialDesign:HintAssist.Hint="Vencimiento Dinatran"
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         Text="{Binding Sale.ContractStartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         FontSize="20"
                         Margin="5" />
-            <DatePicker Grid.Row="0"
+            <DatePicker Grid.Row="5"
                         materialDesign:HintAssist.Hint="Vencimiento Patente"
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         Text="{Binding Sale.ContractStartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         FontSize="20"
                         Margin="5" />
-            <DatePicker Grid.Row="0"
+            <DatePicker Grid.Row="6"
                         materialDesign:HintAssist.Hint="Vencimiento Extintores"
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         Text="{Binding Sale.ContractStartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         FontSize="20"
                         Margin="5" />
-            <ComboBox Grid.Row="7"
-                      ItemsSource="{Binding Employees}"
-                      SelectedItem="{Binding SelectedEmployee}"
-                      DisplayMemberPath="FullName"
-                      SelectedValuePath="Id"
-                      SelectedValue="{Binding User.EmployeeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                      materialDesign:HintAssist.Hint="Empleado"
-                      FontSize="20"
-                      Margin="5" />
         </Grid>
         <StackPanel Grid.Row="5" Orientation="Horizontal">
             <Button Content="GUARDAR" 
