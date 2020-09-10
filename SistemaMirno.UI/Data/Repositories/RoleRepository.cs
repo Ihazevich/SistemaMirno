@@ -17,11 +17,11 @@ namespace SistemaMirno.UI.Data.Repositories
         {
         }
 
-        public Task<List<Branch>> GetAllBranchesAsync()
+        public async Task<List<Branch>> GetAllBranchesAsync()
         {
             try
             {
-                return Context.Branches.ToListAsync();
+                return await Context.Branches.ToListAsync();
             }
             catch (Exception ex)
             {

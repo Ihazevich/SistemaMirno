@@ -19,13 +19,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class DeliveryOrderDetailViewModel : DetailViewModelBase
     {
-        private IDeliveryOrderRepository _deliveryOrderRepository;
+        private readonly IDeliveryOrderRepository _deliveryOrderRepository;
         private DeliveryOrderWrapper _deliveryOrder;
         private Sale _selectedSale;
         private WorkUnit _selectedSaleWorkUnit;
         private WorkUnit _selectedDeliveryWorkUnit;
         private string _saleClientFilter;
-        private readonly PropertyGroupDescription _clientFullName = new PropertyGroupDescription("Model.Description");
+        private readonly PropertyGroupDescription _clientFullName = new PropertyGroupDescription("Sale.Client.FullName");
+        private readonly PropertyGroupDescription _description = new PropertyGroupDescription("Description");
 
         public DeliveryOrderDetailViewModel(
             IDeliveryOrderRepository deliveryOrderRepository,
@@ -44,6 +45,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
             SalesCollectionView = CollectionViewSource.GetDefaultView(Sales);
             SaleWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(SaleWorkUnits);
             DeliveryWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(DeliveryWorkUnits);
+
+            SaleWorkUnitsCollectionView.GroupDescriptions.Add(_clientFullName);
+            SaleWorkUnitsCollectionView.GroupDescriptions.Add(_description);
+            DeliveryWorkUnitsCollectionView.GroupDescriptions.Add(_clientFullName);
+            DeliveryWorkUnitsCollectionView.GroupDescriptions.Add(_description);
 
             AddWorkUnitCommand = new DelegateCommand(AddWorkUnitExecute, AddWorkUnitCanExecute);
             RemoveWorkUnitCommand = new DelegateCommand(RemoveWorkUnitExecute, RemoveWorkUnitCanExecute);
@@ -328,7 +334,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     Sales.Add(sale);
                 });
             }
-
         }
 
         private async Task LoadWorkUnitsAsync()

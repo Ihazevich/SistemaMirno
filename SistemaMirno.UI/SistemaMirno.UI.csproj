@@ -266,11 +266,13 @@
     <Compile Include="Data\Repositories\Interfaces\IRequisitionRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IWorkAreaMovementRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IVehicleRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\ISaleRepository.cs" />
     <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductRepository.cs" />
     <Compile Include="Data\Repositories\RequisitionRepository.cs" />
     <Compile Include="Data\Repositories\RoleRepository.cs" />
+    <Compile Include="Data\Repositories\SaleRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\VehicleRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaMovementRepository.cs" />
@@ -475,6 +477,7 @@
     <Compile Include="Wrapper\ProductWrapper.cs" />
     <Compile Include="Wrapper\RequisitionWrapper.cs" />
     <Compile Include="Wrapper\RoleWrapper.cs" />
+    <Compile Include="Wrapper\SaleWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\VehicleWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaConnectionWrapper.cs" />

@@ -87,6 +87,12 @@ namespace SistemaMirno.UI.Wrapper
             set => SetValue(value);
         }
 
+        public bool CanBeSoldFrom
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {

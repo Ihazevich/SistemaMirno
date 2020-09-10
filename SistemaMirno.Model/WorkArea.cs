@@ -55,6 +55,8 @@ namespace SistemaMirno.Model
         [ForeignKey(nameof(PassthroughWorkAreaId))]
         public virtual WorkArea PassthroughWorkArea { get; set; }
 
+        public bool CanBeDeliveredFrom { get; set; }
+
         [ForeignKey(nameof(WorkUnit.CurrentWorkAreaId))]
         public virtual ICollection<WorkUnit> WorkUnits { get; set; } = new HashSet<WorkUnit>();
 

@@ -33,6 +33,9 @@ namespace SistemaMirno.Model
         public DateTime? EstimatedDeliveryDate { get; set; }
 
         [Required]
+        public long Subtotal { get; set; }
+
+        [Required]
         public long Total { get; set; }
 
         [Required]
@@ -44,8 +47,9 @@ namespace SistemaMirno.Model
         [Required]
         public long DeliveryFee { get; set; }
 
-        [Required]
-        public int InvoiceId { get; set; }
+        public bool HasInvoice { get; set; }
+
+        public int? InvoiceId { get; set; }
 
         [ForeignKey(nameof(InvoiceId))]
         public virtual Invoice Invoice { get; set; }

@@ -108,6 +108,12 @@
                       FontSize="20"
                       materialDesign:CheckBoxAssist.CheckBoxSize="30"
                       Margin="5" />
+            <CheckBox Grid.Row="9" 
+                      Content="Se puede entregar desde esta area"
+                      IsChecked="{Binding WorkArea.CanBeSoldFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      FontSize="20"
+                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                      Margin="5" />
             <!-- Column 2 -->
             <TextBlock Grid.Column="1" Grid.Row="0" 
                        Style="{StaticResource MaterialDesignHeadline4TextBlock}"

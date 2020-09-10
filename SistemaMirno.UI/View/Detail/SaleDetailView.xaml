@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SistemaMirno.UI.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" >
     <Grid>
@@ -20,13 +19,17 @@
                    Margin="5" />
         <Separator Grid.Row="1" />
         <ProgressBar Grid.Row="2" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="3" Visibility="{Binding ViewVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -40,68 +43,226 @@
                 <DatePicker Grid.Row="0"
                             materialDesign:HintAssist.Hint="Fecha de venta"
                             Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                            Text="{Binding Sale.ContractStartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding Sale.Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             FontSize="20"
+                            VerticalAlignment="Bottom"
                             Margin="5" />
                 <ComboBox Grid.Row="1" 
+                          ItemsSource="{Binding Branches}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding Sale.BranchId, Mode=TwoWay}"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                          materialDesign:HintAssist.Hint="Sucursal"
+                          FontSize="20"
+                          VerticalAlignment="Bottom"
+                          Margin="5"/>
+                <ComboBox Grid.Row="2" 
+                          ItemsSource="{Binding Responsibles}"
+                          DisplayMemberPath="FullName"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding Sale.ResponsibleId, Mode=TwoWay}"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                          materialDesign:HintAssist.Hint="Vendedor/a"
+                          FontSize="20"
+                          VerticalAlignment="Bottom"
+                          Margin="5"/>
+                <ComboBox Grid.Row="3" 
                           ItemsSource="{Binding Clients}"
                           DisplayMemberPath="FullName"
                           SelectedValuePath="Id"
                           SelectedValue="{Binding Sale.ClientId, Mode=TwoWay}"
+                          SelectedItem="{Binding SelectedClient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           materialDesign:HintAssist.Hint="Cliente"
                           FontSize="20"
+                          VerticalAlignment="Bottom"
                           Margin="5"/>
-                <TextBox Grid.Row="2"
+                <Grid Grid.Column="0" Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox VerticalAlignment="Bottom"
+                              materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                              IsChecked="{Binding Sale.HasInvoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Margin="5"/>
+                    <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Factura Nro."
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             Text="{Binding Sale.InvoiceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsReadOnly="True"
+                             FontSize="20"
+                             VerticalAlignment="Bottom"
+                             Margin="5" />
+                </Grid>
+                <TextBox Grid.Column="1" Grid.Row="0"
+                         materialDesign:HintAssist.Hint="Sub-Total Gs."
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding Sale.Subtotal, StringFormat=n0}"
+                         IsReadOnly="True"
+                         VerticalAlignment="Bottom"
+                         FontSize="20"
+                         Margin="5" />
+                <TextBox Grid.Column="1" Grid.Row="1"
                          materialDesign:HintAssist.Hint="Descuento Gs."
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         Text="{Binding Employee.PricePerExtraHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
+                         Text="{Binding Sale.Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
                          FontSize="20"
+                         VerticalAlignment="Bottom"
                          Margin="5" />
-                <TextBox Grid.Row="3"
+                <TextBox Grid.Column="1" Grid.Row="2"
                          materialDesign:HintAssist.Hint="Costo de Envio Gs."
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         Text="{Binding Employee.PricePerExtraHour, StringFormat=n0}"
+                         Text="{Binding Sale.DeliveryFee, StringFormat=n0}"
                          FontSize="20"
+                         VerticalAlignment="Bottom"
                          Margin="5" />
-                <Grid Grid.Row="4">
+                <TextBox Grid.Column="1" Grid.Row="3"
+                         materialDesign:HintAssist.Hint="Total Gs."
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding Sale.Total, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
+                         IsReadOnly="True"
+                         FontSize="20"
+                         VerticalAlignment="Bottom"
+                         Margin="5" />
+                <TextBox Grid.Column="1" Grid.Row="4"
+                         materialDesign:HintAssist.Hint="IVA Gs."
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding Sale.Tax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
+                         IsReadOnly="True"
+                         FontSize="20"
+                         VerticalAlignment="Bottom"
+                         Margin="5" />
+                <Grid Grid.Row="5" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="400"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Buscar unidades" 
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="400"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Unidades seleccionadas" 
                                Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                               Margin="5,20,5,5"/>
-                    <Separator Grid.Row="1" Margin="5,0,5,0"/>
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0"
+                               Margin="5"/>
+                        <Separator Grid.Row="1" Margin="5,0,5,5"/>
+                        <DataGrid Grid.Row="2" 
+                              ItemsSource="{Binding SaleWorkUnitsCollectionView}"
+                              SelectedItem="{Binding SelectedSaleWorkUnit}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              CanUserAddRows="True"
+                              CanUserDeleteRows="True"
+                              SelectionMode="Extended"
+                              EnableRowVirtualization="True"
+                              VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                              BorderBrush="LightGray"
+                              BorderThickness="1"
+                              Margin="5">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Descripción" Binding="{Binding Description}"/>
+                                <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
+                                <DataGridTextColumn Header="Color" Binding="{Binding Color.Name}"/>
+                                <DataGridTextColumn Header="Precio Mayorista" Binding="{Binding Product.WholesalerPrice}" Visibility="{Binding WholesalerPriceVisibility}"/>
+                                <DataGridTextColumn Header="Precio Minorista" Binding="{Binding Product.RetailPrice}" Visibility="{Binding RetailPriceVisibility}"/>
+                                <DataGridTextColumn Header="Area Actual" Binding="{Binding CurrentWorkArea.Name}"/>
+                            </DataGrid.Columns>
+                            <DataGrid.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.Panel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel/>
+                                        </ItemsPanelTemplate>
+                                    </GroupStyle.Panel>
+                                    <GroupStyle.ContainerStyle>
+                                        <Style TargetType="{x:Type GroupItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                        <Expander IsExpanded="False" materialDesign:ExpanderAssist.DownHeaderPadding="35,2,24,2">
+                                                            <Expander.Header>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" 
+                                                                               HorizontalAlignment="Center"
+                                                                               Width="30"/>
+                                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                                                </StackPanel>
+                                                            </Expander.Header>
+                                                            <Expander.Content>
+                                                                <ItemsPresenter/>
+                                                            </Expander.Content>
+                                                        </Expander>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.ContainerStyle>
+                                </GroupStyle>
+                            </DataGrid.GroupStyle>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0"  
+                        Command="{Binding AddWorkUnitCommand}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        Margin="5">
+                    <materialDesign:PackIcon Kind="Plus" Width="20" Height="20"/>
+                </Button>
+                <Button Grid.Row="1"  
+                        Command="{Binding RemoveWorkUnitCommand}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                        Margin="5">
+                    <materialDesign:PackIcon Kind="Minus" Width="20" Height="20"/>
+                </Button>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="660"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Buscar unidades" 
+                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                           Margin="5"/>
+                <Separator Grid.Row="1" Margin="5,0,5,0"/>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
                                  materialDesign:HintAssist.Hint="Producto"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 Text="{Binding ExistingWorkUnitSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding WorkUnitProductSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontSize="20"
                                  Margin="5" />
-                        <TextBox Grid.Column="1"
+                    <TextBox Grid.Column="1"
                                  materialDesign:HintAssist.Hint="Material"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 Text="{Binding ExistingWorkUnitSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding WorkUnitMaterialSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontSize="20"
                                  Margin="5" />
-                        <TextBox Grid.Column="2"
+                    <TextBox Grid.Column="2"
                                  materialDesign:HintAssist.Hint="Color"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 Text="{Binding ExistingWorkUnitSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding WorkUnitColorSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontSize="20"
                                  Margin="5" />
-                    </Grid>
-                    <DataGrid Grid.Row="3" 
+                </Grid>
+                <DataGrid Grid.Row="3" 
                                   ItemsSource="{Binding ExistingWorkUnitsCollectionView}"
                                   SelectedItem="{Binding SelectedExistingWorkUnit}"
                                   AutoGenerateColumns="False"
@@ -114,148 +275,45 @@
                                   BorderBrush="LightGray"
                                   BorderThickness="1"
                                   Margin="5">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Descripción" Binding="{Binding Model.Description}"/>
-                            <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
-                            <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
-                            <DataGridTextColumn Header="Area Actual" Binding="{Binding Model.CurrentWorkArea.Name}"/>
-                        </DataGrid.Columns>
-                        <DataGrid.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="{x:Type GroupItem}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander IsExpanded="False" materialDesign:ExpanderAssist.DownHeaderPadding="35,2,24,2">
-                                                        <Expander.Header>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" 
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Descripción" Binding="{Binding Description}"/>
+                        <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
+                        <DataGridTextColumn Header="Color" Binding="{Binding Color.Name}"/>
+                        <DataGridTextColumn Header="Area Actual" Binding="{Binding CurrentWorkArea.Name}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.Panel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel/>
+                                </ItemsPanelTemplate>
+                            </GroupStyle.Panel>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                <Expander IsExpanded="False" materialDesign:ExpanderAssist.DownHeaderPadding="35,2,24,2">
+                                                    <Expander.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" 
                                                                            HorizontalAlignment="Center"
                                                                            Width="30"/>
-                                                                <TextBlock FontWeight="Bold" Text="{Binding Name}" />
-                                                            </StackPanel>
-                                                        </Expander.Header>
-                                                        <Expander.Content>
-                                                            <ItemsPresenter/>
-                                                        </Expander.Content>
-                                                    </Expander>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
-                        </DataGrid.GroupStyle>
-                    </DataGrid>
-                </Grid>
-            </Grid>
-            <Grid Grid.Column="1" VerticalAlignment="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Button Grid.Row="0"  
-                        Command="{Binding SelectFileCommand}"
-                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                        Margin="5">
-                    <materialDesign:PackIcon Kind="Plus" Width="20" Height="20"/>
-                </Button>
-                <Button Grid.Row="1"  
-                        Command="{Binding SelectFileCommand}"
-                        Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
-                        Margin="5">
-                    <materialDesign:PackIcon Kind="Minus" Width="20" Height="20"/>
-                </Button>
-            </Grid>
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="400"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Unidades seleccionadas" 
-                               Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                               Margin="5"/>
-                    <Separator Grid.Row="1" Margin="5,0,5,5"/>
-                    <DataGrid Grid.Row="2" 
-                              ItemsSource="{Binding ExistingWorkUnitsCollectionView}"
-                              SelectedItem="{Binding SelectedExistingWorkUnit}"
-                              AutoGenerateColumns="False"
-                              IsReadOnly="True"
-                              CanUserAddRows="True"
-                              CanUserDeleteRows="True"
-                              SelectionMode="Extended"
-                              EnableRowVirtualization="True"
-                              VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                              BorderBrush="LightGray"
-                              BorderThickness="1"
-                              Margin="5">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Descripción" Binding="{Binding Model.Description}"/>
-                            <DataGridTextColumn Header="Material" Binding="{Binding Model.Material.Name}"/>
-                            <DataGridTextColumn Header="Color" Binding="{Binding Model.Color.Name}"/>
-                            <DataGridTextColumn Header="Precio Mayorista" Binding="{Binding Model.Material.Name}"/>
-                            <DataGridTextColumn Header="Precio Minorista" Binding="{Binding Model.Color.Name}"/>
-                            <DataGridTextColumn Header="Area Actual" Binding="{Binding Model.CurrentWorkArea.Name}"/>
-                        </DataGrid.Columns>
-                        <DataGrid.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="{x:Type GroupItem}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander IsExpanded="False" materialDesign:ExpanderAssist.DownHeaderPadding="35,2,24,2">
-                                                        <Expander.Header>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" 
-                                                                               HorizontalAlignment="Center"
-                                                                               Width="30"/>
-                                                                <TextBlock FontWeight="Bold" Text="{Binding Name}" />
-                                                            </StackPanel>
-                                                        </Expander.Header>
-                                                        <Expander.Content>
-                                                            <ItemsPresenter/>
-                                                        </Expander.Content>
-                                                    </Expander>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
-                        </DataGrid.GroupStyle>
-                    </DataGrid>
-                </Grid>
-                <TextBox Grid.Row="1"
-                         materialDesign:HintAssist.Hint="Sub-Total Gs."
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         Text="{Binding Employee.PricePerExtraHour, StringFormat=n0}"
-                         IsReadOnly="True"
-                         FontSize="20"
-                         Margin="5" />
-                <TextBox Grid.Row="2"
-                         materialDesign:HintAssist.Hint="Total Gs."
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         Text="{Binding Employee.PricePerExtraHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
-                         IsReadOnly="True"
-                         FontSize="20"
-                         Margin="5" />
-                <TextBox Grid.Row="3"
-                         materialDesign:HintAssist.Hint="IVA Gs."
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         Text="{Binding Employee.PricePerExtraHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,StringFormat=n0}"
-                         IsReadOnly="True"
-                         FontSize="20"
-                         Margin="5" />
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                                        </StackPanel>
+                                                    </Expander.Header>
+                                                    <Expander.Content>
+                                                        <ItemsPresenter/>
+                                                    </Expander.Content>
+                                                </Expander>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </DataGrid.GroupStyle>
+                </DataGrid>
             </Grid>
         </Grid>
         <StackPanel Grid.Row="5" Orientation="Horizontal">
