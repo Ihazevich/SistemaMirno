@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="SistemaMirno.UI.View.General.DeliveryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SistemaMirno.UI.View.General"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="700" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Entregas"
+                   Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                   Margin="5" />
+        <Separator Grid.Row="1" />
+        <ProgressBar Grid.Row="2" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
+        <Grid Grid.Row="3" Visibility="{Binding ViewVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Button Content="NUEVA ORDEN DE ENTREGA"
+                        Command="{Binding CreateNewCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        FontSize="16"
+                        Width="250"
+                        Margin="10" />
+                <Button Content="GUARDAR CAMBIOS"
+                        Command="{Binding SaveChangesCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        FontSize="16"
+                        Width="250"
+                        Margin="10" />
+                <Button Content="VER DETALLES"
+                        Command="{Binding OpenDetailCommand}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        FontSize="16"
+                        Width="250" 
+                        Margin="10" />
+                <Button Content="SALIR" 
+                        Command="{Binding ExitView}"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}" 
+                        FontSize="16"
+                        Width="250" 
+                        Margin="10" />
+            </StackPanel>
+            <DataGrid Grid.Column="1" 
+                      ItemsSource="{Binding Deliveries}"
+                      SelectedItem="{Binding SelectedDelivery}"
+                      AutoGenerateColumns="False"
+                      SelectionMode="Extended"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      EnableRowVirtualization="True"
+                      VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                      BorderBrush="LightGray"
+                      BorderThickness="1"
+                      Margin="5">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="Entregado" Binding="{Binding Delivered}"/>
+                    <DataGridTextColumn Header="Fecha" Binding="{Binding DeliveryOrder.Date, StringFormat=d}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Cliente" Binding="{Binding Sale.Client.FullName}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Ciudad" Binding="{Binding Sale.Client.City}" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

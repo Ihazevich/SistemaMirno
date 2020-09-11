@@ -110,6 +110,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(WorkOrderViewModel));
             builder.RegisterType<VehicleViewModel>()
                 .Keyed<IViewModelBase>(nameof(VehicleViewModel));
+            builder.RegisterType<DeliveryViewModel>()
+                .Keyed<IViewModelBase>(nameof(DeliveryViewModel));
         }
 
         /// <summary>
@@ -191,6 +193,7 @@ namespace SistemaMirno.UI
             builder.RegisterType<VehicleRepository>().As<IVehicleRepository>();
             builder.RegisterType<DeliveryOrderRepository>().As<IDeliveryOrderRepository>();
             builder.RegisterType<SaleRepository>().As<ISaleRepository>();
+            builder.RegisterType<DeliveryRepository>().As<IDeliveryRepository>();
         }
     }
 }

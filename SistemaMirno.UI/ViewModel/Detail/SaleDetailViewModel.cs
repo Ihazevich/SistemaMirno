@@ -7,20 +7,18 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32.SafeHandles;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.ViewModel.General;
 using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class SaleDetailViewModel : DetailViewModelBase
     {
-        private ISaleRepository _saleRepository;
+        private readonly ISaleRepository _saleRepository;
         private SaleWrapper _sale;
         private WorkUnit _selectedSaleWorkUnit;
         private WorkUnit _selectedExistingWorkUnit;
@@ -43,7 +41,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             Branches = new ObservableCollection<Branch>();
             Clients = new ObservableCollection<Client>();
             Responsibles = new ObservableCollection<Employee>();
-            ExistingWorkUnits = new List<WorkUnit>();
+            ExistingWorkUnits = new ObservableCollection<WorkUnit>();
             SaleWorkUnits = new ObservableCollection<WorkUnit>();
 
             ExistingWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(ExistingWorkUnits);
@@ -78,6 +76,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 {
                     SaleWorkUnits.Add(SelectedExistingWorkUnit);
                     ExistingWorkUnits.Remove(SelectedExistingWorkUnit);
+                    OnPropertyChanged(nameof(ExistingWorkUnitsCollectionView));
                 });
             }
 
@@ -106,6 +105,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 {
                     ExistingWorkUnits.Add(SelectedSaleWorkUnit);
                     SaleWorkUnits.Remove(SelectedSaleWorkUnit);
+                    OnPropertyChanged(nameof(ExistingWorkUnitsCollectionView));
                 });
             }
 
@@ -130,7 +130,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public ObservableCollection<Employee> Responsibles { get; }
 
-        public List<WorkUnit> ExistingWorkUnits { get; }
+        public ObservableCollection<WorkUnit> ExistingWorkUnits { get; }
 
         public ObservableCollection<WorkUnit> SaleWorkUnits { get; }
 
@@ -405,11 +405,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private async Task LoadWorkUnitAsync()
         {
             var workUnits = await _saleRepository.GetAllWorkUnitsAsync();
-            
-            Application.Current.Dispatcher.Invoke(() =>
+
+            foreach (var workUnit in workUnits)
             {
-                ExistingWorkUnits.AddRange(workUnits);
-            });
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ExistingWorkUnits.Add(workUnit);
+                });
+            }
         }
     }
 }

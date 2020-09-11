@@ -267,8 +267,6 @@
                                   SelectedItem="{Binding SelectedExistingWorkUnit}"
                                   AutoGenerateColumns="False"
                                   IsReadOnly="True"
-                                  CanUserAddRows="True"
-                                  CanUserDeleteRows="True"
                                   SelectionMode="Extended"
                                   EnableRowVirtualization="True"
                                   VirtualizingPanel.IsVirtualizingWhenGrouping="True"

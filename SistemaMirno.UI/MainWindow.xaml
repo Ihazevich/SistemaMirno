@@ -52,7 +52,7 @@
                     <MenuItem Header="_Logistica" 
                               Visibility="{Binding LogisticVisibility}"
                               IsEnabled="{Binding NavigationStatus}">
-                        <MenuItem Header="Nueva _entrega" Command="{Binding ChangeViewCommand}" CommandParameter="DeliveryOrderDetailViewModel"/>
+                        <MenuItem Header="_Entregas" Command="{Binding ChangeViewCommand}" CommandParameter="DeliveryViewModel"/>
                         <MenuItem Header="Nuevo _traslado"/>
                         <MenuItem Header="_Reportes">
                             <MenuItem Header="Entregas por _sucursal" />

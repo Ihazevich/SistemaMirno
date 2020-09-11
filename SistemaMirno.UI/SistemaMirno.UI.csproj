@@ -247,8 +247,10 @@
     <Compile Include="Data\Repositories\ClientRepository.cs" />
     <Compile Include="Data\Repositories\ColorRepository.cs" />
     <Compile Include="Data\Repositories\DeliveryOrderRepository.cs" />
+    <Compile Include="Data\Repositories\DeliveryRepository.cs" />
     <Compile Include="Data\Repositories\EmployeeRepository.cs" />
     <Compile Include="Data\Repositories\GenericRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\IDeliveryRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IDeliveryOrderRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IClientRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IMaterialRepository.cs" />
@@ -319,6 +321,7 @@
     <Compile Include="ViewModel\General\BranchViewModel.cs" />
     <Compile Include="ViewModel\General\ClientViewModel.cs" />
     <Compile Include="ViewModel\General\ColorViewModel.cs" />
+    <Compile Include="ViewModel\General\DeliveryViewModel.cs" />
     <Compile Include="ViewModel\General\EmployeeViewModel.cs" />
     <Compile Include="ViewModel\General\MaterialViewModel.cs" />
     <Compile Include="ViewModel\General\ProductCategoryViewModel.cs" />
@@ -353,6 +356,9 @@
     </Compile>
     <Compile Include="View\Detail\WorkUnitDetailView.xaml.cs">
       <DependentUpon>WorkUnitDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\General\DeliveryView.xaml.cs">
+      <DependentUpon>DeliveryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\General\VehicleView.xaml.cs">
       <DependentUpon>VehicleView.xaml</DependentUpon>
@@ -531,6 +537,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Detail\WorkUnitDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\General\DeliveryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

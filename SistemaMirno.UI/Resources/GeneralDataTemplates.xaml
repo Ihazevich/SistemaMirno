@@ -53,4 +53,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:VehicleViewModel}">
         <general:VehicleView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:DeliveryViewModel}">
+        <general:DeliveryView/>
+    </DataTemplate>
 </ResourceDictionary>

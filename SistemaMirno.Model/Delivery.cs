@@ -26,6 +26,8 @@ namespace SistemaMirno.Model
 
         public bool Delivered { get; set; }
 
+        public bool Cancelled { get; set; }
+
         public DateTime? DeliveredOn { get; set; }
 
         public string Details { get; set; }
