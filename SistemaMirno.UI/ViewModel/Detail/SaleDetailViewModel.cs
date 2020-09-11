@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             Branches = new ObservableCollection<Branch>();
             Clients = new ObservableCollection<Client>();
             Responsibles = new ObservableCollection<Employee>();
-            ExistingWorkUnits = new ObservableCollection<WorkUnit>();
+            ExistingWorkUnits = new List<WorkUnit>();
             SaleWorkUnits = new ObservableCollection<WorkUnit>();
 
             ExistingWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(ExistingWorkUnits);
@@ -129,7 +130,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public ObservableCollection<Employee> Responsibles { get; }
 
-        public ObservableCollection<WorkUnit> ExistingWorkUnits { get; }
+        public List<WorkUnit> ExistingWorkUnits { get; }
 
         public ObservableCollection<WorkUnit> SaleWorkUnits { get; }
 
@@ -318,9 +319,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public override async Task LoadAsync(int? id = null)
         {
-            await LoadBranchesAsync();
-            await LoadClientsAsync();
-            await LoadResponsiblesAsync();
+            await Task.Run(async () =>
+            {
+                await LoadBranchesAsync();
+                await LoadClientsAsync();
+                await LoadResponsiblesAsync().ConfigureAwait(false);
+            });
 
             if (id.HasValue)
             {
@@ -328,7 +332,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 return;
             }
 
-            await LoadWorkUnitAsync();
+            await Task.Run(LoadWorkUnitAsync);
 
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -401,14 +405,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private async Task LoadWorkUnitAsync()
         {
             var workUnits = await _saleRepository.GetAllWorkUnitsAsync();
-
-            foreach (var workUnit in workUnits)
+            
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    ExistingWorkUnits.Add(workUnit);
-                });
-            }
+                ExistingWorkUnits.AddRange(workUnits);
+            });
         }
     }
 }

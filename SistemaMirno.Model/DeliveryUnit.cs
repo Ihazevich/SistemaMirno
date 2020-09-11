@@ -2,6 +2,7 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,5 +21,11 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(WorkUnitId))]
         public virtual WorkUnit WorkUnit { get; set; }
+
+        public bool Delivered { get; set; }
+
+        public DateTime? DeliveredOn { get; set; }
+
+        public string ReasonNotDelivered { get; set; }
     }
 }

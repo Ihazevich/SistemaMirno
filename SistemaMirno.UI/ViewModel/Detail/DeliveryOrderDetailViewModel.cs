@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private readonly PropertyGroupDescription _clientFullName = new PropertyGroupDescription("Sale.Client.FullName");
         private readonly PropertyGroupDescription _description = new PropertyGroupDescription("Description");
 
+        private List<DeliveryUnit> _deliveryUnits;
+
         public DeliveryOrderDetailViewModel(
             IDeliveryOrderRepository deliveryOrderRepository,
             IEventAggregator eventAggregator, 
@@ -35,18 +38,20 @@ namespace SistemaMirno.UI.ViewModel.Detail
             : base(eventAggregator, "Detalle de Orden de Entrega", dialogCoordinator)
         {
             _deliveryOrderRepository = deliveryOrderRepository;
+            _deliveryUnits = new List<DeliveryUnit>();
 
             Sales = new ObservableCollection<Sale>();
             SaleWorkUnits = new ObservableCollection<WorkUnit>();
             DeliveryWorkUnits = new ObservableCollection<WorkUnit>();
             Vehicles = new ObservableCollection<Vehicle>();
             Responsibles = new ObservableCollection<Employee>();
+            Deliveries = new ObservableCollection<Delivery>();
 
             SalesCollectionView = CollectionViewSource.GetDefaultView(Sales);
             SaleWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(SaleWorkUnits);
             DeliveryWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(DeliveryWorkUnits);
+            DeliveriesCollectionView = CollectionViewSource.GetDefaultView(Deliveries);
 
-            SaleWorkUnitsCollectionView.GroupDescriptions.Add(_clientFullName);
             SaleWorkUnitsCollectionView.GroupDescriptions.Add(_description);
             DeliveryWorkUnitsCollectionView.GroupDescriptions.Add(_clientFullName);
             DeliveryWorkUnitsCollectionView.GroupDescriptions.Add(_description);
@@ -119,8 +124,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    DeliveryWorkUnits.Add(SelectedDeliveryWorkUnit);
-                    SaleWorkUnits.Remove(SelectedDeliveryWorkUnit);
+                    if (DeliveryWorkUnits.Where(s => s.SaleId == SelectedDeliveryWorkUnit.SaleId.Value).ToList()
+                        .Count == 1)
+                    {
+                        Deliveries.Remove(Deliveries.Single(d => d.SaleId == SelectedDeliveryWorkUnit.SaleId.Value));
+                    }
+
+                    SaleWorkUnits.Add(SelectedDeliveryWorkUnit);
+                    DeliveryWorkUnits.Remove(SelectedDeliveryWorkUnit);
                 });
             }
 
@@ -138,6 +149,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    if (!Deliveries.Any(d => d.SaleId == SelectedSaleWorkUnit.SaleId))
+                    {
+                        var delivery = new Delivery
+                        {
+                            SaleId = SelectedSaleWorkUnit.SaleId.Value,
+                            Sale = SelectedSaleWorkUnit.Sale,
+                        };
+
+                        Deliveries.Add(delivery);
+                    }
+
                     DeliveryWorkUnits.Add(SelectedSaleWorkUnit);
                     SaleWorkUnits.Remove(SelectedSaleWorkUnit);
                 });
@@ -180,11 +202,15 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public ICollectionView DeliveryWorkUnitsCollectionView { get; }
 
+        public ICollectionView DeliveriesCollectionView { get; }
+
         public ObservableCollection<Sale> Sales { get; }
 
         public ObservableCollection<WorkUnit> SaleWorkUnits { get; }
 
         public ObservableCollection<WorkUnit> DeliveryWorkUnits { get; }
+
+        public ObservableCollection<Delivery> Deliveries { get; }
 
         public ObservableCollection<Vehicle> Vehicles { get; }
 
@@ -220,6 +246,28 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override async void OnSaveExecute()
         {
             base.OnSaveExecute();
+
+            foreach (var workUnit in DeliveryWorkUnits)
+            {
+                var deliveryUnit = new DeliveryUnit
+                {
+                    Delivered = false,
+                    WorkUnitId = workUnit.Id,
+                    WorkUnit = workUnit,
+                };
+
+                _deliveryUnits.Add(deliveryUnit);
+            }
+
+            foreach (var delivery in Deliveries)
+            {
+                foreach (var deliveryUnit in _deliveryUnits.Where(d => d.WorkUnit.SaleId.Value == delivery.SaleId).ToList())
+                {
+                    delivery.DeliveryUnits.Add(deliveryUnit);
+                }
+
+                DeliveryOrder.Model.Deliveries.Add(delivery);
+            }
 
             if (IsNew)
             {

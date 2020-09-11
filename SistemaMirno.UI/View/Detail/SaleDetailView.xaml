@@ -246,19 +246,19 @@
                     <TextBox Grid.Column="0"
                                  materialDesign:HintAssist.Hint="Producto"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 Text="{Binding WorkUnitProductSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding WorkUnitProductSearchText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                  FontSize="20"
                                  Margin="5" />
                     <TextBox Grid.Column="1"
                                  materialDesign:HintAssist.Hint="Material"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 Text="{Binding WorkUnitMaterialSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding WorkUnitMaterialSearchText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                  FontSize="20"
                                  Margin="5" />
                     <TextBox Grid.Column="2"
                                  materialDesign:HintAssist.Hint="Color"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 Text="{Binding WorkUnitColorSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding WorkUnitColorSearchText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                  FontSize="20"
                                  Margin="5" />
                 </Grid>

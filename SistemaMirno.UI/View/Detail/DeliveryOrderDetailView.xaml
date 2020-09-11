@@ -82,13 +82,23 @@
                              Margin="5" />
                     </Grid>
                     <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <DataGrid Grid.Column="1" 
-                                  ItemsSource="{Binding DeliveryWorkUnitsCollectionView}"
-                                  SelectedItem="{Binding SelectedDeliveryWorkUnit}"
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="500"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Buscar unidades por cliente" 
+                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Margin="5"/>
+                        <TextBox Grid.Row="1"
+                                 materialDesign:HintAssist.Hint="Cliente"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 Text="{Binding SaleClientFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 FontSize="20"
+                                 Margin="5" />
+                        <DataGrid Grid.Row="2" 
+                                  ItemsSource="{Binding SaleWorkUnitsCollectionView}"
+                                  SelectedItem="{Binding SelectedSaleWorkUnit}"
                                   AutoGenerateColumns="False"
                                   IsReadOnly="True"
                                   CanUserAddRows="True"
@@ -98,8 +108,7 @@
                                   VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   BorderBrush="LightGray"
                                   BorderThickness="1"
-                                  Height="596"
-                                  Margin="5">
+                                  Margin="5,15,5,5">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Descripción" Binding="{Binding Description}"/>
                                 <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}"/>
@@ -201,19 +210,15 @@
                                 Margin="5">
                             <materialDesign:PackIcon Kind="Minus" Width="20" Height="20"/>
                         </Button>
-                        <TextBox Grid.Column="1" Grid.Row="0"
-                                 materialDesign:HintAssist.Hint="Cliente"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 Text="{Binding SaleClientFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 FontSize="20"
-                                 Margin="5" />
+                        <TextBlock Grid.Column="1" Grid.Row="0" 
+                                   Text="Direcciones de entrega" 
+                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Margin="5"/>
                         <DataGrid Grid.Column="1" Grid.Row="1" 
-                                  ItemsSource="{Binding SalesCollectionView}"
-                                  SelectedItem="{Binding SelectedSale}"
+                                  ItemsSource="{Binding DeliveriesCollectionView}"
                                   AutoGenerateColumns="False"
-                                  IsReadOnly="True"
-                                  CanUserAddRows="True"
-                                  CanUserDeleteRows="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
                                   SelectionMode="Extended"
                                   EnableRowVirtualization="True"
                                   VirtualizingPanel.IsVirtualizingWhenGrouping="True"
@@ -222,8 +227,11 @@
                                   Height="250"
                                   Margin="5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Fecha" Binding="{Binding Date, StringFormat=d}"/>
-                                <DataGridTextColumn Header="Cliente" Binding="{Binding Client.FullName}"/>
+                                <DataGridTextColumn Header="Cliente" Binding="{Binding Sale.Client.FullName}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Ciudad" Binding="{Binding Sale.Client.City}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Direccion" Binding="{Binding Sale.Client.Address}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Telefono" Binding="{Binding Sale.Client.PhoneNumber}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Observaciones" Binding="{Binding Details}"/>
                             </DataGrid.Columns>
                             <DataGrid.GroupStyle>
                                 <GroupStyle>
@@ -255,6 +263,10 @@
                         </DataGrid>
                     </Grid>
                     <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -266,19 +278,23 @@
                                 Margin="5">
                             <materialDesign:PackIcon Kind="Plus" Width="20" Height="20"/>
                         </Button>
-                        <DataGrid Grid.Column="1" 
-                                  ItemsSource="{Binding SaleWorkUnitsCollectionView}"
-                                  SelectedItem="{Binding SelectedSaleWorkUnit}"
+                        <TextBlock Grid.Column="1" Grid.Row="0" 
+                                   Text="Unidades a entregar" 
+                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Margin="5"/>
+                        <DataGrid Grid.Column="1" Grid.Row="1" 
+                                  ItemsSource="{Binding DeliveryWorkUnitsCollectionView}"
+                                  SelectedItem="{Binding SelectedDeliveryWorkUnit}"
                                   AutoGenerateColumns="False"
                                   IsReadOnly="True"
-                                  CanUserAddRows="True"
-                                  CanUserDeleteRows="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
                                   SelectionMode="Extended"
                                   EnableRowVirtualization="True"
                                   VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                   BorderBrush="LightGray"
                                   BorderThickness="1"
-                                  Height="460"
+                                  Height="440"
                                   Margin="5">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Descripción" Binding="{Binding Description}"/>
@@ -297,11 +313,6 @@
                                                                 <StackPanel>
                                                                     <Border Background="{StaticResource MaterialDesignPaper}" BorderThickness="0,0,0,1" BorderBrush="LightGray">
                                                                         <StackPanel Height="30" Orientation="Horizontal" Margin="3,0,0,0">
-                                                                            <TextBlock Text="{Binding ItemCount}" 
-                                                                                       Style="{StaticResource MaterialDesignBody1TextBlock}" 
-                                                                                       VerticalAlignment="Center"
-                                                                                       FontWeight="Bold"
-                                                                                       Width="30" />
                                                                             <TextBlock Text="{Binding Name}" 
                                                                                        Style="{StaticResource MaterialDesignBody1TextBlock}" 
                                                                                        FontWeight="Bold"

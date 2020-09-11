@@ -2,6 +2,7 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,6 +23,14 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(DeliveryOrderId))]
         public virtual DeliveryOrder DeliveryOrder { get; set; }
+
+        public bool Delivered { get; set; }
+
+        public DateTime? DeliveredOn { get; set; }
+
+        public string Details { get; set; }
+
+        public string ReasonNotDelivered { get; set; }
 
         public virtual ICollection<DeliveryUnit> DeliveryUnits { get; set; } = new HashSet<DeliveryUnit>();
     }
