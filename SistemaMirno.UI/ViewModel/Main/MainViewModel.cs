@@ -27,6 +27,8 @@ namespace SistemaMirno.UI.ViewModel.Main
 
         private Visibility _humanResourcesVisibility;
 
+        private Visibility _logisticVisibility;
+
         private Visibility _menuVisibility;
 
         private bool _navigationStatus = true;
@@ -92,6 +94,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             ProductionVisibility = Visibility.Collapsed;
             SalesVisibility = Visibility.Collapsed;
             HumanResourcesVisibility = Visibility.Collapsed;
+            LogisticVisibility = Visibility.Collapsed;
             AccountingVisibility = Visibility.Collapsed;
             SysAdminVisibility = Visibility.Collapsed;
             ProductsVisibility = Visibility.Collapsed;
@@ -101,6 +104,17 @@ namespace SistemaMirno.UI.ViewModel.Main
                 Id = null,
                 ViewModel = nameof(LoginViewModel)
             });
+        }
+
+        public Visibility LogisticVisibility
+        {
+            get => _logisticVisibility;
+
+            set
+            {
+                _logisticVisibility = value;
+                OnPropertyChanged();
+            }
         }
 
         public Visibility AccountingVisibility
@@ -424,13 +438,12 @@ namespace SistemaMirno.UI.ViewModel.Main
             HumanResourcesVisibility =
                 args.User.Model.HasAccessToHumanResources ? Visibility.Visible : Visibility.Collapsed;
             SysAdminVisibility = args.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
-            ProductsVisibility = args.User.Model.HasAccessToSales || args.User.Model.HasAccessToProduction
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+            ProductsVisibility = args.User.Model.HasAccessToProduction ? Visibility.Visible : Visibility.Collapsed;
+            LogisticVisibility = args.User.Model.HasAccessToLogistics ? Visibility.Visible : Visibility.Collapsed;
 
             ChangeView(new ChangeViewEventArgs
             {
-                ViewModel = nameof(BranchSelectionViewModel)
+                ViewModel = nameof(BranchSelectionViewModel),
             });
         }
     }

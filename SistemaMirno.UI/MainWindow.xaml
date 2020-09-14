@@ -98,11 +98,15 @@
                         <MenuItem Header="_Clientes" Command="{Binding ChangeViewCommand}" CommandParameter="ClientViewModel"/>
                         <MenuItem Header="_Metodos de pago" Command="{Binding ChangeViewCommand}" CommandParameter="PaymentMethodViewModel" IsEnabled="False"/>
                     </MenuItem>
-                    <MenuItem Header="_Recursos Humanos" Visibility="{Binding HumanResourcesVisibility}">
+                    <MenuItem Header="_Recursos Humanos" 
+                              Visibility="{Binding HumanResourcesVisibility}"
+                              IsEnabled="{Binding NavigationStatus}">
                         <MenuItem Header="_Empleados" Command="{Binding ChangeViewCommand}" CommandParameter="EmployeeViewModel" />
                         <MenuItem Header="_Roles" Command="{Binding ChangeViewCommand}" CommandParameter="RoleViewModel" />
                     </MenuItem>
-                    <MenuItem Header="_Utilidades" IsEnabled="{Binding NavigationStatus}" Visibility="{Binding SysAdminVisibility}">
+                    <MenuItem Header="_Utilidades" 
+                              Visibility="{Binding SysAdminVisibility}"
+                              IsEnabled="{Binding NavigationStatus}">
                         <MenuItem Header="_Sucursales" Command="{Binding ChangeViewCommand}" CommandParameter="BranchViewModel" />
                         <MenuItem Header="_Areas de Produccion" Command="{Binding ChangeViewCommand}" CommandParameter="WorkAreaViewModel" />
                         <MenuItem Header="_Usuarios" Command="{Binding ChangeViewCommand}" CommandParameter="UserViewModel" />
