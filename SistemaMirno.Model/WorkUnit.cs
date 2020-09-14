@@ -83,8 +83,12 @@ namespace SistemaMirno.Model
         [Required]
         public double TotalWorkTime { get; set; }
 
-        [Required]
         public bool Delivered { get; set; }
+
+        public int? DeliveryId { get; set; }
+
+        [ForeignKey(nameof(DeliveryId))]
+        public virtual Delivery Delivery { get; set; }
 
         public bool Sold { get; set; }
 
@@ -92,6 +96,12 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(SaleId))]
         public virtual Sale Sale { get; set; }
+
+        public bool Moving { get; set; }
+
+        public bool Lost { get; set; }
+
+        public DateTime? LostDate { get; set; }
 
         public int? LatestResponsibleId { get; set; }
 

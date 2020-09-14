@@ -49,25 +49,36 @@
                         Width="250" 
                         Margin="10" />
             </StackPanel>
-            <DataGrid Grid.Column="1" 
-                      ItemsSource="{Binding Deliveries}"
-                      SelectedItem="{Binding SelectedDelivery}"
-                      AutoGenerateColumns="False"
-                      SelectionMode="Extended"
-                      CanUserAddRows="False"
-                      CanUserDeleteRows="False"
-                      EnableRowVirtualization="True"
-                      VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                      BorderBrush="LightGray"
-                      BorderThickness="1"
-                      Margin="5">
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="Entregado" Binding="{Binding Delivered}"/>
-                    <DataGridTextColumn Header="Fecha" Binding="{Binding DeliveryOrder.Date, StringFormat=d}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Cliente" Binding="{Binding Sale.Client.FullName}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Ciudad" Binding="{Binding Sale.Client.City}" IsReadOnly="True"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="800"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Entregas en proceso" Margin="5"/>
+                <Separator Margin="5"/>
+                <DataGrid Grid.Row="1" 
+                          ItemsSource="{Binding Deliveries}"
+                          SelectedItem="{Binding SelectedDelivery}"
+                          AutoGenerateColumns="False"
+                          SelectionMode="Extended"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          EnableRowVirtualization="True"
+                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                          BorderBrush="LightGray"
+                          BorderThickness="1"
+                          Margin="5">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="Entregado" Binding="{Binding Delivered}"/>
+                        <DataGridCheckBoxColumn Header="Cancelado" Binding="{Binding Cancelled}"/>
+                        <DataGridTextColumn Header="Fecha" Binding="{Binding DeliveryOrder.Date, StringFormat=d}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Cliente" Binding="{Binding Sale.Client.FullName}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Ciudad" Binding="{Binding Sale.Client.City}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Razon de cancelacion" Binding="{Binding ReasonNotDelivered}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

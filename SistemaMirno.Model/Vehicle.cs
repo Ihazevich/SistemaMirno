@@ -16,6 +16,9 @@ namespace SistemaMirno.Model
         public string Year { get; set; }
 
         public string Patent { get; set; }
+
+        [NotMapped]
+        public string FullName => string.Concat(VehicleModel, " - ", Patent);
         
         public bool IsAvailable { get; set; }
 

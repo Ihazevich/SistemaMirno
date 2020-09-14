@@ -110,6 +110,8 @@
     <Compile Include="SupplyCategory.cs" />
     <Compile Include="SupplyMovement.cs" />
     <Compile Include="Technician.cs" />
+    <Compile Include="TransferOrder.cs" />
+    <Compile Include="TransferUnit.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="VehicleMaintenanceOrder.cs" />
     <Compile Include="WorkAreaConnection.cs" />

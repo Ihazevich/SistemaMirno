@@ -26,6 +26,8 @@ namespace SistemaMirno.Model
 
         public DateTime? DeliveredOn { get; set; }
 
+        public bool Cancelled { get; set; }
+
         public string ReasonNotDelivered { get; set; }
     }
 }

@@ -166,7 +166,7 @@ namespace SistemaMirno.UI.Wrapper
                     {
                         yield return "Descuento no puede ser negativo, menos por menos es mas!";
                     }
-                    else if (DeliveryFee >= 0)
+                    else if (Discount >= 0)
                     {
                         CalculateTotalAndTax();
                     }
@@ -186,7 +186,7 @@ namespace SistemaMirno.UI.Wrapper
                     {
                         yield return "Cantidad no puede ser negativa";
                     }
-                    else if (Discount >= 0)
+                    else if (DeliveryFee >= 0)
                     {
                         CalculateTotalAndTax();
                     }

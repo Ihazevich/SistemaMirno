@@ -19,7 +19,7 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class DeliveryViewModel : ViewModelBase
     {
-        private IDeliveryRepository _deliveryRepository;
+        private readonly IDeliveryRepository _deliveryRepository;
         private Delivery _selectedDelivery;
 
         public DeliveryViewModel(
@@ -33,6 +33,41 @@ namespace SistemaMirno.UI.ViewModel.General
             Deliveries = new ObservableCollection<Delivery>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
+            SaveChangesCommand = new DelegateCommand(OnSaveChangesExecute);
+        }
+
+        private async void OnSaveChangesExecute()
+        {
+            foreach (var delivery in Deliveries)
+            {
+                if (delivery.Delivered && delivery.Cancelled)
+                {
+                    delivery.Delivered = false;
+                    delivery.Cancelled = false;
+                }
+                else if (delivery.Delivered)
+                {
+                    foreach (var deliveryUnit in delivery.DeliveryUnits)
+                    {
+                        deliveryUnit.Delivered = true;
+                        deliveryUnit.WorkUnit.Delivered = true;
+                        deliveryUnit.WorkUnit.Moving = false;
+                    }
+                }
+                else if (delivery.Cancelled)
+                {
+                    foreach (var deliveryUnit in delivery.DeliveryUnits)
+                    {
+                        deliveryUnit.Cancelled = true;
+                        deliveryUnit.WorkUnit.Delivered = false;
+                        deliveryUnit.WorkUnit.Moving = false;
+                    }
+                }
+
+                await _deliveryRepository.SaveAsync(delivery);
+            }
+
+            LoadDeliveriesAsync();
         }
 
         private void OnOpenDetailExecute()
@@ -81,22 +116,29 @@ namespace SistemaMirno.UI.ViewModel.General
 
         public ICommand OpenDetailCommand { get; }
 
+        public ICommand SaveChangesCommand { get; }
+
         public override async Task LoadAsync(int? id = null)
         {
-            Deliveries.Clear();
-
-            var deliveries = await _deliveryRepository.GetAllAsync();
-
-            foreach (var delivery in deliveries)
-            {
-                Application.Current.Dispatcher.Invoke(() => Deliveries.Add(delivery));
-            }
+            await LoadDeliveriesAsync();
 
             Application.Current.Dispatcher.Invoke(() =>
             {
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private async Task LoadDeliveriesAsync()
+        {
+            Deliveries.Clear();
+
+            var deliveries = await _deliveryRepository.GetAllInProcessAsync();
+
+            foreach (var delivery in deliveries)
+            {
+                Application.Current.Dispatcher.Invoke(() => Deliveries.Add(delivery));
+            }
         }
     }
 }

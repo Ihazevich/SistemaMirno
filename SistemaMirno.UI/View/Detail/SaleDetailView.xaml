@@ -90,7 +90,7 @@
                     <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Factura Nro."
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              Text="{Binding Sale.InvoiceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsReadOnly="True"
+                             IsEnabled="{Binding Sale.HasInvoice}"
                              FontSize="20"
                              VerticalAlignment="Bottom"
                              Margin="5" />

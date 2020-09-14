@@ -304,6 +304,7 @@
     <Compile Include="ViewModel\Detail\BranchDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ClientDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\ColorDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\DeliveryDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\DeliveryOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\EmployeeDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\MaterialDetailViewModel.cs" />
@@ -348,6 +349,9 @@
     <Compile Include="ViewModel\Main\INavigationViewModel.cs" />
     <Compile Include="ViewModel\Main\MainViewModel.cs" />
     <Compile Include="ViewModel\Main\NavigationViewModel.cs" />
+    <Compile Include="View\Detail\DeliveryDetailView.xaml.cs">
+      <DependentUpon>DeliveryDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Detail\DeliveryOrderDetailView.xaml.cs">
       <DependentUpon>DeliveryOrderDetailView.xaml</DependentUpon>
     </Compile>
@@ -475,6 +479,7 @@
     <Compile Include="Wrapper\ClientWrapper.cs" />
     <Compile Include="Wrapper\ColorWrapper.cs" />
     <Compile Include="Wrapper\DeliveryOrderWrapper.cs" />
+    <Compile Include="Wrapper\DeliveryWrapper.cs" />
     <Compile Include="Wrapper\EmployeeWrapper.cs" />
     <Compile Include="Wrapper\IModelWrapper.cs" />
     <Compile Include="Wrapper\MaterialWrapper.cs" />
@@ -525,6 +530,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\SysAdminDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Detail\DeliveryDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

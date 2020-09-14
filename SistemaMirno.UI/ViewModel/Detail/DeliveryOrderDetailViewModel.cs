@@ -52,6 +52,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             DeliveryWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(DeliveryWorkUnits);
             DeliveriesCollectionView = CollectionViewSource.GetDefaultView(Deliveries);
 
+            SaleWorkUnitsCollectionView.GroupDescriptions.Add(_clientFullName);
             SaleWorkUnitsCollectionView.GroupDescriptions.Add(_description);
             DeliveryWorkUnitsCollectionView.GroupDescriptions.Add(_clientFullName);
             DeliveryWorkUnitsCollectionView.GroupDescriptions.Add(_description);
@@ -256,6 +257,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     WorkUnit = workUnit,
                 };
 
+                workUnit.Moving = true;
+
                 _deliveryUnits.Add(deliveryUnit);
             }
 
@@ -283,7 +286,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 .Publish(new ChangeViewEventArgs
                 {
                     Id = null,
-                    ViewModel = nameof(ColorViewModel),
+                    ViewModel = nameof(DeliveryViewModel),
                 });
         }
 
@@ -296,8 +299,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
         protected override void OnCancelExecute()
         {
             base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeNavigationStatusEvent>()
-                .Publish(true);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(DeliveryViewModel),
+                });
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
