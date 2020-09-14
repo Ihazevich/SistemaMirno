@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using jsreport.Client;
 using MahApps.Metro.Controls.Dialogs;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
+using SistemaMirno.UI.Data.Reports;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.General;
@@ -25,6 +30,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         private Sale _selectedSale;
         private WorkUnit _selectedSaleWorkUnit;
         private WorkUnit _selectedDeliveryWorkUnit;
+        private Employee _selectedResponsible;
         private string _saleClientFilter;
         private readonly PropertyGroupDescription _clientFullName = new PropertyGroupDescription("Sale.Client.FullName");
         private readonly PropertyGroupDescription _description = new PropertyGroupDescription("Description");
@@ -114,6 +120,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public Employee SelectedResponsible
+        {
+            get => _selectedResponsible;
+
+            set
+            {
+                _selectedResponsible = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool RemoveWorkUnitCanExecute()
         {
             return SelectedDeliveryWorkUnit != null;
@@ -150,7 +167,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    if (!Deliveries.Any(d => d.SaleId == SelectedSaleWorkUnit.SaleId))
+                    if (Deliveries.All(d => d.Sale.ClientId != SelectedSaleWorkUnit.Sale.ClientId))
                     {
                         var delivery = new Delivery
                         {
@@ -281,6 +298,20 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 await _deliveryOrderRepository.SaveAsync(DeliveryOrder.Model);
             }
 
+            try
+            {
+                await CreateDeliveryOrderReport();
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Title = "Error",
+                        Message = e.Message,
+                    });
+            }
+
             HasChanges = false;
             EventAggregator.GetEvent<ChangeViewEvent>()
                 .Publish(new ChangeViewEventArgs
@@ -401,6 +432,125 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     {
                         SaleWorkUnits.Add(workUnit);
                     });
+                }
+            }
+        }
+
+        private async Task CreateDeliveryOrderReport()
+        {
+            // Create a new report class with the Work Order data.
+            var deliveryOrderReport = new DeliveryOrderReport
+            {
+                Date = DateTime.Today.Date,
+                Responsible = SelectedResponsible.FullName,
+            };
+
+            foreach (var delivery in Deliveries)
+            {
+                var client = new ClientReport
+                {
+                    Name = delivery.Sale.Client.FullName,
+                    Address = delivery.Sale.Client.Address,
+                    City = delivery.Sale.Client.City,
+                    PhoneNumber = delivery.Sale.Client.PhoneNumber,
+                };
+
+                // Select all work units in the current delivery
+                var workUnits = DeliveryWorkUnits.Where(w => w.Sale.Client.FullName == delivery.Sale.Client.FullName).ToList();
+
+                // Create the reports for each Work Unit in the Work Area
+                foreach (var workUnit in workUnits)
+                {
+                    // If there is already a work unit in the client report, check to group the similar ones
+                    // else just add the Work Unit.
+                    if (client.WorkUnits.Count > 0)
+                    {
+                        var found = false;
+                        foreach (var workUnitReport in client.WorkUnits)
+                        {
+                            // If there is a work unit in the report that has the same properties, just add to the quantity.
+                            if (workUnitReport.Product == workUnit.Product.Name
+                                && workUnitReport.Material == workUnit.Material.Name
+                                && workUnitReport.Color == workUnit.Color.Name
+                                && workUnitReport.CurrentWorkArea == workUnit.CurrentWorkArea.Name)
+                            {
+                                workUnitReport.Quantity++;
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        // If there wasn't any work unit with the same properties, add the work unit to the report.
+                        if (!found)
+                        {
+                            client.WorkUnits.Add(new WorkUnitReport
+                            {
+                                Quantity = 1,
+                                Product = workUnit.Product.Name,
+                                Material = workUnit.Material.Name,
+                                Color = workUnit.Color.Name,
+                                CurrentWorkArea = workUnit.CurrentWorkArea.Name,
+                            });
+                        }
+                    }
+                    else
+                    {
+                        client.WorkUnits.Add(new WorkUnitReport
+                        {
+                            Quantity = 1,
+                            Product = workUnit.Product.Name,
+                            Material = workUnit.Material.Name,
+                            Color = workUnit.Color.Name,
+                            CurrentWorkArea = workUnit.CurrentWorkArea.Name,
+                        });
+                    }
+                }
+
+                deliveryOrderReport.Clients.Add(client);
+            }
+
+            try
+            {
+                var rs = new ReportingService("http://192.168.1.99:5488", "Mirno", "MirnoReports");
+                var jsonString = JsonConvert.SerializeObject(deliveryOrderReport);
+                var report = rs.RenderByNameAsync("DeliveryOrder-main", jsonString).Result;
+
+                Directory.CreateDirectory($"C:\\SistemaMirno\\DeliveryOrders");
+
+                var filename = $"C:\\SistemaMirno\\DeliveryOrders\\DeliveryOrder{DateTime.Now.Ticks}.pdf";
+                var stream = new FileStream(filename, FileMode.Create);
+
+                report.Content.CopyTo(stream);
+                stream.Close();
+
+                ProcessStartInfo info = new ProcessStartInfo();
+                info.Verb = "open";
+                info.FileName = filename;
+
+                Process.Start(info);
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() == typeof(AggregateException))
+                {
+                    foreach (var innerEx in ((AggregateException)ex).InnerExceptions)
+                    {
+                        EventAggregator.GetEvent<ShowDialogEvent>()
+                            .Publish(new ShowDialogEventArgs
+                            {
+                                Message = innerEx.Message,
+                                Title = "Error",
+                            });
+                    }
+                }
+                else
+                {
+                    EventAggregator.GetEvent<ShowDialogEvent>()
+                        .Publish(new ShowDialogEventArgs
+                        {
+                            Message = ex.Message,
+                            Title = "Error",
+                        });
                 }
             }
         }

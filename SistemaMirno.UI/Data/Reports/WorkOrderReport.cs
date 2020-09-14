@@ -53,6 +53,11 @@ namespace SistemaMirno.UI.Data.Reports
         public string Supervisor { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the order should span multiple pages.
+        /// </summary>
+        public bool PageBreak { get; set; }
+
+        /// <summary>
         /// Gets or sets the collection of work units that the work order is moving/creating.
         /// </summary>
         public ICollection<WorkUnitReport> WorkUnits { get; set; }

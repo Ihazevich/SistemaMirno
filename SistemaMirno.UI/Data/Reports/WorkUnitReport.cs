@@ -64,5 +64,10 @@ namespace SistemaMirno.UI.Data.Reports
         /// Gets or sets a value indicating whether the report includes the work unit production price.
         /// </summary>
         public bool IncludePrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the current work area the unit is in.
+        /// </summary>
+        public string CurrentWorkArea { get; set; }
     }
 }

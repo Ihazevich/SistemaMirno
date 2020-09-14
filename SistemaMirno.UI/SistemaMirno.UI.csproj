@@ -238,6 +238,8 @@
     </ApplicationDefinition>
     <Compile Include="Data\FileHelpers\ProductFileHelper.cs" />
     <Compile Include="Data\FileHelpers\WorkUnitFileHelper.cs" />
+    <Compile Include="Data\Reports\ClientReport.cs" />
+    <Compile Include="Data\Reports\DeliveryOrderReport.cs" />
     <Compile Include="Data\Reports\InProcessReport.cs" />
     <Compile Include="Data\Reports\ProductionReport.cs" />
     <Compile Include="Data\Reports\WorkAreaReport.cs" />

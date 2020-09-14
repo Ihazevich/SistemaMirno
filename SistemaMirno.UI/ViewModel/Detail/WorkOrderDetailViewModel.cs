@@ -949,6 +949,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 }
             }
 
+            workOrderReport.PageBreak = workOrderReport.WorkUnits.Count > 8;
+
             try
             {
                 var rs = new ReportingService("http://192.168.1.99:5488", "Mirno", "MirnoReports");

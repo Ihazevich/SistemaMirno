@@ -14,14 +14,6 @@ namespace SistemaMirno.UI.Data.Reports
     public class WorkAreaReport
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkAreaReport"/> class.
-        /// </summary>
-        public WorkAreaReport()
-        {
-            WorkUnits = new List<WorkUnitReport>();
-        }
-
-        /// <summary>
         /// Gets or sets the name of the work area.
         /// </summary>
         public string Name { get; set; }
@@ -39,6 +31,6 @@ namespace SistemaMirno.UI.Data.Reports
         /// <summary>
         /// Gets or sets the work units in the work area.
         /// </summary>
-        public ICollection<WorkUnitReport> WorkUnits { get; set; }
+        public List<WorkUnitReport> WorkUnits { get; set; } = new List<WorkUnitReport>();
     }
 }

@@ -26,6 +26,8 @@ namespace SistemaMirno.Model
         [ForeignKey(nameof(ResponsibleId))]
         public virtual Employee Responsible { get; set; }
 
+        public bool Confirmed { get; set; }
+
         [Required]
         public int KmBefore { get; set; }
 
