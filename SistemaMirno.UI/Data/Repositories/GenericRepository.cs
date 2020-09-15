@@ -64,7 +64,7 @@ namespace SistemaMirno.UI.Data.Repositories
 
         public virtual Task<List<TEntity>> GetAllAsync() => _entities.ToListAsync();
 
-        public Task<TEntity> GetByIdAsync(int? id) => _entities.FindAsync(id);
+        public virtual Task<TEntity> GetByIdAsync(int? id) => _entities.FindAsync(id);
 
         public bool HasChanges()
         {

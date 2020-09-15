@@ -335,6 +335,7 @@
     <Compile Include="ViewModel\General\RequisitionViewModel.cs" />
     <Compile Include="ViewModel\General\RoleViewModel.cs" />
     <Compile Include="ViewModel\General\StockViewModel.cs" />
+    <Compile Include="ViewModel\General\TransferOrderViewModel.cs" />
     <Compile Include="ViewModel\General\UserViewModel.cs" />
     <Compile Include="ViewModel\General\VehicleViewModel.cs" />
     <Compile Include="ViewModel\General\WorkAreaMovementViewModel.cs" />
@@ -371,6 +372,9 @@
     </Compile>
     <Compile Include="View\General\DeliveryView.xaml.cs">
       <DependentUpon>DeliveryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\General\TransferOrderView.xaml.cs">
+      <DependentUpon>TransferOrderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\General\VehicleView.xaml.cs">
       <DependentUpon>VehicleView.xaml</DependentUpon>
@@ -563,6 +567,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\General\DeliveryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\General\TransferOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

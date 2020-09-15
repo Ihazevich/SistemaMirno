@@ -112,6 +112,8 @@ namespace SistemaMirno.UI
                 .Keyed<IViewModelBase>(nameof(VehicleViewModel));
             builder.RegisterType<DeliveryViewModel>()
                 .Keyed<IViewModelBase>(nameof(DeliveryViewModel));
+            builder.RegisterType<TransferOrderViewModel>()
+                .Keyed<IViewModelBase>(nameof(TransferOrderViewModel));
         }
 
         /// <summary>

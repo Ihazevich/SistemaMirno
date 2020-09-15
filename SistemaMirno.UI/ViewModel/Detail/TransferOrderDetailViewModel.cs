@@ -27,14 +27,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class TransferOrderDetailViewModel : DetailViewModelBase
     {
-        private ITransferOrderRepository _transferOrderRepository;
+        private readonly ITransferOrderRepository _transferOrderRepository;
         private TransferOrderWrapper _transferOrder;
-        private WorkUnit _selectedTransferWorkUnit;
+        private TransferUnit _selectedTransferUnit;
         private WorkUnit _selectedExistingWorkUnit;
         private Employee _selectedResponsible;
         private Branch _selectedDestinationBranch;
-        private readonly PropertyGroupDescription _workArea = new PropertyGroupDescription("CurrentWorkArea.Name");
-        private readonly PropertyGroupDescription _description = new PropertyGroupDescription("Description");
+        private WorkArea _selectedWorkArea;
+
+        private string _workUnitProductSearchText;
+        private string _workUnitMaterialSearchText;
+        private string _workUnitColorSearchText;
 
         public TransferOrderDetailViewModel(
             ITransferOrderRepository transferOrderRepository,
@@ -51,16 +54,53 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             ExistingWorkUnits = new ObservableCollection<WorkUnit>();
             TransferWorkUnits = new ObservableCollection<WorkUnit>();
+            TransferUnits = new ObservableCollection<TransferUnit>();
 
             ExistingWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(ExistingWorkUnits);
-            ExistingWorkUnitsCollectionView.GroupDescriptions.Add(_workArea);
-            ExistingWorkUnitsCollectionView.GroupDescriptions.Add(_description);
-            TransferWorkUnitsCollectionView = CollectionViewSource.GetDefaultView(TransferWorkUnits);
-            TransferWorkUnitsCollectionView.GroupDescriptions.Add(_workArea);
-            TransferWorkUnitsCollectionView.GroupDescriptions.Add(_description);
+            ExistingWorkUnitsCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("CurrentWorkArea.Name"));
+            ExistingWorkUnitsCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("Description"));
+            TransferUnitsCollectionView = CollectionViewSource.GetDefaultView(TransferUnits);
+            TransferUnitsCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("WorkUnit.CurrentWorkArea.Name"));
+            TransferUnitsCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("WorkUnit.Description"));
 
             AddWorkUnitCommand = new DelegateCommand(OnAddWorkUnitExecute, OnAddWorkUnitCanExecute);
             RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
+        }
+
+        public string WorkUnitProductSearchText
+        {
+            get => _workUnitProductSearchText;
+
+            set
+            {
+                _workUnitProductSearchText = value;
+                OnPropertyChanged();
+                FilterExistingWorkUnits();
+            }
+        }
+
+        public string WorkUnitMaterialSearchText
+        {
+            get => _workUnitMaterialSearchText;
+
+            set
+            {
+                _workUnitMaterialSearchText = value;
+                OnPropertyChanged();
+                FilterExistingWorkUnits();
+            }
+        }
+
+        public string WorkUnitColorSearchText
+        {
+            get => _workUnitColorSearchText;
+
+            set
+            {
+                _workUnitColorSearchText = value;
+                OnPropertyChanged();
+                FilterExistingWorkUnits();
+            }
         }
 
         private bool OnAddWorkUnitCanExecute()
@@ -74,6 +114,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    TransferUnits.Add(new TransferUnit
+                    {
+                        WorkUnit = SelectedExistingWorkUnit,
+                        WorkUnitId = SelectedExistingWorkUnit.Id,
+                    });
                     TransferWorkUnits.Add(SelectedExistingWorkUnit);
                     ExistingWorkUnits.Remove(SelectedExistingWorkUnit);
                 });
@@ -82,17 +127,18 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         private bool OnRemoveWorkUnitCanExecute()
         {
-            return SelectedTransferWorkUnit != null;
+            return SelectedTransferUnit != null;
         }
 
         private void OnRemoveWorkUnitExecute()
         {
-            while (SelectedTransferWorkUnit != null)
+            while (SelectedTransferUnit != null)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    ExistingWorkUnits.Add(SelectedTransferWorkUnit);
-                    TransferWorkUnits.Remove(SelectedTransferWorkUnit);
+                    ExistingWorkUnits.Add(TransferWorkUnits.Single(w => w.Id == SelectedTransferUnit.WorkUnitId));
+                    TransferWorkUnits.Remove(TransferWorkUnits.Single(w => w.Id == SelectedTransferUnit.WorkUnitId));
+                    TransferUnits.Remove(SelectedTransferUnit);
                 });
             }
         }
@@ -103,7 +149,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public ICollectionView ExistingWorkUnitsCollectionView { get; }
 
-        public ICollectionView TransferWorkUnitsCollectionView { get; }
+        public ICollectionView TransferUnitsCollectionView { get; }
+
+        public ObservableCollection<TransferUnit> TransferUnits { get; }
 
         public ObservableCollection<WorkUnit> TransferWorkUnits { get; }
 
@@ -140,13 +188,13 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public WorkUnit SelectedTransferWorkUnit
+        public TransferUnit SelectedTransferUnit
         {
-            get => _selectedTransferWorkUnit;
+            get => _selectedTransferUnit;
 
             set
             {
-                _selectedTransferWorkUnit = value;
+                _selectedTransferUnit = value;
                 OnPropertyChanged();
                 ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
             }
@@ -178,6 +226,21 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public WorkArea SelectedWorkArea
+        {
+            get => _selectedWorkArea;
+
+            set
+            {
+                _selectedWorkArea = value;
+                OnPropertyChanged();
+                if (_selectedWorkArea != null)
+                {
+                    FilterExistingWorkUnits();
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
         {
@@ -188,7 +251,31 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 TransferOrder = new TransferOrderWrapper(model);
                 TransferOrder.PropertyChanged += Model_PropertyChanged;
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                WorkUnitProductSearchText = string.Empty;
+                WorkUnitMaterialSearchText = string.Empty;
+                WorkUnitColorSearchText = string.Empty;
             });
+
+            try
+            {
+                TransferUnits.Clear();
+
+                foreach (var transferUnit in model.TransferUnits)
+                {
+                    Application.Current.Dispatcher.Invoke(() => TransferUnits.Add(transferUnit));
+                    TransferWorkUnits.Add(transferUnit.WorkUnit);
+                }
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+            }
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
         }
@@ -198,27 +285,44 @@ namespace SistemaMirno.UI.ViewModel.Detail
         {
             base.OnSaveExecute();
 
-            foreach (var workUnit in TransferWorkUnits)
-            {
-                workUnit.Moving = true;
-
-                var transferUnit = new TransferUnit
-                {
-                    WorkUnit = workUnit,
-                    WorkUnitId = workUnit.Id,
-                };
-
-                TransferOrder.Model.TransferUnits.Add(transferUnit);
-            }
-
-            TransferOrder.Date = DateTime.Now;
-
             if (IsNew)
             {
+                foreach (var transferUnit in TransferUnits)
+                {
+                    transferUnit.WorkUnit.Moving = true;
+                    transferUnit.WorkUnit.CurrentWorkAreaId = SelectedDestinationBranch.WorkAreas
+                        .Single(w => w.Name == transferUnit.WorkUnit.CurrentWorkArea.Name).Id;
+
+                    TransferOrder.Model.TransferUnits.Add(transferUnit);
+                }
+
+                TransferOrder.Date = DateTime.Now;
+
                 await _transferOrderRepository.AddAsync(TransferOrder.Model);
             }
             else
             {
+                foreach (var transferUnit in TransferOrder.Model.TransferUnits)
+                {
+                    if (TransferUnits.All(t => t.Id != transferUnit.Id))
+                    {
+                        transferUnit.WorkUnit.Moving = false;
+                        _transferOrderRepository.DeleteTransferUnitAsync(transferUnit);
+                    }
+                }
+
+                foreach (var transferUnit in TransferUnits)
+                {
+                    if (TransferOrder.Model.TransferUnits.All(t => t.Id != transferUnit.Id))
+                    {
+                        transferUnit.WorkUnit.Moving = true;
+                        transferUnit.WorkUnit.CurrentWorkAreaId = SelectedDestinationBranch.WorkAreas
+                            .Single(w => w.Name == transferUnit.WorkUnit.CurrentWorkArea.Name).Id;
+
+                        TransferOrder.Model.TransferUnits.Add(transferUnit);
+                    }
+                }
+
                 await _transferOrderRepository.SaveAsync(TransferOrder.Model);
             }
 
@@ -241,7 +345,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 .Publish(new ChangeViewEventArgs
                 {
                     Id = null,
-                    ViewModel = nameof(ColorViewModel),
+                    ViewModel = nameof(TransferOrderViewModel),
                 });
         }
 
@@ -260,7 +364,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 .Publish(new ChangeViewEventArgs
                 {
                     Id = null,
-                    ViewModel = nameof(ColorViewModel),
+                    ViewModel = nameof(TransferOrderViewModel),
                 });
         }
 
@@ -271,7 +375,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 .Publish(new ChangeViewEventArgs
                 {
                     Id = null,
-                    ViewModel = nameof(ColorViewModel),
+                    ViewModel = nameof(TransferOrderViewModel),
                 });
         }
 
@@ -313,13 +417,29 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 TransferOrder.ToBranchId = 0;
                 TransferOrder.VehicleId = 0;
                 TransferOrder.ResponsibleId = 0;
+
+                WorkUnitProductSearchText = string.Empty;
+                WorkUnitMaterialSearchText = string.Empty;
+                WorkUnitColorSearchText = string.Empty;
             });
 
             await base.LoadDetailAsync().ConfigureAwait(false);
         }
 
+        private async Task LoadWorkAreasAsync()
+        {
+            var workAreas = await _transferOrderRepository.GetTransferWorkAreasAsync(SelectedDestinationBranch.Id);
+
+            foreach (var workArea in workAreas)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(workArea));
+            }
+        }
+
         private async Task LoadWorkUnitsAsync()
         {
+            await LoadWorkAreasAsync();
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 ProgressVisibility = Visibility.Visible;
@@ -374,6 +494,33 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        private void FilterExistingWorkUnits()
+        {
+            var workArea = SelectedWorkArea != null ? SelectedWorkArea.Name : string.Empty;
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ExistingWorkUnitsCollectionView.Filter = item =>
+                {
+                    if (string.IsNullOrWhiteSpace(WorkUnitColorSearchText) &&
+                        string.IsNullOrWhiteSpace(WorkUnitMaterialSearchText) &&
+                        string.IsNullOrWhiteSpace(WorkUnitProductSearchText) &&
+                        string.IsNullOrWhiteSpace(workArea))
+                    {
+                        return false;
+                    }
+
+                    return item is WorkUnit vitem &&
+                           (vitem.Description.ToLowerInvariant()
+                                .Contains(WorkUnitProductSearchText.ToLowerInvariant()) &&
+                            vitem.Material.Name.ToLowerInvariant()
+                                .Contains(WorkUnitMaterialSearchText.ToLowerInvariant()) &&
+                            vitem.Color.Name.ToLowerInvariant()
+                                .Contains(WorkUnitColorSearchText.ToLowerInvariant()) &&
+                            vitem.CurrentWorkArea.Name.Equals(workArea));
+                };
+            });
+        }
 
         private async Task CreateDeliveryOrderReport()
         {

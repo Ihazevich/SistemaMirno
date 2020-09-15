@@ -19,6 +19,27 @@ namespace SistemaMirno.UI.Data.Repositories
         {
         }
 
+        public override async Task<TransferOrder> GetByIdAsync(int? id)
+        {
+            try
+            {
+                return await Context.TransferOrders.Include(t => t.TransferUnits.Select(u => u.WorkUnit.Product))
+                    .Include(t => t.TransferUnits.Select(u => u.WorkUnit.Material))
+                    .Include(t => t.TransferUnits.Select(u => u.WorkUnit.Color))
+                    .SingleAsync(t => t.Id == id);
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
         public async Task<IEnumerable<WorkUnit>> GetAllWorkUnitsAvailableForTransferAsync(int destinationBranchId)
         {
             try
@@ -82,6 +103,41 @@ namespace SistemaMirno.UI.Data.Repositories
             try
             {
                 return await Context.Branches.Where(b => b.Id != originBranchId).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public void DeleteTransferUnitAsync(TransferUnit transferUnit)
+        {
+            try
+            {
+                Context.Entry(transferUnit).State = EntityState.Deleted;
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+            }
+        }
+
+        public async Task<IEnumerable<WorkArea>> GetTransferWorkAreasAsync(int destinationBranchId)
+        {
+            try
+            {
+                return await Context.WorkAreas.Where(w => w.BranchId == destinationBranchId).ToListAsync();
             }
             catch (Exception ex)
             {

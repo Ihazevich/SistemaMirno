@@ -14,5 +14,9 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         Task<IEnumerable<Vehicle>> GetAllVehiclesAsync();
 
         Task<IEnumerable<Branch>> GetAllBranchesNotCurrentAsync(int originBranchId);
+
+        void DeleteTransferUnitAsync(TransferUnit transferUnit);
+
+        Task<IEnumerable<WorkArea>> GetTransferWorkAreasAsync(int destinationBranchId);
     }
 }

@@ -53,7 +53,7 @@
                               Visibility="{Binding LogisticVisibility}"
                               IsEnabled="{Binding NavigationStatus}">
                         <MenuItem Header="_Entregas" Command="{Binding ChangeViewCommand}" CommandParameter="DeliveryViewModel"/>
-                        <MenuItem Header="Nuevo _traslado" Command="{Binding ChangeViewCommand}" CommandParameter="TransferOrderDetailViewModel"/>
+                        <MenuItem Header="_Traslados" Command="{Binding ChangeViewCommand}" CommandParameter="TransferOrderViewModel"/>
                         <MenuItem Header="_Reportes">
                             <MenuItem Header="Entregas por _sucursal" />
                             <MenuItem Header="Entregas _pendientes" />
