@@ -271,7 +271,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 Employee.Age = 18;
                 Employee.Address = string.Empty;
                 Employee.PhoneNumber = string.Empty;
-                Employee.Profession = string.Empty;
                 Employee.BaseSalary = 0;
                 Employee.SalaryOtherBonus = 0;
                 Employee.PricePerExtraHour = 0;

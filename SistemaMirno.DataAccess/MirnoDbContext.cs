@@ -306,6 +306,16 @@ namespace SistemaMirno.DataAccess
         /// </summary>
         public DbSet<WorkUnitWorkDetail> WorkUnitWorkDetails { get; set; }
 
+        /// <summary>
+        /// Gets or sets the collection of <see cref="TransferOrder"/> entities in the context.
+        /// </summary>
+        public DbSet<TransferOrder> TransferOrders { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of <see cref="TransferUnits"/> entities in the context.
+        /// </summary>
+        public DbSet<TransferUnit> TransferUnits { get; set; }
+
         /// <inheritdoc/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

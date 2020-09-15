@@ -19,6 +19,8 @@ namespace SistemaMirno.Model
 
         public bool Lost { get; set; }
 
+        public bool Cancelled { get; set; }
+
         public bool Arrived { get; set; }
     }
 }

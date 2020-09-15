@@ -50,8 +50,6 @@ namespace SistemaMirno.UI.ViewModel.General
             WorkAreaCollectionView.GroupDescriptions.Add(_productName);
 
             NewSaleCommand = new DelegateCommand(OnNewSaleExecute);
-            MoveToBranchCommand = new DelegateCommand(OnMoveToBranchExecute);
-            ShowMovementHistoryCommand = new DelegateCommand(OnShowMovementHistoryExecute);
             DeleteWorkUnitCommand = new DelegateCommand(OnDeleteWorkUnitExecute, OnDeleteWorkUnitCanExecute);
 
             WorkAreaWorkUnitProductFilter = string.Empty;
@@ -80,15 +78,6 @@ namespace SistemaMirno.UI.ViewModel.General
             Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit));
         }
 
-        private void OnMoveToBranchExecute()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void OnShowMovementHistoryExecute()
-        {
-            throw new NotImplementedException();
-        }
 
         private void OnNewSaleExecute()
         {
@@ -247,13 +236,8 @@ namespace SistemaMirno.UI.ViewModel.General
         
         public ICommand NewSaleCommand { get; }
 
-        public ICommand MoveToBranchCommand { get; }
-
-        public ICommand ShowMovementHistoryCommand { get; }
-
         public override async Task LoadAsync(int? id = null)
         {
-
             if (id.HasValue)
             {
                 WorkAreaWorkUnits.Clear();

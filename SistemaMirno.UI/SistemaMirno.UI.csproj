@@ -46,7 +46,7 @@
     <ProductName>Sistema Mirno</ProductName>
     <PublisherName>Snek Solutions</PublisherName>
     <MinimumRequiredVersion>1.0.0.6</MinimumRequiredVersion>
-    <ApplicationRevision>28</ApplicationRevision>
+    <ApplicationRevision>29</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -271,12 +271,14 @@
     <Compile Include="Data\Repositories\Interfaces\IWorkAreaMovementRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\IVehicleRepository.cs" />
     <Compile Include="Data\Repositories\Interfaces\ISaleRepository.cs" />
+    <Compile Include="Data\Repositories\Interfaces\ITransferOrderRepository.cs" />
     <Compile Include="Data\Repositories\MaterialRepository.cs" />
     <Compile Include="Data\Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Data\Repositories\ProductRepository.cs" />
     <Compile Include="Data\Repositories\RequisitionRepository.cs" />
     <Compile Include="Data\Repositories\RoleRepository.cs" />
     <Compile Include="Data\Repositories\SaleRepository.cs" />
+    <Compile Include="Data\Repositories\TransferOrderRepository.cs" />
     <Compile Include="Data\Repositories\UserRepository.cs" />
     <Compile Include="Data\Repositories\VehicleRepository.cs" />
     <Compile Include="Data\Repositories\WorkAreaMovementRepository.cs" />
@@ -315,6 +317,7 @@
     <Compile Include="ViewModel\Detail\RequisitionDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\RoleDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\SaleDetailViewModel.cs" />
+    <Compile Include="ViewModel\Detail\TransferOrderDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\Detail\DetailViewModelBase.cs" />
     <Compile Include="ViewModel\Detail\VehicleDetailViewModel.cs" />
@@ -356,6 +359,9 @@
     </Compile>
     <Compile Include="View\Detail\DeliveryOrderDetailView.xaml.cs">
       <DependentUpon>DeliveryOrderDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Detail\TransferOrderDetailView.xaml.cs">
+      <DependentUpon>TransferOrderDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Detail\VehicleDetailView.xaml.cs">
       <DependentUpon>VehicleDetailView.xaml</DependentUpon>
@@ -491,6 +497,7 @@
     <Compile Include="Wrapper\RequisitionWrapper.cs" />
     <Compile Include="Wrapper\RoleWrapper.cs" />
     <Compile Include="Wrapper\SaleWrapper.cs" />
+    <Compile Include="Wrapper\TransferOrderWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\VehicleWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaConnectionWrapper.cs" />
@@ -540,6 +547,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Detail\DeliveryOrderDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Detail\TransferOrderDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

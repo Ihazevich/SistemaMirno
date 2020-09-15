@@ -10,9 +10,13 @@ namespace SistemaMirno.UI.Data.Reports
     [Serializable]
     public class DeliveryOrderReport
     { 
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         
         public string Responsible { get; set; }
+
+        public bool IsTransfer { get; set; }
+
+        public string Branch { get; set; }
 
         public List<ClientReport> Clients { get; set; } = new List<ClientReport>();
     }

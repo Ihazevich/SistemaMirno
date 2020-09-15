@@ -23,7 +23,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.WorkUnits.Where(w => w.CurrentWorkAreaId == id && !w.Sold && !w.Delivered).ToListAsync();
+                return await Context.WorkUnits.Where(w => w.CurrentWorkAreaId == id && !w.Moving && !w.Delivered).ToListAsync();
             }
             catch (Exception e)
             {

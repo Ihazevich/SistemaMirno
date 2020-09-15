@@ -52,7 +52,6 @@
                     <DataGridTextColumn Header="Edad" Binding="{Binding Age}"/>
                     <DataGridTextColumn Header="Direccion" Binding="{Binding Address}"/>
                     <DataGridTextColumn Header="Telefono" Binding="{Binding Phone}"/>
-                    <DataGridTextColumn Header="Profesion" Binding="{Binding Profession}"/>
                     <DataGridTextColumn Header="Roles" Binding="{Binding Roles.Count}"/>
                     <DataGridTextColumn Header="Salario Base" Binding="{Binding BaseSalary}"/>
                     <DataGridTextColumn Header="Extras" Binding="{Binding SalaryOtherBonus}"/>

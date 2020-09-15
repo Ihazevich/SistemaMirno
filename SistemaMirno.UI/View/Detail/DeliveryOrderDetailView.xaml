@@ -374,18 +374,11 @@
             </Grid>
         </Grid>
         <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Bottom">
-            <Button Content="IMPRIMIR LISTA DE CARGA" 
-                    FontSize="16"
-                    Width="250" 
-                    Margin="10" 
-                    Command="{Binding SaveCommand}" 
-                    Style="{StaticResource MaterialDesignRaisedButton}" 
-                    VerticalAlignment="Bottom"/>
             <Button Content="IMPRIMIR ORDEN DE ENTREGA" 
                     FontSize="16"
                     Width="250" 
                     Margin="10" 
-                    Command="{Binding ConfirmCommand}" 
+                    Command="{Binding SaveCommand}" 
                     Style="{StaticResource MaterialDesignRaisedButton}" 
                     VerticalAlignment="Bottom"/>
             <Button Content="CANCELAR" 

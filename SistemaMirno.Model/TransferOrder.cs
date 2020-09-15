@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
@@ -33,6 +30,8 @@ namespace SistemaMirno.Model
 
         [Required]
         public int ResponsibleId { get; set; }
+
+        public bool Arrived { get; set; }
 
         [ForeignKey(nameof(ResponsibleId))]
         public virtual Employee Responsible { get; set; }

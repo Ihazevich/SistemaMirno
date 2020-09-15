@@ -70,12 +70,6 @@ namespace SistemaMirno.UI.Wrapper
             set => SetValue(value);
         }
 
-        public string Profession
-        {
-            get => GetValue<string>();
-            set => SetValue(value);
-        }
-
         public long BaseSalary
         {
             get => GetValue<long>();

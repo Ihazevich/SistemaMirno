@@ -54,11 +54,7 @@ namespace SistemaMirno.Model
         [Required(ErrorMessage = "Requerido")]
         [StringLength(20)]
         public string PhoneNumber { get; set; }
-
-        [Required(ErrorMessage = "Requerido")]
-        [StringLength(30)]
-        public string Profession { get; set; }
-
+        
         public virtual ICollection<Role> Roles { get; set; } = new HashSet<Role>();
 
         [Required(ErrorMessage = "Requerido")]

@@ -441,7 +441,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             // Create a new report class with the Work Order data.
             var deliveryOrderReport = new DeliveryOrderReport
             {
-                Date = DateTime.Today.Date,
+                Date = DateTime.Today.Date.ToString("d"),
                 Responsible = SelectedResponsible.FullName,
             };
 

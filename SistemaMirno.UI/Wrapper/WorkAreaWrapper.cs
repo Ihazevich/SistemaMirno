@@ -87,7 +87,7 @@ namespace SistemaMirno.UI.Wrapper
             set => SetValue(value);
         }
 
-        public bool CanBeSoldFrom
+        public bool CanBeDeliveredFrom
         {
             get => GetValue<bool>();
             set => SetValue(value);
