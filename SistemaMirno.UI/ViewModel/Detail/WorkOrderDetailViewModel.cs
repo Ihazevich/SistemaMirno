@@ -958,9 +958,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 var jsonString = JsonConvert.SerializeObject(workOrderReport);
                 var report = rs.RenderByNameAsync("workorder-main", jsonString).Result;
 
-                Directory.CreateDirectory($"C:\\SistemaMirno\\WorkOrders");
+                Directory.CreateDirectory($"\\\\PC-FABRICA\\SistemaMirno\\WorkOrders");
 
-                var filename = $"C:\\SistemaMirno\\WorkOrders\\WorkOrder{WorkOrder.Id}.pdf";
+                var filename = $"\\\\PC-FABRICA\\SistemaMirno\\WorkOrders\\WorkOrder{WorkOrder.Id}.pdf";
                 var stream = new FileStream(filename, FileMode.Create);
 
                 report.Content.CopyTo(stream);

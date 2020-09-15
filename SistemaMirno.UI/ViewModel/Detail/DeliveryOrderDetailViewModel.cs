@@ -515,9 +515,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 var jsonString = JsonConvert.SerializeObject(deliveryOrderReport);
                 var report = rs.RenderByNameAsync("DeliveryOrder-main", jsonString).Result;
 
-                Directory.CreateDirectory($"C:\\SistemaMirno\\DeliveryOrders");
+                Directory.CreateDirectory($"\\\\PC-FABRICA\\SistemaMirno\\DeliveryOrders");
 
-                var filename = $"C:\\SistemaMirno\\DeliveryOrders\\DeliveryOrder{DateTime.Now.Ticks}.pdf";
+                var filename = $"\\\\PC-FABRICA\\SistemaMirno\\DeliveryOrders\\DeliveryOrder{DateTime.Now.Ticks}.pdf";
                 var stream = new FileStream(filename, FileMode.Create);
 
                 report.Content.CopyTo(stream);
