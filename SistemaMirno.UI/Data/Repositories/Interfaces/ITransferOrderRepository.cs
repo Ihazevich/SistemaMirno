@@ -18,5 +18,9 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         void DeleteTransferUnitAsync(TransferUnit transferUnit);
 
         Task<IEnumerable<WorkArea>> GetTransferWorkAreasAsync(int destinationBranchId);
+
+        Task<IEnumerable<TransferOrder>> GetAllUnconfirmedAsync(int branchId);
+
+        Task<IEnumerable<TransferOrder>> GetAllIncomingAsync(int branchId);
     }
 }

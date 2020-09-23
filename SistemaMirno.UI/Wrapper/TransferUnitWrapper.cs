@@ -1,60 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
-    public class TransferOrderWrapper : ModelWrapper<TransferOrder>
+    public class TransferUnitWrapper : ModelWrapper<TransferUnit>
     {
-        public TransferOrderWrapper()
-            : base(new TransferOrder())
+        public TransferUnitWrapper()
+            : base(new TransferUnit())
         {
         }
 
-        public TransferOrderWrapper(TransferOrder model)
+        public TransferUnitWrapper(TransferUnit model)
             : base(model)
         {
         }
-
-        public int Id => GetValue<int>();
-
-        public DateTime Date
-        {
-            get => GetValue<DateTime>();
-            set => SetValue(value);
-        }
-
-        public int FromBranchId
+        
+        public int TransferOrderId
         {
             get => GetValue<int>();
             set => SetValue(value);
         }
 
-        public int ToBranchId
+        public int WorkUnitId
         {
             get => GetValue<int>();
             set => SetValue(value);
         }
 
-        public int VehicleId
+        public int FromWorkAreaId
         {
             get => GetValue<int>();
             set => SetValue(value);
         }
 
-        public int ResponsibleId
+        public int ToWorkAreaId
         {
             get => GetValue<int>();
             set => SetValue(value);
         }
 
-        public bool Confirmed
-        {
-            get => GetValue<bool>();
-            set => SetValue(value);
-        }
-
-        public bool Arrived
+        public bool Lost
         {
             get => GetValue<bool>();
             set => SetValue(value);
@@ -66,7 +55,7 @@ namespace SistemaMirno.UI.Wrapper
             set => SetValue(value);
         }
 
-        public bool Lost
+        public bool Arrived
         {
             get => GetValue<bool>();
             set => SetValue(value);
@@ -77,34 +66,29 @@ namespace SistemaMirno.UI.Wrapper
         {
             switch (propertyName)
             {
-                case nameof(ToBranchId):
-                    if (ToBranchId < 1)
+                case nameof(Lost):
+                    if (Lost)
                     {
-                        yield return "Debe seleccionar una sucursal";
+                        Cancelled = false;
+                        Arrived = false;
                     }
 
                     break;
 
-                case nameof(VehicleId):
-                    if (VehicleId < 1)
+                case nameof(Cancelled):
+                    if (Cancelled)
                     {
-                        yield return "Debe seleccionar un vehiculo";
+                        Lost = false;
+                        Arrived = false;
                     }
 
                     break;
 
-                case nameof(ResponsibleId):
-                    if (ResponsibleId < 1)
+                case nameof(Arrived):
+                    if (Arrived)
                     {
-                        yield return "Debe seleccionar un responsable";
-                    }
-
-                    break;
-
-                case nameof(Date):
-                    if (Date.Year <= DateTime.Today.Year && Date.Month <= DateTime.Today.Month && Date.Day < DateTime.Today.Day)
-                    {
-                        yield return "La entrega no puede ser en el pasado";
+                        Cancelled = false;
+                        Lost = false;
                     }
 
                     break;

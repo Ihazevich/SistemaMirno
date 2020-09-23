@@ -23,7 +23,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.WorkUnits.Where(w => w.CurrentWorkAreaId == id && !w.Moving && !w.Delivered).ToListAsync();
+                return await Context.WorkUnits.Where(w => w.CurrentWorkAreaId == id && !w.Moving && !w.Delivered && !w.Lost).ToListAsync();
             }
             catch (Exception e)
             {
@@ -57,7 +57,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.WorkUnits.Where(w => !w.Delivered && !w.Sold && w.CurrentWorkArea.ReportsInProcess)
+                return await Context.WorkUnits.Where(w => !w.Delivered && !w.Moving && !w.Lost && w.CurrentWorkArea.ReportsInProcess)
                     .ToListAsync();
             }
             catch (Exception e)
@@ -109,7 +109,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.WorkUnits.Where(w => w.CurrentWorkArea.IsLast && !w.Sold && !w.Delivered)
+                return await Context.WorkUnits.Where(w => w.CurrentWorkArea.IsLast && !w.Delivered & !w.Moving && !w.Lost)
                     .ToListAsync();
             }
             catch (Exception e)

@@ -33,6 +33,12 @@ namespace SistemaMirno.Model
 
         public bool Arrived { get; set; }
 
+        public bool Lost { get; set; }
+
+        public bool Cancelled { get; set; }
+
+        public bool Confirmed { get; set; }
+
         [ForeignKey(nameof(ResponsibleId))]
         public virtual Employee Responsible { get; set; }
 

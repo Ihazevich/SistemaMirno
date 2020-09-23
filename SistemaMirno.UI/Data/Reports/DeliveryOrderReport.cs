@@ -14,6 +14,8 @@ namespace SistemaMirno.UI.Data.Reports
         
         public string Responsible { get; set; }
 
+        public bool IsNew { get; set; }
+
         public bool IsTransfer { get; set; }
 
         public string Branch { get; set; }

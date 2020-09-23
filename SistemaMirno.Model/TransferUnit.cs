@@ -17,6 +17,16 @@ namespace SistemaMirno.Model
         [ForeignKey(nameof(WorkUnitId))]
         public virtual WorkUnit WorkUnit { get; set; }
 
+        public int FromWorkAreaId { get; set; }
+
+        [ForeignKey(nameof(FromWorkAreaId))]
+        public virtual WorkArea FromWorkArea { get; set; }
+
+        public int ToWorkAreaId { get; set; }
+
+        [ForeignKey(nameof(ToWorkAreaId))]
+        public virtual WorkArea ToWorkArea { get; set; }
+
         public bool Lost { get; set; }
 
         public bool Cancelled { get; set; }

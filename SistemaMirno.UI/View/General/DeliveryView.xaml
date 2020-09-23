@@ -53,11 +53,12 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="800"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Entregas en proceso" Margin="5"/>
-                <Separator Margin="5"/>
-                <DataGrid Grid.Row="1" 
+                <Separator Grid.Row="1" Margin="5"/>
+                <DataGrid Grid.Row="2" 
                           ItemsSource="{Binding Deliveries}"
                           SelectedItem="{Binding SelectedDelivery}"
                           AutoGenerateColumns="False"

@@ -21,7 +21,7 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class StockViewModel : ViewModelBase
     {
-        private IWorkUnitRepository _workUnitRepository;
+        private readonly IWorkUnitRepository _workUnitRepository;
         private WorkUnitWrapper _selectedWorkAreaWorkUnit;
         private BranchWrapper _selectedBranch;
         private WorkAreaWrapper _workArea;

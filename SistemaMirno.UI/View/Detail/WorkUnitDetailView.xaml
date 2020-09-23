@@ -22,6 +22,10 @@
         <Separator Grid.Row="1" />
         <ProgressBar Grid.Row="2" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
         <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -71,6 +75,34 @@
                  FontSize="20"
                  IsReadOnly="True"
                  Margin="5" />
+            <CheckBox Grid.Column="1" Grid.Row="0" 
+                      Content="Perdido" 
+                      IsChecked="{Binding WorkUnit.Lost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      FontSize="20"
+                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                      Visibility="{Binding ConfirmedVisibility}"
+                      Margin="5" />
+            <CheckBox Grid.Column="1" Grid.Row="1" 
+                      Content="Moviendo" 
+                      IsChecked="{Binding WorkUnit.Moving, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      FontSize="20"
+                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                      Visibility="{Binding ConfirmedVisibility}"
+                      Margin="5" />
+            <CheckBox Grid.Column="1" Grid.Row="2" 
+                      Content="Vendido" 
+                      IsChecked="{Binding WorkUnit.Sold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      FontSize="20"
+                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                      Visibility="{Binding ConfirmedVisibility}"
+                      Margin="5" />
+            <CheckBox Grid.Column="1" Grid.Row="3" 
+                      Content="Entregado" 
+                      IsChecked="{Binding WorkUnit.Delivered, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      FontSize="20"
+                      materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                      Visibility="{Binding ConfirmedVisibility}"
+                      Margin="5" />
         </Grid>
         <StackPanel Grid.Row="5" Orientation="Horizontal">
             <Button Content="GUARDAR" 

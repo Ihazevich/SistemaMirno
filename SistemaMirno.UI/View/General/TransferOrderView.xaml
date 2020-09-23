@@ -28,8 +28,25 @@
                         FontSize="16"
                         Width="250"
                         Margin="10" />
+                <Button Content="TRASLADOS POR CONFIRMAR"
+                        Command="{Binding ShowUnconfirmedCommand}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        FontSize="16"
+                        Width="250" 
+                        Margin="10" />
+                <Button Content="TRASLADOS ENTRANTES"
+                        Command="{Binding ShowIncomingCommand}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        FontSize="16"
+                        Width="250" 
+                        Margin="10" />
                 <Button Content="VER DETALLES"
                         Command="{Binding OpenDetailCommand}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        FontSize="16"
+                        Width="250" 
+                        Margin="10" />
+                <Button Content="VER HISTORIAL"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                         FontSize="16"
                         Width="250" 
@@ -41,19 +58,28 @@
                         Width="250" 
                         Margin="10" />
             </StackPanel>
-            <DataGrid Grid.Column="1" 
-                      ItemsSource="{Binding TransferOrders}"
-                      SelectedItem="{Binding SelectedTransferOrder}"
-                      SelectionMode="Single"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      SelectedIndex="{Binding DataGridIndex, Mode=TwoWay}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Fecha" Binding="{Binding Date, StringFormat=d}"/>
-                    <DataGridTextColumn Header="Origen" Binding="{Binding FromBranch.Name}"/>
-                    <DataGridTextColumn Header="Destino" Binding="{Binding ToBranch.Name}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding DataGridTitle}"/>
+                <Separator Grid.Row="1"/>
+                <DataGrid Grid.Row="2" 
+                          ItemsSource="{Binding TransferOrders}"
+                          SelectedItem="{Binding SelectedTransferOrder}"
+                          SelectionMode="Single"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          SelectedIndex="{Binding DataGridIndex, Mode=TwoWay}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Fecha" Binding="{Binding Date, StringFormat=d}"/>
+                        <DataGridTextColumn Header="Origen" Binding="{Binding FromBranch.Name}"/>
+                        <DataGridTextColumn Header="Destino" Binding="{Binding ToBranch.Name}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

@@ -46,7 +46,7 @@
     <ProductName>Sistema Mirno</ProductName>
     <PublisherName>Snek Solutions</PublisherName>
     <MinimumRequiredVersion>1.0.0.6</MinimumRequiredVersion>
-    <ApplicationRevision>29</ApplicationRevision>
+    <ApplicationRevision>31</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -502,6 +502,7 @@
     <Compile Include="Wrapper\RoleWrapper.cs" />
     <Compile Include="Wrapper\SaleWrapper.cs" />
     <Compile Include="Wrapper\TransferOrderWrapper.cs" />
+    <Compile Include="Wrapper\TransferUnitWrapper.cs" />
     <Compile Include="Wrapper\UserWrapper.cs" />
     <Compile Include="Wrapper\VehicleWrapper.cs" />
     <Compile Include="Wrapper\WorkAreaConnectionWrapper.cs" />

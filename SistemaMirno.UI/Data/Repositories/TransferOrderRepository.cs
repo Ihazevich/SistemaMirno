@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Prism.Events;
 using SistemaMirno.DataAccess;
@@ -24,6 +23,7 @@ namespace SistemaMirno.UI.Data.Repositories
             try
             {
                 return await Context.TransferOrders.Include(t => t.TransferUnits.Select(u => u.WorkUnit.Product))
+                    .Include(t => t.TransferUnits.Select(u => u.WorkUnit.CurrentWorkArea))
                     .Include(t => t.TransferUnits.Select(u => u.WorkUnit.Material))
                     .Include(t => t.TransferUnits.Select(u => u.WorkUnit.Color))
                     .SingleAsync(t => t.Id == id);
@@ -138,6 +138,42 @@ namespace SistemaMirno.UI.Data.Repositories
             try
             {
                 return await Context.WorkAreas.Where(w => w.BranchId == destinationBranchId).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<TransferOrder>> GetAllUnconfirmedAsync(int branchId)
+        {
+            try
+            {
+                return await Context.TransferOrders.Where(o => o.FromBranchId == branchId && !o.Confirmed).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<TransferOrder>> GetAllIncomingAsync(int branchId)
+        {
+            try
+            {
+                return await Context.TransferOrders.Where(o => o.ToBranchId == branchId && o.Confirmed && !o.Arrived).ToListAsync();
             }
             catch (Exception ex)
             {
