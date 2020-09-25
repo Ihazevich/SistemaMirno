@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="BranchSelectionViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,7 +19,7 @@ namespace SistemaMirno.UI.ViewModel.Main
 {
     public class BranchSelectionViewModel : ViewModelBase, IBranchSelectionViewModel
     {
-        private IBranchRepository _branchRepository;
+        private readonly IBranchRepository _branchRepository;
         private BranchWrapper _selectedBranch;
 
         public BranchSelectionViewModel(
@@ -31,49 +35,19 @@ namespace SistemaMirno.UI.ViewModel.Main
             ChangeBranchCommand = new DelegateCommand<object>(OnSelectBranchExecute, OnSelectBranchCanExecute);
             CancelCommand = new DelegateCommand(OnCancelExecute);
             AddBranchCommand = new DelegateCommand(OnAddBranchExecute);
-
         }
 
-        private void OnAddBranchExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    ViewModel = nameof(BranchDetailViewModel),
-                });
-        }
+        public ICommand AddBranchCommand { get; }
+
+        public ObservableCollection<BranchWrapper> Branches { get; }
+
+        public ICommand CancelCommand { get; }
+
+        public ICommand ChangeBranchCommand { get; }
 
         public Visibility NewBranchButtonVisibility => SessionInfo.User != null && SessionInfo.User.Model.IsSystemAdmin
             ? Visibility.Visible
             : Visibility.Collapsed;
-
-        private void OnCancelExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    ViewModel = nameof(LoginViewModel),
-                });
-        }
-
-        private void OnSelectBranchExecute(object obj)
-        {
-            var branch = Branches.Single(b => b.Id == int.Parse(obj.ToString()));
-            EventAggregator.GetEvent<BranchChangedEvent>()
-                .Publish(new BranchChangedEventArgs
-                {
-                    BranchId = branch.Id,
-                    Name = branch.Name,
-                });
-        }
-
-        private bool OnSelectBranchCanExecute(object obj)
-        {
-            return SessionInfo.User.Model.IsSystemAdmin || SessionInfo.User.Model.Employee.Roles.Select(r => r.BranchId)
-                .Contains(int.Parse(obj.ToString()));
-        }
-
-        public ObservableCollection<BranchWrapper> Branches { get; }
 
         public BranchWrapper SelectedBranch
         {
@@ -86,12 +60,6 @@ namespace SistemaMirno.UI.ViewModel.Main
                 ((DelegateCommand<object>)ChangeBranchCommand).RaiseCanExecuteChanged();
             }
         }
-
-        public ICommand ChangeBranchCommand { get; }
-
-        public ICommand CancelCommand { get; }
-
-        public ICommand AddBranchCommand { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
@@ -109,6 +77,41 @@ namespace SistemaMirno.UI.ViewModel.Main
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnAddBranchExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    ViewModel = nameof(BranchDetailViewModel),
+                });
+        }
+
+        private void OnCancelExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    ViewModel = nameof(LoginViewModel),
+                });
+        }
+
+        private bool OnSelectBranchCanExecute(object obj)
+        {
+            return SessionInfo.User.Model.IsSystemAdmin || SessionInfo.User.Model.Employee.Roles.Select(r => r.BranchId)
+                .Contains(int.Parse(obj.ToString()));
+        }
+
+        private void OnSelectBranchExecute(object obj)
+        {
+            var branch = Branches.Single(b => b.Id == int.Parse(obj.ToString()));
+            EventAggregator.GetEvent<BranchChangedEvent>()
+                .Publish(new BranchChangedEventArgs
+                {
+                    BranchId = branch.Id,
+                    Name = branch.Name,
+                });
         }
     }
 }

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="WorkAreaMovementViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
-using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
@@ -18,9 +18,9 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class WorkAreaMovementViewModel : ViewModelBase
     {
-        private IWorkAreaMovementRepository _workAreaMovementRepository;
-        private WorkArea _selectedWorkArea;
+        private readonly IWorkAreaMovementRepository _workAreaMovementRepository;
         private DateTime _selectedDate;
+        private WorkArea _selectedWorkArea;
 
         public WorkAreaMovementViewModel(
             IWorkAreaMovementRepository workAreaMovementRepository,
@@ -37,18 +37,6 @@ namespace SistemaMirno.UI.ViewModel.General
             WorkAreaOutgoingMovementsCollectionView = CollectionViewSource.GetDefaultView(WorkAreaOutgoingMovements);
         }
 
-        public WorkArea SelectedWorkArea
-        {
-            get => _selectedWorkArea;
-
-            set
-            {
-                _selectedWorkArea = value;
-                OnPropertyChanged();
-                ReloadMovementCollection();
-            }
-        }
-
         public DateTime SelectedDate
         {
             get => _selectedDate;
@@ -57,18 +45,31 @@ namespace SistemaMirno.UI.ViewModel.General
             {
                 _selectedDate = value;
                 OnPropertyChanged();
-                ReloadMovementCollection();
+                ReloadMovementCollection().ConfigureAwait(false);
             }
         }
 
-        public ObservableCollection<WorkArea> WorkAreas { get; }
+        public WorkArea SelectedWorkArea
+        {
+            get => _selectedWorkArea;
+
+            set
+            {
+                _selectedWorkArea = value;
+                OnPropertyChanged();
+                ReloadMovementCollection().ConfigureAwait(false);
+            }
+        }
 
         public ObservableCollection<WorkAreaMovement> WorkAreaIncomingMovements { get; }
 
+        public ICollectionView WorkAreaIncomingMovementsCollectionView { get; }
+
         public ObservableCollection<WorkAreaMovement> WorkAreaOutgoingMovements { get; }
 
-        public ICollectionView WorkAreaIncomingMovementsCollectionView { get; }
         public ICollectionView WorkAreaOutgoingMovementsCollectionView { get; }
+
+        public ObservableCollection<WorkArea> WorkAreas { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
@@ -90,7 +91,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private async Task LoadWorkAreas()
         {
-            var workAreas  = await _workAreaMovementRepository.GetAllWorkAreasFromBranchAsync(SessionInfo.Branch.Id);
+            var workAreas = await _workAreaMovementRepository.GetAllWorkAreasFromBranchAsync(SessionInfo.Branch.Id);
 
             foreach (var workArea in workAreas)
             {

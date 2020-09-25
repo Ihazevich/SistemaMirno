@@ -1,5 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿// <copyright file="WorkUnitRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;

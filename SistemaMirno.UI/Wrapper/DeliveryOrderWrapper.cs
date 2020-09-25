@@ -1,14 +1,18 @@
-﻿using System;
+﻿// <copyright file="DeliveryOrderWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
     public class DeliveryOrderWrapper : ModelWrapper<DeliveryOrder>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeliveryOrderWrapper"/> class.
+        /// </summary>
         public DeliveryOrderWrapper()
             : base(new DeliveryOrder())
         {

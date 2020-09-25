@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿// <copyright file="ProductCategoryDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
@@ -12,7 +16,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class ProductCategoryDetailViewModel : DetailViewModelBase
     {
-        private IProductCategoryRepository _productCategoryRepository;
+        private readonly IProductCategoryRepository _productCategoryRepository;
         private ProductCategoryWrapper _productCategory;
 
         public ProductCategoryDetailViewModel(
@@ -35,6 +39,28 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public override async Task LoadAsync(int? id = null)
+        {
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                ProductCategory = new ProductCategoryWrapper();
+                ProductCategory.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                ProductCategory.Name = string.Empty;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
+        }
+
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
         {
@@ -48,6 +74,36 @@ namespace SistemaMirno.UI.ViewModel.Detail
             });
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductCategoryViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+            await _productCategoryRepository.DeleteAsync(ProductCategory.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductCategoryViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(ProductCategory);
         }
 
         /// <inheritdoc/>
@@ -73,36 +129,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return OnSaveCanExecute(ProductCategory);
-        }
-
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            await _productCategoryRepository.DeleteAsync(ProductCategory.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ProductCategoryViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ProductCategoryViewModel),
-                });
-        }
-
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!HasChanges)
@@ -114,28 +140,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
-        }
-
-        public override async Task LoadAsync(int? id = null)
-        {
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsNew = true;
-
-                ProductCategory = new ProductCategoryWrapper();
-                ProductCategory.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-                ProductCategory.Name = string.Empty;
-            });
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
         }
     }
 }

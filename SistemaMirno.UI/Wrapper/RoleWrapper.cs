@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="RoleWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.IO;
 using SistemaMirno.Model;
 
@@ -6,6 +10,9 @@ namespace SistemaMirno.UI.Wrapper
 {
     public class RoleWrapper : ModelWrapper<Role>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleWrapper"/> class.
+        /// </summary>
         public RoleWrapper()
             : base(new Role())
         {
@@ -169,7 +176,7 @@ namespace SistemaMirno.UI.Wrapper
                         {
                             yield return "El archivo no existe";
                         }
-                        else if(!ProceduresManualPdfFile.Contains(".pdf"))
+                        else if (!ProceduresManualPdfFile.Contains(".pdf"))
                         {
                             yield return "El manual debe ser un archivo pdf";
                         }

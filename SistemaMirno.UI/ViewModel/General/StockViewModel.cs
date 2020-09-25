@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="StockViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -11,7 +11,6 @@ using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
@@ -22,18 +21,14 @@ namespace SistemaMirno.UI.ViewModel.General
     public class StockViewModel : ViewModelBase
     {
         private readonly IWorkUnitRepository _workUnitRepository;
-        private WorkUnitWrapper _selectedWorkAreaWorkUnit;
         private BranchWrapper _selectedBranch;
-        private WorkAreaWrapper _workArea;
-
-        private string _workAreaWorkUnitProductFilter;
-        private string _workAreaWorkUnitMaterialFilter;
-        private string _workAreaWorkUnitColorFilter;
-        private string _workAreaWorkUnitClientFilter;
-
+        private WorkUnitWrapper _selectedWorkAreaWorkUnit;
         private bool _showAllBranches;
-
-        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Product.Name");
+        private WorkAreaWrapper _workArea;
+        private string _workAreaWorkUnitClientFilter;
+        private string _workAreaWorkUnitColorFilter;
+        private string _workAreaWorkUnitMaterialFilter;
+        private string _workAreaWorkUnitProductFilter;
 
         public StockViewModel(
             IWorkUnitRepository workUnitRepository,
@@ -47,7 +42,7 @@ namespace SistemaMirno.UI.ViewModel.General
             Branches = new ObservableCollection<BranchWrapper>();
 
             WorkAreaCollectionView = CollectionViewSource.GetDefaultView(WorkAreaWorkUnits);
-            WorkAreaCollectionView.GroupDescriptions.Add(_productName);
+            WorkAreaCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("Model.Product.Name"));
 
             NewSaleCommand = new DelegateCommand(OnNewSaleExecute);
             DeleteWorkUnitCommand = new DelegateCommand(OnDeleteWorkUnitExecute, OnDeleteWorkUnitCanExecute);
@@ -58,81 +53,35 @@ namespace SistemaMirno.UI.ViewModel.General
             WorkAreaWorkUnitClientFilter = string.Empty;
         }
 
-        public long TotalProductionValue { get; set; }
-        public long TotalWholesalerPrice { get; set; }
-        public long TotalRetailPrice { get; set; }
+        public ObservableCollection<BranchWrapper> Branches { get; }
 
-        public Visibility TotalsVisibility =>
-            SessionInfo.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
+        public bool BranchSelectionEnabled => !ShowAllBranches;
 
         public ICommand DeleteWorkUnitCommand { get; }
 
-        private bool OnDeleteWorkUnitCanExecute()
-        {
-            return SelectedWorkAreaWorkUnit != null;
-        }
+        public ICommand NewSaleCommand { get; }
 
-        private async void OnDeleteWorkUnitExecute()
+        public BranchWrapper SelectedBranch
         {
-            await _workUnitRepository.DeleteAsync(SelectedWorkAreaWorkUnit.Model);
-            Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit));
-        }
-
-
-        private void OnNewSaleExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    ViewModel = nameof(SaleDetailViewModel),
-                });
-        }
-
-        public string WorkAreaWorkUnitProductFilter
-        {
-            get => _workAreaWorkUnitProductFilter;
+            get => _selectedBranch;
 
             set
             {
-                _workAreaWorkUnitProductFilter = value;
+                _selectedBranch = value;
                 OnPropertyChanged();
                 FilterWorkAreaCollection();
             }
         }
 
-        public string WorkAreaWorkUnitMaterialFilter
+        public WorkUnitWrapper SelectedWorkAreaWorkUnit
         {
-            get => _workAreaWorkUnitMaterialFilter;
+            get => _selectedWorkAreaWorkUnit;
 
             set
             {
-                _workAreaWorkUnitMaterialFilter = value;
+                _selectedWorkAreaWorkUnit = value;
                 OnPropertyChanged();
-                FilterWorkAreaCollection();
-            }
-        }
-
-        public string WorkAreaWorkUnitColorFilter
-        {
-            get => _workAreaWorkUnitColorFilter;
-
-            set
-            {
-                _workAreaWorkUnitColorFilter = value;
-                OnPropertyChanged();
-                FilterWorkAreaCollection();
-            }
-        }
-
-        public string WorkAreaWorkUnitClientFilter
-        {
-            get => _workAreaWorkUnitClientFilter;
-
-            set
-            {
-                _workAreaWorkUnitClientFilter = value;
-                OnPropertyChanged();
-                FilterWorkAreaCollection();
+                ((DelegateCommand)DeleteWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -152,7 +101,14 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public bool BranchSelectionEnabled => !ShowAllBranches;
+        public long TotalProductionValue { get; set; }
+
+        public long TotalRetailPrice { get; set; }
+
+        public Visibility TotalsVisibility =>
+            SessionInfo.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
+
+        public long TotalWholesalerPrice { get; set; }
 
         public WorkAreaWrapper WorkArea
         {
@@ -165,27 +121,84 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public WorkUnitWrapper SelectedWorkAreaWorkUnit
+        public ICollectionView WorkAreaCollectionView { get; }
+
+        public string WorkAreaWorkUnitClientFilter
         {
-            get => _selectedWorkAreaWorkUnit;
+            get => _workAreaWorkUnitClientFilter;
 
             set
             {
-                _selectedWorkAreaWorkUnit = value;
+                _workAreaWorkUnitClientFilter = value;
                 OnPropertyChanged();
-                ((DelegateCommand)DeleteWorkUnitCommand).RaiseCanExecuteChanged();
+                FilterWorkAreaCollection();
             }
         }
 
-        public BranchWrapper SelectedBranch
+        public string WorkAreaWorkUnitColorFilter
         {
-            get => _selectedBranch;
+            get => _workAreaWorkUnitColorFilter;
 
             set
             {
-                _selectedBranch = value;
+                _workAreaWorkUnitColorFilter = value;
                 OnPropertyChanged();
                 FilterWorkAreaCollection();
+            }
+        }
+
+        public string WorkAreaWorkUnitMaterialFilter
+        {
+            get => _workAreaWorkUnitMaterialFilter;
+
+            set
+            {
+                _workAreaWorkUnitMaterialFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection();
+            }
+        }
+
+        public string WorkAreaWorkUnitProductFilter
+        {
+            get => _workAreaWorkUnitProductFilter;
+
+            set
+            {
+                _workAreaWorkUnitProductFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection();
+            }
+        }
+
+        public ObservableCollection<WorkUnitWrapper> WorkAreaWorkUnits { get; }
+
+        public override async Task LoadAsync(int? id = null)
+        {
+            if (id.HasValue)
+            {
+                WorkAreaWorkUnits.Clear();
+
+                await LoadLastWorkArea(id.Value);
+                await LoadWorkUnits();
+                await LoadBranches();
+
+                ShowAllBranches = true;
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ProgressVisibility = Visibility.Collapsed;
+                    ViewVisibility = Visibility.Visible;
+                    OnPropertyChanged(nameof(TotalsVisibility));
+                    OnPropertyChanged(nameof(TotalProductionValue));
+                    OnPropertyChanged(nameof(TotalWholesalerPrice));
+                    OnPropertyChanged(nameof(TotalRetailPrice));
+                });
+            }
+            else
+            {
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs());
             }
         }
 
@@ -225,43 +238,15 @@ namespace SistemaMirno.UI.ViewModel.General
                       vitem.Model.CurrentWorkArea.Branch.Id == SelectedBranch.Id));
                 ProgressVisibility = Visibility.Hidden;
             });
-
         }
 
-        public ObservableCollection<WorkUnitWrapper> WorkAreaWorkUnits { get; }
-        
-        public ObservableCollection<BranchWrapper> Branches { get; }
-
-        public ICollectionView WorkAreaCollectionView { get; }
-        
-        public ICommand NewSaleCommand { get; }
-
-        public override async Task LoadAsync(int? id = null)
+        private async Task LoadBranches()
         {
-            if (id.HasValue)
+            var branches = await _workUnitRepository.GetAllBranchesAsync();
+
+            foreach (var branch in branches)
             {
-                WorkAreaWorkUnits.Clear();
-
-                await LoadLastWorkArea(id.Value);
-                await LoadWorkUnits();
-                await LoadBranches();
-
-                ShowAllBranches = true;
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    ProgressVisibility = Visibility.Collapsed;
-                    ViewVisibility = Visibility.Visible;
-                    OnPropertyChanged(nameof(TotalsVisibility));
-                    OnPropertyChanged(nameof(TotalProductionValue));
-                    OnPropertyChanged(nameof(TotalWholesalerPrice));
-                    OnPropertyChanged(nameof(TotalRetailPrice));
-                });
-            }
-            else
-            {
-                EventAggregator.GetEvent<ChangeViewEvent>()
-                    .Publish(new ChangeViewEventArgs());
+                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
             }
         }
 
@@ -292,14 +277,24 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private async Task LoadBranches()
+        private bool OnDeleteWorkUnitCanExecute()
         {
-            var branches = await _workUnitRepository.GetAllBranchesAsync();
+            return SelectedWorkAreaWorkUnit != null;
+        }
 
-            foreach (var branch in branches)
-            {
-                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
-            }
+        private async void OnDeleteWorkUnitExecute()
+        {
+            await _workUnitRepository.DeleteAsync(SelectedWorkAreaWorkUnit.Model);
+            Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit));
+        }
+
+        private void OnNewSaleExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    ViewModel = nameof(SaleDetailViewModel),
+                });
         }
     }
 }

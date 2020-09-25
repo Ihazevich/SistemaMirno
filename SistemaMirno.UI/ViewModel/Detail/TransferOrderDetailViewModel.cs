@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="TransferOrderDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -29,16 +29,15 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public class TransferOrderDetailViewModel : DetailViewModelBase
     {
         private readonly ITransferOrderRepository _transferOrderRepository;
-        private TransferOrderWrapper _transferOrder;
-        private TransferUnitWrapper _selectedTransferUnit;
+        private Branch _selectedDestinationBranch;
         private WorkUnit _selectedExistingWorkUnit;
         private Employee _selectedResponsible;
-        private Branch _selectedDestinationBranch;
+        private TransferUnitWrapper _selectedTransferUnit;
         private WorkArea _selectedWorkArea;
-
-        private string _workUnitProductSearchText;
-        private string _workUnitMaterialSearchText;
+        private TransferOrderWrapper _transferOrder;
         private string _workUnitColorSearchText;
+        private string _workUnitMaterialSearchText;
+        private string _workUnitProductSearchText;
 
         public TransferOrderDetailViewModel(
             ITransferOrderRepository transferOrderRepository,
@@ -68,26 +67,122 @@ namespace SistemaMirno.UI.ViewModel.Detail
             RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
         }
 
-        public Visibility NewButtonsVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
+        public ICommand AddWorkUnitCommand { get; }
 
-        public Visibility SelectProductsVisibility => IsNew || (TransferOrder != null && !TransferOrder.Confirmed)
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+        public ObservableCollection<Branch> Branches { get; }
+
+        public Visibility ConfirmedVisibility =>
+            TransferOrder != null ? (TransferOrder.Confirmed ? Visibility.Visible : Visibility.Collapsed) : Visibility.Collapsed;
 
         public Visibility EditButtonsVisibility => IsNew || (TransferOrder != null && TransferOrder.Confirmed)
             ? Visibility.Collapsed
             : Visibility.Visible;
 
-        public Visibility ConfirmedVisibility =>
-            TransferOrder != null ? (TransferOrder.Confirmed ? Visibility.Visible : Visibility.Collapsed) : Visibility.Collapsed;
+        public ObservableCollection<WorkUnit> ExistingWorkUnits { get; }
 
-        public string WorkUnitProductSearchText
+        public ICollectionView ExistingWorkUnitsCollectionView { get; }
+
+        public Visibility NewButtonsVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
+
+        public ICommand RemoveWorkUnitCommand { get; }
+
+        public ObservableCollection<Employee> Responsibles { get; }
+
+        public Branch SelectedDestinationBranch
         {
-            get => _workUnitProductSearchText;
+            get => _selectedDestinationBranch;
 
             set
             {
-                _workUnitProductSearchText = value;
+                _selectedDestinationBranch = value;
+                OnPropertyChanged();
+                if (_selectedDestinationBranch != null)
+                {
+                    LoadWorkUnitsAsync().ConfigureAwait(false);
+                }
+            }
+        }
+
+        public WorkUnit SelectedExistingWorkUnit
+        {
+            get => _selectedExistingWorkUnit;
+
+            set
+            {
+                _selectedExistingWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public Employee SelectedResponsible
+        {
+            get => _selectedResponsible;
+
+            set
+            {
+                _selectedResponsible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public TransferUnitWrapper SelectedTransferUnit
+        {
+            get => _selectedTransferUnit;
+
+            set
+            {
+                _selectedTransferUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public WorkArea SelectedWorkArea
+        {
+            get => _selectedWorkArea;
+
+            set
+            {
+                _selectedWorkArea = value;
+                OnPropertyChanged();
+                if (_selectedWorkArea != null)
+                {
+                    FilterExistingWorkUnits();
+                }
+            }
+        }
+
+        public Visibility SelectProductsVisibility => IsNew || (TransferOrder != null && !TransferOrder.Confirmed) ? Visibility.Visible : Visibility.Collapsed;
+
+        public TransferOrderWrapper TransferOrder
+        {
+            get => _transferOrder;
+
+            set
+            {
+                _transferOrder = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<TransferUnitWrapper> TransferUnits { get; }
+
+        public ICollectionView TransferUnitsCollectionView { get; }
+
+        public ObservableCollection<WorkUnit> TransferWorkUnits { get; }
+
+        public ObservableCollection<Vehicle> Vehicles { get; }
+
+        public ObservableCollection<WorkArea> WorkAreas { get; }
+
+        public string WorkUnitColorSearchText
+        {
+            get => _workUnitColorSearchText;
+
+            set
+            {
+                _workUnitColorSearchText = value;
                 OnPropertyChanged();
                 FilterExistingWorkUnits();
             }
@@ -105,156 +200,59 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public string WorkUnitColorSearchText
+        public string WorkUnitProductSearchText
         {
-            get => _workUnitColorSearchText;
+            get => _workUnitProductSearchText;
 
             set
             {
-                _workUnitColorSearchText = value;
+                _workUnitProductSearchText = value;
                 OnPropertyChanged();
                 FilterExistingWorkUnits();
             }
         }
 
-        private bool OnAddWorkUnitCanExecute()
+        public override async Task LoadAsync(int? id = null)
         {
-            return SelectedExistingWorkUnit != null;
-        }
+            await LoadBranchesAsync();
+            await LoadVehiclesAsync();
+            await LoadResponsiblesAsync();
 
-        private void OnAddWorkUnitExecute()
-        {
-            while (SelectedExistingWorkUnit != null)
+            if (id.HasValue)
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    TransferUnits.Add(new TransferUnitWrapper(new TransferUnit
-                    {
-                        WorkUnit = SelectedExistingWorkUnit,
-                        WorkUnitId = SelectedExistingWorkUnit.Id,
-                        FromWorkAreaId = SelectedExistingWorkUnit.CurrentWorkAreaId,
-                        ToWorkAreaId = SelectedWorkArea.Id,
-                    }));
-                    TransferWorkUnits.Add(SelectedExistingWorkUnit);
-                    ExistingWorkUnits.Remove(SelectedExistingWorkUnit);
-                });
+                await LoadDetailAsync(id.Value);
+                return;
             }
-        }
 
-        private bool OnRemoveWorkUnitCanExecute()
-        {
-            return SelectedTransferUnit != null;
-        }
-
-        private void OnRemoveWorkUnitExecute()
-        {
-            while (SelectedTransferUnit != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    ExistingWorkUnits.Add(TransferWorkUnits.Single(w => w.Id == SelectedTransferUnit.WorkUnitId));
-                    TransferWorkUnits.Remove(TransferWorkUnits.Single(w => w.Id == SelectedTransferUnit.WorkUnitId));
-                    TransferUnits.Remove(SelectedTransferUnit);
-                });
-            }
-        }
+                IsNew = true;
 
-        public ICommand AddWorkUnitCommand { get; }
+                TransferOrder = new TransferOrderWrapper();
+                TransferOrder.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
 
-        public ICommand RemoveWorkUnitCommand { get; }
+                TransferOrder.Date = DateTime.Today;
+                TransferOrder.FromBranchId = SessionInfo.Branch.Id;
+                TransferOrder.ToBranchId = 0;
+                TransferOrder.VehicleId = 0;
+                TransferOrder.ResponsibleId = 0;
+                TransferOrder.Confirmed = false;
+                TransferOrder.Arrived = false;
+                TransferOrder.Cancelled = false;
+                TransferOrder.Lost = false;
 
-        public ICollectionView ExistingWorkUnitsCollectionView { get; }
+                WorkUnitProductSearchText = string.Empty;
+                WorkUnitMaterialSearchText = string.Empty;
+                WorkUnitColorSearchText = string.Empty;
 
-        public ICollectionView TransferUnitsCollectionView { get; }
+                OnPropertyChanged(nameof(ConfirmedVisibility));
+                OnPropertyChanged(nameof(SelectProductsVisibility));
+                OnPropertyChanged(nameof(NewButtonsVisibility));
+                OnPropertyChanged(nameof(EditButtonsVisibility));
+            });
 
-        public ObservableCollection<TransferUnitWrapper> TransferUnits { get; }
-
-        public ObservableCollection<WorkUnit> TransferWorkUnits { get; }
-
-        public ObservableCollection<WorkUnit> ExistingWorkUnits { get; }
-
-        public ObservableCollection<WorkArea> WorkAreas { get; }
-
-        public ObservableCollection<Branch> Branches { get; }
-
-        public ObservableCollection<Vehicle> Vehicles { get; }
-
-        public ObservableCollection<Employee> Responsibles { get; }
-
-        public TransferOrderWrapper TransferOrder
-        {
-            get => _transferOrder;
-
-            set
-            {
-                _transferOrder = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public WorkUnit SelectedExistingWorkUnit
-        {
-            get => _selectedExistingWorkUnit;
-
-            set
-            {
-                _selectedExistingWorkUnit = value;
-                OnPropertyChanged();
-                ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public TransferUnitWrapper SelectedTransferUnit
-        {
-            get => _selectedTransferUnit;
-
-            set
-            {
-                _selectedTransferUnit = value;
-                OnPropertyChanged();
-                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public Employee SelectedResponsible
-        {
-            get => _selectedResponsible;
-
-            set
-            {
-                _selectedResponsible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Branch SelectedDestinationBranch
-        {
-            get => _selectedDestinationBranch;
-
-            set
-            {
-                _selectedDestinationBranch = value;
-                OnPropertyChanged();
-                if (_selectedDestinationBranch != null)
-                {
-                    LoadWorkUnitsAsync().ConfigureAwait(false);
-                }
-            }
-        }
-
-        public WorkArea SelectedWorkArea
-        {
-            get => _selectedWorkArea;
-
-            set
-            {
-                _selectedWorkArea = value;
-                OnPropertyChanged();
-                if (_selectedWorkArea != null)
-                {
-                    FilterExistingWorkUnits();
-                }
-            }
+            await base.LoadDetailAsync().ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -308,6 +306,43 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(TransferOrderViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+            foreach (var transferUnit in TransferOrder.Model.TransferUnits.ToList())
+            {
+                transferUnit.WorkUnit.Moving = false;
+                _transferOrderRepository.DeleteTransferUnitAsync(transferUnit);
+            }
+
+            await _transferOrderRepository.DeleteAsync(TransferOrder.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(TransferOrderViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(TransferOrder) || (!IsNew && TransferOrder != null && !TransferOrder.Confirmed) ||
+                   (TransferOrder != null && TransferOrder.Confirmed && TransferOrder.Arrived);
         }
 
         /// <inheritdoc/>
@@ -366,7 +401,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             try
             {
-                await CreateDeliveryOrderReport();
+                await Task.Run(CreateDeliveryOrderReport);
             }
             catch (Exception e)
             {
@@ -387,211 +422,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return OnSaveCanExecute(TransferOrder) || (!IsNew && TransferOrder != null && !TransferOrder.Confirmed) ||
-                   (TransferOrder != null && TransferOrder.Confirmed && TransferOrder.Arrived);
-        }
-
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            foreach (var transferUnit in TransferOrder.Model.TransferUnits.ToList())
-            {
-                transferUnit.WorkUnit.Moving = false;
-                _transferOrderRepository.DeleteTransferUnitAsync(transferUnit);
-            }
-
-            await _transferOrderRepository.DeleteAsync(TransferOrder.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(TransferOrderViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(TransferOrderViewModel),
-                });
-        }
-
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (!HasChanges)
-            {
-                HasChanges = _transferOrderRepository.HasChanges();
-            }
-
-            if (e.PropertyName == nameof(TransferOrder.HasErrors))
-            {
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-            }
-
-            if (e.PropertyName != nameof(TransferOrder.Arrived))
-            {
-                return;
-            }
-
-            if (!TransferOrder.Arrived)
-            {
-                return;
-            }
-
-            foreach (var transferUnit in TransferUnits)
-            {
-                transferUnit.Arrived = true;
-            }
-        }
-
-        public override async Task LoadAsync(int? id = null)
-        {
-            await LoadBranchesAsync();
-            await LoadVehiclesAsync();
-            await LoadResponsiblesAsync();
-
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsNew = true;
-
-                TransferOrder = new TransferOrderWrapper();
-                TransferOrder.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-                TransferOrder.Date = DateTime.Today;
-                TransferOrder.FromBranchId = SessionInfo.Branch.Id;
-                TransferOrder.ToBranchId = 0;
-                TransferOrder.VehicleId = 0;
-                TransferOrder.ResponsibleId = 0;
-                TransferOrder.Confirmed = false;
-                TransferOrder.Arrived = false;
-                TransferOrder.Cancelled = false;
-                TransferOrder.Lost = false;
-
-                WorkUnitProductSearchText = string.Empty;
-                WorkUnitMaterialSearchText = string.Empty;
-                WorkUnitColorSearchText = string.Empty;
-
-                OnPropertyChanged(nameof(ConfirmedVisibility));
-                OnPropertyChanged(nameof(SelectProductsVisibility));
-                OnPropertyChanged(nameof(NewButtonsVisibility));
-                OnPropertyChanged(nameof(EditButtonsVisibility));
-            });
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
-        }
-
-        private async Task LoadWorkAreasAsync()
-        {
-            var workAreas = await _transferOrderRepository.GetTransferWorkAreasAsync(SelectedDestinationBranch.Id);
-
-            foreach (var workArea in workAreas)
-            {
-                Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(workArea));
-            }
-        }
-
-        private async Task LoadWorkUnitsAsync()
-        {
-            await LoadWorkAreasAsync();
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                ProgressVisibility = Visibility.Visible;
-                IsEnabled = false;
-            });
-
-            var workUnits = await Task.Run(() =>
-                _transferOrderRepository.GetAllWorkUnitsAvailableForTransferAsync(SelectedDestinationBranch.Id));
-
-            if (workUnits != null)
-            {
-                foreach (var workUnit in workUnits)
-                {
-                    Application.Current.Dispatcher.Invoke(() => ExistingWorkUnits.Add(workUnit));
-                }
-            }
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                ProgressVisibility = Visibility.Collapsed;
-                IsEnabled = true;
-            });
-        }
-
-        private async Task LoadResponsiblesAsync()
-        {
-            var responsibles = await _transferOrderRepository.GetAllLogisticResponsiblesAsync();
-
-            foreach (var responsible in responsibles)
-            {
-                Application.Current.Dispatcher.Invoke(() => Responsibles.Add(responsible));
-            }
-        }
-
-        private async Task LoadVehiclesAsync()
-        {
-            var vehicles = await _transferOrderRepository.GetAllVehiclesAsync();
-
-            foreach (var vehicle in vehicles)
-            {
-                Application.Current.Dispatcher.Invoke(() => Vehicles.Add(vehicle));
-            }
-        }
-
-        private async Task LoadBranchesAsync()
-        {
-            var branches = await _transferOrderRepository.GetAllBranchesNotCurrentAsync(SessionInfo.Branch.Id);
-
-            foreach (var branch in branches)
-            {
-                Application.Current.Dispatcher.Invoke(() => Branches.Add(branch));
-            }
-        }
-
-        private void FilterExistingWorkUnits()
-        {
-            var workArea = SelectedWorkArea != null ? SelectedWorkArea.Name : string.Empty;
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                ExistingWorkUnitsCollectionView.Filter = item =>
-                {
-                    if (string.IsNullOrWhiteSpace(WorkUnitColorSearchText) &&
-                        string.IsNullOrWhiteSpace(WorkUnitMaterialSearchText) &&
-                        string.IsNullOrWhiteSpace(WorkUnitProductSearchText) &&
-                        string.IsNullOrWhiteSpace(workArea))
-                    {
-                        return false;
-                    }
-
-                    return item is WorkUnit vitem &&
-                           (vitem.Description.ToLowerInvariant()
-                                .Contains(WorkUnitProductSearchText.ToLowerInvariant()) &&
-                            vitem.Material.Name.ToLowerInvariant()
-                                .Contains(WorkUnitMaterialSearchText.ToLowerInvariant()) &&
-                            vitem.Color.Name.ToLowerInvariant()
-                                .Contains(WorkUnitColorSearchText.ToLowerInvariant()) &&
-                            vitem.CurrentWorkArea.Name.Equals(workArea));
-                };
-            });
-        }
-
-        private async Task CreateDeliveryOrderReport()
+        private Task CreateDeliveryOrderReport()
         {
             // Create a new report class with the Work Order data.
             var deliveryOrderReport = new DeliveryOrderReport
@@ -603,7 +434,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 IsNew = IsNew,
             };
 
-            foreach (var workArea in TransferWorkUnits.GroupBy(w=>w.CurrentWorkArea).Select(g => g.Key).ToList())
+            foreach (var workArea in TransferWorkUnits.GroupBy(w => w.CurrentWorkArea).Select(g => g.Key).ToList())
             {
                 var newWorkArea = new ClientReport
                 {
@@ -681,9 +512,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 report.Content.CopyTo(stream);
                 stream.Close();
 
-                ProcessStartInfo info = new ProcessStartInfo();
-                info.Verb = "open";
-                info.FileName = filename;
+                ProcessStartInfo info = new ProcessStartInfo
+                {
+                    Verb = "open",
+                    FileName = filename,
+                };
 
                 Process.Start(info);
             }
@@ -700,6 +533,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                                 Title = "Error",
                             });
                     }
+
+                    return Task.CompletedTask;
                 }
                 else
                 {
@@ -710,6 +545,176 @@ namespace SistemaMirno.UI.ViewModel.Detail
                             Title = "Error",
                         });
                 }
+
+                return Task.CompletedTask;
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private void FilterExistingWorkUnits()
+        {
+            var workArea = SelectedWorkArea != null ? SelectedWorkArea.Name : string.Empty;
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ExistingWorkUnitsCollectionView.Filter = item =>
+                {
+                    if (string.IsNullOrWhiteSpace(WorkUnitColorSearchText) &&
+                        string.IsNullOrWhiteSpace(WorkUnitMaterialSearchText) &&
+                        string.IsNullOrWhiteSpace(WorkUnitProductSearchText) &&
+                        string.IsNullOrWhiteSpace(workArea))
+                    {
+                        return false;
+                    }
+
+                    return item is WorkUnit vitem &&
+                           (vitem.Description.ToLowerInvariant()
+                                .Contains(WorkUnitProductSearchText.ToLowerInvariant()) &&
+                            vitem.Material.Name.ToLowerInvariant()
+                                .Contains(WorkUnitMaterialSearchText.ToLowerInvariant()) &&
+                            vitem.Color.Name.ToLowerInvariant()
+                                .Contains(WorkUnitColorSearchText.ToLowerInvariant()) &&
+                            vitem.CurrentWorkArea.Name.Equals(workArea));
+                };
+            });
+        }
+
+        private async Task LoadBranchesAsync()
+        {
+            var branches = await _transferOrderRepository.GetAllBranchesNotCurrentAsync(SessionInfo.Branch.Id);
+
+            foreach (var branch in branches)
+            {
+                Application.Current.Dispatcher.Invoke(() => Branches.Add(branch));
+            }
+        }
+
+        private async Task LoadResponsiblesAsync()
+        {
+            var responsibles = await _transferOrderRepository.GetAllLogisticResponsiblesAsync();
+
+            foreach (var responsible in responsibles)
+            {
+                Application.Current.Dispatcher.Invoke(() => Responsibles.Add(responsible));
+            }
+        }
+
+        private async Task LoadVehiclesAsync()
+        {
+            var vehicles = await _transferOrderRepository.GetAllVehiclesAsync();
+
+            foreach (var vehicle in vehicles)
+            {
+                Application.Current.Dispatcher.Invoke(() => Vehicles.Add(vehicle));
+            }
+        }
+
+        private async Task LoadWorkAreasAsync()
+        {
+            var workAreas = await _transferOrderRepository.GetTransferWorkAreasAsync(SelectedDestinationBranch.Id);
+
+            foreach (var workArea in workAreas)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(workArea));
+            }
+        }
+
+        private async Task LoadWorkUnitsAsync()
+        {
+            await LoadWorkAreasAsync();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ProgressVisibility = Visibility.Visible;
+                IsEnabled = false;
+            });
+
+            var workUnits = await Task.Run(() =>
+                _transferOrderRepository.GetAllWorkUnitsAvailableForTransferAsync(SelectedDestinationBranch.Id));
+
+            if (workUnits != null)
+            {
+                foreach (var workUnit in workUnits)
+                {
+                    Application.Current.Dispatcher.Invoke(() => ExistingWorkUnits.Add(workUnit));
+                }
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ProgressVisibility = Visibility.Collapsed;
+                IsEnabled = true;
+            });
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (!HasChanges)
+            {
+                HasChanges = _transferOrderRepository.HasChanges();
+            }
+
+            if (e.PropertyName == nameof(TransferOrder.HasErrors))
+            {
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            }
+
+            if (e.PropertyName != nameof(TransferOrder.Arrived))
+            {
+                return;
+            }
+
+            if (!TransferOrder.Arrived)
+            {
+                return;
+            }
+
+            foreach (var transferUnit in TransferUnits)
+            {
+                transferUnit.Arrived = true;
+            }
+        }
+
+        private bool OnAddWorkUnitCanExecute()
+        {
+            return SelectedExistingWorkUnit != null;
+        }
+
+        private void OnAddWorkUnitExecute()
+        {
+            while (SelectedExistingWorkUnit != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    TransferUnits.Add(new TransferUnitWrapper(new TransferUnit
+                    {
+                        WorkUnit = SelectedExistingWorkUnit,
+                        WorkUnitId = SelectedExistingWorkUnit.Id,
+                        FromWorkAreaId = SelectedExistingWorkUnit.CurrentWorkAreaId,
+                        ToWorkAreaId = SelectedWorkArea.Id,
+                    }));
+                    TransferWorkUnits.Add(SelectedExistingWorkUnit);
+                    ExistingWorkUnits.Remove(SelectedExistingWorkUnit);
+                });
+            }
+        }
+
+        private bool OnRemoveWorkUnitCanExecute()
+        {
+            return SelectedTransferUnit != null;
+        }
+
+        private void OnRemoveWorkUnitExecute()
+        {
+            while (SelectedTransferUnit != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ExistingWorkUnits.Add(TransferWorkUnits.Single(w => w.Id == SelectedTransferUnit.WorkUnitId));
+                    TransferWorkUnits.Remove(TransferWorkUnits.Single(w => w.Id == SelectedTransferUnit.WorkUnitId));
+                    TransferUnits.Remove(SelectedTransferUnit);
+                });
             }
         }
     }

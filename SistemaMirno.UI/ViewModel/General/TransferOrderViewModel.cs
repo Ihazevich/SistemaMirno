@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="TransferOrderViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -15,9 +19,8 @@ namespace SistemaMirno.UI.ViewModel.General
     public class TransferOrderViewModel : ViewModelBase
     {
         private readonly ITransferOrderRepository _transferOrderRepository;
-        private TransferOrder _selectedTransferOrder;
-
         private string _datagridTitle;
+        private TransferOrder _selectedTransferOrder;
 
         public TransferOrderViewModel(
             ITransferOrderRepository transferOrderRepository,
@@ -34,42 +37,20 @@ namespace SistemaMirno.UI.ViewModel.General
             ShowIncomingCommand = new DelegateCommand(OnShowIncomingExecute);
         }
 
-        private void OnShowIncomingExecute()
+        public ICommand CreateNewCommand { get; }
+
+        public string DatagridTitle
         {
-            LoadIncomingTransferOrdersAsync().ConfigureAwait(false);
+            get => _datagridTitle;
+
+            set
+            {
+                _datagridTitle = value;
+                OnPropertyChanged();
+            }
         }
 
-        private void OnShowUnconfirmedExecute()
-        {
-            LoadUnconfirmedTransferOrdersAsync().ConfigureAwait(false);
-        }
-
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedTransferOrder.Id,
-                    ViewModel = nameof(TransferOrderDetailViewModel),
-                });
-        }
-
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedTransferOrder != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(TransferOrderDetailViewModel),
-                });
-        }
-
-        public ObservableCollection<TransferOrder> TransferOrders { get; }
+        public ICommand OpenDetailCommand { get; }
 
         public TransferOrder SelectedTransferOrder
         {
@@ -86,24 +67,11 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public string DatagridTitle
-        {
-            get => _datagridTitle;
-
-            set
-            {
-                _datagridTitle = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
+        public ICommand ShowIncomingCommand { get; }
 
         public ICommand ShowUnconfirmedCommand { get; }
 
-        public ICommand ShowIncomingCommand { get; }
+        public ObservableCollection<TransferOrder> TransferOrders { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
@@ -143,6 +111,41 @@ namespace SistemaMirno.UI.ViewModel.General
             }
 
             Application.Current.Dispatcher.Invoke(() => DatagridTitle = "Ordenes sin confirmar");
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(TransferOrderDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedTransferOrder != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedTransferOrder.Id,
+                    ViewModel = nameof(TransferOrderDetailViewModel),
+                });
+        }
+
+        private void OnShowIncomingExecute()
+        {
+            LoadIncomingTransferOrdersAsync().ConfigureAwait(false);
+        }
+
+        private void OnShowUnconfirmedExecute()
+        {
+            LoadUnconfirmedTransferOrdersAsync().ConfigureAwait(false);
         }
     }
 }

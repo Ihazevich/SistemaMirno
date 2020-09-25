@@ -2,13 +2,6 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
-using jsreport.Client;
-using Newtonsoft.Json;
-using Prism.Commands;
-using Prism.Events;
-using SistemaMirno.UI.Data.Reports;
-using SistemaMirno.UI.Data.Repositories;
-using SistemaMirno.UI.Wrapper;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,29 +9,29 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using jsreport.Local;
+using jsreport.Client;
 using MahApps.Metro.Controls.Dialogs;
+using Newtonsoft.Json;
+using Prism.Commands;
+using Prism.Events;
+using SistemaMirno.UI.Data.Reports;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
+using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Reports
 {
     public class InProcessByWorkAreasViewModel : ViewModelBase
     {
-        private IWorkUnitRepository _workUnitRepository;
-
-        private readonly PropertyGroupDescription _workAreaName = new PropertyGroupDescription("Model.CurrentWorkArea.Name");
-        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Description");
-
+        private readonly IWorkUnitRepository _workUnitRepository;
+        private bool _includeClient = false;
         private bool _includePrice = false;
         private bool _includeResponsible = false;
         private bool _includeSupervisor = false;
-        private bool _includeClient = false;
 
         public InProcessByWorkAreasViewModel(
             IWorkUnitRepository workUnitRepository,
@@ -53,11 +46,20 @@ namespace SistemaMirno.UI.ViewModel.Reports
             PrintReportCommand = new DelegateCommand(OnPrintReportExecute);
 
             WorkUnitsCollection = CollectionViewSource.GetDefaultView(WorkUnits);
-            WorkUnitsCollection.GroupDescriptions.Add(_workAreaName);
-            WorkUnitsCollection.GroupDescriptions.Add(_productName);
+            WorkUnitsCollection.GroupDescriptions.Add(new PropertyGroupDescription("Model.CurrentWorkArea.Name"));
+            WorkUnitsCollection.GroupDescriptions.Add(new PropertyGroupDescription("Model.Description"));
         }
 
-        public ICommand PrintReportCommand { get; }
+        public bool IncludeCLient
+        {
+            get => _includeClient;
+
+            set
+            {
+                _includeClient = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IncludePrice
         {
@@ -92,16 +94,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
             }
         }
 
-        public bool IncludeCLient
-        {
-            get => _includeClient;
-
-            set
-            {
-                _includeClient = value;
-                OnPropertyChanged();
-            }
-        }
+        public ICommand PrintReportCommand { get; }
 
         public ObservableCollection<WorkUnitWrapper> WorkUnits { get; }
 
@@ -202,14 +195,13 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 // Add the area total production to the report total.
                 inProcessReport.Total += workAreaReport.Total;
 
-
                 // Add the work area report to the main report
                 inProcessReport.WorkAreas.Add(workAreaReport);
             }
 
             try
             {
-                var rs = new ReportingService("http://192.168.1.99:5488","Mirno","MirnoReports");
+                var rs = new ReportingService("http://192.168.1.99:5488", "Mirno", "MirnoReports");
 
                 // Create the json string and send it to the jsreport server for conversion
                 var jsonString = JsonConvert.SerializeObject(inProcessReport);
@@ -224,9 +216,11 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 stream.Close();
 
                 // Open the report with the default application to open pdf files
-                ProcessStartInfo info = new ProcessStartInfo();
-                info.Verb = "open";
-                info.FileName = filename;
+                ProcessStartInfo info = new ProcessStartInfo
+                {
+                    Verb = "open",
+                    FileName = filename,
+                };
 
                 Process.Start(info);
             }

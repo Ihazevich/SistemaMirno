@@ -1,9 +1,9 @@
-﻿using System;
+﻿// <copyright file="EmployeeWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
@@ -212,7 +212,7 @@ namespace SistemaMirno.UI.Wrapper
                     break;
 
                 case nameof(DocumentNumber):
-                    if (!int.TryParse(DocumentNumber,out int _))
+                    if (!int.TryParse(DocumentNumber, out int _))
                     {
                         yield return "Numero de documento invalido.";
                     }

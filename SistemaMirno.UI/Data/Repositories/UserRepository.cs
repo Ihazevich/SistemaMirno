@@ -1,12 +1,15 @@
-﻿using SistemaMirno.DataAccess;
-using SistemaMirno.Model;
+﻿// <copyright file="UserRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using Prism.Events;
+using SistemaMirno.DataAccess;
+using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 
@@ -28,9 +31,9 @@ namespace SistemaMirno.UI.Data.Repositories
             catch (InvalidOperationException ex)
             {
                 // Throw if more than one user with the same username is found
-                EventAggregator.GetEvent<ShowDialogEvent>().Publish( new ShowDialogEventArgs
+                EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
                 {
-                    Message = "Mas de un usuario con el mismo nombre encontrado, contacte al Administrador del Sistema.",
+                    Message = $"Mas de un usuario con el mismo nombre encontrado, contacte al Administrador del Sistema.\n[{ex.Message}]",
                     Title = "Error",
                 });
                 return null;
@@ -82,6 +85,5 @@ namespace SistemaMirno.UI.Data.Repositories
                 return null;
             }
         }
-
     }
 }

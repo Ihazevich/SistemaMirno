@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="RoleDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,8 +24,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public RoleDetailViewModel(
             IRoleRepository roleRepository,
-            IEventAggregator eventAggregator, 
-            IDialogCoordinator dialogCoordinator) 
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Detalles de Rol", dialogCoordinator)
         {
             _roleRepository = roleRepository;
@@ -30,21 +34,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             SelectFileCommand = new DelegateCommand(OnSelectFileExecute);
         }
 
-        private void OnSelectFileExecute()
-        {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.InitialDirectory = Directory.GetCurrentDirectory();
-            dlg.DefaultExt = ".pdf"; // Default file extension
-            dlg.Filter = "Archivos PDF(.pdf)|*.pdf"; // Filter files by extension
-
-            bool? result = dlg.ShowDialog();
-            // Process open file dialog box results
-            if (result == true)
-            {
-                // Save filename
-                Application.Current.Dispatcher.Invoke(() => Role.ProceduresManualPdfFile = dlg.FileName);
-            }
-        }
+        public ObservableCollection<BranchWrapper> Branches { get; }
 
         /// <summary>
         /// Gets or sets the data model wrapper.
@@ -58,26 +48,88 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 _role = value;
                 OnPropertyChanged();
             }
-
         }
 
-        public ObservableCollection<BranchWrapper> Branches { get; }
-
         public ICommand SelectFileCommand { get; }
+
+        public override async Task LoadAsync(int? id = null)
+        {
+            await LoadBranches();
+
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                Role = new RoleWrapper();
+                Role.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                Role.Description = string.Empty;
+                Role.BranchId = -1;
+                Role.HasAccessToAccounting = false;
+                Role.HasAccessToHumanResources = false;
+                Role.HasAccessToLogistics = false;
+                Role.HasAccessToProduction = false;
+                Role.HasAccessToSales = false;
+                Role.IsSystemAdmin = false;
+                Role.HasProceduresManual = false;
+                Role.ProceduresManualPdfFile = string.Empty;
+
+                ProgressVisibility = Visibility.Collapsed;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
+        }
 
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
         {
             var model = await _roleRepository.GetByIdAsync(id);
-            
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Role = new RoleWrapper(model);
                 Role.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             });
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(RoleViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+            await _roleRepository.DeleteAsync(Role.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(RoleViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(Role);
         }
 
         /// <inheritdoc/>
@@ -102,34 +154,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
+        private async Task LoadBranches()
         {
-            return OnSaveCanExecute(Role);
-        }
+            var branches = await _roleRepository.GetAllBranchesAsync();
 
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            await _roleRepository.DeleteAsync(Role.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(RoleViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(RoleViewModel),
-                });
+            foreach (var branch in branches)
+            {
+                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
+            }
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -145,48 +177,21 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public override async Task LoadAsync(int? id = null)
+        private void OnSelectFileExecute()
         {
-            await LoadBranches();
-
-            if (id.HasValue)
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
             {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
+                InitialDirectory = Directory.GetCurrentDirectory(),
+                DefaultExt = ".pdf", // Default file extension
+                Filter = "Archivos PDF(.pdf)|*.pdf", // Filter files by extension
+            };
 
-            Application.Current.Dispatcher.Invoke(() =>
+            bool? result = dlg.ShowDialog();
+            // Process open file dialog box results
+            if (result == true)
             {
-                IsNew = true;
-
-                Role = new RoleWrapper();
-                Role.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
-
-                Role.Description = string.Empty;
-                Role.BranchId = -1;
-                Role.HasAccessToAccounting = false;
-                Role.HasAccessToHumanResources = false;
-                Role.HasAccessToLogistics = false;
-                Role.HasAccessToProduction = false;
-                Role.HasAccessToSales = false;
-                Role.IsSystemAdmin = false;
-                Role.HasProceduresManual = false;
-                Role.ProceduresManualPdfFile = string.Empty;
-
-                ProgressVisibility = Visibility.Collapsed;
-            });
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
-        }
-
-        private async Task LoadBranches()
-        {
-            var branches = await _roleRepository.GetAllBranchesAsync();
-
-            foreach (var branch in branches)
-            {
-                Application.Current.Dispatcher.Invoke(() => Branches.Add(new BranchWrapper(branch)));
+                // Save filename
+                Application.Current.Dispatcher.Invoke(() => Role.ProceduresManualPdfFile = dlg.FileName);
             }
         }
     }

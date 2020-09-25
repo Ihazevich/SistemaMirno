@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="EmployeeViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,49 +19,27 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class EmployeeViewModel : ViewModelBase
     {
-        private IEmployeeRepository _employeeRepository;
-        private Func<IEmployeeRepository> _employeeRepositoryCreator;
+        private readonly IEmployeeRepository _employeeRepository;
         private EmployeeWrapper _selectedEmployee;
 
         public EmployeeViewModel(
-            Func<IEmployeeRepository> employeeRepositoryCreator,
+            IEmployeeRepository employeeRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Empleados", dialogCoordinator)
         {
-            _employeeRepositoryCreator = employeeRepositoryCreator;
+            _employeeRepository = employeeRepository;
 
             Employees = new ObservableCollection<EmployeeWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedEmployee.Id,
-                    ViewModel = nameof(EmployeeDetailViewModel),
-                });
-        }
+        public ICommand CreateNewCommand { get; }
 
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedEmployee != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(EmployeeDetailViewModel),
-                });
-        }
-        
         public ObservableCollection<EmployeeWrapper> Employees { get; }
+
+        public ICommand OpenDetailCommand { get; }
 
         public EmployeeWrapper SelectedEmployee
         {
@@ -77,14 +56,9 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
-
         public override async Task LoadAsync(int? id = null)
         {
             Employees.Clear();
-            _employeeRepository = _employeeRepositoryCreator();
 
             var employees = await _employeeRepository.GetAllAsync();
 
@@ -98,6 +72,31 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(EmployeeDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedEmployee != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedEmployee.Id,
+                    ViewModel = nameof(EmployeeDetailViewModel),
+                });
         }
     }
 }

@@ -20,9 +20,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
     /// </summary>
     public class UserDetailViewModel : DetailViewModelBase
     {
-        private IUserRepository _userRepository;
-        private UserWrapper _user;
+        private readonly IUserRepository _userRepository;
         private EmployeeWrapper _selectedEmployee;
+        private UserWrapper _user;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserDetailViewModel"/> class.
@@ -40,6 +40,19 @@ namespace SistemaMirno.UI.ViewModel.Detail
             Employees = new ObservableCollection<EmployeeWrapper>();
         }
 
+        public ObservableCollection<EmployeeWrapper> Employees { get; }
+
+        public EmployeeWrapper SelectedEmployee
+        {
+            get => _selectedEmployee;
+
+            set
+            {
+                _selectedEmployee = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Gets or sets the data model wrapper.
         /// </summary>
@@ -54,18 +67,31 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public EmployeeWrapper SelectedEmployee
+        public override async Task LoadAsync(int? id)
         {
-            get => _selectedEmployee;
+            await LoadEmployees();
 
-            set
+            if (id.HasValue)
             {
-                _selectedEmployee = value;
-                OnPropertyChanged();
+                await LoadDetailAsync(id.Value);
+                return;
             }
-        }
 
-        public ObservableCollection<EmployeeWrapper> Employees { get; }
+            IsNew = true;
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                User = new UserWrapper();
+                User.PropertyChanged += User_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                User.Username = string.Empty;
+                User.Password = string.Empty;
+                User.PasswordVerification = string.Empty;
+
+                ProgressVisibility = Visibility.Collapsed;
+            });
+        }
 
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
@@ -80,6 +106,36 @@ namespace SistemaMirno.UI.ViewModel.Detail
             });
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(UserViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+            await _userRepository.DeleteAsync(User.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(UserViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(User);
         }
 
         /// <inheritdoc/>
@@ -120,34 +176,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
+        private async Task LoadEmployees()
         {
-            return OnSaveCanExecute(User);
-        }
+            var employees = await _userRepository.GetAllEmployeesAsync();
 
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            await _userRepository.DeleteAsync(User.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(UserViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(UserViewModel),
-                });
+            foreach (var employee in employees)
+            {
+                Application.Current.Dispatcher.Invoke(() => Employees.Add(new EmployeeWrapper(employee)));
+            }
         }
 
         private void User_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -160,42 +196,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             if (e.PropertyName == nameof(User.HasErrors))
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public override async Task LoadAsync(int? id)
-        {
-            await LoadEmployees();
-
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-
-            IsNew = true;
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                User = new UserWrapper();
-                User.PropertyChanged += User_PropertyChanged;
-                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
-
-                User.Username = string.Empty;
-                User.Password = string.Empty;
-                User.PasswordVerification = string.Empty;
-
-                ProgressVisibility = Visibility.Collapsed;
-            });
-        }
-
-        private async Task LoadEmployees()
-        {
-            var employees = await _userRepository.GetAllEmployeesAsync();
-
-            foreach (var employee in employees)
-            {
-                Application.Current.Dispatcher.Invoke(() => Employees.Add(new EmployeeWrapper(employee)));
             }
         }
     }

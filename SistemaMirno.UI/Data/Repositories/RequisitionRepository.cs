@@ -17,7 +17,7 @@ namespace SistemaMirno.UI.Data.Repositories
 {
     public class RequisitionRepository : GenericRepository<Requisition, MirnoDbContext>, IRequisitionRepository
     {
-        public RequisitionRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator) 
+        public RequisitionRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
@@ -98,7 +98,7 @@ namespace SistemaMirno.UI.Data.Repositories
         {
             try
             {
-                return await Context.WorkAreas.SingleAsync(w=>w.IsFirst);
+                return await Context.WorkAreas.SingleAsync(w => w.IsFirst);
             }
             catch (Exception ex)
             {

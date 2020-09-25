@@ -20,7 +20,7 @@ namespace SistemaMirno.DataAccess
         /// Initializes a new instance of the <see cref="MirnoDbContext"/> class.
         /// </summary>
         public MirnoDbContext()
-            : base("Main")
+            : base("Dev")
         {
             DatabaseLogger.StartLogging();
             DbInterception.Add(DatabaseLogger);
@@ -320,13 +320,16 @@ namespace SistemaMirno.DataAccess
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            if (modelBuilder != null)
+            {
+                modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            }
         }
 
         protected override void Dispose(bool disposing)
         {
-            //DbInterception.Remove(DatabaseLogger);
-            //DatabaseLogger.StopLogging();
+            DbInterception.Remove(DatabaseLogger);
+            DatabaseLogger.StopLogging();
             base.Dispose(disposing);
         }
     }

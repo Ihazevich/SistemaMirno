@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace SistemaMirno.UI.Data.Reports
 {
     /// <summary>
-    /// A class representing the Units in Process report.
+    /// Represents the JSON Data used for a In-process report.
     /// </summary>
     [Serializable]
     public class InProcessReport

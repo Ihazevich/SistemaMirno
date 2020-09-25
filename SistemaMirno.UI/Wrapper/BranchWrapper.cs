@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="BranchWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper

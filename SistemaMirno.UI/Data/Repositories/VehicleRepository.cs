@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="VehicleRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;

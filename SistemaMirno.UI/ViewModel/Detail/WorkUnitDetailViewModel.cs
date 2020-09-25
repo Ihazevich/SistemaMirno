@@ -40,6 +40,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public override async Task LoadAsync(int? id = null)
+        {
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
+        }
+
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
         {
@@ -53,7 +64,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     WorkUnit.PropertyChanged += Model_PropertyChanged;
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 });
-
             }
             catch (Exception e)
             {
@@ -65,7 +75,38 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     });
                 throw;
             }
+
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = WorkUnit.CurrentWorkAreaId,
+                    ViewModel = nameof(WorkUnitViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+            await _workUnitRepository.DeleteAsync(WorkUnit.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = WorkUnit.CurrentWorkAreaId,
+                    ViewModel = nameof(WorkUnitViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return true;
         }
 
         /// <inheritdoc/>
@@ -91,36 +132,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return true;
-        }
-
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            await _workUnitRepository.DeleteAsync(WorkUnit.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = WorkUnit.CurrentWorkAreaId,
-                    ViewModel = nameof(WorkUnitViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = WorkUnit.CurrentWorkAreaId,
-                    ViewModel = nameof(WorkUnitViewModel),
-                });
-        }
-
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!HasChanges)
@@ -132,17 +143,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
-        }
-
-        public override async Task LoadAsync(int? id = null)
-        {
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
         }
     }
 }

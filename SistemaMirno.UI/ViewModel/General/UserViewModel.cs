@@ -4,17 +4,12 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
-using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
@@ -27,9 +22,8 @@ namespace SistemaMirno.UI.ViewModel.General
     /// </summary>
     public class UserViewModel : ViewModelBase
     {
+        private readonly IUserRepository _userRepository;
         private UserWrapper _selectedUser;
-        private IUserRepository _userRepository;
-        private Func<IUserRepository> _userRepositoryCreator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserViewModel"/> class.
@@ -37,12 +31,12 @@ namespace SistemaMirno.UI.ViewModel.General
         /// <param name="userDetailViewModelCreator">A function to create detailviewmodel instances.</param>
         /// <param name="eventAggregator">A <see cref="IEventAggregator"/> instance representing the event aggregator.</param>
         public UserViewModel(
-            Func<IUserRepository> userRepositoryCreator,
+            IUserRepository userRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Usuarios", dialogCoordinator)
         {
-            _userRepositoryCreator = userRepositoryCreator;
+            _userRepository = userRepository;
 
             Users = new ObservableCollection<UserWrapper>();
 
@@ -71,7 +65,6 @@ namespace SistemaMirno.UI.ViewModel.General
         public override async Task LoadAsync(int? id = null)
         {
             Users.Clear();
-            _userRepository = _userRepositoryCreator();
 
             var users = await _userRepository.GetAllAsync();
 

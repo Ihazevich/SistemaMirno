@@ -16,7 +16,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class ColorDetailViewModel : DetailViewModelBase
     {
-        private IColorRepository _colorRepository;
+        private readonly IColorRepository _colorRepository;
         private ColorWrapper _color;
 
         public ColorDetailViewModel(
@@ -39,6 +39,28 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public override async Task LoadAsync(int? id = null)
+        {
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                Color = new ColorWrapper();
+                Color.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                Color.Name = string.Empty;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
+        }
+
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
         {
@@ -52,6 +74,36 @@ namespace SistemaMirno.UI.ViewModel.Detail
             });
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ColorViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+            await _colorRepository.DeleteAsync(Color.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ColorViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(Color);
         }
 
         /// <inheritdoc/>
@@ -77,36 +129,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return OnSaveCanExecute(Color);
-        }
-
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            await _colorRepository.DeleteAsync(Color.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ColorViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ColorViewModel),
-                });
-        }
-
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!HasChanges)
@@ -118,28 +140,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
-        }
-
-        public override async Task LoadAsync(int? id = null)
-        {
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsNew = true;
-
-                Color = new ColorWrapper();
-                Color.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-                Color.Name = string.Empty;
-            });
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
         }
     }
 }

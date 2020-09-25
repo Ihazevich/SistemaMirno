@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="TransferOrderWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using SistemaMirno.Model;
 
@@ -6,6 +10,9 @@ namespace SistemaMirno.UI.Wrapper
 {
     public class TransferOrderWrapper : ModelWrapper<TransferOrder>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransferOrderWrapper"/> class.
+        /// </summary>
         public TransferOrderWrapper()
             : base(new TransferOrder())
         {

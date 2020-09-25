@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="DeliveryViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -13,7 +13,6 @@ using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.ViewModel.Detail;
-using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.General
 {
@@ -34,65 +33,6 @@ namespace SistemaMirno.UI.ViewModel.General
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
             SaveChangesCommand = new DelegateCommand(OnSaveChangesExecute);
-        }
-
-        private async void OnSaveChangesExecute()
-        {
-            foreach (var delivery in Deliveries)
-            {
-                if (delivery.Delivered && delivery.Cancelled)
-                {
-                    delivery.Delivered = false;
-                    delivery.Cancelled = false;
-                }
-                else if (delivery.Delivered)
-                {
-                    foreach (var deliveryUnit in delivery.DeliveryUnits)
-                    {
-                        deliveryUnit.Delivered = true;
-                        deliveryUnit.WorkUnit.Delivered = true;
-                        deliveryUnit.WorkUnit.Moving = false;
-                    }
-                }
-                else if (delivery.Cancelled)
-                {
-                    foreach (var deliveryUnit in delivery.DeliveryUnits)
-                    {
-                        deliveryUnit.Cancelled = true;
-                        deliveryUnit.WorkUnit.Delivered = false;
-                        deliveryUnit.WorkUnit.Moving = false;
-                    }
-                }
-
-                await _deliveryRepository.SaveAsync(delivery);
-            }
-
-            LoadDeliveriesAsync();
-        }
-
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedDelivery.Id,
-                    ViewModel = nameof(ColorDetailViewModel),
-                });
-        }
-
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedDelivery != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(DeliveryOrderDetailViewModel),
-                });
         }
 
         public ObservableCollection<Delivery> Deliveries { get; }
@@ -127,6 +67,65 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private async void OnSaveChangesExecute()
+        {
+            foreach (var delivery in Deliveries)
+            {
+                if (delivery.Delivered && delivery.Cancelled)
+                {
+                    delivery.Delivered = false;
+                    delivery.Cancelled = false;
+                }
+                else if (delivery.Delivered)
+                {
+                    foreach (var deliveryUnit in delivery.DeliveryUnits)
+                    {
+                        deliveryUnit.Delivered = true;
+                        deliveryUnit.WorkUnit.Delivered = true;
+                        deliveryUnit.WorkUnit.Moving = false;
+                    }
+                }
+                else if (delivery.Cancelled)
+                {
+                    foreach (var deliveryUnit in delivery.DeliveryUnits)
+                    {
+                        deliveryUnit.Cancelled = true;
+                        deliveryUnit.WorkUnit.Delivered = false;
+                        deliveryUnit.WorkUnit.Moving = false;
+                    }
+                }
+
+                await _deliveryRepository.SaveAsync(delivery);
+            }
+
+            await LoadDeliveriesAsync().ConfigureAwait(false);
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedDelivery.Id,
+                    ViewModel = nameof(ColorDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedDelivery != null;
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(DeliveryOrderDetailViewModel),
+                });
         }
 
         private async Task LoadDeliveriesAsync()

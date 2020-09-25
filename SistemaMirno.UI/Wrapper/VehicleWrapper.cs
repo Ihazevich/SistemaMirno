@@ -1,14 +1,18 @@
-﻿using System;
+﻿// <copyright file="VehicleWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
     public class VehicleWrapper : ModelWrapper<Vehicle>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VehicleWrapper"/> class.
+        /// </summary>
         public VehicleWrapper()
             : base(new Vehicle())
         {
@@ -57,14 +61,9 @@ namespace SistemaMirno.UI.Wrapper
             set => SetValue(value);
         }
 
-
         /// <inheritdoc/>
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {
-            switch (propertyName)
-            {
-            }
-
             foreach (var error in base.ValidateProperty(propertyName))
             {
                 if (error != null)

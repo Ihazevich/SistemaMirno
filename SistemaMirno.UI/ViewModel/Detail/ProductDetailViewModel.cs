@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="ProductDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,7 +19,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class ProductDetailViewModel : DetailViewModelBase
     {
-        private IProductRepository _productRepository;
+        private readonly IProductRepository _productRepository;
         private ProductWrapper _product;
 
         public ProductDetailViewModel(
@@ -29,7 +33,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             SelectFileCommand = new DelegateCommand<object>(OnSelectFileExecute);
         }
-        
+
         public ProductWrapper Product
         {
             get => _product;
@@ -45,6 +49,38 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         public ICommand SelectFileCommand { get; }
 
+        public override async Task LoadAsync(int? id = null)
+        {
+            await LoadProductCategories();
+
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                Product = new ProductWrapper();
+                Product.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                Product.Code = string.Empty;
+                Product.Name = string.Empty;
+                Product.ProductCategoryId = 0;
+                Product.ProductionValue = 0;
+                Product.WholesalerPrice = 0;
+                Product.RetailPrice = 0;
+                Product.IsCustom = false;
+                Product.SketchupFile = string.Empty;
+                Product.TemplateFile = string.Empty;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
+        }
+
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
         {
@@ -56,8 +92,38 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 Product.PropertyChanged += Model_PropertyChanged;
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             });
-            
+
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+            await _productRepository.DeleteAsync(Product.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(Product);
         }
 
         /// <inheritdoc/>
@@ -83,34 +149,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
+        private async Task LoadProductCategories()
         {
-            return OnSaveCanExecute(Product);
-        }
+            var categories = await _productRepository.GetAllProductCategoriesAsync();
 
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            await _productRepository.DeleteAsync(Product.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ProductViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ProductViewModel),
-                });
+            foreach (var category in categories)
+            {
+                Application.Current.Dispatcher.Invoke(() => ProductCategories.Add(new ProductCategoryWrapper(category)));
+            }
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -126,54 +172,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public override async Task LoadAsync(int? id = null)
-        {
-            await LoadProductCategories();
-
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsNew = true;
-
-                Product = new ProductWrapper();
-                Product.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                
-                Product.Code = string.Empty;
-                Product.Name = string.Empty;
-                Product.ProductCategoryId = 0;
-                Product.ProductionValue = 0;
-                Product.WholesalerPrice = 0;
-                Product.RetailPrice = 0;
-                Product.IsCustom = false;
-                Product.SketchupFile = string.Empty;
-                Product.TemplateFile = string.Empty;
-            });
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
-        }
-
-        private async Task LoadProductCategories()
-        {
-            var categories = await _productRepository.GetAllProductCategoriesAsync();
-
-            foreach (var category in categories)
-            {
-                Application.Current.Dispatcher.Invoke(() => ProductCategories.Add(new ProductCategoryWrapper(category)));
-            }
-        }
-
         private void OnSelectFileExecute(object obj)
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.InitialDirectory = Directory.GetCurrentDirectory();
-            dlg.DefaultExt = ".pdf"; // Default file extension
-            dlg.Filter = "Archivos PDF(.pdf)|*.pdf"; // Filter files by extension
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                InitialDirectory = Directory.GetCurrentDirectory(),
+                DefaultExt = ".pdf", // Default file extension
+                Filter = "Archivos PDF(.pdf)|*.pdf", // Filter files by extension
+            };
 
             bool? result = dlg.ShowDialog();
             // Process open file dialog box results

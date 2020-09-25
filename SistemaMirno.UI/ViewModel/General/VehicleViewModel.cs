@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="VehicleViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,7 +18,7 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class VehicleViewModel : ViewModelBase
     {
-        private IVehicleRepository _vehicleRepository;
+        private readonly IVehicleRepository _vehicleRepository;
         private VehicleWrapper _selectedVehicle;
 
         public VehicleViewModel(
@@ -34,32 +34,9 @@ namespace SistemaMirno.UI.ViewModel.General
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedVehicle.Id,
-                    ViewModel = nameof(VehicleDetailViewModel),
-                });
-        }
+        public ICommand CreateNewCommand { get; }
 
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedVehicle != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(VehicleDetailViewModel),
-                });
-        }
-
-        public ObservableCollection<VehicleWrapper> Vehicles { get; }
+        public ICommand OpenDetailCommand { get; }
 
         public VehicleWrapper SelectedVehicle
         {
@@ -76,9 +53,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
+        public ObservableCollection<VehicleWrapper> Vehicles { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
@@ -96,6 +71,31 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(VehicleDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedVehicle != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedVehicle.Id,
+                    ViewModel = nameof(VehicleDetailViewModel),
+                });
         }
     }
 }

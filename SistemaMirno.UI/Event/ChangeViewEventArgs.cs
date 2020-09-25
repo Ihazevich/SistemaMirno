@@ -1,4 +1,4 @@
-﻿// <copyright file="ChangeViewEvent.cs" company="HazeLabs">
+﻿// <copyright file="ChangeViewEventArgs.cs" company="HazeLabs">
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 

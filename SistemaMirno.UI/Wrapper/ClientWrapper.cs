@@ -1,8 +1,8 @@
-﻿using System;
+﻿// <copyright file="ClientWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using SistemaMirno.Model;
 
@@ -10,11 +10,18 @@ namespace SistemaMirno.UI.Wrapper
 {
     public class ClientWrapper : ModelWrapper<Client>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientWrapper"/> class.
+        /// </summary>
         public ClientWrapper()
             : base(new Client())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientWrapper"/> class.
+        /// </summary>
+        /// <param name="model">The model.</param>
         public ClientWrapper(Client model)
             : base(model)
         {
@@ -92,7 +99,6 @@ namespace SistemaMirno.UI.Wrapper
                 case nameof(IsRetail):
                     if (!IsRetail && !IsWholesaler)
                     {
-
                         yield return "Debe ser minorista o mayorista al menos.";
                     }
 
@@ -106,7 +112,6 @@ namespace SistemaMirno.UI.Wrapper
                 case nameof(IsWholesaler):
                     if (!IsRetail && !IsWholesaler)
                     {
-
                         yield return "Debe ser minorista o mayorista al menos.";
                     }
 

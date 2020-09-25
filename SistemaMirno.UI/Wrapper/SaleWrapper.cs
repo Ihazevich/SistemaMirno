@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="SaleWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using SistemaMirno.Model;
 
@@ -6,6 +10,9 @@ namespace SistemaMirno.UI.Wrapper
 {
     public class SaleWrapper : ModelWrapper<Sale>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SaleWrapper"/> class.
+        /// </summary>
         public SaleWrapper()
             : base(new Sale())
         {

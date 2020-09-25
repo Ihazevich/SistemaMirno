@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright file="VehicleDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
@@ -16,7 +17,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class VehicleDetailViewModel : DetailViewModelBase
     {
-        private IVehicleRepository _vehicleRepository;
+        private readonly IVehicleRepository _vehicleRepository;
         private VehicleWrapper _vehicle;
 
         public VehicleDetailViewModel(
@@ -36,87 +37,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _vehicle = value;
                 OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc/>
-        public override async Task LoadDetailAsync(int id)
-        {
-            var model = await _vehicleRepository.GetByIdAsync(id);
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                Vehicle = new VehicleWrapper(model);
-                Vehicle.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-            });
-
-            await base.LoadDetailAsync(id).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
-        protected override async void OnSaveExecute()
-        {
-            base.OnSaveExecute();
-
-            if (IsNew)
-            {
-                await _vehicleRepository.AddAsync(Vehicle.Model);
-            }
-            else
-            {
-                await _vehicleRepository.SaveAsync(Vehicle.Model);
-            }
-
-            HasChanges = false;
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ColorViewModel),
-                });
-        }
-
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return OnSaveCanExecute(Vehicle);
-        }
-
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            await _vehicleRepository.DeleteAsync(Vehicle.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ColorViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ColorViewModel),
-                });
-        }
-
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (!HasChanges)
-            {
-                HasChanges = _vehicleRepository.HasChanges();
-            }
-
-            if (e.PropertyName == nameof(Vehicle.HasErrors))
-            {
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -144,6 +64,87 @@ namespace SistemaMirno.UI.ViewModel.Detail
             });
 
             await base.LoadDetailAsync().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public override async Task LoadDetailAsync(int id)
+        {
+            var model = await _vehicleRepository.GetByIdAsync(id);
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Vehicle = new VehicleWrapper(model);
+                Vehicle.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            });
+
+            await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ColorViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+            await _vehicleRepository.DeleteAsync(Vehicle.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ColorViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(Vehicle);
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnSaveExecute()
+        {
+            base.OnSaveExecute();
+
+            if (IsNew)
+            {
+                await _vehicleRepository.AddAsync(Vehicle.Model);
+            }
+            else
+            {
+                await _vehicleRepository.SaveAsync(Vehicle.Model);
+            }
+
+            HasChanges = false;
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ColorViewModel),
+                });
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (!HasChanges)
+            {
+                HasChanges = _vehicleRepository.HasChanges();
+            }
+
+            if (e.PropertyName == nameof(Vehicle.HasErrors))
+            {
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            }
         }
     }
 }

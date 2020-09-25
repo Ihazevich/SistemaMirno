@@ -1,8 +1,9 @@
-﻿using System;
+﻿// <copyright file="WorkUnitWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
@@ -32,7 +33,7 @@ namespace SistemaMirno.UI.Wrapper
             get => GetValue<int>();
             set => SetValue(value);
         }
-        
+
         public int ColorId
         {
             get => GetValue<int>();

@@ -18,7 +18,6 @@ namespace SistemaMirno.UI.Wrapper
         public UserWrapper()
             : base(new User())
         {
-
         }
 
         /// <summary>
@@ -31,18 +30,18 @@ namespace SistemaMirno.UI.Wrapper
         }
 
         /// <summary>
+        /// Gets or sets the User password.
+        /// </summary>
+        public int EmployeeId
+        {
+            get => GetValue<int>();
+            set => SetValue(value);
+        }
+
+        /// <summary>
         /// Gets the User ID.
         /// </summary>
         public int Id => GetValue<int>();
-
-        /// <summary>
-        /// Gets or sets the User name.
-        /// </summary>
-        public string Username
-        {
-            get => GetValue<string>();
-            set => SetValue(value);
-        }
 
         /// <summary>
         /// Gets or sets the User password.
@@ -60,12 +59,23 @@ namespace SistemaMirno.UI.Wrapper
         }
 
         /// <summary>
-        /// Gets or sets the User password.
+        /// Gets or sets the User name.
         /// </summary>
-        public int EmployeeId
+        public string Username
         {
-            get => GetValue<int>();
+            get => GetValue<string>();
             set => SetValue(value);
+        }
+
+        public static string GetPasswordHash(string password)
+        {
+            using (var sha1 = new SHA1Managed())
+            {
+                var hash = Encoding.UTF8.GetBytes(password);
+                var generatedHash = sha1.ComputeHash(hash);
+                var generatedHashString = Convert.ToBase64String(generatedHash);
+                return generatedHashString;
+            }
         }
 
         /// <inheritdoc/>
@@ -112,17 +122,6 @@ namespace SistemaMirno.UI.Wrapper
                 {
                     yield return error;
                 }
-            }
-        }
-
-        public static string GetPasswordHash(string password)
-        {
-            using (var sha1 = new SHA1Managed())
-            {
-                var hash = Encoding.UTF8.GetBytes(password);
-                var generatedHash = sha1.ComputeHash(hash);
-                var generatedHashString = Convert.ToBase64String(generatedHash);
-                return generatedHashString;
             }
         }
     }

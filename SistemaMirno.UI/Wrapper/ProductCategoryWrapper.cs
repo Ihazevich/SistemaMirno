@@ -1,14 +1,17 @@
-﻿using System;
+﻿// <copyright file="ProductCategoryWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
     public class ProductCategoryWrapper : ModelWrapper<ProductCategory>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductCategoryWrapper"/> class.
+        /// </summary>
         public ProductCategoryWrapper()
             : base(new ProductCategory())
         {

@@ -1,4 +1,4 @@
-﻿// <copyright file="NewWorkOrderEvent.cs" company="HazeLabs">
+﻿// <copyright file="NewWorkOrderEventArgs.cs" company="HazeLabs">
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 

@@ -9,11 +9,11 @@ using SistemaMirno.UI.ViewModel.Main;
 namespace SistemaMirno.UI
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml.
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private MainViewModel _viewModel;
+        private readonly MainViewModel _viewModel;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.

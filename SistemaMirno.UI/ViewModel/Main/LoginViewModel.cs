@@ -2,9 +2,6 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
-using System;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -12,7 +9,6 @@ using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using SistemaMirno.Model;
-using SistemaMirno.UI.Data.Repositories;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
 using SistemaMirno.UI.Wrapper;
@@ -21,9 +17,9 @@ namespace SistemaMirno.UI.ViewModel.Main
 {
     public class LoginViewModel : ViewModelBase, ILoginViewModel
     {
-        private IUserRepository _userRepository;
-        private UserWrapper _user;
+        private readonly IUserRepository _userRepository;
         private bool _notBusy;
+        private UserWrapper _user;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
@@ -34,7 +30,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             IUserRepository userRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
-            : base (eventAggregator, "Login", dialogCoordinator)
+            : base(eventAggregator, "Login", dialogCoordinator)
         {
             _userRepository = userRepository;
 
@@ -52,6 +48,10 @@ namespace SistemaMirno.UI.ViewModel.Main
             ClearStatusBar();
         }
 
+        public ICommand CancelCommand { get; }
+
+        public ICommand LoginCommand { get; }
+
         public bool NotBusy
         {
             get => _notBusy;
@@ -63,27 +63,29 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
-        private void OnCancelExecute()
+        /// <summary>
+        /// Gets or sets the user.
+        /// </summary>
+        public UserWrapper User
         {
-            EventAggregator.GetEvent<ExitApplicationEvent>()
-                .Publish();
+            get => _user;
+
+            set
+            {
+                _user = value;
+                OnPropertyChanged();
+            }
         }
 
-        private async void OnLoginExecute(object o)
+        public override Task LoadAsync(int? id = null)
         {
-            NotBusy = false;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ViewVisibility = Visibility.Visible;
+                ProgressVisibility = Visibility.Collapsed;
+            });
 
-            NotifyStatusBar("Verificando usuario", true);
-
-            var passwordBox = (o as System.Windows.Controls.PasswordBox);
-            User.Password = passwordBox.Password;
-            passwordBox.Clear();
-
-            await Task.Run(CheckUser);
-
-            ClearStatusBar();
-
-            NotBusy = true;
+            return Task.CompletedTask;
         }
 
         private bool CanLoginExecute(object o)
@@ -156,33 +158,27 @@ namespace SistemaMirno.UI.ViewModel.Main
             Application.Current.Dispatcher.Invoke(() => ProgressVisibility = Visibility.Collapsed);
         }
 
-        /// <summary>
-        /// Gets or sets the user.
-        /// </summary>
-        public UserWrapper User
+        private void OnCancelExecute()
         {
-            get => _user;
-
-            set
-            {
-                _user = value;
-                OnPropertyChanged();
-            }
+            EventAggregator.GetEvent<ExitApplicationEvent>()
+                .Publish();
         }
 
-        public ICommand LoginCommand { get; }
-
-        public ICommand CancelCommand { get; }
-
-        public override Task LoadAsync(int? id = null)
+        private async void OnLoginExecute(object o)
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                ViewVisibility = Visibility.Visible;
-                ProgressVisibility = Visibility.Collapsed;
-            });
+            NotBusy = false;
 
-            return Task.CompletedTask;
+            NotifyStatusBar("Verificando usuario", true);
+
+            var passwordBox = o as System.Windows.Controls.PasswordBox;
+            User.Password = passwordBox.Password;
+            passwordBox.Clear();
+
+            await Task.Run(CheckUser);
+
+            ClearStatusBar();
+
+            NotBusy = true;
         }
 
         private void User_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -1,9 +1,11 @@
-﻿using System;
+﻿// <copyright file="ProductViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -22,7 +24,7 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class ProductViewModel : ViewModelBase
     {
-        private IProductRepository _productRepository;
+        private readonly IProductRepository _productRepository;
         private ProductWrapper _selectedProduct;
 
         public ProductViewModel(
@@ -39,30 +41,11 @@ namespace SistemaMirno.UI.ViewModel.General
             ImportFromFileCommand = new DelegateCommand(OnImportFromFileExecute);
         }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedProduct.Id,
-                    ViewModel = nameof(ProductDetailViewModel),
-                });
-        }
+        public ICommand CreateNewCommand { get; }
 
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedProduct != null;
-        }
+        public ICommand ImportFromFileCommand { get; }
 
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ProductDetailViewModel),
-                });
-        }
+        public ICommand OpenDetailCommand { get; }
 
         public ObservableCollection<ProductWrapper> Products { get; }
 
@@ -81,12 +64,6 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
-
-        public ICommand ImportFromFileCommand { get; }
-
         public override async Task LoadAsync(int? id = null)
         {
             Products.Clear();
@@ -103,6 +80,16 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductDetailViewModel),
+                });
         }
 
         private async void OnImportFromFileExecute()
@@ -224,6 +211,21 @@ namespace SistemaMirno.UI.ViewModel.General
                         ViewModel = nameof(ProductViewModel),
                     });
             }
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedProduct != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedProduct.Id,
+                    ViewModel = nameof(ProductDetailViewModel),
+                });
         }
     }
 }

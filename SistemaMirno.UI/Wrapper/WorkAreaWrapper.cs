@@ -129,7 +129,6 @@ namespace SistemaMirno.UI.Wrapper
 
                     break;
 
-
                 case nameof(ResponsibleRoleId):
                     if (ResponsibleRoleId < 1)
                     {

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="WorkOrderDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -25,37 +29,31 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class WorkOrderDetailViewModel : DetailViewModelBase
     {
-        private readonly IWorkOrderRepository _workOrderRepository;
-
-        private WorkAreaWrapper _workArea;
-        private WorkOrderWrapper _workOrder;
-        private WorkUnitWrapper _newWorkUnit;
-        private WorkUnitWrapper _selectedExistingWorkUnit;
-        private WorkUnitWrapper _selectedRequisitionWorkUnit;
-        private WorkOrderUnitWrapper _selectedWorkOrderUnit;
-
-        private ProductWrapper _selectedProduct;
-        private MaterialWrapper _selectedMaterial;
-        private ColorWrapper _selectedColor;
-
-        private EmployeeWrapper _selectedResponsible;
-        private EmployeeWrapper _selectedSupervisor;
-
-        private Visibility _newWorkUnitGridVisibility;
-        private Visibility _requisitionWorkUnitGridVisibility;
-        private Visibility _existingWorkUnitGridVisibility;
-
-        private string _quantity;
-        private string _existingWorkUnitSearchText;
-        private int _originWorkAreaId;
-
-        private bool _canGetWorkUnitsFromRequisition;
-
-        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Description");
-        private readonly PropertyGroupDescription _workOrderUnitProductName = new PropertyGroupDescription("Model.WorkUnit.Description");
-
         private readonly PropertyGroupDescription _currentWorkAreaName =
             new PropertyGroupDescription("Model.CurrentWorkArea.Name");
+
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Description");
+        private readonly IWorkOrderRepository _workOrderRepository;
+
+        private readonly PropertyGroupDescription _workOrderUnitProductName = new PropertyGroupDescription("Model.WorkUnit.Description");
+        private bool _canGetWorkUnitsFromRequisition;
+        private Visibility _existingWorkUnitGridVisibility;
+        private string _existingWorkUnitSearchText;
+        private WorkUnitWrapper _newWorkUnit;
+        private Visibility _newWorkUnitGridVisibility;
+        private int _originWorkAreaId;
+        private string _quantity;
+        private Visibility _requisitionWorkUnitGridVisibility;
+        private ColorWrapper _selectedColor;
+        private WorkUnitWrapper _selectedExistingWorkUnit;
+        private MaterialWrapper _selectedMaterial;
+        private ProductWrapper _selectedProduct;
+        private WorkUnitWrapper _selectedRequisitionWorkUnit;
+        private EmployeeWrapper _selectedResponsible;
+        private EmployeeWrapper _selectedSupervisor;
+        private WorkOrderUnitWrapper _selectedWorkOrderUnit;
+        private WorkAreaWrapper _workArea;
+        private WorkOrderWrapper _workOrder;
 
         public WorkOrderDetailViewModel(
             IWorkOrderRepository workOrderRepository,
@@ -93,121 +91,21 @@ namespace SistemaMirno.UI.ViewModel.Detail
             RemoveWorkUnitCommand = new DelegateCommand(OnRemoveWorkUnitExecute, OnRemoveWorkUnitCanExecute);
         }
 
-        private bool OnAddExistingWorkUnitCanExecute()
-        {
-            return SelectedExistingWorkUnit != null;
-        }
+        public ICommand AddExistingWorkUnitCommand { get; }
 
-        private void OnAddExistingWorkUnitExecute()
-        {
-            while (SelectedExistingWorkUnit != null)
-            {
-                var workOrderUnit = new WorkOrderUnit
-                {
-                    WorkUnitId = SelectedExistingWorkUnit.Id,
-                    WorkUnit = SelectedExistingWorkUnit.Model,
-                };
-                WorkOrder.Model.WorkOrderUnits.Add(workOrderUnit);
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit));
-                    ExistingWorkUnits.Remove(SelectedExistingWorkUnit);
-                });
-            }
+        public ICommand AddNewWorkUnitCommand { get; }
 
-            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
-        }
+        public Visibility AddNewWorkUnitVisibility =>
+            IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
 
-        private bool OnAddRequisitionWorkUnitCanExecute()
-        {
-            return SelectedRequisitionWorkUnit != null;
-        }
+        public ICommand AddRequisitionWorkUnitCommand { get; }
 
-        private void OnAddRequisitionWorkUnitExecute()
-        {
-            while (SelectedRequisitionWorkUnit != null)
-            {
-                var workOrderUnit = new WorkOrderUnit
-                {
-                    WorkUnitId = SelectedRequisitionWorkUnit.Id,
-                    WorkUnit = SelectedRequisitionWorkUnit.Model,
-                };
-                WorkOrder.Model.WorkOrderUnits.Add(workOrderUnit);
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit));
-                    RequisitionWorkUnits.Remove(SelectedRequisitionWorkUnit);
-                });
-            }
+        public Visibility AddRequisitionWorkUnitVisibility =>
+            IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
 
-            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
-        }
+        public Visibility AddWorkAreaWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
 
-        private bool OnRemoveWorkUnitCanExecute()
-        {
-            return SelectedWorkOrderUnit != null;
-        }
-
-        private void OnRemoveWorkUnitExecute()
-        {
-            WorkOrder.Model.WorkOrderUnits.Remove(SelectedWorkOrderUnit.Model);
-            Application.Current.Dispatcher.Invoke(() => WorkOrderUnits.Remove(SelectedWorkOrderUnit));
-            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
-        }
-
-        private bool OnAddNewWorkUnitCanExecute()
-        {
-            return int.TryParse(Quantity, out _) && !NewWorkUnit.HasErrors;
-        }
-
-        private void OnAddNewWorkUnitExecute()
-        {
-            var quantity = int.Parse(Quantity);
-
-            for (var i = 0; i < quantity; i++)
-            {
-                var workUnit = new WorkUnit
-                {
-                    ProductId = NewWorkUnit.ProductId,
-                    MaterialId = NewWorkUnit.MaterialId,
-                    ColorId = NewWorkUnit.ColorId,
-                    Product = SelectedProduct.Model,
-                    Material = SelectedMaterial.Model,
-                    Color = SelectedColor.Model,
-                    Delivered = NewWorkUnit.Delivered,
-                    CreationDate = DateTime.Now,
-                    TotalWorkTime = NewWorkUnit.TotalWorkTime,
-                    Details = NewWorkUnit.Details,
-                    CurrentWorkArea = NewWorkUnit.Model.CurrentWorkArea,
-                    CurrentWorkAreaId = NewWorkUnit.CurrentWorkAreaId,
-                    LatestResponsibleId = WorkOrder.ResponsibleEmployeeId,
-                    LatestSupervisorId = WorkOrder.SupervisorEmployeeId,
-                };
-
-                var workOrderUnit = new WorkOrderUnit
-                {
-                    WorkUnit = workUnit,
-                };
-
-                WorkOrder.Model.WorkOrderUnits.Add(workOrderUnit);
-                Application.Current.Dispatcher.Invoke(() =>
-                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit)));
-            }
-
-            ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
-        }
-
-        public string Quantity
-        {
-            get => _quantity;
-
-            set
-            {
-                _quantity = int.TryParse(value, out _) ? value : string.Empty;
-                OnPropertyChanged();
-                ((DelegateCommand) AddNewWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
+        public ICommand AddWorkUnitCommand { get; }
 
         public bool CanGetWorkUnitsFromRequisition
         {
@@ -222,71 +120,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public ObservableCollection<WorkOrderUnitWrapper> WorkOrderUnits { get; }
-
-        public ObservableCollection<WorkUnitWrapper> ExistingWorkUnits { get; }
-
-        public ObservableCollection<WorkUnitWrapper> RequisitionWorkUnits { get; }
-
-        public ObservableCollection<ProductWrapper> Products { get; }
-
-        public ObservableCollection<MaterialWrapper> Materials { get; }
-
         public ObservableCollection<ColorWrapper> Colors { get; }
 
-        public ObservableCollection<EmployeeWrapper> Responsibles { get; }
-
-        public ObservableCollection<EmployeeWrapper> Supervisors { get; }
-
-        public ICollectionView WorkOrderUnitsCollectionView { get; }
-
-        public ICollectionView ExistingWorkUnitsCollectionView { get; }
-
-        public ICollectionView RequisitionWorkUnitsCollectionView { get; }
-
-        private void OnAddWorkUnitExecute(object obj)
-        {
-            switch (obj.ToString())
-            {
-                case "New":
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        NewWorkUnitGridVisibility = Visibility.Visible;
-                        RequisitionWorkUnitGridVisibility = Visibility.Collapsed;
-                        ExistingWorkUnitGridVisibility = Visibility.Collapsed;
-                    });
-                    break;
-
-                case "FromRequisitions":
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        NewWorkUnitGridVisibility = Visibility.Collapsed;
-                        ExistingWorkUnitGridVisibility = Visibility.Collapsed;
-                        RequisitionWorkUnitGridVisibility = Visibility.Visible;
-                    });
-                    break;
-
-                case "FromWorkAreas":
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        NewWorkUnitGridVisibility = Visibility.Collapsed;
-                        RequisitionWorkUnitGridVisibility = Visibility.Collapsed;
-                        ExistingWorkUnitGridVisibility = Visibility.Visible;
-                    });
-                    break;
-            }
-        }
-
-        public Visibility NewWorkUnitGridVisibility
-        {
-            get => _newWorkUnitGridVisibility;
-
-            set
-            {
-                _newWorkUnitGridVisibility = value;
-                OnPropertyChanged();
-            }
-        }
+        public Visibility DetailButtonsVisibility => IsNew ? Visibility.Collapsed : Visibility.Visible;
 
         public Visibility ExistingWorkUnitGridVisibility
         {
@@ -296,6 +132,22 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 _existingWorkUnitGridVisibility = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<WorkUnitWrapper> ExistingWorkUnits { get; }
+
+        public ICollectionView ExistingWorkUnitsCollectionView { get; }
+
+        public string ExistingWorkUnitSearchText
+        {
+            get => _existingWorkUnitSearchText;
+
+            set
+            {
+                _existingWorkUnitSearchText = value;
+                OnPropertyChanged();
+                FilterExistingWorkUnitsCollectionView(value);
             }
         }
 
@@ -309,42 +161,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 OnPropertyChanged();
             }
         }
-
-        public Visibility RequisitionWorkUnitGridVisibility
-        {
-            get => _requisitionWorkUnitGridVisibility;
-
-            set
-            {
-                _requisitionWorkUnitGridVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility RequisitionWorkUnitsProgressVisibility
-        {
-            get => _existingWorkUnitGridVisibility;
-
-            set
-            {
-                _existingWorkUnitGridVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility NewButtonsVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
-
-        public Visibility DetailButtonsVisibility => IsNew ? Visibility.Collapsed : Visibility.Visible;
-
-        public Visibility AddWorkAreaWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
-
-        public Visibility AddNewWorkUnitVisibility =>
-            IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
-
-        public Visibility AddRequisitionWorkUnitVisibility =>
-            IsNew && CanGetWorkUnitsFromRequisition ? Visibility.Visible : Visibility.Collapsed;
-
-        public Visibility RemoveWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
 
         public override bool IsNew
         {
@@ -360,6 +176,147 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 OnPropertyChanged(nameof(AddRequisitionWorkUnitVisibility));
                 OnPropertyChanged(nameof(AddNewWorkUnitVisibility));
                 OnPropertyChanged(nameof(RemoveWorkUnitVisibility));
+            }
+        }
+
+        public ObservableCollection<MaterialWrapper> Materials { get; }
+
+        public Visibility NewButtonsVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
+
+        public WorkUnitWrapper NewWorkUnit
+        {
+            get => _newWorkUnit;
+
+            set
+            {
+                _newWorkUnit = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility NewWorkUnitGridVisibility
+        {
+            get => _newWorkUnitGridVisibility;
+
+            set
+            {
+                _newWorkUnitGridVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<ProductWrapper> Products { get; }
+
+        public string Quantity
+        {
+            get => _quantity;
+
+            set
+            {
+                _quantity = int.TryParse(value, out _) ? value : string.Empty;
+                OnPropertyChanged();
+                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public ICommand RemoveWorkUnitCommand { get; }
+
+        public Visibility RemoveWorkUnitVisibility => IsNew ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility RequisitionWorkUnitGridVisibility
+        {
+            get => _requisitionWorkUnitGridVisibility;
+
+            set
+            {
+                _requisitionWorkUnitGridVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<WorkUnitWrapper> RequisitionWorkUnits { get; }
+
+        public ICollectionView RequisitionWorkUnitsCollectionView { get; }
+
+        public string RequisitionWorkUnitSearchText
+        {
+            get => _existingWorkUnitSearchText;
+
+            set
+            {
+                _existingWorkUnitSearchText = value;
+                OnPropertyChanged();
+                FilterRequisitionWorkUnitsCollectionView(value);
+            }
+        }
+
+        public Visibility RequisitionWorkUnitsProgressVisibility
+        {
+            get => _existingWorkUnitGridVisibility;
+
+            set
+            {
+                _existingWorkUnitGridVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<EmployeeWrapper> Responsibles { get; }
+
+        public ColorWrapper SelectedColor
+        {
+            get => _selectedColor;
+
+            set
+            {
+                _selectedColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public WorkUnitWrapper SelectedExistingWorkUnit
+        {
+            get => _selectedExistingWorkUnit;
+
+            set
+            {
+                _selectedExistingWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)AddExistingWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public MaterialWrapper SelectedMaterial
+        {
+            get => _selectedMaterial;
+
+            set
+            {
+                _selectedMaterial = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ProductWrapper SelectedProduct
+        {
+            get => _selectedProduct;
+
+            set
+            {
+                _selectedProduct = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public WorkUnitWrapper SelectedRequisitionWorkUnit
+        {
+            get => _selectedRequisitionWorkUnit;
+
+            set
+            {
+                _selectedRequisitionWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)AddRequisitionWorkUnitCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -385,6 +342,20 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public WorkOrderUnitWrapper SelectedWorkOrderUnit
+        {
+            get => _selectedWorkOrderUnit;
+
+            set
+            {
+                _selectedWorkOrderUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public ObservableCollection<EmployeeWrapper> Supervisors { get; }
+
         public WorkAreaWrapper WorkArea
         {
             get => _workArea;
@@ -407,401 +378,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public WorkUnitWrapper NewWorkUnit
-        {
-            get => _newWorkUnit;
+        public ObservableCollection<WorkOrderUnitWrapper> WorkOrderUnits { get; }
 
-            set
-            {
-                _newWorkUnit = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public WorkOrderUnitWrapper SelectedWorkOrderUnit
-        {
-            get => _selectedWorkOrderUnit;
-
-            set
-            {
-                _selectedWorkOrderUnit = value;
-                OnPropertyChanged();
-                ((DelegateCommand) RemoveWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public WorkUnitWrapper SelectedExistingWorkUnit
-        {
-            get => _selectedExistingWorkUnit;
-
-            set
-            {
-                _selectedExistingWorkUnit = value;
-                OnPropertyChanged();
-                ((DelegateCommand) AddExistingWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public WorkUnitWrapper SelectedRequisitionWorkUnit
-        {
-            get => _selectedRequisitionWorkUnit;
-
-            set
-            {
-                _selectedRequisitionWorkUnit = value;
-                OnPropertyChanged();
-                ((DelegateCommand) AddRequisitionWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public ProductWrapper SelectedProduct
-        {
-            get => _selectedProduct;
-
-            set
-            {
-                _selectedProduct = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public MaterialWrapper SelectedMaterial
-        {
-            get => _selectedMaterial;
-
-            set
-            {
-                _selectedMaterial = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ColorWrapper SelectedColor
-        {
-            get => _selectedColor;
-
-            set
-            {
-                _selectedColor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ExistingWorkUnitSearchText
-        {
-            get => _existingWorkUnitSearchText;
-
-            set
-            {
-                _existingWorkUnitSearchText = value;
-                OnPropertyChanged();
-                FilterExistingWorkUnitsCollectionView(value);
-            }
-        }
-
-        public string RequisitionWorkUnitSearchText
-        {
-            get => _existingWorkUnitSearchText;
-
-            set
-            {
-                _existingWorkUnitSearchText = value;
-                OnPropertyChanged();
-                FilterRequisitionWorkUnitsCollectionView(value);
-            }
-        }
-
-        private void FilterExistingWorkUnitsCollectionView(string search)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                ExistingWorkUnitsProgressVisibility = Visibility.Visible;
-                ExistingWorkUnitsCollectionView.Filter = item =>
-                {
-                    WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                    return vitem != null &&
-                           vitem.Model.Description.ToLowerInvariant().Contains(search.ToLowerInvariant());
-                };
-                ExistingWorkUnitsProgressVisibility = Visibility.Hidden;
-            });
-        }
-
-        private void FilterRequisitionWorkUnitsCollectionView(string search)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                RequisitionWorkUnitsProgressVisibility = Visibility.Visible;
-                RequisitionWorkUnitsCollectionView.Filter = item =>
-                {
-                    WorkUnitWrapper vitem = item as WorkUnitWrapper;
-                    return vitem != null &&
-                           vitem.Model.Description.ToLowerInvariant().Contains(search.ToLowerInvariant());
-                };
-                RequisitionWorkUnitsProgressVisibility = Visibility.Hidden;
-            });
-        }
-
-        public ICommand AddWorkUnitCommand { get; }
-
-        public ICommand AddNewWorkUnitCommand { get; }
-
-        public ICommand AddExistingWorkUnitCommand { get; }
-
-        public ICommand AddRequisitionWorkUnitCommand { get; }
-
-        public ICommand RemoveWorkUnitCommand { get; }
-
-        /// <inheritdoc/>
-        public override async Task LoadDetailAsync(int id)
-        {
-            var model = await _workOrderRepository.GetByIdAsync(id);
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                WorkOrder = new WorkOrderWrapper(model);
-                WorkOrder.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
-                WorkArea = new WorkAreaWrapper(model.DestinationWorkArea);
-            });
-
-            foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit)));
-            }
-
-            await base.LoadDetailAsync(id).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
-        protected override async void OnSaveExecute()
-        {
-            if (!IsNew)
-            {
-                return;
-            }
-
-            base.OnSaveExecute();
-
-            WorkOrder.CreationDateTime = DateTime.Now;
-            
-            foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
-            {
-                // Store movement history
-                var movement = new WorkAreaMovement
-                {
-                    FromWorkAreaId = workOrderUnit.WorkUnit.CurrentWorkAreaId,
-                    ToWorkAreaId = WorkArea.Id,
-                    ResponsibleId = WorkOrder.ResponsibleEmployeeId,
-                    SupervisorId = WorkOrder.SupervisorEmployeeId,
-                    Date = DateTime.Now,
-                    WorkUnit = workOrderUnit.WorkUnit,
-                };
-
-                workOrderUnit.WorkUnit.Movements.Add(movement);
-
-                if (WorkArea.IsPassthrough && WorkArea.PassthroughWorkAreaId.HasValue)
-                {
-                    // If area is passthrough, store the second movement aswell
-                    movement = new WorkAreaMovement
-                    {
-                        FromWorkAreaId = WorkArea.Id,
-                        ToWorkAreaId = WorkArea.PassthroughWorkAreaId.Value,
-                        ResponsibleId = WorkOrder.ResponsibleEmployeeId,
-                        SupervisorId = WorkOrder.SupervisorEmployeeId,
-                        Date = DateTime.Now,
-                        WorkUnit = workOrderUnit.WorkUnit,
-                    };
-                    workOrderUnit.WorkUnit.Movements.Add(movement);
-
-                    workOrderUnit.WorkUnit.CurrentWorkAreaId = WorkArea.PassthroughWorkAreaId.Value;
-                }
-                else
-                {
-                    workOrderUnit.WorkUnit.CurrentWorkAreaId = WorkArea.Id;
-                }
-
-                workOrderUnit.WorkUnit.LatestResponsibleId = WorkOrder.ResponsibleEmployeeId;
-                workOrderUnit.WorkUnit.LatestSupervisorId = WorkOrder.SupervisorEmployeeId;
-
-                // Check if destination workArea is last, if it is mark the unit as finished
-                if (WorkArea.IsLast || WorkArea.IsPassthrough)
-                {
-                    workOrderUnit.Finished = true;
-                }
-                else
-                {
-                    workOrderUnit.Finished = false;
-                }
-
-            }
-
-            await _workOrderRepository.AddAsync(WorkOrder.Model);
-
-            try
-            {
-                await CreateWorkOrderReport();
-            }
-            catch (Exception e)
-            {
-                EventAggregator.GetEvent<ShowDialogEvent>()
-                    .Publish(new ShowDialogEventArgs
-                    {
-                        Title = "Error",
-                        Message = e.Message,
-                    });
-            }
-
-            HasChanges = false;
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = _originWorkAreaId,
-                    ViewModel = nameof(WorkUnitViewModel),
-                });
-        }
-
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return OnSaveCanExecute(WorkOrder) && WorkOrderUnits.Count > 0;
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            if (IsNew)
-            {
-                EventAggregator.GetEvent<ChangeViewEvent>()
-                    .Publish(new ChangeViewEventArgs
-                    {
-                        Id = _originWorkAreaId,
-                        ViewModel = nameof(WorkUnitViewModel),
-                    });
-            }
-            else
-            {
-                EventAggregator.GetEvent<ChangeViewEvent>()
-                    .Publish(new ChangeViewEventArgs
-                    {
-                        Id = WorkOrder.DestinationWorkAreaId,
-                        ViewModel = nameof(WorkOrderViewModel),
-                    });
-            }
-        }
-
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (!HasChanges)
-            {
-                HasChanges = _workOrderRepository.HasChanges();
-            }
-
-            if (e.PropertyName == nameof(WorkOrder.HasErrors))
-            {
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        private void NewWorkUnit_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(NewWorkUnit.HasErrors))
-            {
-                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public override async Task LoadAsync(int? id = null)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                NewWorkUnitGridVisibility = Visibility.Collapsed;
-                ExistingWorkUnitGridVisibility = Visibility.Collapsed;
-                ExistingWorkUnitsProgressVisibility = Visibility.Hidden;
-                RequisitionWorkUnitGridVisibility = Visibility.Collapsed;
-                RequisitionWorkUnitsProgressVisibility = Visibility.Hidden;
-            });
-
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-            }
-
-            await LoadResponsibles();
-            await LoadSupervisors();
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
-        }
-
-        private async Task LoadSupervisors()
-        {
-            var employees = await _workOrderRepository.GetEmployeesWithRoleIdAsync(WorkArea.SupervisorRoleId);
-
-            foreach (var employee in employees)
-            {
-                Application.Current.Dispatcher.Invoke(() => Supervisors.Add(new EmployeeWrapper(employee)));
-            }
-        }
-
-        private async Task LoadResponsibles()
-        {
-            var employees = await _workOrderRepository.GetEmployeesWithRoleIdAsync(WorkArea.ResponsibleRoleId);
-
-            foreach (var employee in employees)
-            {
-                Application.Current.Dispatcher.Invoke(() => Responsibles.Add(new EmployeeWrapper(employee)));
-            }
-        }
-
-        private async Task LoadRequisitionWorkUnits()
-        {
-            var workUnits = await _workOrderRepository.GetRequisitionWorkUnits();
-
-            foreach (var workUnit in workUnits)
-            {
-                Application.Current.Dispatcher.Invoke(() => RequisitionWorkUnits.Add(new WorkUnitWrapper(workUnit)));
-            }
-        }
-
-        private async Task LoadExistingWorkUnits()
-        {
-            var workUnits = await _workOrderRepository.GetExistingWorkUnits(WorkArea.Model.IncomingConnections);
-
-            foreach (var workUnit in workUnits)
-            {
-                Application.Current.Dispatcher.Invoke(() => ExistingWorkUnits.Add(new WorkUnitWrapper(workUnit)));
-            }
-        }
-
-        private async Task LoadProducts()
-        {
-            var products = await _workOrderRepository.GetAllProductsAsync();
-
-            foreach (var product in products)
-            {
-                Application.Current.Dispatcher.Invoke(() => Products.Add(new ProductWrapper(product)));
-            }
-        }
-
-        private async Task LoadColors()
-        {
-            var colors = await _workOrderRepository.GetAllColorsAsync();
-
-            foreach (var color in colors)
-            {
-                Application.Current.Dispatcher.Invoke(() => Colors.Add(new ColorWrapper(color)));
-            }
-        }
-
-        private async Task LoadMaterials()
-        {
-            var materials = await _workOrderRepository.GetAllMaterialsAsync();
-
-            foreach (var material in materials)
-            {
-                Application.Current.Dispatcher.Invoke(() => Materials.Add(new MaterialWrapper(material)));
-            }
-        }
+        public ICollectionView WorkOrderUnitsCollectionView { get; }
 
         /// <summary>
         /// Creates a new <see cref="Model.WorkOrder"/> and loads all the necessary data from the context.
@@ -894,7 +473,167 @@ namespace SistemaMirno.UI.ViewModel.Detail
             await LoadAsync().ConfigureAwait(false);
         }
 
-        private async Task CreateWorkOrderReport()
+        public override async Task LoadAsync(int? id = null)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                NewWorkUnitGridVisibility = Visibility.Collapsed;
+                ExistingWorkUnitGridVisibility = Visibility.Collapsed;
+                ExistingWorkUnitsProgressVisibility = Visibility.Hidden;
+                RequisitionWorkUnitGridVisibility = Visibility.Collapsed;
+                RequisitionWorkUnitsProgressVisibility = Visibility.Hidden;
+            });
+
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+            }
+
+            await LoadResponsibles();
+            await LoadSupervisors();
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public override async Task LoadDetailAsync(int id)
+        {
+            var model = await _workOrderRepository.GetByIdAsync(id);
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                WorkOrder = new WorkOrderWrapper(model);
+                WorkOrder.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                WorkArea = new WorkAreaWrapper(model.DestinationWorkArea);
+            });
+
+            foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit)));
+            }
+
+            await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            if (IsNew)
+            {
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs
+                    {
+                        Id = _originWorkAreaId,
+                        ViewModel = nameof(WorkUnitViewModel),
+                    });
+            }
+            else
+            {
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs
+                    {
+                        Id = WorkOrder.DestinationWorkAreaId,
+                        ViewModel = nameof(WorkOrderViewModel),
+                    });
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(WorkOrder) && WorkOrderUnits.Count > 0;
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnSaveExecute()
+        {
+            if (!IsNew)
+            {
+                return;
+            }
+
+            base.OnSaveExecute();
+
+            WorkOrder.CreationDateTime = DateTime.Now;
+
+            foreach (var workOrderUnit in WorkOrder.Model.WorkOrderUnits)
+            {
+                // Store movement history
+                var movement = new WorkAreaMovement
+                {
+                    FromWorkAreaId = workOrderUnit.WorkUnit.CurrentWorkAreaId,
+                    ToWorkAreaId = WorkArea.Id,
+                    ResponsibleId = WorkOrder.ResponsibleEmployeeId,
+                    SupervisorId = WorkOrder.SupervisorEmployeeId,
+                    Date = DateTime.Now,
+                    WorkUnit = workOrderUnit.WorkUnit,
+                };
+
+                workOrderUnit.WorkUnit.Movements.Add(movement);
+
+                if (WorkArea.IsPassthrough && WorkArea.PassthroughWorkAreaId.HasValue)
+                {
+                    // If area is passthrough, store the second movement aswell
+                    movement = new WorkAreaMovement
+                    {
+                        FromWorkAreaId = WorkArea.Id,
+                        ToWorkAreaId = WorkArea.PassthroughWorkAreaId.Value,
+                        ResponsibleId = WorkOrder.ResponsibleEmployeeId,
+                        SupervisorId = WorkOrder.SupervisorEmployeeId,
+                        Date = DateTime.Now,
+                        WorkUnit = workOrderUnit.WorkUnit,
+                    };
+                    workOrderUnit.WorkUnit.Movements.Add(movement);
+
+                    workOrderUnit.WorkUnit.CurrentWorkAreaId = WorkArea.PassthroughWorkAreaId.Value;
+                }
+                else
+                {
+                    workOrderUnit.WorkUnit.CurrentWorkAreaId = WorkArea.Id;
+                }
+
+                workOrderUnit.WorkUnit.LatestResponsibleId = WorkOrder.ResponsibleEmployeeId;
+                workOrderUnit.WorkUnit.LatestSupervisorId = WorkOrder.SupervisorEmployeeId;
+
+                // Check if destination workArea is last, if it is mark the unit as finished
+                if (WorkArea.IsLast || WorkArea.IsPassthrough)
+                {
+                    workOrderUnit.Finished = true;
+                }
+                else
+                {
+                    workOrderUnit.Finished = false;
+                }
+            }
+
+            await _workOrderRepository.AddAsync(WorkOrder.Model);
+
+            try
+            {
+                await Task.Run(CreateWorkOrderReport);
+            }
+            catch (Exception e)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Title = "Error",
+                        Message = e.Message,
+                    });
+            }
+
+            HasChanges = false;
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = _originWorkAreaId,
+                    ViewModel = nameof(WorkUnitViewModel),
+                });
+        }
+
+        private Task CreateWorkOrderReport()
         {
             // Create a new report class with the Work Order data.
             var workOrderReport = new WorkOrderReport
@@ -966,9 +705,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 report.Content.CopyTo(stream);
                 stream.Close();
 
-                ProcessStartInfo info = new ProcessStartInfo();
-                info.Verb = "open";
-                info.FileName = filename;
+                ProcessStartInfo info = new ProcessStartInfo
+                {
+                    Verb = "open",
+                    FileName = filename,
+                };
 
                 Process.Start(info);
             }
@@ -976,7 +717,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 if (ex.GetType() == typeof(AggregateException))
                 {
-                    foreach (var innerEx in ((AggregateException) ex).InnerExceptions)
+                    foreach (var innerEx in ((AggregateException)ex).InnerExceptions)
                     {
                         EventAggregator.GetEvent<ShowDialogEvent>()
                             .Publish(new ShowDialogEventArgs
@@ -985,6 +726,8 @@ namespace SistemaMirno.UI.ViewModel.Detail
                                 Title = "Error",
                             });
                     }
+
+                    return Task.CompletedTask;
                 }
                 else
                 {
@@ -994,8 +737,267 @@ namespace SistemaMirno.UI.ViewModel.Detail
                             Message = ex.Message,
                             Title = "Error",
                         });
+                    return Task.CompletedTask;
                 }
             }
+
+            return Task.CompletedTask;
+        }
+
+        private void FilterExistingWorkUnitsCollectionView(string search)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ExistingWorkUnitsProgressVisibility = Visibility.Visible;
+                ExistingWorkUnitsCollectionView.Filter = item =>
+                {
+                    return item is WorkUnitWrapper vitem &&
+                           vitem.Model.Description.ToLowerInvariant().Contains(search.ToLowerInvariant());
+                };
+                ExistingWorkUnitsProgressVisibility = Visibility.Hidden;
+            });
+        }
+
+        private void FilterRequisitionWorkUnitsCollectionView(string search)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                RequisitionWorkUnitsProgressVisibility = Visibility.Visible;
+                RequisitionWorkUnitsCollectionView.Filter = item =>
+                {
+                    return item is WorkUnitWrapper vitem &&
+                           vitem.Model.Description.ToLowerInvariant().Contains(search.ToLowerInvariant());
+                };
+                RequisitionWorkUnitsProgressVisibility = Visibility.Hidden;
+            });
+        }
+
+        private async Task LoadColors()
+        {
+            var colors = await _workOrderRepository.GetAllColorsAsync();
+
+            foreach (var color in colors)
+            {
+                Application.Current.Dispatcher.Invoke(() => Colors.Add(new ColorWrapper(color)));
+            }
+        }
+
+        private async Task LoadExistingWorkUnits()
+        {
+            var workUnits = await _workOrderRepository.GetExistingWorkUnits(WorkArea.Model.IncomingConnections);
+
+            foreach (var workUnit in workUnits)
+            {
+                Application.Current.Dispatcher.Invoke(() => ExistingWorkUnits.Add(new WorkUnitWrapper(workUnit)));
+            }
+        }
+
+        private async Task LoadMaterials()
+        {
+            var materials = await _workOrderRepository.GetAllMaterialsAsync();
+
+            foreach (var material in materials)
+            {
+                Application.Current.Dispatcher.Invoke(() => Materials.Add(new MaterialWrapper(material)));
+            }
+        }
+
+        private async Task LoadProducts()
+        {
+            var products = await _workOrderRepository.GetAllProductsAsync();
+
+            foreach (var product in products)
+            {
+                Application.Current.Dispatcher.Invoke(() => Products.Add(new ProductWrapper(product)));
+            }
+        }
+
+        private async Task LoadRequisitionWorkUnits()
+        {
+            var workUnits = await _workOrderRepository.GetRequisitionWorkUnits();
+
+            foreach (var workUnit in workUnits)
+            {
+                Application.Current.Dispatcher.Invoke(() => RequisitionWorkUnits.Add(new WorkUnitWrapper(workUnit)));
+            }
+        }
+
+        private async Task LoadResponsibles()
+        {
+            var employees = await _workOrderRepository.GetEmployeesWithRoleIdAsync(WorkArea.ResponsibleRoleId);
+
+            foreach (var employee in employees)
+            {
+                Application.Current.Dispatcher.Invoke(() => Responsibles.Add(new EmployeeWrapper(employee)));
+            }
+        }
+
+        private async Task LoadSupervisors()
+        {
+            var employees = await _workOrderRepository.GetEmployeesWithRoleIdAsync(WorkArea.SupervisorRoleId);
+
+            foreach (var employee in employees)
+            {
+                Application.Current.Dispatcher.Invoke(() => Supervisors.Add(new EmployeeWrapper(employee)));
+            }
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (!HasChanges)
+            {
+                HasChanges = _workOrderRepository.HasChanges();
+            }
+
+            if (e.PropertyName == nameof(WorkOrder.HasErrors))
+            {
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        private void NewWorkUnit_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(NewWorkUnit.HasErrors))
+            {
+                ((DelegateCommand)AddNewWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        private bool OnAddExistingWorkUnitCanExecute()
+        {
+            return SelectedExistingWorkUnit != null;
+        }
+
+        private void OnAddExistingWorkUnitExecute()
+        {
+            while (SelectedExistingWorkUnit != null)
+            {
+                var workOrderUnit = new WorkOrderUnit
+                {
+                    WorkUnitId = SelectedExistingWorkUnit.Id,
+                    WorkUnit = SelectedExistingWorkUnit.Model,
+                };
+                WorkOrder.Model.WorkOrderUnits.Add(workOrderUnit);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit));
+                    ExistingWorkUnits.Remove(SelectedExistingWorkUnit);
+                });
+            }
+
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+        }
+
+        private bool OnAddNewWorkUnitCanExecute()
+        {
+            return int.TryParse(Quantity, out _) && !NewWorkUnit.HasErrors;
+        }
+
+        private void OnAddNewWorkUnitExecute()
+        {
+            var quantity = int.Parse(Quantity);
+
+            for (var i = 0; i < quantity; i++)
+            {
+                var workUnit = new WorkUnit
+                {
+                    ProductId = NewWorkUnit.ProductId,
+                    MaterialId = NewWorkUnit.MaterialId,
+                    ColorId = NewWorkUnit.ColorId,
+                    Product = SelectedProduct.Model,
+                    Material = SelectedMaterial.Model,
+                    Color = SelectedColor.Model,
+                    Delivered = NewWorkUnit.Delivered,
+                    CreationDate = DateTime.Now,
+                    TotalWorkTime = NewWorkUnit.TotalWorkTime,
+                    Details = NewWorkUnit.Details,
+                    CurrentWorkArea = NewWorkUnit.Model.CurrentWorkArea,
+                    CurrentWorkAreaId = NewWorkUnit.CurrentWorkAreaId,
+                    LatestResponsibleId = WorkOrder.ResponsibleEmployeeId,
+                    LatestSupervisorId = WorkOrder.SupervisorEmployeeId,
+                };
+
+                var workOrderUnit = new WorkOrderUnit
+                {
+                    WorkUnit = workUnit,
+                };
+
+                WorkOrder.Model.WorkOrderUnits.Add(workOrderUnit);
+                Application.Current.Dispatcher.Invoke(() =>
+                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit)));
+            }
+
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+        }
+
+        private bool OnAddRequisitionWorkUnitCanExecute()
+        {
+            return SelectedRequisitionWorkUnit != null;
+        }
+
+        private void OnAddRequisitionWorkUnitExecute()
+        {
+            while (SelectedRequisitionWorkUnit != null)
+            {
+                var workOrderUnit = new WorkOrderUnit
+                {
+                    WorkUnitId = SelectedRequisitionWorkUnit.Id,
+                    WorkUnit = SelectedRequisitionWorkUnit.Model,
+                };
+                WorkOrder.Model.WorkOrderUnits.Add(workOrderUnit);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    WorkOrderUnits.Add(new WorkOrderUnitWrapper(workOrderUnit));
+                    RequisitionWorkUnits.Remove(SelectedRequisitionWorkUnit);
+                });
+            }
+
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+        }
+
+        private void OnAddWorkUnitExecute(object obj)
+        {
+            switch (obj.ToString())
+            {
+                case "New":
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        NewWorkUnitGridVisibility = Visibility.Visible;
+                        RequisitionWorkUnitGridVisibility = Visibility.Collapsed;
+                        ExistingWorkUnitGridVisibility = Visibility.Collapsed;
+                    });
+                    break;
+
+                case "FromRequisitions":
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        NewWorkUnitGridVisibility = Visibility.Collapsed;
+                        ExistingWorkUnitGridVisibility = Visibility.Collapsed;
+                        RequisitionWorkUnitGridVisibility = Visibility.Visible;
+                    });
+                    break;
+
+                case "FromWorkAreas":
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        NewWorkUnitGridVisibility = Visibility.Collapsed;
+                        RequisitionWorkUnitGridVisibility = Visibility.Collapsed;
+                        ExistingWorkUnitGridVisibility = Visibility.Visible;
+                    });
+                    break;
+            }
+        }
+
+        private bool OnRemoveWorkUnitCanExecute()
+        {
+            return SelectedWorkOrderUnit != null;
+        }
+
+        private void OnRemoveWorkUnitExecute()
+        {
+            WorkOrder.Model.WorkOrderUnits.Remove(SelectedWorkOrderUnit.Model);
+            Application.Current.Dispatcher.Invoke(() => WorkOrderUnits.Remove(SelectedWorkOrderUnit));
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
     }
 }

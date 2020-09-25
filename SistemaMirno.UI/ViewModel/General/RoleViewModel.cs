@@ -2,7 +2,6 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,37 +18,25 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class RoleViewModel : ViewModelBase
     {
-        private IRoleRepository _roleRepository;
-        private Func<IRoleRepository> _roleRepositoryCreator;
+        private readonly IRoleRepository _roleRepository;
         private RoleWrapper _selectedRole;
 
         public RoleViewModel(
-            Func<IRoleRepository> branchRepositoryCreator,
+            IRoleRepository branchRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Roles", dialogCoordinator)
         {
-            _roleRepositoryCreator = branchRepositoryCreator;
+            _roleRepository = branchRepository;
 
             Roles = new ObservableCollection<RoleWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedRole != null;
-        }
+        public ICommand CreateNewCommand { get; }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedRole.Id,
-                    ViewModel = nameof(RoleDetailViewModel),
-                });
-        }
+        public ICommand OpenDetailCommand { get; }
 
         public ObservableCollection<RoleWrapper> Roles { get; }
 
@@ -68,13 +55,9 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-        public ICommand OpenDetailCommand { get; }
-
         public override async Task LoadAsync(int? id = null)
         {
             Roles.Clear();
-            _roleRepository = _roleRepositoryCreator();
 
             var roles = await _roleRepository.GetAllAsync();
 
@@ -96,6 +79,21 @@ namespace SistemaMirno.UI.ViewModel.General
                 .Publish(new ChangeViewEventArgs
                 {
                     Id = null,
+                    ViewModel = nameof(RoleDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedRole != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedRole.Id,
                     ViewModel = nameof(RoleDetailViewModel),
                 });
         }

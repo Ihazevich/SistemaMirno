@@ -1,12 +1,14 @@
-﻿using System;
+﻿// <copyright file="WorkOrderViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
@@ -19,14 +21,12 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class WorkOrderViewModel : ViewModelBase
     {
-        private IWorkOrderRepository _workOrderRepository;
-        private WorkOrderWrapper _selectedWorkOrder;
+        private readonly IWorkOrderRepository _workOrderRepository;
+        private DateTime _fromDate;
         private WorkAreaWrapper _selectedWorkArea;
-
+        private WorkOrderWrapper _selectedWorkOrder;
         private bool _showAllWorkAreas;
         private bool _showSingleDay;
-
-        private DateTime _fromDate;
         private DateTime _toDate;
 
         public WorkOrderViewModel(
@@ -43,24 +43,31 @@ namespace SistemaMirno.UI.ViewModel.General
             ReloadWorkOrdersCommand = new DelegateCommand(OnReloadWorkOrdersExecute);
         }
 
-        private void OnOpenDetailExecute()
+        public DateTime FromDate
         {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedWorkOrder.Id,
-                    ViewModel = nameof(WorkOrderDetailViewModel),
-                });
+            get => _fromDate;
+
+            set
+            {
+                _fromDate = value;
+                OnPropertyChanged();
+            }
         }
 
-        private bool OnOpenDetailCanExecute()
+        public ICommand OpenDetailCommand { get; }
+
+        public ICommand ReloadWorkOrdersCommand { get; }
+
+        public WorkAreaWrapper SelectedWorkArea
         {
-            return SelectedWorkOrder != null;
+            get => _selectedWorkArea;
+
+            set
+            {
+                _selectedWorkArea = value;
+                OnPropertyChanged();
+            }
         }
-
-        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
-
-        public ObservableCollection<WorkOrderWrapper> WorkOrders { get; }
 
         public WorkOrderWrapper SelectedWorkOrder
         {
@@ -77,14 +84,15 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public WorkAreaWrapper SelectedWorkArea
+        public bool ShowAllWorkAreas
         {
-            get => _selectedWorkArea;
+            get => _showAllWorkAreas;
 
             set
             {
-                _selectedWorkArea = value;
+                _showAllWorkAreas = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(WorkAreaSelectionEnabled));
             }
         }
 
@@ -100,33 +108,6 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public bool ShowAllWorkAreas
-        {
-            get => _showAllWorkAreas;
-
-            set
-            {
-                _showAllWorkAreas = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(WorkAreaSelectionEnabled));
-            }
-        }
-
-        public bool ToDateEnabled => !ShowSingleDay;
-
-        public bool WorkAreaSelectionEnabled => !ShowAllWorkAreas;
-
-        public DateTime FromDate
-        {
-            get => _fromDate;
-
-            set
-            {
-                _fromDate = value;
-                OnPropertyChanged();
-            }
-        }
-
         public DateTime ToDate
         {
             get => _toDate;
@@ -138,46 +119,13 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        private async Task ReloadWorkOrders()
-        {
-            WorkOrders.Clear();
+        public bool ToDateEnabled => !ShowSingleDay;
 
-            var workAreasIds = new List<int>();
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
 
-            if (ShowAllWorkAreas)
-            {
-                workAreasIds = WorkAreas.Select(w => w.Id).ToList();
-            }
-            else
-            {
-                workAreasIds.Add(SelectedWorkArea.Id);
-            }
+        public bool WorkAreaSelectionEnabled => !ShowAllWorkAreas;
 
-            if (ShowSingleDay)
-            {
-                Application.Current.Dispatcher.Invoke(() => ToDate = FromDate);
-            }
-
-            var workOrders =
-                await _workOrderRepository.GetAllWorkOrdersFromWorkAreasBetweenDatesAsync(
-                    workAreasIds,
-                    FromDate,
-                    ToDate);
-
-            foreach (var workOrder in workOrders)
-            {
-                Application.Current.Dispatcher.Invoke(() => WorkOrders.Add(new WorkOrderWrapper(workOrder)));
-            }
-        }
-
-        private async void OnReloadWorkOrdersExecute()
-        {
-            await ReloadWorkOrders().ConfigureAwait(false);
-        }
-
-        public ICommand OpenDetailCommand { get; }
-
-        public ICommand ReloadWorkOrdersCommand { get; }
+        public ObservableCollection<WorkOrderWrapper> WorkOrders { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
@@ -211,6 +159,58 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedWorkOrder != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedWorkOrder.Id,
+                    ViewModel = nameof(WorkOrderDetailViewModel),
+                });
+        }
+
+        private async void OnReloadWorkOrdersExecute()
+        {
+            await ReloadWorkOrders().ConfigureAwait(false);
+        }
+
+        private async Task ReloadWorkOrders()
+        {
+            WorkOrders.Clear();
+
+            var workAreasIds = new List<int>();
+
+            if (ShowAllWorkAreas)
+            {
+                workAreasIds = WorkAreas.Select(w => w.Id).ToList();
+            }
+            else
+            {
+                workAreasIds.Add(SelectedWorkArea.Id);
+            }
+
+            if (ShowSingleDay)
+            {
+                Application.Current.Dispatcher.Invoke(() => ToDate = FromDate);
+            }
+
+            var workOrders =
+                await _workOrderRepository.GetAllWorkOrdersFromWorkAreasBetweenDatesAsync(
+                    workAreasIds,
+                    FromDate,
+                    ToDate);
+
+            foreach (var workOrder in workOrders)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkOrders.Add(new WorkOrderWrapper(workOrder)));
+            }
         }
     }
 }

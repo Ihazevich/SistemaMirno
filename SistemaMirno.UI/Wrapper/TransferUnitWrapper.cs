@@ -1,14 +1,17 @@
-﻿using System;
+﻿// <copyright file="TransferUnitWrapper.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Wrapper
 {
     public class TransferUnitWrapper : ModelWrapper<TransferUnit>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransferUnitWrapper"/> class.
+        /// </summary>
         public TransferUnitWrapper()
             : base(new TransferUnit())
         {
@@ -18,7 +21,7 @@ namespace SistemaMirno.UI.Wrapper
             : base(model)
         {
         }
-        
+
         public int TransferOrderId
         {
             get => GetValue<int>();

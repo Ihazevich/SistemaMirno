@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="WorkUnitViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -21,27 +22,24 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class WorkUnitViewModel : ViewModelBase
     {
-        private readonly Func<IWorkUnitRepository> _workAreaRepositoryCreator;
-        private IWorkUnitRepository _workUnitRepository;
+        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Description");
+        private readonly IWorkUnitRepository _workUnitRepository;
+        private WorkAreaConnection _selectedWorkAreaConnection;
         private WorkUnitWrapper _selectedWorkAreaWorkUnit;
         private WorkUnitWrapper _selectedWorkOrderWorkUnit;
         private WorkAreaWrapper _workArea;
-        private WorkAreaConnection _selectedWorkAreaConnection;
-
-        private string _workAreaWorkUnitProductFilter;
-        private string _workAreaWorkUnitMaterialFilter;
-        private string _workAreaWorkUnitColorFilter;
         private string _workAreaWorkUnitClientFilter;
-        
-        private readonly PropertyGroupDescription _productName = new PropertyGroupDescription("Model.Description");
+        private string _workAreaWorkUnitColorFilter;
+        private string _workAreaWorkUnitMaterialFilter;
+        private string _workAreaWorkUnitProductFilter;
 
         public WorkUnitViewModel(
-            Func<IWorkUnitRepository> workUnitRepositoryCreator,
+            IWorkUnitRepository workUnitRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Unidades de Trabajo en Area", dialogCoordinator)
         {
-            _workAreaRepositoryCreator = workUnitRepositoryCreator;
+            _workUnitRepository = workUnitRepository;
 
             WorkAreaWorkUnits = new ObservableCollection<WorkUnitWrapper>();
             WorkOrderWorkUnits = new ObservableCollection<WorkUnitWrapper>();
@@ -66,80 +64,255 @@ namespace SistemaMirno.UI.ViewModel.General
             WorkAreaWorkUnitClientFilter = string.Empty;
         }
 
-        private bool OnShowWorkUnitDetailsCanExecute()
+        public ICommand AddWorkUnitCommand { get; }
+
+        public Visibility DeleteWorkUnitButtonVisibility { get; set; }
+
+        public ICommand DeleteWorkUnitCommand { get; }
+
+        public string MoveOrderButtonText => SelectedWorkAreaConnection != null
+            ? $"MOVER A {SelectedWorkAreaConnection.DestinationWorkArea.Name.ToUpperInvariant()}"
+            : "MOVER";
+
+        public ICommand NewWorkOrderCommand { get; }
+
+        public ICommand OpenWorkAreaMovementViewCommand { get; }
+
+        public ICommand OpenWorkOrderViewCommand { get; }
+
+        public ICommand RemoveWorkUnitCommand { get; }
+
+        public WorkAreaConnection SelectedWorkAreaConnection
         {
-            return SelectedWorkAreaWorkUnit != null;
+            get => _selectedWorkAreaConnection;
+
+            set
+            {
+                _selectedWorkAreaConnection = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(MoveOrderButtonText));
+                ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
+            }
         }
 
-        private void OnShowWorkUnitDetailsExecute()
+        public WorkUnitWrapper SelectedWorkAreaWorkUnit
         {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    ViewModel = nameof(WorkUnitDetailViewModel),
-                    Id = SelectedWorkAreaWorkUnit.Id,
-                });
+            get => _selectedWorkAreaWorkUnit;
+
+            set
+            {
+                _selectedWorkAreaWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)DeleteWorkUnitCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)ShowWorkUnitDetailsCommand).RaiseCanExecuteChanged();
+            }
         }
+
+        public WorkUnitWrapper SelectedWorkOrderWorkUnit
+        {
+            get => _selectedWorkOrderWorkUnit;
+
+            set
+            {
+                _selectedWorkOrderWorkUnit = value;
+                OnPropertyChanged();
+                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public ICommand ShowWorkUnitDetailsCommand { get; }
 
         public long TotalProductionValue { get; set; }
-
-        public long TotalWholesalerPrice { get; set; }
 
         public long TotalRetailPrice { get; set; }
 
         public Visibility TotalsVisibility =>
             SessionInfo.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
 
-        public ICommand DeleteWorkUnitCommand { get; }
+        public long TotalWholesalerPrice { get; set; }
 
-        private bool OnDeleteWorkUnitCanExecute()
+        public WorkAreaWrapper WorkArea
         {
-            return SelectedWorkAreaWorkUnit != null;
+            get => _workArea;
+
+            set
+            {
+                _workArea = value;
+                OnPropertyChanged();
+                ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
+            }
         }
 
-        private async void OnDeleteWorkUnitExecute()
+        public ICollectionView WorkAreaCollectionView { get; }
+
+        public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; }
+
+        public string WorkAreaWorkUnitClientFilter
         {
-            await _workUnitRepository.DeleteAsync(SelectedWorkAreaWorkUnit.Model);
-            Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit));
+            get => _workAreaWorkUnitClientFilter;
+
+            set
+            {
+                _workAreaWorkUnitClientFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection();
+            }
         }
 
-        private void OnOpenWorkAreaMovementViewExecute()
+        public string WorkAreaWorkUnitColorFilter
         {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
+            get => _workAreaWorkUnitColorFilter;
+
+            set
+            {
+                _workAreaWorkUnitColorFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection();
+            }
+        }
+
+        public string WorkAreaWorkUnitMaterialFilter
+        {
+            get => _workAreaWorkUnitMaterialFilter;
+
+            set
+            {
+                _workAreaWorkUnitMaterialFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection();
+            }
+        }
+
+        public string WorkAreaWorkUnitProductFilter
+        {
+            get => _workAreaWorkUnitProductFilter;
+
+            set
+            {
+                _workAreaWorkUnitProductFilter = value;
+                OnPropertyChanged();
+                FilterWorkAreaCollection();
+            }
+        }
+
+        public ObservableCollection<WorkUnitWrapper> WorkAreaWorkUnits { get; }
+
+        public ICollectionView WorkOrderCollectionView { get; }
+
+        public ObservableCollection<WorkUnitWrapper> WorkOrderWorkUnits { get; }
+
+        public override async Task LoadAsync(int? id = null)
+        {
+            if (id.HasValue)
+            {
+                WorkAreaWorkUnits.Clear();
+
+                try
                 {
-                    Id = WorkArea.Id,
-                    ViewModel = nameof(WorkAreaMovementViewModel),
+                    await LoadWorkArea(id.Value);
+                    await LoadWorkUnits(id.Value);
+                    await LoadConnections(id.Value);
+                }
+                catch (Exception ex)
+                {
+                    EventAggregator.GetEvent<ShowDialogEvent>()
+                        .Publish(new ShowDialogEventArgs
+                        {
+                            Message = ex.Message,
+                        });
+                }
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    DeleteWorkUnitButtonVisibility = SessionInfo.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
+                    ProgressVisibility = Visibility.Collapsed;
+                    ViewVisibility = Visibility.Visible;
+                    OnPropertyChanged(nameof(TotalsVisibility));
+                    OnPropertyChanged(nameof(TotalProductionValue));
+                    OnPropertyChanged(nameof(TotalWholesalerPrice));
+                    OnPropertyChanged(nameof(TotalRetailPrice));
                 });
+            }
+            else
+            {
+                EventAggregator.GetEvent<ChangeViewEvent>()
+                    .Publish(new ChangeViewEventArgs());
+            }
         }
 
-        public string MoveOrderButtonText => SelectedWorkAreaConnection != null
-            ? $"MOVER A {SelectedWorkAreaConnection.DestinationWorkArea.Name.ToUpperInvariant()}"
-            : "MOVER";
-
-        private bool OnRemoveWorkUnitCanExecute()
+        private void FilterWorkAreaCollection()
         {
-            return SelectedWorkOrderWorkUnit != null;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ProgressVisibility = Visibility.Visible;
+                WorkAreaCollectionView.Filter = item =>
+                    item is WorkUnitWrapper vitem &&
+
+                    // Filter by description
+                    vitem.Model.Description.ToLowerInvariant()
+                        .Contains(WorkAreaWorkUnitProductFilter
+                            .ToLowerInvariant()) &&
+
+                    // Filter by material
+                    vitem.Model.Material.Name.ToLowerInvariant()
+                        .Contains(WorkAreaWorkUnitMaterialFilter
+                            .ToLowerInvariant()) &&
+
+                    // Filter by color
+                    vitem.Model.Color.Name.ToLowerInvariant()
+                        .Contains(WorkAreaWorkUnitColorFilter.ToLowerInvariant()) &&
+
+                    // If client name not empty check if item has client, then filter by client
+                    (WorkAreaWorkUnitClientFilter == string.Empty ||
+                     (vitem.Model.Requisition?.Client != null &&
+                      vitem.Model.Requisition.Client.FullName.ToLowerInvariant()
+                         .Contains(WorkAreaWorkUnitClientFilter
+                             .ToLowerInvariant())));
+                ProgressVisibility = Visibility.Hidden;
+            });
+        }
+
+        private async Task LoadConnections(int id)
+        {
+            var connections = await _workUnitRepository.GetWorkAreaOutgoingConnections(id);
+
+            foreach (var connection in connections)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection)));
+            }
+        }
+
+        private async Task LoadWorkArea(int id)
+        {
+            var workArea = await _workUnitRepository.GetWorkAreaById(id);
+
+            Application.Current.Dispatcher.Invoke(() => WorkArea = new WorkAreaWrapper(workArea));
+        }
+
+        private async Task LoadWorkUnits(int id)
+        {
+            var workUnits = await _workUnitRepository.GetAllWorkUnitsCurrentlyInWorkAreaAsync(id);
+
+            TotalProductionValue = 0;
+            TotalWholesalerPrice = 0;
+            TotalRetailPrice = 0;
+
+            foreach (var workUnit in workUnits)
+            {
+                TotalProductionValue += workUnit.Product.ProductionValue;
+                TotalWholesalerPrice += workUnit.Product.WholesalerPrice;
+                TotalRetailPrice += workUnit.Product.RetailPrice;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    WorkAreaWorkUnits.Add(new WorkUnitWrapper(workUnit));
+                });
+            }
         }
 
         private bool OnAddWorkUnitCommandCanExecute()
         {
             return SelectedWorkAreaWorkUnit != null;
-        }
-
-        private void OnRemoveWorkUnitExecute()
-        {
-            while (SelectedWorkOrderWorkUnit != null)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    WorkAreaWorkUnits.Add(SelectedWorkOrderWorkUnit);
-                    WorkOrderWorkUnits.Remove(SelectedWorkOrderWorkUnit);
-                });
-            }
-
-            ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
-            ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
         }
 
         private void OnAddWorkUnitCommandExecute()
@@ -157,14 +330,15 @@ namespace SistemaMirno.UI.ViewModel.General
             ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
         }
 
-        private void OnOpenWorkOrderViewExecute()
+        private bool OnDeleteWorkUnitCanExecute()
         {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = WorkArea.Id,
-                    ViewModel = nameof(WorkOrderViewModel),
-                });
+            return SelectedWorkAreaWorkUnit != null;
+        }
+
+        private async void OnDeleteWorkUnitExecute()
+        {
+            await _workUnitRepository.DeleteAsync(SelectedWorkAreaWorkUnit.Model);
+            Application.Current.Dispatcher.Invoke(() => WorkAreaWorkUnits.Remove(SelectedWorkAreaWorkUnit));
         }
 
         private bool OnNewWorkOrderCanExecute(object args)
@@ -222,236 +396,59 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public string WorkAreaWorkUnitProductFilter
+        private void OnOpenWorkAreaMovementViewExecute()
         {
-            get => _workAreaWorkUnitProductFilter;
-
-            set
-            {
-                _workAreaWorkUnitProductFilter = value;
-                OnPropertyChanged();
-                FilterWorkAreaCollection(value, 0);
-            }
-        }
-
-        public string WorkAreaWorkUnitMaterialFilter
-        {
-            get => _workAreaWorkUnitMaterialFilter;
-
-            set
-            {
-                _workAreaWorkUnitMaterialFilter = value;
-                OnPropertyChanged();
-                FilterWorkAreaCollection(value, 1);
-            }
-        }
-
-        public string WorkAreaWorkUnitColorFilter
-        {
-            get => _workAreaWorkUnitColorFilter;
-
-            set
-            {
-                _workAreaWorkUnitColorFilter = value;
-                OnPropertyChanged();
-                FilterWorkAreaCollection(value, 2);
-            }
-        }
-
-        public string WorkAreaWorkUnitClientFilter
-        {
-            get => _workAreaWorkUnitClientFilter;
-
-            set
-            {
-                _workAreaWorkUnitClientFilter = value;
-                OnPropertyChanged();
-                FilterWorkAreaCollection(value, 3);
-            }
-        }
-
-        public WorkAreaWrapper WorkArea
-        {
-            get => _workArea;
-
-            set
-            {
-                _workArea = value;
-                OnPropertyChanged();
-                ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public WorkAreaConnection SelectedWorkAreaConnection
-        {
-            get => _selectedWorkAreaConnection;
-
-            set
-            {
-                _selectedWorkAreaConnection = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(MoveOrderButtonText));
-                ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public WorkUnitWrapper SelectedWorkAreaWorkUnit
-        {
-            get => _selectedWorkAreaWorkUnit;
-
-            set
-            {
-                _selectedWorkAreaWorkUnit = value;
-                OnPropertyChanged();
-                ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)DeleteWorkUnitCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)ShowWorkUnitDetailsCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public WorkUnitWrapper SelectedWorkOrderWorkUnit
-        {
-            get => _selectedWorkOrderWorkUnit;
-
-            set
-            {
-                _selectedWorkOrderWorkUnit = value;
-                OnPropertyChanged();
-                ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        private void FilterWorkAreaCollection(string value, int columnId)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                ProgressVisibility = Visibility.Visible;
-                WorkAreaCollectionView.Filter = item =>
-                    item is WorkUnitWrapper vitem &&
-
-                    // Filter by description
-                    vitem.Model.Description.ToLowerInvariant()
-                        .Contains(WorkAreaWorkUnitProductFilter
-                            .ToLowerInvariant()) &&
-
-                    // Filter by material
-                    vitem.Model.Material.Name.ToLowerInvariant()
-                        .Contains(WorkAreaWorkUnitMaterialFilter
-                            .ToLowerInvariant()) &&
-
-                    // Filter by color
-                    vitem.Model.Color.Name.ToLowerInvariant()
-                        .Contains(WorkAreaWorkUnitColorFilter.ToLowerInvariant()) &&
-
-                    // If client name not empty check if item has client, then filter by client
-                    (WorkAreaWorkUnitClientFilter == string.Empty ||
-                     (vitem.Model.Requisition?.Client != null &&
-                      vitem.Model.Requisition.Client.FullName.ToLowerInvariant()
-                         .Contains(WorkAreaWorkUnitClientFilter
-                             .ToLowerInvariant())));
-                ProgressVisibility = Visibility.Hidden;
-            });
-        }
-
-        public ObservableCollection<WorkUnitWrapper> WorkAreaWorkUnits { get; }
-
-        public ObservableCollection<WorkUnitWrapper> WorkOrderWorkUnits { get; }
-
-        public ObservableCollection<WorkAreaConnectionWrapper> WorkAreaConnections { get; }
-
-        public ICollectionView WorkAreaCollectionView { get; }
-
-        public ICollectionView WorkOrderCollectionView { get; }
-
-        public ICommand NewWorkOrderCommand { get; }
-
-        public ICommand OpenWorkOrderViewCommand { get; }
-
-        public ICommand AddWorkUnitCommand { get; }
-
-        public ICommand RemoveWorkUnitCommand { get; }
-
-        public ICommand OpenWorkAreaMovementViewCommand { get; }
-
-        public ICommand ShowWorkUnitDetailsCommand { get; }
-
-        public override async Task LoadAsync(int? id = null)
-        {
-            if (id.HasValue)
-            {
-                WorkAreaWorkUnits.Clear();
-                _workUnitRepository = _workAreaRepositoryCreator();
-
-                try
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
                 {
-                    await LoadWorkArea(id.Value);
-                    await LoadWorkUnits(id.Value);
-                    await LoadConnections(id.Value);
-                }
-                catch (Exception ex)
-                {
-                    EventAggregator.GetEvent<ShowDialogEvent>()
-                        .Publish(new ShowDialogEventArgs
-                        {
-                            Message = ex.Message,
-                        });
-                }
+                    Id = WorkArea.Id,
+                    ViewModel = nameof(WorkAreaMovementViewModel),
+                });
+        }
 
+        private void OnOpenWorkOrderViewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = WorkArea.Id,
+                    ViewModel = nameof(WorkOrderViewModel),
+                });
+        }
+
+        private bool OnRemoveWorkUnitCanExecute()
+        {
+            return SelectedWorkOrderWorkUnit != null;
+        }
+
+        private void OnRemoveWorkUnitExecute()
+        {
+            while (SelectedWorkOrderWorkUnit != null)
+            {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    DeleteWorkUnitButtonVisibility = SessionInfo.User.Model.IsSystemAdmin ? Visibility.Visible : Visibility.Collapsed;
-                    ProgressVisibility = Visibility.Collapsed;
-                    ViewVisibility = Visibility.Visible;
-                    OnPropertyChanged(nameof(TotalsVisibility));
-                    OnPropertyChanged(nameof(TotalProductionValue));
-                    OnPropertyChanged(nameof(TotalWholesalerPrice));
-                    OnPropertyChanged(nameof(TotalRetailPrice));
+                    WorkAreaWorkUnits.Add(SelectedWorkOrderWorkUnit);
+                    WorkOrderWorkUnits.Remove(SelectedWorkOrderWorkUnit);
                 });
             }
-            else
-            {
-                EventAggregator.GetEvent<ChangeViewEvent>()
-                    .Publish(new ChangeViewEventArgs());
-            }
+
+            ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand<object>)NewWorkOrderCommand).RaiseCanExecuteChanged();
         }
 
-        public Visibility DeleteWorkUnitButtonVisibility { get; set; }
-
-        private async Task LoadWorkArea(int id)
+        private bool OnShowWorkUnitDetailsCanExecute()
         {
-            var workArea = await _workUnitRepository.GetWorkAreaById(id);
-
-            Application.Current.Dispatcher.Invoke(() => WorkArea = new WorkAreaWrapper(workArea));
+            return SelectedWorkAreaWorkUnit != null;
         }
 
-        private async Task LoadWorkUnits(int id)
+        private void OnShowWorkUnitDetailsExecute()
         {
-            var workUnits = await _workUnitRepository.GetAllWorkUnitsCurrentlyInWorkAreaAsync(id);
-
-            TotalProductionValue = 0;
-            TotalWholesalerPrice = 0;
-            TotalRetailPrice = 0;
-
-            foreach (var workUnit in workUnits)
-            {
-                TotalProductionValue += workUnit.Product.ProductionValue;
-                TotalWholesalerPrice += workUnit.Product.WholesalerPrice;
-                TotalRetailPrice += workUnit.Product.RetailPrice;
-                Application.Current.Dispatcher.Invoke(() =>
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
                 {
-                    WorkAreaWorkUnits.Add(new WorkUnitWrapper(workUnit));
+                    ViewModel = nameof(WorkUnitDetailViewModel),
+                    Id = SelectedWorkAreaWorkUnit.Id,
                 });
-            }
-        }
-
-        private async Task LoadConnections(int id)
-        {
-            var connections = await _workUnitRepository.GetWorkAreaOutgoingConnections(id);
-
-            foreach (var connection in connections)
-            {
-                Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(new WorkAreaConnectionWrapper(connection)));
-            }
         }
     }
 }

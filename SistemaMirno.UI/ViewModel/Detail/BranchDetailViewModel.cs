@@ -17,7 +17,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class BranchDetailViewModel : DetailViewModelBase
     {
-        private IBranchRepository _branchRepository;
+        private readonly IBranchRepository _branchRepository;
         private BranchWrapper _branch;
 
         /// <summary>
@@ -48,6 +48,33 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public override async Task LoadAsync(int? id = null)
+        {
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                Branch = new BranchWrapper();
+                Branch.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                Branch.Name = string.Empty;
+                Branch.Address = string.Empty;
+                Branch.City = string.Empty;
+                Branch.Department = string.Empty;
+
+                ProgressVisibility = Visibility.Collapsed;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
+        }
+
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
         {
@@ -61,6 +88,36 @@ namespace SistemaMirno.UI.ViewModel.Detail
             });
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(BranchViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+            await _branchRepository.DeleteAsync(Branch.Model);
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(BranchViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(Branch);
         }
 
         /// <inheritdoc/>
@@ -88,7 +145,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                     });
             }
             else
-            {   
+            {
                 EventAggregator.GetEvent<ChangeViewEvent>()
                     .Publish(new ChangeViewEventArgs
                     {
@@ -96,36 +153,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                         ViewModel = nameof(BranchSelectionViewModel),
                     });
             }
-        }
-
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
-        {
-            return OnSaveCanExecute(Branch);
-        }
-
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-            await _branchRepository.DeleteAsync(Branch.Model);
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(BranchViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(BranchViewModel),
-                });
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -139,33 +166,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
-        }
-
-        public override async Task LoadAsync(int? id = null)
-        {
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsNew = true;
-
-                Branch = new BranchWrapper();
-                Branch.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
-
-                Branch.Name = string.Empty;
-                Branch.Address = string.Empty;
-                Branch.City = string.Empty;
-                Branch.Department = string.Empty;
-
-                ProgressVisibility = Visibility.Collapsed;
-            });
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
         }
     }
 }

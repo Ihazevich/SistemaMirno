@@ -73,6 +73,12 @@
                         FontSize="16"
                         Width="250" 
                         Margin="10"/>
+                <Button Content="HISTORIAL DE MOVIMIENTOS" 
+                        Command="{Binding ShowMovementHistoryCommand}" 
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        FontSize="16"
+                        Width="250" 
+                        Margin="10"/>
                 <Button Content="SALIR" 
                         Command="{Binding ExitView}" 
                         Width="250" 

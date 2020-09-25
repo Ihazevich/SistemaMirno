@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="WrapperBase.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;

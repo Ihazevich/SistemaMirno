@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="MaterialViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,49 +19,27 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class MaterialViewModel : ViewModelBase
     {
-        private IMaterialRepository _materialRepository;
-        private Func<IMaterialRepository> _materialRepositoryCreator;
+        private readonly IMaterialRepository _materialRepository;
         private MaterialWrapper _selectecMaterial;
 
         public MaterialViewModel(
-            Func<IMaterialRepository> materialRepositoryCreator,
+            IMaterialRepository materialRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Materiales", dialogCoordinator)
         {
-            _materialRepositoryCreator = materialRepositoryCreator;
+            _materialRepository = materialRepository;
 
             Materials = new ObservableCollection<MaterialWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedMaterial.Id,
-                    ViewModel = nameof(MaterialDetailViewModel),
-                });
-        }
-
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedMaterial != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(MaterialDetailViewModel),
-                });
-        }
+        public ICommand CreateNewCommand { get; }
 
         public ObservableCollection<MaterialWrapper> Materials { get; }
+
+        public ICommand OpenDetailCommand { get; }
 
         public MaterialWrapper SelectedMaterial
         {
@@ -77,14 +56,9 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
-
         public override async Task LoadAsync(int? id = null)
         {
             Materials.Clear();
-            _materialRepository = _materialRepositoryCreator();
 
             var materials = await _materialRepository.GetAllAsync();
 
@@ -98,6 +72,31 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(MaterialDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedMaterial != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedMaterial.Id,
+                    ViewModel = nameof(MaterialDetailViewModel),
+                });
         }
     }
 }

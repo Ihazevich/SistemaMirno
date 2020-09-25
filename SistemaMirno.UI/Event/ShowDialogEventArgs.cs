@@ -4,7 +4,6 @@
 
 namespace SistemaMirno.UI.Event
 {
-
     public class ShowDialogEventArgs
     {
         public string Message { get; set; }

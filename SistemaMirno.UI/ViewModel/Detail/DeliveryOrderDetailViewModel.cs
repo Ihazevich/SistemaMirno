@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="DeliveryOrderDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -26,20 +30,19 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public class DeliveryOrderDetailViewModel : DetailViewModelBase
     {
         private readonly IDeliveryOrderRepository _deliveryOrderRepository;
+        private readonly PropertyGroupDescription _clientFullName = new PropertyGroupDescription("Sale.Client.FullName");
+        private readonly PropertyGroupDescription _description = new PropertyGroupDescription("Description");
         private DeliveryOrderWrapper _deliveryOrder;
         private Sale _selectedSale;
         private WorkUnit _selectedSaleWorkUnit;
         private WorkUnit _selectedDeliveryWorkUnit;
         private Employee _selectedResponsible;
         private string _saleClientFilter;
-        private readonly PropertyGroupDescription _clientFullName = new PropertyGroupDescription("Sale.Client.FullName");
-        private readonly PropertyGroupDescription _description = new PropertyGroupDescription("Description");
-
         private List<DeliveryUnit> _deliveryUnits;
 
         public DeliveryOrderDetailViewModel(
             IDeliveryOrderRepository deliveryOrderRepository,
-            IEventAggregator eventAggregator, 
+            IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Detalle de Orden de Entrega", dialogCoordinator)
         {
@@ -67,18 +70,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             RemoveWorkUnitCommand = new DelegateCommand(RemoveWorkUnitExecute, RemoveWorkUnitCanExecute);
         }
 
-        public void FilterSales()
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                SalesCollectionView.Filter = item =>
-                {
-                    return item is Sale vitem && vitem.Client.FullName.ToLowerInvariant()
-                        .Contains(_saleClientFilter.ToLowerInvariant());
-                };
-            });
-        }
-
         public string SaleClientFilter
         {
             get => _saleClientFilter;
@@ -89,23 +80,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 OnPropertyChanged();
                 FilterSales();
             }
-        }
-
-        public void FilterSaleWorkUnits()
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                SaleWorkUnitsCollectionView.Filter = item =>
-                {
-                    if (SelectedSale == null)
-                    {
-                        return false;
-                    }
-
-                    return item is WorkUnit vitem &&
-                           vitem.SaleId == SelectedSale.Id;
-                };
-            });
         }
 
         public Sale SelectedSale
@@ -129,61 +103,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 _selectedResponsible = value;
                 OnPropertyChanged();
             }
-        }
-
-        private bool RemoveWorkUnitCanExecute()
-        {
-            return SelectedDeliveryWorkUnit != null;
-        }
-
-        private void RemoveWorkUnitExecute()
-        {
-            while (SelectedDeliveryWorkUnit != null)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    if (DeliveryWorkUnits.Where(s => s.SaleId == SelectedDeliveryWorkUnit.SaleId.Value).ToList()
-                        .Count == 1)
-                    {
-                        Deliveries.Remove(Deliveries.Single(d => d.SaleId == SelectedDeliveryWorkUnit.SaleId.Value));
-                    }
-
-                    SaleWorkUnits.Add(SelectedDeliveryWorkUnit);
-                    DeliveryWorkUnits.Remove(SelectedDeliveryWorkUnit);
-                });
-            }
-
-            ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
-        }
-
-        private bool AddWorkUnitCanExecute()
-        {
-            return SelectedSaleWorkUnit != null;
-        }
-
-        private void AddWorkUnitExecute()
-        {
-            while (SelectedSaleWorkUnit != null)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    if (Deliveries.All(d => d.Sale.ClientId != SelectedSaleWorkUnit.Sale.ClientId))
-                    {
-                        var delivery = new Delivery
-                        {
-                            SaleId = SelectedSaleWorkUnit.SaleId.Value,
-                            Sale = SelectedSaleWorkUnit.Sale,
-                        };
-
-                        Deliveries.Add(delivery);
-                    }
-
-                    DeliveryWorkUnits.Add(SelectedSaleWorkUnit);
-                    SaleWorkUnits.Remove(SelectedSaleWorkUnit);
-                });
-            }
-
-            ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
         }
 
         public WorkUnit SelectedSaleWorkUnit
@@ -245,6 +164,35 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public void FilterSales()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SalesCollectionView.Filter = item =>
+                {
+                    return item is Sale vitem && vitem.Client.FullName.ToLowerInvariant()
+                        .Contains(_saleClientFilter.ToLowerInvariant());
+                };
+            });
+        }
+
+        public void FilterSaleWorkUnits()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SaleWorkUnitsCollectionView.Filter = item =>
+                {
+                    if (SelectedSale == null)
+                    {
+                        return false;
+                    }
+
+                    return item is WorkUnit vitem &&
+                           vitem.SaleId == SelectedSale.Id;
+                };
+            });
+        }
+
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
         {
@@ -258,6 +206,38 @@ namespace SistemaMirno.UI.ViewModel.Detail
             });
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        public override async Task LoadAsync(int? id = null)
+        {
+            await LoadResponsiblesAsync();
+            await LoadVehiclesAsync();
+
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            await LoadSalesAsync();
+            LoadWorkUnits();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                DeliveryOrder = new DeliveryOrderWrapper();
+                DeliveryOrder.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                DeliveryOrder.Date = DateTime.Today;
+                DeliveryOrder.ResponsibleId = 0;
+                DeliveryOrder.VehicleId = 0;
+                DeliveryOrder.KmBefore = 0;
+                DeliveryOrder.KmAfter = 0;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -300,7 +280,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             try
             {
-                await CreateDeliveryOrderReport();
+                await Task.Run(CreateDeliveryOrderReport);
             }
             catch (Exception e)
             {
@@ -338,6 +318,61 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
+        private bool RemoveWorkUnitCanExecute()
+        {
+            return SelectedDeliveryWorkUnit != null;
+        }
+
+        private void RemoveWorkUnitExecute()
+        {
+            while (SelectedDeliveryWorkUnit != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (DeliveryWorkUnits.Where(s => s.SaleId == SelectedDeliveryWorkUnit.SaleId.Value).ToList()
+                        .Count == 1)
+                    {
+                        Deliveries.Remove(Deliveries.Single(d => d.SaleId == SelectedDeliveryWorkUnit.SaleId.Value));
+                    }
+
+                    SaleWorkUnits.Add(SelectedDeliveryWorkUnit);
+                    DeliveryWorkUnits.Remove(SelectedDeliveryWorkUnit);
+                });
+            }
+
+            ((DelegateCommand)RemoveWorkUnitCommand).RaiseCanExecuteChanged();
+        }
+
+        private bool AddWorkUnitCanExecute()
+        {
+            return SelectedSaleWorkUnit != null;
+        }
+
+        private void AddWorkUnitExecute()
+        {
+            while (SelectedSaleWorkUnit != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (Deliveries.All(d => d.Sale.ClientId != SelectedSaleWorkUnit.Sale.ClientId))
+                    {
+                        var delivery = new Delivery
+                        {
+                            SaleId = SelectedSaleWorkUnit.SaleId.Value,
+                            Sale = SelectedSaleWorkUnit.Sale,
+                        };
+
+                        Deliveries.Add(delivery);
+                    }
+
+                    DeliveryWorkUnits.Add(SelectedSaleWorkUnit);
+                    SaleWorkUnits.Remove(SelectedSaleWorkUnit);
+                });
+            }
+
+            ((DelegateCommand)AddWorkUnitCommand).RaiseCanExecuteChanged();
+        }
+
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!HasChanges)
@@ -349,38 +384,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
             {
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
-        }
-
-        public override async Task LoadAsync(int? id = null)
-        {
-            await LoadResponsiblesAsync();
-            await LoadVehiclesAsync();
-
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-
-            await LoadSalesAsync();
-            await LoadWorkUnitsAsync();
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsNew = true;
-
-                DeliveryOrder = new DeliveryOrderWrapper();
-                DeliveryOrder.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-                DeliveryOrder.Date = DateTime.Today;
-                DeliveryOrder.ResponsibleId = 0;
-                DeliveryOrder.VehicleId = 0;
-                DeliveryOrder.KmBefore = 0;
-                DeliveryOrder.KmAfter = 0;
-            });
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
         }
 
         private async Task LoadVehiclesAsync()
@@ -422,7 +425,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private async Task LoadWorkUnitsAsync()
+        private void LoadWorkUnits()
         {
             foreach (var sale in Sales)
             {
@@ -436,7 +439,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private async Task CreateDeliveryOrderReport()
+        private Task CreateDeliveryOrderReport()
         {
             // Create a new report class with the Work Order data.
             var deliveryOrderReport = new DeliveryOrderReport
@@ -523,9 +526,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 report.Content.CopyTo(stream);
                 stream.Close();
 
-                ProcessStartInfo info = new ProcessStartInfo();
-                info.Verb = "open";
-                info.FileName = filename;
+                ProcessStartInfo info = new ProcessStartInfo
+                {
+                    Verb = "open",
+                    FileName = filename,
+                };
 
                 Process.Start(info);
             }
@@ -552,7 +557,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
                             Title = "Error",
                         });
                 }
+
+                return Task.CompletedTask;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

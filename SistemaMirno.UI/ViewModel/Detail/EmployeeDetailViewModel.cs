@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="EmployeeDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -14,19 +18,23 @@ using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
+    /// <summary>
+    /// Represents the View Model for a single <see cref="Model.Employee"/> details.
+    /// </summary>
     public class EmployeeDetailViewModel : DetailViewModelBase
     {
-        private IEmployeeRepository _employeeRepository;
+        private readonly IEmployeeRepository _employeeRepository;
         private EmployeeWrapper _employee;
         private BranchWrapper _selectedBranch;
         private RoleWrapper _selectedAddRole;
         private RoleWrapper _selectedRemoveRole;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BranchDetailViewModel"/> class.
+        /// Initializes a new instance of the <see cref="EmployeeDetailViewModel"/> class.
         /// </summary>
-        /// <param name="employeeRepository">The data repository.</param>
+        /// <param name="employeeRepository">The repository.</param>
         /// <param name="eventAggregator">The event aggregator.</param>
+        /// <param name="dialogCoordinator">The dialog coordinator.</param>
         public EmployeeDetailViewModel(
             IEmployeeRepository employeeRepository,
             IEventAggregator eventAggregator,
@@ -40,33 +48,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             AddRoleCommand = new DelegateCommand(OnAddRoleExecute, OnAddRoleCanExecute);
             RemoveRoleCommand = new DelegateCommand(OnRemoveRoleExecute, OnRemoveRoleCanExecute);
-            SelectFileCommand =new DelegateCommand(OnSelectFileExecute);
-        }
-
-        private void OnRemoveRoleExecute()
-        {
-            Employee.Model.Roles.Remove(SelectedRemoveRole.Model);
-            EmployeeRoles.Remove(SelectedRemoveRole);
-            HasChanges = true;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-        }
-
-        private bool OnRemoveRoleCanExecute()
-        {
-            return SelectedRemoveRole != null;
-        }
-
-        private void OnAddRoleExecute()
-        {
-            Employee.Model.Roles.Add(SelectedAddRole.Model);
-            EmployeeRoles.Add(SelectedAddRole);
-            HasChanges = true;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-        }
-
-        private bool OnAddRoleCanExecute()
-        {
-            return SelectedAddRole != null;
+            SelectFileCommand = new DelegateCommand(OnSelectFileExecute);
         }
 
         /// <summary>
@@ -83,6 +65,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        /// <summary>
+        /// Gets or sets the selected branch.
+        /// </summary>
         public BranchWrapper SelectedBranch
         {
             get => _selectedBranch;
@@ -93,32 +78,14 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 OnPropertyChanged();
                 if (_selectedBranch != null)
                 {
-                    NewBranchSelected(_selectedBranch.Id);
+                    NewBranchSelected(_selectedBranch.Id).ConfigureAwait(false);
                 }
             }
         }
 
-        private async Task NewBranchSelected(int id)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsEnabled = false;
-                ProgressVisibility = Visibility.Visible;
-            });
-            var roles = await _employeeRepository.GetAllRolesFromBranchAsync(id);
-            Roles.Clear();
-            foreach (var role in roles)
-            {
-                Application.Current.Dispatcher.Invoke(() => Roles.Add(new RoleWrapper(role)));
-            }
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsEnabled = true;
-                ProgressVisibility = Visibility.Collapsed;
-            });
-        }
-
+        /// <summary>
+        /// Gets or sets the select role from the add list.
+        /// </summary>
         public RoleWrapper SelectedAddRole
         {
             get => _selectedAddRole;
@@ -131,6 +98,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        /// <summary>
+        /// Gets or sets the selected role from the employee's roles.
+        /// </summary>
         public RoleWrapper SelectedRemoveRole
         {
             get => _selectedRemoveRole;
@@ -143,16 +113,34 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        /// <summary>
+        /// Gets the Branches collection.
+        /// </summary>
         public ObservableCollection<BranchWrapper> Branches { get; }
 
+        /// <summary>
+        /// Gets the Roles collection.
+        /// </summary>
         public ObservableCollection<RoleWrapper> Roles { get; }
 
+        /// <summary>
+        /// Gets the Employee's Roles collection.
+        /// </summary>
         public ObservableCollection<RoleWrapper> EmployeeRoles { get; }
 
+        /// <summary>
+        /// Gets the command for adding a role to the employee.
+        /// </summary>
         public ICommand AddRoleCommand { get; }
 
+        /// <summary>
+        /// Gets the command for removing a role from the employee..
+        /// </summary>
         public ICommand RemoveRoleCommand { get; }
 
+        /// <summary>
+        /// Gets the command for selecting a contract file.
+        /// </summary>
         public ICommand SelectFileCommand { get; }
 
         /// <inheritdoc/>
@@ -173,6 +161,55 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public override async Task LoadAsync(int? id = null)
+        {
+            await LoadBranches();
+
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                Employee = new EmployeeWrapper();
+                Employee.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                Employee.FirstName = string.Empty;
+                Employee.LastName = string.Empty;
+                Employee.DocumentNumber = string.Empty;
+                Employee.BirthDate = DateTime.Today.Subtract(TimeSpan.FromDays(365 * 18));
+                Employee.Age = 18;
+                Employee.Address = string.Empty;
+                Employee.PhoneNumber = string.Empty;
+                Employee.BaseSalary = 0;
+                Employee.SalaryOtherBonus = 0;
+                Employee.PricePerExtraHour = 0;
+                Employee.PricePerNormalHour = 0;
+                Employee.ContractStartDate = DateTime.Today;
+                Employee.ContractFile = string.Empty;
+                Employee.IsRegisteredInIps = false;
+                Employee.IpsStartDate = null;
+                Employee.Terminated = false;
+                Employee.TerminationDate = null;
+                Employee.UserId = null;
+
+                Employee.SalaryExtraHoursBonus = 0;
+                Employee.SalaryNormalHoursBonus = 0;
+                Employee.SalaryProductionBonus = 0;
+                Employee.SalarySalesBonus = 0;
+                Employee.SalaryWorkOrderBonus = 0;
+                Employee.TotalSalary = Employee.BaseSalary + Employee.SalaryOtherBonus;
+            });
+
+            await base.LoadDetailAsync().ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -222,6 +259,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
+        /// <inheritdoc/>
         protected override void OnCancelExecute()
         {
             base.OnCancelExecute();
@@ -233,6 +271,77 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
+        /// <summary>
+        /// Removes the selected Role from the Employee.
+        /// </summary>
+        private void OnRemoveRoleExecute()
+        {
+            Employee.Model.Roles.Remove(SelectedRemoveRole.Model);
+            EmployeeRoles.Remove(SelectedRemoveRole);
+            HasChanges = true;
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+        }
+
+        /// <summary>
+        /// Checks if the remove role command can execute.
+        /// </summary>
+        /// <returns>A bool value whether the command can run or not.</returns>
+        private bool OnRemoveRoleCanExecute()
+        {
+            return SelectedRemoveRole != null;
+        }
+
+        /// <summary>
+        /// Adds the selected role to the employee.
+        /// </summary>
+        private void OnAddRoleExecute()
+        {
+            Employee.Model.Roles.Add(SelectedAddRole.Model);
+            EmployeeRoles.Add(SelectedAddRole);
+            HasChanges = true;
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+        }
+
+        /// <summary>
+        /// Checks if the add role command can execute.
+        /// </summary>
+        /// <returns>A bool value whether the command can run or not.</returns>
+        private bool OnAddRoleCanExecute()
+        {
+            return SelectedAddRole != null;
+        }
+
+        /// <summary>
+        /// Reloads the role collection when a new branch is selected.
+        /// </summary>
+        /// <param name="id">The id of the selected branch.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        private async Task NewBranchSelected(int id)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsEnabled = false;
+                ProgressVisibility = Visibility.Visible;
+            });
+            var roles = await _employeeRepository.GetAllRolesFromBranchAsync(id);
+            Roles.Clear();
+            foreach (var role in roles)
+            {
+                Application.Current.Dispatcher.Invoke(() => Roles.Add(new RoleWrapper(role)));
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsEnabled = true;
+                ProgressVisibility = Visibility.Collapsed;
+            });
+        }
+
+        /// <summary>
+        /// Handles error checking and updates the change tracker when a property changes.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!HasChanges)
@@ -246,54 +355,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public override async Task LoadAsync(int? id = null)
-        {
-            await LoadBranches();
-
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-            
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsNew = true;
-
-                Employee = new EmployeeWrapper();
-                Employee.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-                Employee.FirstName = string.Empty;
-                Employee.LastName = string.Empty;
-                Employee.DocumentNumber = string.Empty;
-                Employee.BirthDate = DateTime.Today.Subtract(TimeSpan.FromDays(365 * 18));
-                Employee.Age = 18;
-                Employee.Address = string.Empty;
-                Employee.PhoneNumber = string.Empty;
-                Employee.BaseSalary = 0;
-                Employee.SalaryOtherBonus = 0;
-                Employee.PricePerExtraHour = 0;
-                Employee.PricePerNormalHour = 0;
-                Employee.ContractStartDate = DateTime.Today;
-                Employee.ContractFile = string.Empty;
-                Employee.IsRegisteredInIps = false;
-                Employee.IpsStartDate = null;
-                Employee.Terminated = false;
-                Employee.TerminationDate = null;
-                Employee.UserId = null;
-
-                Employee.SalaryExtraHoursBonus = 0;
-                Employee.SalaryNormalHoursBonus = 0;
-                Employee.SalaryProductionBonus = 0;
-                Employee.SalarySalesBonus = 0;
-                Employee.SalaryWorkOrderBonus = 0;
-                Employee.TotalSalary = Employee.BaseSalary + Employee.SalaryOtherBonus;
-            });
-
-            await base.LoadDetailAsync().ConfigureAwait(false);
-        }
-
+        /// <summary>
+        /// Loads the branches from the database.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         private async Task LoadBranches()
         {
             var branches = await _employeeRepository.GetAllBranchesAsync();
@@ -304,14 +369,20 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        /// <summary>
+        /// Handles the file selection dialog.
+        /// </summary>
         private void OnSelectFileExecute()
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.InitialDirectory = Directory.GetCurrentDirectory();
-            dlg.DefaultExt = ".pdf"; // Default file extension
-            dlg.Filter = "Archivos PDF(.pdf)|*.pdf"; // Filter files by extension
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                InitialDirectory = Directory.GetCurrentDirectory(),
+                DefaultExt = ".pdf", // Default file extension
+                Filter = "Archivos PDF(.pdf)|*.pdf", // Filter files by extension
+            };
 
             bool? result = dlg.ShowDialog();
+
             // Process open file dialog box results
             if (result == true)
             {

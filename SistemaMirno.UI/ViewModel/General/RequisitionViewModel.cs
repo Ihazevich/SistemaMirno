@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="RequisitionViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,47 +18,25 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class RequisitionViewModel : ViewModelBase
     {
-        private IRequisitionRepository _requisitionRepository;
-        private Func<IRequisitionRepository> _requisitionRepositoryCreator;
+        private readonly IRequisitionRepository _requisitionRepository;
         private RequisitionWrapper _selectedRequisition;
 
         public RequisitionViewModel(
-            Func<IRequisitionRepository> requisitionRepositoryCreator,
+            IRequisitionRepository requisitionRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Pedidos", dialogCoordinator)
         {
-            _requisitionRepositoryCreator = requisitionRepositoryCreator;
+            _requisitionRepository = requisitionRepository;
 
             Requisitions = new ObservableCollection<RequisitionWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedRequisition.Id,
-                    ViewModel = nameof(RequisitionDetailViewModel),
-                });
-        }
+        public ICommand CreateNewCommand { get; }
 
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedRequisition != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(RequisitionDetailViewModel),
-                });
-        }
+        public ICommand OpenDetailCommand { get; }
 
         public ObservableCollection<RequisitionWrapper> Requisitions { get; }
 
@@ -77,14 +55,9 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
-
         public override async Task LoadAsync(int? id = null)
         {
             Requisitions.Clear();
-            _requisitionRepository = _requisitionRepositoryCreator();
 
             var requisitions = await _requisitionRepository.GetAllAsync();
 
@@ -98,6 +71,31 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(RequisitionDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedRequisition != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedRequisition.Id,
+                    ViewModel = nameof(RequisitionDetailViewModel),
+                });
         }
     }
 }

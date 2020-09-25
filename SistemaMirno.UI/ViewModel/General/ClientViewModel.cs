@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="ClientViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,49 +19,27 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class ClientViewModel : ViewModelBase
     {
-        private IClientRepository _clientRepository;
-        private Func<IClientRepository> _clientRepositoryCreator;
+        private readonly IClientRepository _clientRepository;
         private ClientWrapper _selectedClient;
 
         public ClientViewModel(
-            Func<IClientRepository> clientRepositoryCreator,
+            IClientRepository clientRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Clientes", dialogCoordinator)
         {
-            _clientRepositoryCreator = clientRepositoryCreator;
+            _clientRepository = clientRepository;
 
             Clients = new ObservableCollection<ClientWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedClient.Id,
-                    ViewModel = nameof(ClientDetailViewModel),
-                });
-        }
-
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedClient != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ClientDetailViewModel),
-                });
-        }
-
         public ObservableCollection<ClientWrapper> Clients { get; }
+
+        public ICommand CreateNewCommand { get; }
+
+        public ICommand OpenDetailCommand { get; }
 
         public ClientWrapper SelectedClient
         {
@@ -74,14 +56,9 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
-
         public override async Task LoadAsync(int? id = null)
         {
             Clients.Clear();
-            _clientRepository = _clientRepositoryCreator();
 
             var clients = await _clientRepository.GetAllAsync();
 
@@ -95,6 +72,31 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ClientDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedClient != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedClient.Id,
+                    ViewModel = nameof(ClientDetailViewModel),
+                });
         }
     }
 }

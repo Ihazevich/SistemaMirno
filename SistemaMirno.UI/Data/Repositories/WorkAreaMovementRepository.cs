@@ -1,8 +1,11 @@
-﻿using System;
+﻿// <copyright file="WorkAreaMovementRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Prism.Events;
 using SistemaMirno.DataAccess;
@@ -14,7 +17,7 @@ namespace SistemaMirno.UI.Data.Repositories
 {
     public class WorkAreaMovementRepository : GenericRepository<WorkAreaMovement, MirnoDbContext>, IWorkAreaMovementRepository
     {
-        public WorkAreaMovementRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator) 
+        public WorkAreaMovementRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }

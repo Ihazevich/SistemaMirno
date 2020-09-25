@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="WorkAreaViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,7 +18,7 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class WorkAreaViewModel : ViewModelBase
     {
-        private IWorkAreaRepository _workAreaRepository;
+        private readonly IWorkAreaRepository _workAreaRepository;
         private WorkAreaWrapper _selectedWorkArea;
 
         public WorkAreaViewModel(
@@ -34,32 +34,9 @@ namespace SistemaMirno.UI.ViewModel.General
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedWorkArea.Id,
-                    ViewModel = nameof(WorkAreaDetailViewModel),
-                });
-        }
+        public ICommand CreateNewCommand { get; }
 
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedWorkArea != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(WorkAreaDetailViewModel),
-                });
-        }
-
-        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
+        public ICommand OpenDetailCommand { get; }
 
         public WorkAreaWrapper SelectedWorkArea
         {
@@ -73,9 +50,7 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
+        public ObservableCollection<WorkAreaWrapper> WorkAreas { get; }
 
         public override async Task LoadAsync(int? id = null)
         {
@@ -93,6 +68,31 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(WorkAreaDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedWorkArea != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedWorkArea.Id,
+                    ViewModel = nameof(WorkAreaDetailViewModel),
+                });
         }
     }
 }

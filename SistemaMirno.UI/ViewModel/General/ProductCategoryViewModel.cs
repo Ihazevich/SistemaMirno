@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="ProductCategoryViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,47 +19,25 @@ namespace SistemaMirno.UI.ViewModel.General
 {
     public class ProductCategoryViewModel : ViewModelBase
     {
-        private IProductCategoryRepository _productCategoryRepository;
-        private Func<IProductCategoryRepository> _materialRepositoryCreator;
+        private readonly IProductCategoryRepository _productCategoryRepository;
         private ProductCategoryWrapper _selectecProductCategory;
 
         public ProductCategoryViewModel(
-            Func<IProductCategoryRepository> productCategoryRepository,
+            IProductCategoryRepository productCategoryRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
             : base(eventAggregator, "Categorias de Productos", dialogCoordinator)
         {
-            _materialRepositoryCreator = productCategoryRepository;
+            _productCategoryRepository = productCategoryRepository;
 
             ProductCategories = new ObservableCollection<ProductCategoryWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
         }
 
-        private void OnOpenDetailExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = SelectedProductCategory.Id,
-                    ViewModel = nameof(ProductCategoryDetailViewModel),
-                });
-        }
+        public ICommand CreateNewCommand { get; }
 
-        private bool OnOpenDetailCanExecute()
-        {
-            return SelectedProductCategory != null;
-        }
-
-        private void OnCreateNewExecute()
-        {
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(ProductCategoryDetailViewModel),
-                });
-        }
+        public ICommand OpenDetailCommand { get; }
 
         public ObservableCollection<ProductCategoryWrapper> ProductCategories { get; }
 
@@ -77,14 +56,9 @@ namespace SistemaMirno.UI.ViewModel.General
             }
         }
 
-        public ICommand CreateNewCommand { get; }
-
-        public ICommand OpenDetailCommand { get; }
-
         public override async Task LoadAsync(int? id = null)
         {
             ProductCategories.Clear();
-            _productCategoryRepository = _materialRepositoryCreator();
 
             var categories = await _productCategoryRepository.GetAllAsync();
 
@@ -98,6 +72,31 @@ namespace SistemaMirno.UI.ViewModel.General
                 ProgressVisibility = Visibility.Collapsed;
                 ViewVisibility = Visibility.Visible;
             });
+        }
+
+        private void OnCreateNewExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(ProductCategoryDetailViewModel),
+                });
+        }
+
+        private bool OnOpenDetailCanExecute()
+        {
+            return SelectedProductCategory != null;
+        }
+
+        private void OnOpenDetailExecute()
+        {
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = SelectedProductCategory.Id,
+                    ViewModel = nameof(ProductCategoryDetailViewModel),
+                });
         }
     }
 }

@@ -20,13 +20,13 @@ namespace SistemaMirno.UI.ViewModel
     /// </summary>
     public abstract class ViewModelBase : IViewModelBase, INotifyPropertyChanged
     {
-        private readonly IEventAggregator _eventAggregator;
         private readonly IDialogCoordinator _dialogCoordinator;
-        private Visibility _viewVisibility;
-        private Visibility _progressVisibility;
+        private readonly IEventAggregator _eventAggregator;
         private readonly string _name;
         private int _dataGridIndex;
+        private Visibility _progressVisibility;
         private SessionInfo _sessionInfo;
+        private Visibility _viewVisibility;
 
         protected ViewModelBase(IEventAggregator eventAggregator, string name, IDialogCoordinator dialogCoordinator)
         {
@@ -35,7 +35,7 @@ namespace SistemaMirno.UI.ViewModel
 
             _dialogCoordinator = dialogCoordinator;
             ExitView = new DelegateCommand(OnExitViewExecute);
-            
+
             ProgressVisibility = Visibility.Visible;
             ViewVisibility = Visibility.Collapsed;
             DataGridIndex = -1;
@@ -45,9 +45,32 @@ namespace SistemaMirno.UI.ViewModel
             EventAggregator.GetEvent<AskSessionInfoEvent>().Publish();
         }
 
-        protected IDialogCoordinator DialogCoordinator => _dialogCoordinator;
+        /// <inheritdoc/>
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        protected IEventAggregator EventAggregator => _eventAggregator;
+        public int DataGridIndex
+        {
+            get => _dataGridIndex;
+
+            set
+            {
+                _dataGridIndex = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand ExitView { get; }
+
+        public Visibility ProgressVisibility
+        {
+            get => _progressVisibility;
+
+            set
+            {
+                _progressVisibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         public SessionInfo SessionInfo
         {
@@ -71,44 +94,22 @@ namespace SistemaMirno.UI.ViewModel
             }
         }
 
-        public Visibility ProgressVisibility
-        {
-            get => _progressVisibility;
+        protected IDialogCoordinator DialogCoordinator => _dialogCoordinator;
 
-            set
-            {
-                _progressVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int DataGridIndex
-        {
-            get => _dataGridIndex;
-
-            set
-            {
-                _dataGridIndex = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc/>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public ICommand ExitView { get; }
-
-        private void GetSessionInfo(SessionInfo obj)
-        {
-            SessionInfo = obj;
-        }
+        protected IEventAggregator EventAggregator => _eventAggregator;
 
         public abstract Task LoadAsync(int? id = null);
 
-        private void OnExitViewExecute()
+        protected void ClearStatusBar()
         {
-            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
-                .Publish(true);
+            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
+                .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
+        }
+
+        protected void NotifyStatusBar(string message, bool processing)
+        {
+            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
+                .Publish(new NotifyStatusBarEventArgs { Message = message, Processing = processing });
         }
 
         /// <summary>
@@ -117,8 +118,6 @@ namespace SistemaMirno.UI.ViewModel
         /// <param name="propertyName">The name of the property that changed.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
             if (PropertyChanged != null)
             {
                 if (Application.Current.Dispatcher.CheckAccess())
@@ -132,17 +131,15 @@ namespace SistemaMirno.UI.ViewModel
             }
         }
 
-        protected void NotifyStatusBar(string message, bool processing)
+        private void GetSessionInfo(SessionInfo obj)
         {
-            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
-                .Publish(new NotifyStatusBarEventArgs { Message = message, Processing = processing });
+            SessionInfo = obj;
         }
 
-        protected void ClearStatusBar()
+        private void OnExitViewExecute()
         {
-            _eventAggregator.GetEvent<NotifyStatusBarEvent>()
-                .Publish(new NotifyStatusBarEventArgs { Message = string.Empty, Processing = false });
+            _eventAggregator.GetEvent<ChangeNavigationStatusEvent>()
+                .Publish(true);
         }
-
     }
 }

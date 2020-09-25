@@ -1,4 +1,7 @@
-﻿using System;
+﻿// <copyright file="DetailViewModelBase.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -16,15 +19,15 @@ namespace SistemaMirno.UI.ViewModel.Detail
     public abstract class DetailViewModelBase : ViewModelBase
     {
         private bool _hasChanges;
-        private bool _isNew;
         private bool _isEnabled;
+        private bool _isNew;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailViewModelBase"/> class.
         /// </summary>
         /// <param name="model">A model wrapper instance of type <see cref="T"/>.</param>
         public DetailViewModelBase(IEventAggregator eventAggregator, string name, IDialogCoordinator dialogCoordinator)
-            : base (eventAggregator, name, dialogCoordinator)
+            : base(eventAggregator, name, dialogCoordinator)
         {
             _isNew = false;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
@@ -33,22 +36,12 @@ namespace SistemaMirno.UI.ViewModel.Detail
             IsEnabled = false;
         }
 
-        private bool OnDeleteCanExecute()
-        {
-            return !IsNew;
-        }
-
-        /// <summary>
-        /// Gets or sets the save command for the view model.
-        /// </summary>
-        public ICommand SaveCommand { get; set; }
+        public ICommand CancelCommand { get; }
 
         /// <summary>
         /// Gets or sets the save command for the view model.
         /// </summary>
         public ICommand DeleteCommand { get; set; }
-
-        public ICommand CancelCommand { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the database context has changes.
@@ -70,6 +63,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
         public virtual bool IsNew
         {
             get => _isNew;
@@ -81,16 +85,10 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        public bool IsEnabled
-        {
-            get => _isEnabled;
-
-            set
-            {
-                _isEnabled = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <summary>
+        /// Gets or sets the save command for the view model.
+        /// </summary>
+        public ICommand SaveCommand { get; set; }
 
         public virtual Task LoadDetailAsync(int id = 0)
         {
@@ -103,7 +101,17 @@ namespace SistemaMirno.UI.ViewModel.Detail
             return Task.CompletedTask;
         }
 
-        protected virtual void OnSaveExecute()
+        protected virtual void OnCancelExecute()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ViewVisibility = Visibility.Collapsed;
+                ProgressVisibility = Visibility.Visible;
+                IsEnabled = false;
+            });
+        }
+
+        protected virtual void OnDeleteExecute()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -124,7 +132,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
         protected abstract bool OnSaveCanExecute();
 
-        protected virtual void OnDeleteExecute()
+        protected virtual void OnSaveExecute()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -134,14 +142,9 @@ namespace SistemaMirno.UI.ViewModel.Detail
             });
         }
 
-        protected virtual void OnCancelExecute()
+        private bool OnDeleteCanExecute()
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                ViewVisibility = Visibility.Collapsed;
-                ProgressVisibility = Visibility.Visible;
-                IsEnabled = false;
-            });
+            return !IsNew;
         }
     }
 }

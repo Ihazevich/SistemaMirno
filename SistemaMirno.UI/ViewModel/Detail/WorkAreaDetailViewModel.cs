@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="WorkAreaDetailViewModel.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -19,11 +23,11 @@ namespace SistemaMirno.UI.ViewModel.Detail
 {
     public class WorkAreaDetailViewModel : DetailViewModelBase
     {
-        private IWorkAreaRepository _workAreaRepository;
-        private WorkAreaWrapper _workArea;
+        private readonly IWorkAreaRepository _workAreaRepository;
+        private Branch _selectedBranch;
         private WorkArea _selectedWorkArea;
         private WorkAreaConnection _selectedWorkAreaConnection;
-        private Branch _selectedBranch;
+        private WorkAreaWrapper _workArea;
 
         public WorkAreaDetailViewModel(
             IWorkAreaRepository workAreaRepository,
@@ -46,51 +50,27 @@ namespace SistemaMirno.UI.ViewModel.Detail
             RemoveConnectionCommand = new DelegateCommand(OnRemoveConnectionExecute, OnRemoveConnectionCanExecute);
         }
 
-        private void OnAddConnectionExecute()
-        {
-            var connection = new WorkAreaConnection
-            {
-                DestinationWorkAreaId = SelectedWorkArea.Id,
-                DestinationWorkArea = SelectedWorkArea,
-            };
+        public ICommand AddConnectionCommand { get; }
 
-            WorkArea.Model.OutgoingConnections.Add(connection);
-            WorkAreaConnections.Add(connection);
-            HasChanges = true;
-        }
+        public ObservableCollection<Branch> Branches { get; }
 
-        private void OnRemoveConnectionExecute()
-        {
-            WorkArea.Model.OutgoingConnections.Remove(SelectedWorkAreaConnection);
-            WorkAreaConnections.Remove(SelectedWorkAreaConnection);
-            HasChanges = true;
-        }
+        public ICollectionView BranchesCollectionView { get; }
 
-        private bool OnAddConnectionCanExecute()
-        {
-            return SelectedWorkArea != null;
-        }
+        public ICommand RemoveConnectionCommand { get; }
 
-        private bool OnRemoveConnectionCanExecute()
-        {
-            return SelectedWorkAreaConnection != null;
-        }
+        public ObservableCollection<Role> Roles { get; }
 
-        /// <summary>
-        /// Gets or sets the data model wrapper.
-        /// </summary>
-        public WorkAreaWrapper WorkArea
+        public ICollectionView RolesCollectionView { get; }
+
+        public Branch SelectedBranch
         {
-            get => _workArea;
+            get => _selectedBranch;
 
             set
             {
-                _workArea = value;
+                _selectedBranch = value;
                 OnPropertyChanged();
-                if (WorkArea != null)
-                {
-                    FilterWorkAreas();
-                }
+                FilterRoles(_selectedBranch.Id);
             }
         }
 
@@ -117,34 +97,63 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 ((DelegateCommand)RemoveConnectionCommand).RaiseCanExecuteChanged();
             }
         }
-        
-        public Branch SelectedBranch
+
+        /// <summary>
+        /// Gets or sets the data model wrapper.
+        /// </summary>
+        public WorkAreaWrapper WorkArea
         {
-            get => _selectedBranch;
+            get => _workArea;
 
             set
             {
-                _selectedBranch = value;
+                _workArea = value;
                 OnPropertyChanged();
-                FilterRoles(_selectedBranch.Id);
+                if (WorkArea != null)
+                {
+                    FilterWorkAreas();
+                }
             }
         }
 
-        public ObservableCollection<WorkArea> WorkAreas { get; }
-
         public ObservableCollection<WorkAreaConnection> WorkAreaConnections { get; }
 
-        public ObservableCollection<Branch> Branches { get; }
+        public ObservableCollection<WorkArea> WorkAreas { get; }
 
-        public ObservableCollection<Role> Roles { get; }
-
-        public ICollectionView BranchesCollectionView { get; }
-        public ICollectionView RolesCollectionView { get; }
         public ICollectionView WorkAreasCollectionView { get; }
 
-        public ICommand AddConnectionCommand { get; }
+        public override async Task LoadAsync(int? id = null)
+        {
+            await LoadBranches();
+            await LoadRoles();
+            await LoadWorkAreas();
 
-        public ICommand RemoveConnectionCommand { get; }
+            if (id.HasValue)
+            {
+                await LoadDetailAsync(id.Value);
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsNew = true;
+
+                WorkArea = new WorkAreaWrapper();
+                WorkArea.PropertyChanged += Model_PropertyChanged;
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
+                WorkArea.Name = string.Empty;
+                WorkArea.IsFirst = false;
+                WorkArea.IsLast = false;
+                WorkArea.Position = "0";
+                WorkArea.ReportsInProcess = false;
+                WorkArea.ResponsibleRoleId = 0;
+                WorkArea.SupervisorRoleId = 0;
+                WorkArea.BranchId = 0;
+
+                ProgressVisibility = Visibility.Collapsed;
+            });
+        }
 
         /// <inheritdoc/>
         public override async Task LoadDetailAsync(int id)
@@ -161,6 +170,41 @@ namespace SistemaMirno.UI.ViewModel.Detail
             await LoadWorkAreaConnections(id);
 
             await base.LoadDetailAsync(id).ConfigureAwait(false);
+        }
+
+        protected override void OnCancelExecute()
+        {
+            base.OnCancelExecute();
+
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(WorkAreaViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override async void OnDeleteExecute()
+        {
+            base.OnDeleteExecute();
+
+            await _workAreaRepository.DeleteAsync(WorkArea.Model);
+
+            EventAggregator.GetEvent<ReloadNavigationViewEvent>()
+                .Publish();
+            EventAggregator.GetEvent<ChangeViewEvent>()
+                .Publish(new ChangeViewEventArgs
+                {
+                    Id = null,
+                    ViewModel = nameof(WorkAreaViewModel),
+                });
+        }
+
+        /// <inheritdoc/>
+        protected override bool OnSaveCanExecute()
+        {
+            return OnSaveCanExecute(WorkArea);
         }
 
         /// <inheritdoc/>
@@ -203,7 +247,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
                         .Publish(new ShowDialogEventArgs
                         {
                             Title = "Error",
-                            Message = "¿Existe mas de un area final?",
+                            Message = $"¿Existe mas de un area final?\n[{ex.Message}]",
                         });
                 }
                 catch (Exception ex)
@@ -219,7 +263,6 @@ namespace SistemaMirno.UI.ViewModel.Detail
 
             if (IsNew)
             {
-
                 await _workAreaRepository.AddAsync(WorkArea.Model);
             }
             else
@@ -238,84 +281,27 @@ namespace SistemaMirno.UI.ViewModel.Detail
                 });
         }
 
-        /// <inheritdoc/>
-        protected override bool OnSaveCanExecute()
+        private void FilterRoles(int branchId)
         {
-            return OnSaveCanExecute(WorkArea);
-        }
-
-        /// <inheritdoc/>
-        protected override async void OnDeleteExecute()
-        {
-            base.OnDeleteExecute();
-
-            await _workAreaRepository.DeleteAsync(WorkArea.Model);
-
-            EventAggregator.GetEvent<ReloadNavigationViewEvent>()
-                .Publish();
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(WorkAreaViewModel),
-                });
-        }
-
-        protected override void OnCancelExecute()
-        {
-            base.OnCancelExecute();
-
-            EventAggregator.GetEvent<ChangeViewEvent>()
-                .Publish(new ChangeViewEventArgs
-                {
-                    Id = null,
-                    ViewModel = nameof(WorkAreaViewModel),
-                });
-        }
-
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (!HasChanges)
-            {
-                HasChanges = _workAreaRepository.HasChanges();
-            }
-
-            if (e.PropertyName == nameof(WorkArea.HasErrors))
-            {
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        public override async Task LoadAsync(int? id = null)
-        {
-            await LoadBranches();
-            await LoadRoles();
-            await LoadWorkAreas();
-
-            if (id.HasValue)
-            {
-                await LoadDetailAsync(id.Value);
-                return;
-            }
-
             Application.Current.Dispatcher.Invoke(() =>
             {
-                IsNew = true;
+                RolesCollectionView.Filter = item =>
+                {
+                    return item is Role vitem &&
+                           vitem.BranchId == branchId;
+                };
+            });
+        }
 
-                WorkArea = new WorkAreaWrapper();
-                WorkArea.PropertyChanged += Model_PropertyChanged;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-
-                WorkArea.Name = string.Empty;
-                WorkArea.IsFirst = false;
-                WorkArea.IsLast = false;
-                WorkArea.Position = "0";
-                WorkArea.ReportsInProcess = false;
-                WorkArea.ResponsibleRoleId = 0;
-                WorkArea.SupervisorRoleId = 0;
-                WorkArea.BranchId = 0;
-
-                ProgressVisibility = Visibility.Collapsed;
+        private void FilterWorkAreas()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                WorkAreasCollectionView.Filter = item =>
+                {
+                    return item is WorkArea vitem &&
+                           vitem.BranchId == WorkArea.BranchId && !string.Equals(vitem.Name, WorkArea.Name, StringComparison.CurrentCultureIgnoreCase);
+                };
             });
         }
 
@@ -339,6 +325,15 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        private async Task LoadWorkAreaConnections(int id)
+        {
+            var connections = await _workAreaRepository.GetAllWorkAreaConnectionsFromWorkAreaAsync(id);
+            foreach (var connection in connections)
+            {
+                Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(connection));
+            }
+        }
+
         private async Task LoadWorkAreas()
         {
             var workAreas = await _workAreaRepository.GetAllWorkAreasAsync();
@@ -349,39 +344,47 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
-        private async Task LoadWorkAreaConnections(int id)
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var connections = await _workAreaRepository.GetAllWorkAreaConnectionsFromWorkAreaAsync(id);
-            foreach (var connection in connections)
+            if (!HasChanges)
             {
-                Application.Current.Dispatcher.Invoke(() => WorkAreaConnections.Add(connection));
+                HasChanges = _workAreaRepository.HasChanges();
+            }
+
+            if (e.PropertyName == nameof(WorkArea.HasErrors))
+            {
+                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
         }
 
-        private void FilterRoles(int branchId)
+        private bool OnAddConnectionCanExecute()
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                RolesCollectionView.Filter = item =>
-                {
-                    Role vitem = item as Role;
-                    return vitem != null &&
-                           vitem.BranchId == branchId;
-                };
-            });
+            return SelectedWorkArea != null;
         }
 
-        private void FilterWorkAreas()
+        private void OnAddConnectionExecute()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            var connection = new WorkAreaConnection
             {
-                WorkAreasCollectionView.Filter = item =>
-                {
-                    WorkArea vitem = item as WorkArea;
-                    return vitem != null &&
-                           vitem.BranchId == WorkArea.BranchId && !string.Equals(vitem.Name, WorkArea.Name, StringComparison.CurrentCultureIgnoreCase);
-                };
-            });
+                DestinationWorkAreaId = SelectedWorkArea.Id,
+                DestinationWorkArea = SelectedWorkArea,
+            };
+
+            WorkArea.Model.OutgoingConnections.Add(connection);
+            WorkAreaConnections.Add(connection);
+            HasChanges = true;
+        }
+
+        private bool OnRemoveConnectionCanExecute()
+        {
+            return SelectedWorkAreaConnection != null;
+        }
+
+        private void OnRemoveConnectionExecute()
+        {
+            WorkArea.Model.OutgoingConnections.Remove(SelectedWorkAreaConnection);
+            WorkAreaConnections.Remove(SelectedWorkAreaConnection);
+            HasChanges = true;
         }
     }
 }

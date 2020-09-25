@@ -51,7 +51,6 @@ namespace SistemaMirno.UI.Wrapper
         {
             yield return null;
 
-
             foreach (var error in base.ValidateProperty(propertyName))
             {
                 if (error != null)

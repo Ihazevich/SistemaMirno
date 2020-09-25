@@ -1,4 +1,4 @@
-﻿// <copyright file="NotifyStatusBarEvent.cs" company="HazeLabs">
+﻿// <copyright file="NotifyStatusBarEventArgs.cs" company="HazeLabs">
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 

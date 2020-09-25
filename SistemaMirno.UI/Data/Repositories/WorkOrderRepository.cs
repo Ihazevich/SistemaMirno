@@ -1,21 +1,23 @@
-﻿using System;
+﻿// <copyright file="WorkOrderRepository.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Prism.Events;
 using SistemaMirno.DataAccess;
 using SistemaMirno.Model;
 using SistemaMirno.UI.Data.Repositories.Interfaces;
 using SistemaMirno.UI.Event;
-using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
     public class WorkOrderRepository : GenericRepository<WorkOrder, MirnoDbContext>, IWorkOrderRepository
     {
-        public WorkOrderRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator) 
+        public WorkOrderRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
@@ -36,7 +38,6 @@ namespace SistemaMirno.UI.Data.Repositories
                 return null;
             }
         }
-
 
         public async Task<List<Product>> GetAllProductsAsync()
         {

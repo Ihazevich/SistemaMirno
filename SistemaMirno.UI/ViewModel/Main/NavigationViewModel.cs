@@ -25,8 +25,8 @@ namespace SistemaMirno.UI.ViewModel.Main
     /// </summary>
     public class NavigationViewModel : ViewModelBase, INavigationViewModel
     {
-        private bool _navigationEnabled = true;
         private readonly IWorkAreaRepository _workAreaRepository;
+        private bool _navigationEnabled = true;
         private WorkAreaWrapper _selectedWorkArea;
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             IWorkAreaRepository workAreaRepository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
-            : base (eventAggregator, "Navegacion", dialogCoordinator)
+            : base(eventAggregator, "Navegacion", dialogCoordinator)
         {
             _workAreaRepository = workAreaRepository;
             WorkAreas = new ObservableCollection<WorkArea>();
@@ -50,7 +50,7 @@ namespace SistemaMirno.UI.ViewModel.Main
                 .Subscribe(ChangeNavigation);
         }
 
-        public ObservableCollection<WorkArea> WorkAreas { get; }
+        public ICommand ChangeViewCommand { get; }
 
         public bool NavigationEnabled
         {
@@ -63,12 +63,7 @@ namespace SistemaMirno.UI.ViewModel.Main
             }
         }
 
-        public ICommand ChangeViewCommand { get; }
-
-        private void ChangeNavigation(bool arg)
-        {
-            NavigationEnabled = arg;
-        }
+        public ObservableCollection<WorkArea> WorkAreas { get; }
 
         /// <inheritdoc/>
         public override async Task LoadAsync(int? id = null)
@@ -98,9 +93,14 @@ namespace SistemaMirno.UI.ViewModel.Main
 
                 foreach (var workArea in workAreas)
                 {
-                        Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(workArea));
+                    Application.Current.Dispatcher.Invoke(() => WorkAreas.Add(workArea));
                 }
             }
+        }
+
+        private void ChangeNavigation(bool arg)
+        {
+            NavigationEnabled = arg;
         }
 
         private void ChangeView(object obj)

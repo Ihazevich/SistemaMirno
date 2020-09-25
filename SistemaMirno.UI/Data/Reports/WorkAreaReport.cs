@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace SistemaMirno.UI.Data.Reports
 {
     /// <summary>
-    /// A class representing the data of a work area used for reports.
+    /// Represents the JSON data of a Work Area.
     /// </summary>
     [Serializable]
     public class WorkAreaReport
