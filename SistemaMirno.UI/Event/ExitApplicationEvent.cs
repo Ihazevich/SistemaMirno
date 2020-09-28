@@ -7,7 +7,7 @@ using Prism.Events;
 namespace SistemaMirno.UI.Event
 {
     /// <summary>
-    /// A class representing the event raised to close the application.
+    /// Represents the event raised to close the application.
     /// </summary>
     public class ExitApplicationEvent : PubSubEvent
     {

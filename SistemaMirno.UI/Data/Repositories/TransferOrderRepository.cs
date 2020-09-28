@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="TransferOrder"/> model.
+    /// </summary>
     public class TransferOrderRepository : GenericRepository<TransferOrder, MirnoDbContext>, ITransferOrderRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransferOrderRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public TransferOrderRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public override async Task<TransferOrder> GetByIdAsync(int? id)
         {
             try
@@ -44,6 +53,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<WorkUnit>> GetAllWorkUnitsAvailableForTransferAsync(int destinationBranchId)
         {
             try
@@ -66,6 +76,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Employee>> GetAllLogisticResponsiblesAsync()
         {
             try
@@ -84,6 +95,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync()
         {
             try
@@ -102,6 +114,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Branch>> GetAllBranchesNotCurrentAsync(int originBranchId)
         {
             try
@@ -120,6 +133,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteTransferUnitAsync(TransferUnit transferUnit)
         {
             try
@@ -137,6 +151,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<WorkArea>> GetTransferWorkAreasAsync(int destinationBranchId)
         {
             try
@@ -155,6 +170,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<TransferOrder>> GetAllUnconfirmedAsync(int branchId)
         {
             try
@@ -173,6 +189,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<TransferOrder>> GetAllIncomingAsync(int branchId)
         {
             try

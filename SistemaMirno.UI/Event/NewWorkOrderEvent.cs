@@ -7,9 +7,8 @@ using Prism.Events;
 namespace SistemaMirno.UI.Event
 {
     /// <summary>
-    /// A class representing the event triggered when a new work order is made.
+    /// Represents the event raised to make a new work order.
     /// </summary>
-    /// <typeparam name="T">The type of the saved model.</typeparam>
     public class NewWorkOrderEvent : PubSubEvent<NewWorkOrderEventArgs>
     {
     }

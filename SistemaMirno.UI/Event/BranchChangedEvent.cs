@@ -6,6 +6,9 @@ using Prism.Events;
 
 namespace SistemaMirno.UI.Event
 {
+    /// <summary>
+    /// Represents the event raised when the current branch changed.
+    /// </summary>
     public class BranchChangedEvent : PubSubEvent<BranchChangedEventArgs>
     {
     }

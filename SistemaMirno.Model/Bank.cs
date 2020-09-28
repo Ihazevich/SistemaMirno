@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SistemaMirno.Model
 {
     /// <summary>
-    /// A class that represents bank information.
+    /// Represents a bank.
     /// </summary>
     public partial class Bank : ModelBase
     {
@@ -21,7 +21,8 @@ namespace SistemaMirno.Model
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of <see cref="Model.BankAccount"/> entities related to this bank.
+        /// Gets or sets the navigation property to the <see cref="Model.BankAccount"/>
+        /// entities related to this bank.
         /// </summary>
         [ForeignKey(nameof(BankAccount.BankId))]
         public virtual ICollection<BankAccount> BankAccounts { get; set; } = new HashSet<BankAccount>();

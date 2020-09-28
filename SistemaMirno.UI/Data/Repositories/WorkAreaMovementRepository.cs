@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="WorkAreaMovement"/> model.
+    /// </summary>
     public class WorkAreaMovementRepository : GenericRepository<WorkAreaMovement, MirnoDbContext>, IWorkAreaMovementRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkAreaMovementRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public WorkAreaMovementRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkAreaMovement>> GetAllIncomingWorkAreaMovementsOfWorkAreaInDateAsync(
             int id,
             DateTime date)
@@ -44,6 +53,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkAreaMovement>> GetAllOutgoingWorkAreaMovementsOfWorkAreaInDateAsync(
             int id,
             DateTime date)
@@ -66,6 +76,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkArea>> GetAllWorkAreasFromBranchAsync(int branchId)
         {
             try

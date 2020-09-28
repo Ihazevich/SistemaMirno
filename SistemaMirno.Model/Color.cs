@@ -3,14 +3,13 @@
 // </copyright>
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
     /// <summary>
-    /// A class that represents a product's color.
+    /// Represents a product's color.
     /// </summary>
     public partial class Color : ModelBase
     {
@@ -22,7 +21,7 @@ namespace SistemaMirno.Model
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of Work Units that have this color.
+        /// Gets or sets the navigation property to the related <see cref="Model.WorkUnit"/> entities.
         /// </summary>
         [ForeignKey(nameof(WorkUnit.ColorId))]
         public virtual ICollection<WorkUnit> WorkUnits { get; set; } = new HashSet<WorkUnit>();

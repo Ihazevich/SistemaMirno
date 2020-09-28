@@ -6,6 +6,9 @@ using SistemaMirno.Model;
 
 namespace SistemaMirno.UI.Data.Repositories.Interfaces
 {
+    /// <summary>
+    /// Represents the interface of the data repository for the <see cref="Vehicle"/> model.
+    /// </summary>
     public interface IVehicleRepository : IGenericRepository<Vehicle>
     {
     }

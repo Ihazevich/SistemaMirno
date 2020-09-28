@@ -7,7 +7,7 @@ using System.Windows.Controls;
 namespace SistemaMirno.UI.View.General
 {
     /// <summary>
-    /// Interaction logic for EmployeeView.xaml
+    /// Interaction logic for EmployeeView.xaml.
     /// </summary>
     public partial class EmployeeView : UserControl
     {

@@ -6,6 +6,9 @@ using Prism.Events;
 
 namespace SistemaMirno.UI.Event
 {
+    /// <summary>
+    /// Represents the event raised to update the status bar.
+    /// </summary>
     public class NotifyStatusBarEvent : PubSubEvent<NotifyStatusBarEventArgs>
     {
     }

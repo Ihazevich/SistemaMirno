@@ -8,9 +8,8 @@ using SistemaMirno.UI.Wrapper;
 namespace SistemaMirno.UI.Event
 {
     /// <summary>
-    /// A class representing the arguments of the <see cref="NewWorkOrderEvent"/> event.
+    /// Represents the arguments passed when the <see cref="NewWorkOrderEvent"/> is raised.
     /// </summary>
-    /// <typeparam name="T">The type of the deleted model.</typeparam>
     public class NewWorkOrderEventArgs
     {
         /// <summary>

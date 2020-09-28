@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SistemaMirno.Model
 {
     /// <summary>
-    /// A class that represents the assistance data gotten from an assistance clock.
+    /// Represents the assistance data gotten from an assistance clock.
     /// </summary>
     public partial class Assistance : ModelBase
     {

@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="DeliveryOrder"/> model.
+    /// </summary>
     public class DeliveryOrderRepository : GenericRepository<DeliveryOrder, MirnoDbContext>, IDeliveryOrderRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeliveryOrderRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public DeliveryOrderRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<List<Vehicle>> GetAllVehiclesAsync()
         {
             try
@@ -40,6 +49,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Employee>> GetAllLogisticResponsiblesAsync()
         {
             try
@@ -58,6 +68,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Sale>> GetAllNonDeliveredSalesAsync()
         {
             try

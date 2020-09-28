@@ -11,6 +11,9 @@ namespace SistemaMirno.UI.View.Detail
     /// </summary>
     public partial class ProductDetailView : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductDetailView"/> class.
+        /// </summary>
         public ProductDetailView()
         {
             InitializeComponent();

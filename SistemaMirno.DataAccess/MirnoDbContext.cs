@@ -326,6 +326,7 @@ namespace SistemaMirno.DataAccess
             }
         }
 
+        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             DbInterception.Remove(DatabaseLogger);

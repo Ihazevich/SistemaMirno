@@ -14,13 +14,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="Role"/> model.
+    /// </summary>
     public class RoleRepository : GenericRepository<Role, MirnoDbContext>, IRoleRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public RoleRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<List<Branch>> GetAllBranchesAsync()
         {
             try

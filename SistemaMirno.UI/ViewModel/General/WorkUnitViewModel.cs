@@ -275,7 +275,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private async Task LoadConnections(int id)
         {
-            var connections = await _workUnitRepository.GetWorkAreaOutgoingConnections(id);
+            var connections = await _workUnitRepository.GetWorkAreaOutgoingConnectionsAsync(id);
 
             foreach (var connection in connections)
             {
@@ -285,7 +285,7 @@ namespace SistemaMirno.UI.ViewModel.General
 
         private async Task LoadWorkArea(int id)
         {
-            var workArea = await _workUnitRepository.GetWorkAreaById(id);
+            var workArea = await _workUnitRepository.GetWorkAreaByIdAsync(id);
 
             Application.Current.Dispatcher.Invoke(() => WorkArea = new WorkAreaWrapper(workArea));
         }

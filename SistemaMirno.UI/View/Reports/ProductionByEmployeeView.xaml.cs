@@ -11,6 +11,9 @@ namespace SistemaMirno.UI.View.Reports
     /// </summary>
     public partial class ProductionByEmployeeView : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductionByEmployeeView"/> class.
+        /// </summary>
         public ProductionByEmployeeView()
         {
             InitializeComponent();

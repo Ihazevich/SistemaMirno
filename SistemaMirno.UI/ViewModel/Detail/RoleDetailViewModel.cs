@@ -187,6 +187,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
             };
 
             bool? result = dlg.ShowDialog();
+
             // Process open file dialog box results
             if (result == true)
             {

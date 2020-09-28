@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="User"/> model.
+    /// </summary>
     public class UserRepository : GenericRepository<User, MirnoDbContext>, IUserRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public UserRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<User> GetByUsernameAsync(string username)
         {
             try
@@ -49,6 +58,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Role>> GetAllRolesFromEmployeeAsync(int id)
         {
             try
@@ -69,6 +79,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Employee>> GetAllEmployeesAsync()
         {
             try

@@ -11,6 +11,9 @@ namespace SistemaMirno.UI.View.SysAdmin
     /// </summary>
     public partial class AdminWorkUnitView : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdminWorkUnitView"/> class.
+        /// </summary>
         public AdminWorkUnitView()
         {
             InitializeComponent();

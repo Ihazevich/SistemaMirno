@@ -1,3 +1,7 @@
+// <copyright file="AssemblyInfo.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -31,6 +35,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.2.265.7573")]
-[assembly: AssemblyFileVersion("0.2.265.7573")]
-[assembly: AssemblyInformationalVersion("0.2.147")]
+[assembly: AssemblyVersion("0.2.274.7576")]
+[assembly: AssemblyFileVersion("0.2.274.7576")]
+[assembly: AssemblyInformationalVersion("0.2.156")]

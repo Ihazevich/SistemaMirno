@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="Delivery"/> model.
+    /// </summary>
     public class DeliveryRepository : GenericRepository<Delivery, MirnoDbContext>, IDeliveryRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeliveryRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public DeliveryRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Delivery>> GetAllInProcessAsync()
         {
             try

@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="WorkUnit"/> model.
+    /// </summary>
     public class WorkUnitRepository : GenericRepository<WorkUnit, MirnoDbContext>, IWorkUnitRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkUnitRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public WorkUnitRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkUnit>> GetAllWorkUnitsCurrentlyInWorkAreaAsync(int id)
         {
             try
@@ -39,7 +48,8 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public async Task<WorkArea> GetWorkAreaById(int id)
+        /// <inheritdoc/>
+        public async Task<WorkArea> GetWorkAreaByIdAsync(int id)
         {
             try
             {
@@ -56,6 +66,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkUnit>> GetWorkUnitsInProcessAsync()
         {
             try
@@ -74,7 +85,8 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public async Task<List<WorkArea>> GetWorkAreasThatReportInProcess()
+        /// <inheritdoc/>
+        public async Task<List<WorkArea>> GetWorkAreasThatReportInProcessAsync()
         {
             try
             {
@@ -91,7 +103,8 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
-        public async Task<List<WorkAreaConnection>> GetWorkAreaOutgoingConnections(int workAreaId)
+        /// <inheritdoc/>
+        public async Task<List<WorkAreaConnection>> GetWorkAreaOutgoingConnectionsAsync(int workAreaId)
         {
             try
             {
@@ -108,6 +121,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkUnit>> GetAllWorkUnitsInAllLastWorkAreasAsync()
         {
             try
@@ -126,6 +140,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Branch>> GetAllBranchesAsync()
         {
             try
@@ -143,6 +158,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<WorkArea> GetLastWorkAreaFromBranchIdAsync(int id)
         {
             try
@@ -160,6 +176,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkArea>> GetAllWorkAreasAsync()
         {
             try
@@ -177,6 +194,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Material>> GetAllMaterialsAsync()
         {
             try
@@ -194,6 +212,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Color>> GetAllColorsAsync()
         {
             try
@@ -211,6 +230,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Product>> GetAllProductsAsync()
         {
             try

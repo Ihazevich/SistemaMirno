@@ -6,6 +6,9 @@ using Prism.Events;
 
 namespace SistemaMirno.UI.Event
 {
+    /// <summary>
+    /// Represents the event raised to retrieve the current session info.
+    /// </summary>
     public class AskSessionInfoEvent : PubSubEvent
     {
     }

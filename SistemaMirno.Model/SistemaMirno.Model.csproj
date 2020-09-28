@@ -43,6 +43,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\SistemaMirno.UI\SistemaMirno.UI.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -86,6 +88,7 @@
     <Compile Include="CashMovement.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CreditCardPayment.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProviderPayment.cs" />
     <Compile Include="Purchase.cs" />
     <Compile Include="ClientCommunication.cs" />

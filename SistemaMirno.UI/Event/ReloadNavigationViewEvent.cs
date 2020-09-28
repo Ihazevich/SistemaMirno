@@ -6,6 +6,9 @@ using Prism.Events;
 
 namespace SistemaMirno.UI.Event
 {
+    /// <summary>
+    /// Represents the event raised to reload the navigation side bar.
+    /// </summary>
     public class ReloadNavigationViewEvent : PubSubEvent
     {
     }

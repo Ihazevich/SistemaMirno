@@ -15,6 +15,9 @@ using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.Detail
 {
+    /// <summary>
+    /// Represents the View Model for a single <see cref="Model.Branch"/> entity.
+    /// </summary>
     public class BranchDetailViewModel : DetailViewModelBase
     {
         private readonly IBranchRepository _branchRepository;
@@ -25,6 +28,7 @@ namespace SistemaMirno.UI.ViewModel.Detail
         /// </summary>
         /// <param name="branchRepository">The data repository.</param>
         /// <param name="eventAggregator">The event aggregator.</param>
+        /// <param name="dialogCoordinator">The dialog coordinator.</param>
         public BranchDetailViewModel(
             IBranchRepository branchRepository,
             IEventAggregator eventAggregator,

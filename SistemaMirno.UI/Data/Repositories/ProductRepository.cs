@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="Product"/> model.
+    /// </summary>
     public class ProductRepository : GenericRepository<Product, MirnoDbContext>, IProductRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public ProductRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<List<ProductCategory>> GetAllProductCategoriesAsync()
         {
             try
@@ -40,6 +49,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<ProductCategory> GetProductCategoryByNameAsync(string productCategoryName)
         {
             try
@@ -59,6 +69,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> CheckForDuplicatesAsync(string productName)
         {
             try

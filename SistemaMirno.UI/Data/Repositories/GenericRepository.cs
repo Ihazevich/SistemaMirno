@@ -14,6 +14,11 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the generic data repository.
+    /// </summary>
+    /// <typeparam name="TEntity">The entity.</typeparam>
+    /// <typeparam name="TContext">The database context.</typeparam>
     public class GenericRepository<TEntity, TContext> : IDisposable, IGenericRepository<TEntity>
         where TEntity : ModelBase, new()
         where TContext : DbContext
@@ -21,6 +26,11 @@ namespace SistemaMirno.UI.Data.Repositories
         private readonly Func<TContext> _dbCreator;
         private readonly DbSet<TEntity> _entities;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericRepository{TEntity, TContext}"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         protected GenericRepository(Func<TContext> contextCreator, IEventAggregator eventAggregator)
         {
             _dbCreator = contextCreator;
@@ -29,54 +39,73 @@ namespace SistemaMirno.UI.Data.Repositories
             EventAggregator = eventAggregator;
         }
 
+        /// <summary>
+        /// Gets the database context.
+        /// </summary>
         protected TContext Context { get; }
 
+        /// <summary>
+        /// Gets the event aggregator.
+        /// </summary>
         protected IEventAggregator EventAggregator { get; }
 
+        /// <inheritdoc/>
         public Task<int> AddAsync(TEntity entity)
         {
             _entities.Add(entity);
             return SaveChangesAsync();
         }
 
+        /// <inheritdoc/>
         public Task<int> AddRangeAsync(IList<TEntity> entities)
         {
             _entities.AddRange(entities);
             return SaveChangesAsync();
         }
 
+        /// <inheritdoc/>
         public Task<int> DeleteAsync(int id, byte[] timeStamp)
         {
             Context.Entry(new TEntity() { Id = id, Timestamp = timeStamp }).State = EntityState.Deleted;
             return SaveChangesAsync();
         }
 
+        /// <inheritdoc/>
         public Task<int> DeleteAsync(TEntity entity)
         {
             Context.Entry(entity).State = EntityState.Deleted;
             return SaveChangesAsync();
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             Context?.Dispose();
         }
 
+        /// <inheritdoc/>
         public virtual Task<List<TEntity>> GetAllAsync() => _entities.ToListAsync();
 
+        /// <inheritdoc/>
         public virtual Task<TEntity> GetByIdAsync(int? id) => _entities.FindAsync(id);
 
+        /// <inheritdoc/>
         public bool HasChanges()
         {
             return Context.ChangeTracker.HasChanges();
         }
 
+        /// <inheritdoc/>
         public Task<int> SaveAsync(TEntity entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
             return SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Asynchronously saves the changes made to the database context.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         internal async Task<int> SaveChangesAsync()
         {
             try

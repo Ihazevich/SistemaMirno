@@ -11,6 +11,9 @@ namespace SistemaMirno.UI.View.General
     /// </summary>
     public partial class BranchView : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BranchView"/> class.
+        /// </summary>
         public BranchView()
         {
             InitializeComponent();

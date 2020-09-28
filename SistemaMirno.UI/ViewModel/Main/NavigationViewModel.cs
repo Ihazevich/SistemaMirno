@@ -32,7 +32,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationViewModel"/> class.
         /// </summary>
-        /// <param name="productionAreaRepository">The work areas repository.</param>
+        /// <param name="workAreaRepository">The data repository.</param>
         /// <param name="eventAggregator">The event aggregator.</param>
         /// <param name="dialogCoordinator">The dialog coordinator.</param>
         public NavigationViewModel(

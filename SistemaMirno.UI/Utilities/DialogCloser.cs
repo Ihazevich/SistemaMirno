@@ -7,10 +7,13 @@ using System.Windows;
 namespace SistemaMirno.UI.Utilities
 {
     /// <summary>
-    /// A class representing an attached property to close windows using data binding.
+    /// Represents an attached property to close windows using data binding.
     /// </summary>
     public static class DialogCloser
     {
+        /// <summary>
+        /// The dependency property used to bind a dialog result.
+        /// </summary>
         public static readonly DependencyProperty DialogResultProperty =
             DependencyProperty.RegisterAttached(
                 "DialogResult",

@@ -7,7 +7,7 @@ using System.Windows.Controls;
 namespace SistemaMirno.UI.View.Detail
 {
     /// <summary>
-    /// Interaction logic for WorkOrderDetailView.xaml
+    /// Interaction logic for WorkOrderDetailView.xaml.
     /// </summary>
     public partial class WorkOrderDetailView : UserControl
     {

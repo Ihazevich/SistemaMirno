@@ -8,10 +8,13 @@ using SistemaMirno.UI.Wrapper;
 namespace SistemaMirno.UI.Event
 {
     /// <summary>
-    /// A struct representing the argument sent with the <see cref="UserChangedEvent"/> event.
+    /// Represents the arguments passed when the <see cref="UserChangedEvent"/> is raised.
     /// </summary>
     public struct UserChangedEventArgs
     {
+        /// <summary>
+        /// Gets or sets the new user.
+        /// </summary>
         public UserWrapper User { get; set; }
     }
 }

@@ -15,23 +15,34 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="Employee"/> model.
+    /// </summary>
     public class EmployeeRepository : GenericRepository<Employee, MirnoDbContext>, IEmployeeRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmployeeRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public EmployeeRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public Task<List<Branch>> GetAllBranchesAsync()
         {
             return Context.Branches.ToListAsync();
         }
 
+        /// <inheritdoc/>
         public Task<List<Role>> GetAllRolesFromBranchAsync(int branchId)
         {
             return Context.Roles.Where(r => r.BranchId == branchId).ToListAsync();
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkOrderUnit>> GetThisMonthWorkOrderUnitsFromEmployeeAsync(int employeeId)
         {
             try
@@ -54,6 +65,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkOrderUnit>> GetThisYearsWorkOrderUnitsFromEmployeeAsync(int employeeId)
         {
             try

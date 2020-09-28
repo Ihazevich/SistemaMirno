@@ -11,6 +11,9 @@ namespace SistemaMirno.UI.View.Reports
     /// </summary>
     public partial class InProcessByWorkAreasView : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InProcessByWorkAreasView"/> class.
+        /// </summary>
         public InProcessByWorkAreasView()
         {
             InitializeComponent();

@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="WorkOrder"/> model.
+    /// </summary>
     public class WorkOrderRepository : GenericRepository<WorkOrder, MirnoDbContext>, IWorkOrderRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkOrderRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public WorkOrderRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<WorkArea> GetWorkAreaAsync(int id)
         {
             try
@@ -39,6 +48,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Product>> GetAllProductsAsync()
         {
             try
@@ -57,6 +67,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Color>> GetAllColorsAsync()
         {
             try
@@ -75,6 +86,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Material>> GetAllMaterialsAsync()
         {
             try
@@ -93,6 +105,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkUnit>> GetExistingWorkUnits(ICollection<WorkAreaConnection> incomingConnections)
         {
             var workAreasIds = incomingConnections.Select(c => c.OriginWorkAreaId).ToList();
@@ -113,6 +126,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkUnit>> GetRequisitionWorkUnits()
         {
             try
@@ -131,6 +145,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Employee>> GetEmployeesWithRoleIdAsync(int roleId)
         {
             try
@@ -150,6 +165,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkUnit>> GetWorkUnitsByIdAsync(ICollection<int> idCollection)
         {
             try
@@ -167,6 +183,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkOrder>> GetAllWorkOrdersFromWorkAreasBetweenDatesAsync(List<int> workAreasIds, DateTime fromDate, DateTime toDate)
         {
             try
@@ -188,6 +205,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkArea>> GetAllWorkAreasAsync(int branchId)
         {
             try

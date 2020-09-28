@@ -10,8 +10,16 @@ using SistemaMirno.UI.Data.Repositories.Interfaces;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="Client"/> model.
+    /// </summary>
     public class ClientRepository : GenericRepository<Client, MirnoDbContext>, IClientRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public ClientRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {

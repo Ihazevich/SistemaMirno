@@ -7,7 +7,7 @@ using Prism.Events;
 namespace SistemaMirno.UI.Event
 {
     /// <summary>
-    /// A class representing the event raised when the system user changed.
+    /// Represents the event raised when the current user changed.
     /// </summary>
     public class UserChangedEvent : PubSubEvent<UserChangedEventArgs>
     {

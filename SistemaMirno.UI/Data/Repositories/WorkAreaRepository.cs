@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="WorkArea"/> model.
+    /// </summary>
     public class WorkAreaRepository : GenericRepository<WorkArea, MirnoDbContext>, IWorkAreaRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkAreaRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
         public WorkAreaRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<List<Branch>> GetAllBranchesAsync()
         {
             try
@@ -32,13 +41,14 @@ namespace SistemaMirno.UI.Data.Repositories
             {
                 EventAggregator.GetEvent<ShowDialogEvent>().Publish(new ShowDialogEventArgs
                 {
-                    Message = $"     [{e.Message}] contacte al Administrador del Sistema",
+                    Message = $"Error inesperado [{e.Message}] contacte al Administrador del Sistema",
                     Title = "Error",
                 });
                 return null;
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkArea>> GetAllWorkAreasAsync()
         {
             try
@@ -56,6 +66,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Role>> GetAllRolesAsync()
         {
             try
@@ -73,6 +84,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkAreaConnection>> GetAllWorkAreaConnectionsFromWorkAreaAsync(int id)
         {
             try
@@ -90,6 +102,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> CheckIfFirstExistsAsync(int id)
         {
             try
@@ -107,6 +120,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkArea>> GetAllWorkAreasFromBranchAsync(int id)
         {
             try
@@ -124,6 +138,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> CheckIfLastExistsAsync(int id)
         {
             try

@@ -122,7 +122,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 Total = 0,
             };
 
-            var workAreas = await _workUnitRepository.GetWorkAreasThatReportInProcess();
+            var workAreas = await _workUnitRepository.GetWorkAreasThatReportInProcessAsync();
 
             foreach (var workArea in workAreas)
             {

@@ -15,13 +15,22 @@ using SistemaMirno.UI.Event;
 
 namespace SistemaMirno.UI.Data.Repositories
 {
+    /// <summary>
+    /// Represents the data repository for the <see cref="Requisition"/> model.
+    /// </summary>
     public class RequisitionRepository : GenericRepository<Requisition, MirnoDbContext>, IRequisitionRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequisitionRepository"/> class.
+        /// </summary>
+        /// <param name="contextCreator">The context creator.</param>
+        /// <param name="eventAggregator">The event aggregtor.</param>
         public RequisitionRepository(Func<MirnoDbContext> contextCreator, IEventAggregator eventAggregator)
             : base(contextCreator, eventAggregator)
         {
         }
 
+        /// <inheritdoc/>
         public async Task<List<Client>> GetAllClientsAsync()
         {
             try
@@ -40,6 +49,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Product>> GetAllProductsAsync()
         {
             try
@@ -58,6 +68,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Color>> GetAllColorsAsync()
         {
             try
@@ -76,6 +87,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Material>> GetAllMaterialsAsync()
         {
             try
@@ -94,6 +106,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<WorkArea> GetFirstWorkAreaAsync()
         {
             try
@@ -112,6 +125,7 @@ namespace SistemaMirno.UI.Data.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<WorkUnit>> GetAllUnassignedWorkUnitsAsync()
         {
             try

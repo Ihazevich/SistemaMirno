@@ -11,6 +11,9 @@ namespace SistemaMirno.UI.View.Detail
     /// </summary>
     public partial class RoleDetailView : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleDetailView"/> class.
+        /// </summary>
         public RoleDetailView()
         {
             InitializeComponent();

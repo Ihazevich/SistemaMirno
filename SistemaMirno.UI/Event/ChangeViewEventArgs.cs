@@ -5,9 +5,8 @@
 namespace SistemaMirno.UI.Event
 {
     /// <summary>
-    /// A class representing the arguments of the <see cref="ChangeViewEvent"/> event.
+    /// Represents the arguments passed when the <see cref="ChangeViewEvent"/> is raised.
     /// </summary>
-    /// <typeparam name="T">The type of the deleted model.</typeparam>
     public class ChangeViewEventArgs
     {
         /// <summary>

@@ -18,6 +18,10 @@ using SistemaMirno.UI.Wrapper;
 
 namespace SistemaMirno.UI.ViewModel.SysAdmin
 {
+    /// <summary>
+    /// Represents the View Model to add work units to a specific work area directly,
+    /// used by system admins only.
+    /// </summary>
     public class AdminWorkUnitViewModel : ViewModelBase
     {
         private readonly IWorkUnitRepository _workUnitRepository;
@@ -28,6 +32,12 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
         private WorkArea _selectedWorkArea;
         private WorkUnitWrapper _workUnit;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdminWorkUnitViewModel"/> class.
+        /// </summary>
+        /// <param name="workUnitRepository">The data repository.</param>
+        /// <param name="eventAggregator">The event aggregator.</param>
+        /// <param name="dialogCoordinator">The dialog coordinator.</param>
         public AdminWorkUnitViewModel(
             IWorkUnitRepository workUnitRepository,
             IEventAggregator eventAggregator,
@@ -44,12 +54,24 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
             AddNewWorkUnitCommand = new DelegateCommand(OnAddNewWorkUnitExecute, OnAddNewWorkUnitCanExecute);
         }
 
+        /// <summary>
+        /// Gets the command used to add a new work unit.
+        /// </summary>
         public ICommand AddNewWorkUnitCommand { get; }
 
+        /// <summary>
+        /// Gets the current collection of <see cref="Color"/> entities.
+        /// </summary>
         public ObservableCollection<Color> Colors { get; }
 
+        /// <summary>
+        /// Gets the current collection of <see cref="Material"/> entities.
+        /// </summary>
         public ObservableCollection<Material> Materials { get; }
 
+        /// <summary>
+        /// Gets or sets the new work unit entity wrapper.
+        /// </summary>
         public WorkUnitWrapper NewWorkUnit
         {
             get => _workUnit;
@@ -61,8 +83,14 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
             }
         }
 
+        /// <summary>
+        /// Gets the current collection of <see cref="Product"/> entities.
+        /// </summary>
         public ObservableCollection<Product> Products { get; }
 
+        /// <summary>
+        /// Gets or sets the quantity used to create new work units.
+        /// </summary>
         public string Quantity
         {
             get => _quantity;
@@ -74,6 +102,9 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current selected <see cref="Color"/> entity.
+        /// </summary>
         public Color SelectedColor
         {
             get => _selectedColor;
@@ -85,6 +116,9 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current selected <see cref="Material"/> entity.
+        /// </summary>
         public Material SelectedMaterial
         {
             get => _selectedMaterial;
@@ -96,6 +130,9 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current selected <see cref="Product"/> entity.
+        /// </summary>
         public Product SelectedProduct
         {
             get => _selectedProduct;
@@ -107,6 +144,9 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current selected <see cref="WorkArea"/> entity.
+        /// </summary>
         public WorkArea SelectedWorkArea
         {
             get => _selectedWorkArea;
@@ -118,8 +158,12 @@ namespace SistemaMirno.UI.ViewModel.SysAdmin
             }
         }
 
+        /// <summary>
+        /// Gets the current collection of <see cref="WorkArea"/> entities.
+        /// </summary>
         public ObservableCollection<WorkArea> WorkAreas { get; }
 
+        /// <inheritdoc/>
         public override async Task LoadAsync(int? id = null)
         {
             await LoadProducts();
