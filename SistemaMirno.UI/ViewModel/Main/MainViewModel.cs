@@ -172,7 +172,7 @@ namespace SistemaMirno.UI.ViewModel.Main
         }
 
         /// <summary>
-        ///     Gets the area navigation view model.
+        /// Gets or sets the area navigation view model.
         /// </summary>
         public IViewModelBase NavigationViewModel
         {

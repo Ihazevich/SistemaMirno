@@ -7,7 +7,7 @@ using System.Windows.Controls;
 namespace SistemaMirno.UI.View.Reports
 {
     /// <summary>
-    /// Interaction logic for ProductionByEmployeeView.xaml
+    /// Interaction logic for ProductionByEmployeeView.xaml.
     /// </summary>
     public partial class ProductionByEmployeeView : UserControl
     {

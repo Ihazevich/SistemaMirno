@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="VehicleMaintenanceOrder.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

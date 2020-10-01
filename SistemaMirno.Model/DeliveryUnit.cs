@@ -42,10 +42,19 @@ namespace SistemaMirno.Model
         /// </summary>
         public bool Delivered { get; set; }
 
+        /// <summary>
+        /// Gets or sets the date the unit was delivered.
+        /// </summary>
         public DateTime? DeliveredOn { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the delivery of the unit was cancelled.
+        /// </summary>
         public bool Cancelled { get; set; }
 
+        /// <summary>
+        /// Gets or sets the reason why the unit was not delivered.
+        /// </summary>
         public string ReasonNotDelivered { get; set; }
     }
 }

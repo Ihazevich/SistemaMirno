@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="SaleCollection.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
@@ -36,7 +35,7 @@ namespace SistemaMirno.Model
 
         [Required]
         public int? DatedCheckId { get; set; }
-        
+
         [Required]
         public int? BankAccountId { get; set; }
 

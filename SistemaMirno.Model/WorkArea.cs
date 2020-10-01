@@ -2,9 +2,7 @@
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -44,7 +42,7 @@ namespace SistemaMirno.Model
 
         [Required(ErrorMessage = "Requerido")]
         public bool IsLast { get; set; }
-        
+
         [Required(ErrorMessage = "Requerido")]
         public bool ReportsInProcess { get; set; }
 
@@ -71,6 +69,5 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(WorkOrder.DestinationWorkAreaId))]
         public virtual ICollection<WorkOrder> IncomingWorkOrders { get; set; } = new HashSet<WorkOrder>();
-
     }
 }

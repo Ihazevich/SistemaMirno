@@ -3,14 +3,13 @@
 // </copyright>
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaMirno.Model
 {
     /// <summary>
-    /// A class representing the category of a product.
+    /// Represents the category of a <see cref="Model.Product"/>.
     /// </summary>
     public partial class ProductCategory : ModelBase
     {
@@ -22,7 +21,7 @@ namespace SistemaMirno.Model
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of products that are of this category.
+        /// Gets or sets the navigation property to the related <see cref="Model.ProductCategory"/> entities.
         /// </summary>
         [ForeignKey(nameof(Product.ProductCategoryId))]
         public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();

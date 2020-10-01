@@ -1,8 +1,8 @@
-﻿using System;
+﻿// <copyright file="SaleType.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {

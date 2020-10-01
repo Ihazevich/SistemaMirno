@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="Sale.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +19,7 @@ namespace SistemaMirno.Model
 
         [ForeignKey(nameof(BranchId))]
         public virtual Branch Branch { get; set; }
-        
+
         [Required]
         public int ClientId { get; set; }
 
@@ -43,7 +47,7 @@ namespace SistemaMirno.Model
 
         [Required]
         public long Tax { get; set; }
-        
+
         [Required]
         public long DeliveryFee { get; set; }
 

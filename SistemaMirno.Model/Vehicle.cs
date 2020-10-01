@@ -1,10 +1,11 @@
-﻿using System;
+﻿// <copyright file="Vehicle.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
@@ -19,7 +20,7 @@ namespace SistemaMirno.Model
 
         [NotMapped]
         public string FullName => string.Concat(VehicleModel, " - ", Patent);
-        
+
         public bool IsAvailable { get; set; }
 
         public DateTime PatentExpiration { get; set; }

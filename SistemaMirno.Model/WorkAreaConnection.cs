@@ -1,4 +1,4 @@
-﻿// <copyright file="AreaConnection.cs" company="HazeLabs">
+﻿// <copyright file="WorkAreaConnection.cs" company="HazeLabs">
 // Copyright (c) HazeLabs. All rights reserved.
 // </copyright>
 
@@ -8,12 +8,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SistemaMirno.Model
 {
     /// <summary>
-    /// A class representing a connection between two Work Areas.
+    /// Represents a connection between two <see cref="Model.WorkArea"/> entities.
     /// </summary>
     public class WorkAreaConnection : ModelBase
     {
         /// <summary>
-        /// Gets or sets the ID of the Work Area that acts as the origin of the connection.
+        /// Gets or sets the id of the Work Area that acts as the origin of the connection.
         /// </summary>
         [Required]
         public int OriginWorkAreaId { get; set; }

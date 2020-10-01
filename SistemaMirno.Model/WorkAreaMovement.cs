@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="WorkAreaMovement.cs" company="HazeLabs">
+// Copyright (c) HazeLabs. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaMirno.Model
 {
     public partial class WorkAreaMovement : ModelBase
     {
         public int? FromWorkAreaId { get; set; }
-        
+
         [ForeignKey(nameof(FromWorkAreaId))]
         public virtual WorkArea FromWorkArea { get; set; }
 
@@ -22,7 +22,7 @@ namespace SistemaMirno.Model
 
         [Required]
         public int WorkUnitId { get; set; }
-        
+
         [ForeignKey(nameof(WorkUnitId))]
         public virtual WorkUnit WorkUnit { get; set; }
 
@@ -30,7 +30,7 @@ namespace SistemaMirno.Model
         public DateTime Date { get; set; }
 
         public int? ResponsibleId { get; set; }
-        
+
         public virtual Employee Responsible { get; set; }
 
         public int? SupervisorId { get; set; }

@@ -75,7 +75,7 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         /// Asynchronously retrieves all <see cref="WorkOrder"/> entities from the database
         /// created between two dates and originated from a list of work areas.
         /// </summary>
-        /// <param name="workAreasIds">The list of work areas ids</param>
+        /// <param name="workAreasIds">The list of work areas ids.</param>
         /// <param name="fromDate">The start date.</param>
         /// <param name="toDate">The end date.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
