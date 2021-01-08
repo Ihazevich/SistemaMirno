@@ -59,4 +59,7 @@
     <DataTemplate DataType="{x:Type generalviewmodel:TransferOrderViewModel}">
         <general:TransferOrderView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type generalviewmodel:ProductSearchViewModel}">
+        <general:ProductSearchView/>
+    </DataTemplate>
 </ResourceDictionary>

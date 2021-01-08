@@ -12,7 +12,7 @@ namespace SistemaMirno.Model
     public partial class SupplyCategory : ModelBase
     {
         /// <summary>
-        /// Gets or sets the name of the supply.
+        /// Gets or sets the name of the category.
         /// </summary>
         [Required]
         [StringLength(100)]

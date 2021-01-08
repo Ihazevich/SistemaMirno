@@ -36,5 +36,6 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         /// </summary>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<List<WorkUnit>> GetAllWorkUnitsAsync();
+
     }
 }

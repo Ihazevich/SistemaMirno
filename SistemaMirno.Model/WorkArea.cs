@@ -9,21 +9,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SistemaMirno.Model
 {
     /// <summary>
-    /// A class representing a work area.
+    /// Represents a work area in the production line.
     /// </summary>
     public class WorkArea : ModelBase
     {
+        /// <summary>
+        /// Gets or sets the name of the work area.
+        /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = "Requerido")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets or sets the id of the related <see cref="Model.Branch"/> entity.
+        /// </summary>
         [Required(ErrorMessage = "Requerido")]
         public int BranchId { get; set; }
 
-        [Required(ErrorMessage = "Requerido")]
-        public string Position { get; set; }
-
+        /// <summary>
+        /// Gets or sets the navigation property to the related <see cref="Model.Branch"/> entity.
+        /// </summary>
         [ForeignKey(nameof(BranchId))]
         public virtual Branch Branch { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position of the area in the navigation panel.
+        /// </summary>
+        [Required(ErrorMessage = "Requerido")]
+        public string Position { get; set; }
 
         [Required(ErrorMessage = "Requerido")]
         public int ResponsibleRoleId { get; set; }

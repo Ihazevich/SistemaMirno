@@ -38,6 +38,14 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         Task<List<WorkUnit>> GetWorkUnitsInProcessAsync();
 
         /// <summary>
+        /// Asynchronously retrieves all <see cref="WorkUnit"/> entities from the database
+        /// that havent been delivered and contain the search string.
+        /// </summary>
+        /// <param name="name">The search string to compare against the name</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task<List<WorkUnit>> GetAllWorkUnitsByNameAsync(string name);
+
+        /// <summary>
         /// Asynchronously retrieves all <see cref="WorkArea"/> entities from the database
         /// that report if they have work units in process.
         /// </summary>

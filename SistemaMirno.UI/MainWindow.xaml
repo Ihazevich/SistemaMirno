@@ -67,7 +67,11 @@
                     <MenuItem Header="_Producción" 
                               Visibility="{Binding ProductionVisibility}"
                               IsEnabled="{Binding NavigationStatus}">
-                        <MenuItem Header="_Reportes" IsEnabled="{Binding NavigationStatus}">
+                    <MenuItem Header="_Buscador de productos"
+                              IsEnabled="{Binding NavigationStatus}"
+                              Command="{Binding ChangeViewCommand}"
+                              CommandParameter="ProductSearchViewModel"/>
+                    <MenuItem Header="_Reportes" IsEnabled="{Binding NavigationStatus}">
                             <MenuItem Header="En _proceso por areas" Command="{Binding ChangeViewCommand}" CommandParameter="InProcessByWorkAreasViewModel"/>
                             <MenuItem Header="Produccion por _areas" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByWorkAreaViewModel"/>
                             <MenuItem Header="Produccion por _empleado" Command="{Binding ChangeViewCommand}" CommandParameter="ProductionByEmployeeViewModel"/>
