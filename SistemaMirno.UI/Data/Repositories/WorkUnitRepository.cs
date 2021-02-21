@@ -106,11 +106,11 @@ namespace SistemaMirno.UI.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<List<WorkArea>> GetWorkAreasThatReportInProcessAsync()
+        public async Task<List<WorkArea>> GetWorkAreasThatReportInProcessAsync(string branchName)
         {
             try
             {
-                return await Context.WorkAreas.Where(w => w.ReportsInProcess).ToListAsync();
+                return await Context.WorkAreas.Where(w => w.ReportsInProcess && w.Branch.Name == branchName).ToListAsync();
             }
             catch (Exception e)
             {

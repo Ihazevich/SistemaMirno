@@ -122,7 +122,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
                 Total = 0,
             };
 
-            var workAreas = await _workUnitRepository.GetWorkAreasThatReportInProcessAsync();
+            var workAreas = await _workUnitRepository.GetWorkAreasThatReportInProcessAsync(SessionInfo.Branch.Name);
 
             foreach (var workArea in workAreas)
             {
@@ -150,7 +150,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
                         foreach (var workUnitReport in workAreaReport.WorkUnits)
                         {
                             // If there is a work unit in the report that has the same properties, just add to the quantity.
-                            if (workUnitReport.Product == workUnit.Model.Product.Name
+                            if (workUnitReport.Product == workUnit.Model.Description
                                 && workUnitReport.Material == workUnit.Model.Material.Name
                                 && workUnitReport.Color == workUnit.Model.Color.Name)
                             {
@@ -167,7 +167,7 @@ namespace SistemaMirno.UI.ViewModel.Reports
                             workAreaReport.WorkUnits.Add(new WorkUnitReport
                             {
                                 Quantity = 1,
-                                Product = workUnit.Model.Product.Name,
+                                Product = workUnit.Model.Description,
                                 Material = workUnit.Model.Material.Name,
                                 Color = workUnit.Model.Color.Name,
                                 Price = workUnit.Model.Product.ProductionValue,
@@ -180,13 +180,15 @@ namespace SistemaMirno.UI.ViewModel.Reports
                         workAreaReport.WorkUnits.Add(new WorkUnitReport
                         {
                             Quantity = 1,
-                            Product = workUnit.Model.Product.Name,
+                            Product = workUnit.Model.Description,
                             Material = workUnit.Model.Material.Name,
                             Color = workUnit.Model.Color.Name,
                             Price = workUnit.Model.Product.ProductionValue,
                             IncludePrice = _includePrice,
                         });
                     }
+
+                    workAreaReport.WorkUnits.Sort((a, b) => a.Product.CompareTo(b.Product));
 
                     // Add the production price of the work unit to the area total.
                     workAreaReport.Total += workUnit.Model.Product.ProductionValue;

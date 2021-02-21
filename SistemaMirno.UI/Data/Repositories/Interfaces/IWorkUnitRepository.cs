@@ -51,7 +51,7 @@ namespace SistemaMirno.UI.Data.Repositories.Interfaces
         /// </summary>
         /// <param name="id">The id of the work area.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<WorkArea>> GetWorkAreasThatReportInProcessAsync();
+        Task<List<WorkArea>> GetWorkAreasThatReportInProcessAsync(string branchName);
 
         /// <summary>
         /// Asynchronously retrieves all <see cref="WorkAreaConnection"/> entities from the database

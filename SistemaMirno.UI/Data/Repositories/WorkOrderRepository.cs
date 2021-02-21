@@ -112,7 +112,8 @@ namespace SistemaMirno.UI.Data.Repositories
 
             try
             {
-                return await Context.WorkUnits.Where(w => workAreasIds.Contains(w.CurrentWorkAreaId) && !w.CurrentWorkArea.IsFirst).ToListAsync();
+                return await Context.WorkUnits.Where(w => workAreasIds.Contains(w.CurrentWorkAreaId) && !w.CurrentWorkArea.IsFirst
+                                            && !w.Delivered && !w.Moving).ToListAsync();
             }
             catch (Exception ex)
             {
