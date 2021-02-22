@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SistemaMirno.UI.View"
              xmlns:controls="clr-namespace:DotNetKit.Windows.Controls;assembly=DotNetKit.Wpf.AutoCompleteComboBox"
+             xmlns:dotNetKitControls="clr-namespace:DotNetKit.Windows.Controls;assembly=DotNetKit.Wpf.AutoCompleteComboBox"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -16,17 +18,18 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ProgressBar Grid.Row="0" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
-        <Label Grid.Row="1" Content="Detalles del pedido" FontSize="20" Margin="5" />
+        <TextBlock Text="Detalles de pedido" 
+                   Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                   Margin="5" />
+        <ProgressBar Grid.Row="1" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
         <Separator Grid.Row="2" />
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <!-- Column 1 -->
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="0" IsEnabled="{Binding IsNew}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -38,40 +41,35 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Label Content="Prioridad"/>
-                <ComboBox Grid.Row="1" ItemsSource="{Binding Priorities}"
+                <ComboBox Grid.Row="1"
+                          materialDesign:HintAssist.Hint="Prioridad"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                          ItemsSource="{Binding Priorities}"
                           SelectedValue="{Binding Requisition.Priority, Mode=TwoWay}"
+                          FontSize="20"
                           Margin="5"/>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Label  Content="Cliente" />
-                    <CheckBox Grid.Column="1"
+                <CheckBox Grid.Row="2"
                               Content="Es para stock"
                               IsChecked="{Binding IsForStock}"
                               IsEnabled="{Binding IsNew}"
+                              FontSize="20"
                               Margin="5"/>
-                </Grid>
-                <ComboBox Grid.Row="3" ItemsSource="{Binding Clients}"
+                <ComboBox Grid.Row="3" 
+                          materialDesign:HintAssist.Hint="Cliente"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                          ItemsSource="{Binding Clients}"
                           SelectedValuePath="Id"
                           DisplayMemberPath="FullName"
                           SelectedValue="{Binding Requisition.ClientId, Mode=TwoWay}"
                           IsEnabled="{Binding ClientsEnabled}"
+                          FontSize="20"
                           Margin="5"/>
-                <Grid Grid.Row="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Fecha objetivo" />
-                    <CheckBox Grid.Column="1"
-                              Content="Tiene fecha objetivo"
-                              IsChecked="{Binding HasTargetDate, Mode=TwoWay}"
-                              IsEnabled="{Binding IsNew}"
-                              Margin="5"/>
-                </Grid>
+                <CheckBox Grid.Row="4"
+                            Content="Tiene fecha objetivo"
+                            IsChecked="{Binding HasTargetDate, Mode=TwoWay}"
+                            IsEnabled="{Binding IsNew}"
+                            FontSize="20"
+                            Margin="5"/>
                 <DatePicker Grid.Row="5"
                             Text="{Binding Requisition.TargetDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             IsEnabled="{Binding HasTargetDate}"
@@ -81,7 +79,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Agregar nuevo"
+                    <Button Content="NUEVO"
                             Command="{Binding AddWorkUnitCommand}"
                             CommandParameter="New"
                             IsEnabled="{Binding IsNew}"
@@ -89,7 +87,7 @@
                             Margin="5"
                             HorizontalAlignment="Center"/>
                     <Button Grid.Column="1" 
-                            Content="Agregar existente"
+                            Content="EXISTENTE"
                             Command="{Binding AddWorkUnitCommand}"
                             CommandParameter="Existing"
                             IsEnabled="{Binding IsNew}"
@@ -115,67 +113,81 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Label Content="Cantidad"/>
-                            <Label Grid.Column="1" Content="Producto"/>
-                            <Label Grid.Column="2" Content="Material"/>
-                            <Label Grid.Column="3" Content="Color"/>
                             <TextBox Grid.Row="1"
+                                     materialDesign:HintAssist.Hint="Cantidad"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="5"/>
-                            <controls:AutoCompleteComboBox Grid.Column="1" Grid.Row="1"
-                                                           ItemsSource="{Binding Products}"
-                                                           SelectedItem="{Binding SelectedProduct}"
-                                                           SelectedValuePath="Id"
-                                                           SelectedValue="{Binding NewWorkUnit.ProductId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                           DisplayMemberPath="Name"
-                                                           TextSearch.TextPath="Name"
-                                                           Margin="5">
+                                     FontSize="20"
+                                     Margin="5"
+                                     BorderThickness="0"/>
+                            <dotNetKitControls:AutoCompleteComboBox Grid.Column="1" Grid.Row="1"
+                                                                    materialDesign:HintAssist.Hint="Producto"
+                                                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                                                    ItemsSource="{Binding Products}"
+                                                                    SelectedItem="{Binding SelectedProduct}"
+                                                                    SelectedValuePath="Id"
+                                                                    SelectedValue="{Binding NewWorkUnit.ProductId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    DisplayMemberPath="Name"
+                                                                    TextSearch.TextPath="Name"
+                                                                    FontSize="20"
+                                                                    Margin="5">
                                 <controls:AutoCompleteComboBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
                                     </ItemsPanelTemplate>
                                 </controls:AutoCompleteComboBox.ItemsPanel>
-                            </controls:AutoCompleteComboBox>
-                            <controls:AutoCompleteComboBox Grid.Column="2" Grid.Row="1"
-                                                           ItemsSource="{Binding Materials}"
-                                                           SelectedItem="{Binding SelectedMaterial}"
-                                                           SelectedValuePath="Id"
-                                                           SelectedValue="{Binding NewWorkUnit.MaterialId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                           DisplayMemberPath="Name"
-                                                           TextSearch.TextPath="Name"
-                                                           Width="150"
-                                                           Margin="5">
-                                <controls:AutoCompleteComboBox.ItemsPanel>
+                            </dotNetKitControls:AutoCompleteComboBox>
+
+                            <dotNetKitControls:AutoCompleteComboBox Grid.Column="2" Grid.Row="1"
+                                                                    materialDesign:HintAssist.Hint="Material"
+                                                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                                                    ItemsSource="{Binding Materials}"
+                                                                    SelectedItem="{Binding SelectedMaterial}"
+                                                                    SelectedValuePath="Id"
+                                                                    SelectedValue="{Binding NewWorkUnit.MaterialId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    DisplayMemberPath="Name"
+                                                                    TextSearch.TextPath="Name"
+                                                                    Width="150"
+                                                                    FontSize="20"
+                                                                    Margin="5">
+                                <dotNetKitControls:AutoCompleteComboBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
                                     </ItemsPanelTemplate>
-                                </controls:AutoCompleteComboBox.ItemsPanel>
-                            </controls:AutoCompleteComboBox>
-                            <controls:AutoCompleteComboBox Grid.Column="3" Grid.Row="1"
-                                                           ItemsSource="{Binding Colors}"
-                                                           SelectedItem="{Binding SelectedColor}"
-                                                           SelectedValuePath="Id"
-                                                           SelectedValue="{Binding NewWorkUnit.ColorId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                           DisplayMemberPath="Name"
-                                                           TextSearch.TextPath="Name"
-                                                           Width="150"
-                                                           Margin="5">
-                                <controls:AutoCompleteComboBox.ItemsPanel>
+                                </dotNetKitControls:AutoCompleteComboBox.ItemsPanel>
+                            </dotNetKitControls:AutoCompleteComboBox>
+                            <dotNetKitControls:AutoCompleteComboBox Grid.Column="3" Grid.Row="1"
+                                                                    materialDesign:HintAssist.Hint="Lustre/Color"
+                                                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                                                    ItemsSource="{Binding Colors}"
+                                                                    SelectedItem="{Binding SelectedColor}"
+                                                                    SelectedValuePath="Id"
+                                                                    SelectedValue="{Binding NewWorkUnit.ColorId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    DisplayMemberPath="Name"
+                                                                    TextSearch.TextPath="Name"
+                                                                    Width="150"
+                                                                    FontSize="20"
+                                                                    Margin="5">
+                                <dotNetKitControls:AutoCompleteComboBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
                                     </ItemsPanelTemplate>
-                                </controls:AutoCompleteComboBox.ItemsPanel>
-                            </controls:AutoCompleteComboBox>
-                            <Label Content="Detalles" Grid.Row="2"/>
-                            <TextBox Grid.Row="3" Grid.ColumnSpan="4"
+                                </dotNetKitControls:AutoCompleteComboBox.ItemsPanel>
+                            </dotNetKitControls:AutoCompleteComboBox>
+                            <TextBox Grid.Row="2" Grid.ColumnSpan="4"
+                                     materialDesign:HintAssist.Hint="Detalles"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Text="{Binding NewWorkUnit.Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="5"/>
-                            <Button Grid.ColumnSpan="4" Grid.Row="2" 
-                                    Content="Agregar" 
-                                    Margin="10" 
-                                    Background="GreenYellow"
+                                     Margin="5"
+                                     FontSize="20"
+                                     BorderThickness="0"/>
+                            <Button Grid.ColumnSpan="4" Grid.Row="3" 
+                                    Content="AGREGAR" 
+                                    Margin="0,20,0,0" 
+                                    FontSize="16"
                                     HorizontalAlignment="Right"
-                                    Command="{Binding AddNewWorkUnitCommand}"/>
+                                    Command="{Binding AddNewWorkUnitCommand}"
+                                    Style="{StaticResource MaterialDesignRaisedDarkButton}" />
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -187,21 +199,27 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="400"/>
                         </Grid.RowDefinitions>
-                        <Label Content="Buscar:"/>
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBox Grid.Column="0"
+                                     materialDesign:HintAssist.Hint="Filtrar por producto"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Text="{Binding ExistingWorkUnitSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="5"/>
+                                     FontSize="20"
+                                     Margin="5" 
+                                     BorderThickness="0"/>
                             <Button Grid.Column="1"
-                                    Content="Agregar"
+                                    Content="AGREGAR"
                                     Command="{Binding AddExistingWorkUnitCommand}"
-                                    Margin="5"/>
+                                    VerticalAlignment="Center"
+                                    Margin="5"
+                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                    FontSize="16"/>
                         </Grid>
                         <ProgressBar Grid.Row="2" IsIndeterminate="True" Visibility="{Binding ExistingWorkUnitsProgressVisibility}"/>
                         <DataGrid Grid.Row="3" 
@@ -222,23 +240,23 @@
                                 <DataGridTextColumn Header="Area Actual" Binding="{Binding Model.CurrentWorkArea.Name}"/>
                             </DataGrid.Columns>
                             <DataGrid.GroupStyle>
-                                <!-- Style for groups at top level. -->
                                 <GroupStyle>
                                     <GroupStyle.ContainerStyle>
                                         <Style TargetType="{x:Type GroupItem}">
-                                            <Setter Property="Margin" Value="0,0,0,5"/>
                                             <Setter Property="Template">
                                                 <Setter.Value>
                                                     <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                        <Expander IsExpanded="False" BorderThickness="1,1,1,5">
+                                                        <Expander IsExpanded="False" materialDesign:ExpanderAssist.DownHeaderPadding="35,2,24,2">
                                                             <Expander.Header>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" />
-                                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="5,0,0,0" />
+                                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" 
+                                                                               HorizontalAlignment="Center"
+                                                                               Width="30"/>
+                                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" />
                                                                 </StackPanel>
                                                             </Expander.Header>
                                                             <Expander.Content>
-                                                                <ItemsPresenter />
+                                                                <ItemsPresenter/>
                                                             </Expander.Content>
                                                         </Expander>
                                                     </ControlTemplate>
@@ -246,17 +264,6 @@
                                             </Setter>
                                         </Style>
                                     </GroupStyle.ContainerStyle>
-                                </GroupStyle>
-                                <!-- Style for groups under the top level. -->
-                                <GroupStyle>
-                                    <GroupStyle.HeaderTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Background="LightGray">
-                                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Foreground="Black" />
-                                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="Black" Margin="30,0,0,0" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </GroupStyle.HeaderTemplate>
                                 </GroupStyle>
                             </DataGrid.GroupStyle>
                         </DataGrid>
