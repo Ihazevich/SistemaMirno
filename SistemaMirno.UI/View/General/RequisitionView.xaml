@@ -7,53 +7,78 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="700" />
         </Grid.RowDefinitions>
-        <Label Content="Pedidos" FontSize="30" />
-        <Separator Grid.Row="1"/>
-        <Grid Grid.Row="2" Visibility="{Binding ViewVisibility}">
+        <TextBlock Text="Pedidos"
+                   Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                   Margin="5" />
+        <Separator Grid.Row="1" />
+        <ProgressBar Grid.Row="2" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
+        <Grid Grid.Row="3" Visibility="{Binding ViewVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <Button Content="Nuevo pedido"
+                <Button Content="NUEVO PEDIDO"
                         Command="{Binding CreateNewCommand}"
-                        Width="250" 
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        FontSize="16"
+                        Width="250"
                         Margin="10" />
-                <Button Content="Ver Detalles"
+                <Button Content="GUARDAR CAMBIOS"
+                        Command="{Binding SaveChangesCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        FontSize="16"
+                        Width="250"
+                        Margin="10" />
+                <Button Content="VER DETALLES"
                         Command="{Binding OpenDetailCommand}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        FontSize="16"
                         Width="250" 
                         Margin="10" />
-                <Button Content="Salir" 
+                <Button Content="SALIR" 
                         Command="{Binding ExitView}"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}" 
+                        FontSize="16"
                         Width="250" 
                         Margin="10" />
             </StackPanel>
-            <DataGrid Grid.Column="1" 
-                      ItemsSource="{Binding Requisitions}"
-                      SelectedItem="{Binding SelectedRequisition}"
-                      CanUserAddRows="False"
-                      CanUserDeleteRows="False"
-                      CanUserReorderColumns="True"
-                      SelectionMode="Single"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      SelectedIndex="{Binding DataGridIndex, Mode=TwoWay}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Fecha de pedido" Binding="{Binding RequestedDate, StringFormat=d}"/>
-                    <DataGridCheckBoxColumn Header="Para Stock" Binding="{Binding IsForStock}"/>
-                    <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Client.FullName}"/>
-                    <DataGridTextColumn Header="Prioridad" Binding="{Binding Priority}"/>
-                    <DataGridTextColumn Header="Fecha objetivo" Binding="{Binding TargetDate, StringFormat=d}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="800"/>
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="2" 
+                          ItemsSource="{Binding Requisitions}"
+                          SelectedItem="{Binding SelectedRequisition}"
+                          AutoGenerateColumns="False"
+                          SelectionMode="Extended"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          EnableRowVirtualization="True"
+                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                          BorderBrush="LightGray"
+                          BorderThickness="1"
+                          Margin="5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Fecha de pedido" Binding="{Binding RequestedDate, StringFormat=d}" IsReadOnly="True"/>
+                        <DataGridCheckBoxColumn Header="Para Stock" Binding="{Binding IsForStock}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Cliente" Binding="{Binding Model.Client.FullName}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Prioridad" Binding="{Binding Priority}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Fecha objetivo" Binding="{Binding TargetDate, StringFormat=d}" IsReadOnly="True"/>
+                        <DataGridCheckBoxColumn Header="Completado" Binding="{Binding Fulfilled}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
-        <mah:ProgressRing Grid.Row="2" Visibility="{Binding ProgressVisibility,Mode=TwoWay}" Width="250" Height="30"/>
     </Grid>
 </UserControl>

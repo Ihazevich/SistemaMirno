@@ -32,11 +32,14 @@ namespace SistemaMirno.UI.ViewModel.General
             Requisitions = new ObservableCollection<RequisitionWrapper>();
             CreateNewCommand = new DelegateCommand(OnCreateNewExecute);
             OpenDetailCommand = new DelegateCommand(OnOpenDetailExecute, OnOpenDetailCanExecute);
+            SaveChangesCommand = new DelegateCommand(OnSaveChangesExecute);
         }
 
         public ICommand CreateNewCommand { get; }
 
         public ICommand OpenDetailCommand { get; }
+
+        public ICommand SaveChangesCommand { get; }
 
         public ObservableCollection<RequisitionWrapper> Requisitions { get; }
 
@@ -59,7 +62,7 @@ namespace SistemaMirno.UI.ViewModel.General
         {
             Requisitions.Clear();
 
-            var requisitions = await _requisitionRepository.GetAllAsync();
+            var requisitions = await _requisitionRepository.GetAllOpenRequisitionsAsync();
 
             foreach (var requisition in requisitions)
             {
@@ -96,6 +99,16 @@ namespace SistemaMirno.UI.ViewModel.General
                     Id = SelectedRequisition.Id,
                     ViewModel = nameof(RequisitionDetailViewModel),
                 });
+        }
+
+        private async void OnSaveChangesExecute()
+        {
+            foreach (var requisition in Requisitions)
+            {
+                await _requisitionRepository.SaveAsync(requisition.Model);
+            }
+
+            await LoadAsync().ConfigureAwait(false);
         }
     }
 }

@@ -144,5 +144,24 @@ namespace SistemaMirno.UI.Data.Repositories
                 return null;
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<List<Requisition>> GetAllOpenRequisitionsAsync()
+        {
+            try
+            {
+                return await Context.Requisitions.Where(r => !r.Fulfilled).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                EventAggregator.GetEvent<ShowDialogEvent>()
+                    .Publish(new ShowDialogEventArgs
+                    {
+                        Message = $"Error [{ex.Message}]. Contacte al Administrador de Sistema.",
+                        Title = "Error",
+                    });
+                return null;
+            }
+        }
     }
 }
