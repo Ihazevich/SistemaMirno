@@ -28,7 +28,7 @@
                    Margin="5" />
         <Separator Grid.Row="1" />
         <ProgressBar Grid.Row="2" IsEnabled="True" IsIndeterminate="True" Visibility="{Binding ProgressVisibility}"/>
-        <Grid Grid.Row="3" IsEnabled="{Binding IsEnabled}">
+        <Grid Grid.Row="3" Visibility="{Binding ViewVisibility}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

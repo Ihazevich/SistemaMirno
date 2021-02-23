@@ -212,6 +212,20 @@ namespace SistemaMirno.UI.ViewModel.Detail
             }
         }
 
+        public override bool IsNew
+        {
+            get => base.IsNew;
+
+            set
+            {
+                base.IsNew = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(NewButtonsVisibility));
+                OnPropertyChanged(nameof(SelectProductsVisibility));
+                OnPropertyChanged(nameof(EditButtonsVisibility));
+            }
+        }
+
         public override async Task LoadAsync(int? id = null)
         {
             await LoadBranchesAsync();
